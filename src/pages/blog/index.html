@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Oriupe Blog — Ressources & conseils pour freelances africains</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#F4F6F9;color:#1B3A4A;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer}
+:root{
+  --navy:#0F2535;--navy2:#1B3A4A;
+  --green:#3CB878;--green-d:#27965D;--green-l:#E4F7EE;--green-xl:#F0FBF5;
+  --blue:#29ABE2;--blue-l:#E2F4FB;--blue-d:#1A8BC0;
+  --lime:#8DC63F;--lime-l:#EEF7D6;
+  --gold:#F59E0B;--gold-l:#FEF3C7;
+  --purple:#7C3AED;--purple-l:#EDE9FE;
+  --red:#EF4444;--red-l:#FEE2E2;
+  --orange:#F97316;--orange-l:#FFF0E6;
+  --bg:#F4F6F9;--bg2:#ECEEF3;--white:#fff;
+  --border:rgba(27,58,74,.1);--border2:rgba(27,58,74,.06);
+  --muted:rgba(27,58,74,.52);--muted2:rgba(27,58,74,.32);
+  --shadow:0 2px 12px rgba(15,37,53,.08);
+  --shadow-md:0 8px 32px rgba(15,37,53,.12);
+  --shadow-lg:0 20px 60px rgba(15,37,53,.18);
+  --spring:cubic-bezier(.34,1.56,.64,1);
+  --ease:cubic-bezier(.25,.46,.45,.94);
+}
+
+/* ── PROGRESS ── */
+#progress{position:fixed;top:0;left:0;height:3px;z-index:9999;width:0;
+  background:linear-gradient(90deg,var(--green),var(--blue),var(--lime));
+  border-radius:0 3px 3px 0;transition:width .08s linear}
+
+/* ── NAV ── */
+nav{background:rgba(255,255,255,.96);backdrop-filter:blur(18px);height:64px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 52px;border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:300;box-shadow:var(--shadow)}
+.logo{display:flex;align-items:center;gap:9px}
+.logo-t{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:var(--navy2)}
+.nav-links{display:flex;gap:2px}
+.nav-links a{font-size:13px;color:var(--muted);font-weight:500;padding:7px 13px;border-radius:8px;transition:all .2s;cursor:pointer}
+.nav-links a:hover{color:var(--navy2);background:var(--bg)}
+.nav-links a.active{color:var(--green);font-weight:700}
+.nav-right{display:flex;align-items:center;gap:9px}
+.pill{font-size:12px;color:var(--muted);background:var(--bg);border:1px solid var(--border);padding:5px 12px;border-radius:6px;font-weight:600;cursor:pointer}
+.btn-ghost{font-size:13px;font-weight:600;color:var(--navy2);padding:8px 14px;border:none;background:transparent;border-radius:8px;transition:background .2s}
+.btn-ghost:hover{background:var(--bg)}
+.btn-g{background:var(--green);color:#fff;font-size:13px;font-weight:700;padding:10px 22px;border-radius:9px;border:none;box-shadow:0 2px 10px rgba(60,184,120,.28);transition:all .2s var(--spring)}
+.btn-g:hover{background:var(--green-d);transform:translateY(-1px)}
+
+/* ── HERO ── */
+.hero{background:var(--navy);padding:64px 52px 48px;position:relative;overflow:hidden}
+.hero-mesh{position:absolute;inset:0;pointer-events:none}
+.mesh-a{position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(60,184,120,.18) 0%,transparent 70%);top:-150px;left:-100px;filter:blur(80px)}
+.mesh-b{position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(41,171,226,.14) 0%,transparent 70%);bottom:-80px;right:-80px;filter:blur(80px)}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:52px 52px}
+.hero-inner{max-width:1280px;margin:0 auto;position:relative;z-index:1}
+.hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:40px;margin-bottom:48px;flex-wrap:wrap}
+.hero-left{max-width:520px}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(60,184,120,.12);border:1px solid rgba(60,184,120,.25);padding:6px 14px;border-radius:20px;margin-bottom:18px}
+.hero-dot{width:7px;height:7px;background:var(--green);border-radius:50%;animation:pulse 2s ease-in-out infinite;flex-shrink:0}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(60,184,120,.4)}50%{box-shadow:0 0 0 6px rgba(60,184,120,0)}}
+.hero-eyebrow span{font-size:11px;font-weight:700;color:var(--green);letter-spacing:1px}
+.hero-h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,4vw,48px);font-weight:800;color:#fff;letter-spacing:-1px;line-height:1.1;margin-bottom:14px}
+.hero-h1 span{color:var(--green)}
+.hero-p{font-size:15px;color:rgba(255,255,255,.5);line-height:1.82}
+/* Search */
+.hero-search{flex:1;max-width:400px;display:flex;flex-direction:column;gap:12px;align-self:flex-end}
+.search-bar{background:rgba(255,255,255,.08);backdrop-filter:blur(16px);border:1.5px solid rgba(255,255,255,.12);border-radius:13px;padding:10px 10px 10px 18px;display:flex;align-items:center;gap:10px;transition:all .2s}
+.search-bar:focus-within{background:rgba(255,255,255,.12);border-color:rgba(60,184,120,.4);box-shadow:0 0 0 4px rgba(60,184,120,.08)}
+.search-bar input{border:none;background:transparent;font-size:14px;color:#fff;flex:1;outline:none;font-family:'Plus Jakarta Sans',sans-serif}
+.search-bar input::placeholder{color:rgba(255,255,255,.3)}
+.search-btn{background:var(--green);color:#fff;border:none;border-radius:9px;padding:10px 20px;font-size:13px;font-weight:700;cursor:pointer;transition:background .2s;font-family:'Plus Jakarta Sans',sans-serif;white-space:nowrap;flex-shrink:0}
+.search-btn:hover{background:var(--green-d)}
+.popular-tags{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.ptag-lbl{font-size:11px;color:rgba(255,255,255,.3);font-weight:500}
+.ptag{font-size:11px;font-weight:600;color:rgba(255,255,255,.6);background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);padding:4px 11px;border-radius:20px;cursor:pointer;transition:all .2s}
+.ptag:hover{color:#fff;background:rgba(255,255,255,.16)}
+
+/* ── CATEGORIES BAR ── */
+.cats-bar{background:#fff;border-bottom:1px solid var(--border);padding:0 52px;position:sticky;top:64px;z-index:200;box-shadow:var(--shadow)}
+.cats-inner{max-width:1280px;margin:0 auto;display:flex;gap:0;overflow-x:auto;scrollbar-width:none}
+.cats-inner::-webkit-scrollbar{display:none}
+.cat-btn{flex-shrink:0;padding:16px 20px;font-size:13px;font-weight:600;color:var(--muted);border:none;background:transparent;border-bottom:2px solid transparent;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:7px;white-space:nowrap;font-family:'Plus Jakarta Sans',sans-serif}
+.cat-btn:hover{color:var(--navy2)}
+.cat-btn.active{color:var(--green);border-bottom-color:var(--green);font-weight:700}
+.cat-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+
+/* ── FEATURED ARTICLE ── */
+.featured-section{background:#fff;padding:48px 52px;border-bottom:1px solid var(--border)}
+.feat-inner{max-width:1280px;margin:0 auto}
+.feat-label{font-size:11px;font-weight:700;color:var(--green);letter-spacing:1.4px;margin-bottom:20px;display:flex;align-items:center;gap:8px}
+.feat-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.feat-card{display:grid;grid-template-columns:1fr 1fr;gap:0;border-radius:20px;overflow:hidden;border:1px solid var(--border);cursor:pointer;transition:all .25s var(--spring);box-shadow:var(--shadow)}
+.feat-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:rgba(60,184,120,.25)}
+.feat-img{height:380px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.feat-img-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(15,37,53,.8),rgba(15,37,53,.4));display:flex;flex-direction:column;justify-content:flex-end;padding:28px}
+.feat-cat-pill{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;margin-bottom:14px;width:fit-content}
+.feat-h{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(20px,2.5vw,30px);font-weight:800;color:#fff;line-height:1.2;margin-bottom:10px;letter-spacing:-.5px}
+.feat-meta{display:flex;align-items:center;gap:12px;font-size:12px;color:rgba(255,255,255,.6)}
+.feat-body{padding:36px 36px;background:#fff;display:flex;flex-direction:column;justify-content:center}
+.feat-tag{font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--green);margin-bottom:12px}
+.feat-title{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(18px,2vw,26px);font-weight:800;color:var(--navy2);letter-spacing:-.4px;line-height:1.3;margin-bottom:14px}
+.feat-excerpt{font-size:14px;color:var(--muted);line-height:1.88;margin-bottom:24px}
+.feat-author{display:flex;align-items:center;gap:12px;padding-top:20px;border-top:1px solid var(--border2);margin-bottom:24px}
+.author-av{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0}
+.author-name{font-size:14px;font-weight:700;color:var(--navy2)}
+.author-role{font-size:11px;color:var(--muted)}
+.feat-info{display:flex;align-items:center;gap:14px;font-size:12px;color:var(--muted);flex-wrap:wrap}
+.btn-read{display:inline-flex;align-items:center;gap:8px;background:var(--navy2);color:#fff;border:none;border-radius:10px;padding:13px 24px;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s var(--spring);font-family:'Plus Jakarta Sans',sans-serif}
+.btn-read:hover{background:var(--navy);transform:translateY(-1px)}
+.btn-read-outline{display:inline-flex;align-items:center;gap:8px;background:#fff;color:var(--navy2);border:1.5px solid var(--border);border-radius:10px;padding:12px 20px;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif;margin-left:10px}
+.btn-read-outline:hover{border-color:var(--green);color:var(--green)}
+
+/* ── MAIN LAYOUT ── */
+.main-wrap{max-width:1280px;margin:0 auto;padding:40px 52px 80px;display:grid;grid-template-columns:1fr 320px;gap:32px;align-items:start}
+
+/* ── ARTICLES GRID ── */
+.articles-col{}
+.articles-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:10px}
+.ah-title{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:var(--navy2)}
+.ah-count{font-size:13px;color:var(--muted)}
+
+/* Article card */
+.articles-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-bottom:28px}
+.art-card{background:#fff;border:1px solid var(--border);border-radius:18px;overflow:hidden;cursor:pointer;transition:all .25s var(--spring)}
+.art-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg);border-color:rgba(60,184,120,.2)}
+.art-img{height:180px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.art-img svg{transition:transform .4s var(--spring)}
+.art-card:hover .art-img svg{transform:scale(1.08)}
+.art-overlay{position:absolute;inset:0;background:rgba(15,37,53,.45);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .25s;backdrop-filter:blur(2px)}
+.art-card:hover .art-overlay{opacity:1}
+.read-ico{width:40px;height:40px;background:rgba(255,255,255,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:transform .2s var(--spring)}
+.art-card:hover .read-ico{transform:scale(1.1)}
+.art-cat-badge{position:absolute;top:12px;left:12px;font-size:10px;font-weight:700;padding:4px 10px;border-radius:20px}
+.art-read-time{position:absolute;bottom:10px;right:12px;font-size:10px;font-weight:700;color:#fff;background:rgba(0,0,0,.4);padding:3px 9px;border-radius:20px;backdrop-filter:blur(6px)}
+.art-body{padding:18px 20px}
+.art-cat{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;margin-bottom:7px}
+.art-title{font-size:14px;font-weight:700;color:var(--navy2);line-height:1.55;margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.art-excerpt{font-size:12px;color:var(--muted);line-height:1.72;margin-bottom:14px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.art-footer{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border2);padding-top:12px}
+.art-author{display:flex;align-items:center;gap:7px}
+.art-av{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800;color:#fff;flex-shrink:0}
+.art-aname{font-size:11px;font-weight:600;color:var(--navy2)}
+.art-date{font-size:10px;color:var(--muted2)}
+
+/* List view card */
+.art-card-list{background:#fff;border:1px solid var(--border);border-radius:16px;overflow:hidden;display:flex;cursor:pointer;transition:all .25s var(--spring);margin-bottom:14px}
+.art-card-list:hover{transform:translateX(4px);box-shadow:var(--shadow-md);border-color:rgba(60,184,120,.2)}
+.art-list-img{width:180px;flex-shrink:0;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.art-list-body{padding:18px 22px;flex:1;display:flex;flex-direction:column;justify-content:space-between}
+
+/* Top articles section */
+.top-articles{margin-bottom:32px}
+.sec-divider{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.sd-label{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:800;color:var(--navy2);white-space:nowrap}
+.sd-line{flex:1;height:1px;background:var(--border)}
+.sd-see-all{font-size:13px;color:var(--green);font-weight:700;cursor:pointer;display:flex;align-items:center;gap:4px;white-space:nowrap;transition:gap .2s}
+.sd-see-all:hover{gap:8px}
+
+/* ── PAGINATION ── */
+.pagination{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:8px}
+.pg{width:38px;height:38px;border:1.5px solid var(--border);border-radius:8px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:var(--navy2);cursor:pointer;transition:all .2s}
+.pg:hover{border-color:var(--green);color:var(--green)}
+.pg.active{background:var(--green);border-color:var(--green);color:#fff}
+.pg:disabled{opacity:.35;cursor:not-allowed}
+
+/* ── SIDEBAR ── */
+.sidebar{display:flex;flex-direction:column;gap:20px;position:sticky;top:112px}
+
+/* Sidebar cards */
+.sb-card{background:#fff;border:1px solid var(--border);border-radius:18px;padding:22px;box-shadow:var(--shadow)}
+.sb-title{font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;color:var(--navy2);margin-bottom:16px}
+
+/* Newsletter */
+.newsletter-card{background:var(--navy);border-radius:18px;padding:24px;position:relative;overflow:hidden}
+.nl-bg{position:absolute;right:-30px;bottom:-30px;width:120px;height:120px;border-radius:50%;background:rgba(60,184,120,.15);filter:blur(20px)}
+.nl-title{font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;color:#fff;margin-bottom:8px;line-height:1.25;position:relative;z-index:1}
+.nl-sub{font-size:12px;color:rgba(255,255,255,.45);line-height:1.7;margin-bottom:18px;position:relative;z-index:1}
+.nl-inp{width:100%;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.15);border-radius:10px;padding:11px 14px;font-size:13px;color:#fff;outline:none;transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif;margin-bottom:10px;position:relative;z-index:1}
+.nl-inp:focus{background:rgba(255,255,255,.15);border-color:rgba(60,184,120,.5)}
+.nl-inp::placeholder{color:rgba(255,255,255,.3)}
+.btn-nl{width:100%;background:linear-gradient(135deg,var(--green),#4FD090);color:#fff;border:none;border-radius:10px;padding:12px;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s var(--spring);font-family:'Plus Jakarta Sans',sans-serif;box-shadow:0 3px 12px rgba(60,184,120,.35);position:relative;z-index:1}
+.btn-nl:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(60,184,120,.45)}
+.nl-note{font-size:10px;color:rgba(255,255,255,.25);text-align:center;margin-top:8px;position:relative;z-index:1}
+
+/* Popular articles list */
+.pop-list{display:flex;flex-direction:column;gap:0}
+.pop-item{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--border2);cursor:pointer;transition:all .15s}
+.pop-item:last-child{border-bottom:none}
+.pop-item:hover .pop-title{color:var(--green)}
+.pop-num{font-family:'Bricolage Grotesque',sans-serif;font-size:24px;font-weight:800;color:var(--bg2);flex-shrink:0;width:28px;line-height:1.1;margin-top:2px}
+.pop-info{}
+.pop-cat{font-size:10px;font-weight:700;color:var(--muted2);letter-spacing:.4px;margin-bottom:4px}
+.pop-title{font-size:12px;font-weight:700;color:var(--navy2);line-height:1.5;margin-bottom:5px;transition:color .2s}
+.pop-meta{font-size:10px;color:var(--muted2)}
+
+/* Tags cloud */
+.tags-cloud{display:flex;flex-wrap:wrap;gap:7px}
+.tag-item{font-size:12px;font-weight:600;color:var(--muted);background:var(--bg);border:1px solid var(--border);padding:5px 13px;border-radius:20px;cursor:pointer;transition:all .2s}
+.tag-item:hover{border-color:var(--green);color:var(--green);background:var(--green-xl)}
+.tag-item.hot{border-color:rgba(249,115,22,.3);background:var(--orange-l);color:var(--orange)}
+
+/* Social share */
+.social-row{display:flex;gap:8px}
+.soc-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;border-radius:9px;padding:9px;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;border:none;font-family:'Plus Jakarta Sans',sans-serif}
+.soc-wa{background:#25D366;color:#fff}
+.soc-wa:hover{background:#1DA851}
+.soc-li{background:#0A66C2;color:#fff}
+.soc-li:hover{background:#0858A7}
+.soc-tw{background:#1DA1F2;color:#fff}
+.soc-tw:hover{background:#0E95E4}
+.soc-fb{background:#1877F2;color:#fff}
+.soc-fb:hover{background:#1262CC}
+
+/* Authors sidebar */
+.authors-list{display:flex;flex-direction:column;gap:12px}
+.sb-author{display:flex;align-items:center;gap:11px;padding:11px 0;border-bottom:1px solid var(--border2);cursor:pointer;transition:all .15s}
+.sb-author:last-child{border-bottom:none}
+.sb-author:hover .sb-aname{color:var(--green)}
+.sb-av{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0}
+.sb-aname{font-size:13px;font-weight:700;color:var(--navy2);transition:color .2s}
+.sb-arole{font-size:11px;color:var(--muted)}
+.sb-acount{font-size:10px;font-weight:700;color:var(--muted);background:var(--bg);padding:2px 8px;border-radius:10px;margin-left:auto;flex-shrink:0}
+
+/* ── REVEAL ── */
+.r{opacity:0;transform:translateY(22px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.r.vis{opacity:1;transform:none}
+.sg .r:nth-child(1){transition-delay:.04s}
+.sg .r:nth-child(2){transition-delay:.1s}
+.sg .r:nth-child(3){transition-delay:.16s}
+.sg .r:nth-child(4){transition-delay:.22s}
+.sg .r:nth-child(5){transition-delay:.28s}
+.sg .r:nth-child(6){transition-delay:.34s}
+
+/* ── CTA BAS ── */
+.cta-section{background:linear-gradient(135deg,var(--navy),#1A4A6A);padding:64px 52px;text-align:center;position:relative;overflow:hidden}
+.cta-section::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:52px 52px}
+.cta-inner{position:relative;z-index:1;max-width:560px;margin:0 auto}
+.cta-title{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(24px,3.5vw,38px);font-weight:800;color:#fff;letter-spacing:-.8px;margin-bottom:12px;line-height:1.15}
+.cta-title span{color:var(--lime)}
+.cta-sub{font-size:15px;color:rgba(255,255,255,.5);margin-bottom:32px;line-height:1.75}
+.cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-cta-g{background:linear-gradient(135deg,var(--green),#4FD090);color:#fff;border:none;border-radius:12px;padding:14px 30px;font-size:14px;font-weight:800;cursor:pointer;transition:all .2s var(--spring);box-shadow:0 4px 20px rgba(60,184,120,.35);display:inline-flex;align-items:center;gap:8px;font-family:'Plus Jakarta Sans',sans-serif}
+.btn-cta-g:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(60,184,120,.45)}
+.btn-cta-t{background:rgba(255,255,255,.1);color:#fff;border:1.5px solid rgba(255,255,255,.2);border-radius:12px;padding:13px 24px;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:7px;font-family:'Plus Jakarta Sans',sans-serif;backdrop-filter:blur(8px)}
+.btn-cta-t:hover{background:rgba(255,255,255,.18)}
+
+/* ── FOOTER ── */
+footer{background:var(--navy2);padding:28px 52px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.foot-logo{display:flex;align-items:center;gap:9px}
+.foot-t{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:800;color:#fff}
+.foot-copy{font-size:12px;color:rgba(255,255,255,.28)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1100px){
+  nav,.hero,.featured-section,.cta-section,footer{padding-left:28px;padding-right:28px}
+  .cats-bar{padding:0 28px}
+  .main-wrap{padding:32px 28px 60px;grid-template-columns:1fr}
+  .sidebar{position:static}
+  .feat-card{grid-template-columns:1fr}
+  .feat-img{height:260px}
+}
+@media(max-width:768px){
+  nav{padding:0 16px}
+  .nav-links,.nav-right .pill,.nav-right .btn-ghost{display:none}
+  .hero,.featured-section,.cta-section,footer{padding-left:16px;padding-right:16px}
+  .cats-bar{padding:0 16px}
+  .main-wrap{padding:20px 16px 48px}
+  .articles-grid{grid-template-columns:1fr}
+  .hero-top{flex-direction:column}
+  .hero-search{max-width:100%}
+}
+</style>
+  <script type="module" src="/src/components/nav.js"></script>
+</head>
+<body>
+<div id="progress"></div>
+
+<!-- ████ NAV ████ -->
+<nav>
+  <div style="display:flex;align-items:center;gap:36px">
+    <div class="logo">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <circle cx="8.5" cy="8.5" r="7" fill="#8DC63F" opacity=".9"/>
+        <circle cx="19.5" cy="8.5" r="7" fill="#29ABE2" opacity=".9"/>
+        <circle cx="8.5" cy="19.5" r="7" fill="#3CB878" opacity=".9"/>
+        <circle cx="19.5" cy="19.5" r="7" fill="#1B3A4A"/>
+        <rect x="8" y="8" width="12" height="12" rx="1.2" fill="rgba(60,184,120,.42)"/>
+      </svg>
+      <span class="logo-t">Oriupe</span>
+    </div>
+    <div class="nav-links">
+      <a href="oriupe_ULTIMATE.html">Accueil</a>
+      <a href="oriupe_catalogue.html">Explorer</a>
+      <a href="oriupe_appels_offres.html">Appels d'offres</a>
+      <a href="oriupe_academy.html">Academy</a>
+      <a class="active" href="#">Blog</a>
+    </div>
+  </div>
+  <div class="nav-right">
+    <div class="pill">🌍 FR ▾</div>
+    <div class="pill">FCFA ▾</div>
+    <button class="btn-ghost">Se connecter</button>
+    <button class="btn-g">S'inscrire</button>
+  </div>
+</nav>
+
+<!-- ████ HERO ████ -->
+<div class="hero">
+  <div class="hero-mesh"><div class="mesh-a"></div><div class="mesh-b"></div></div>
+  <div class="hero-grid"></div>
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <div class="hero-dot"></div>
+          <span>RESSOURCES · CONSEILS · SUCCESS STORIES</span>
+        </div>
+        <h1 class="hero-h1">Le Blog <span>Oriupe</span></h1>
+        <p class="hero-p">Des articles écrits par des freelances africains pour des freelances africains. Conseils pratiques, guides et success stories de la communauté.</p>
+      </div>
+      <div class="hero-search">
+        <div class="search-bar">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;opacity:.4"><circle cx="7" cy="7" r="5" stroke="#fff" stroke-width="1.6"/><path d="M11 11L15 15" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <input placeholder="Rechercher un article, un sujet..."/>
+          <button class="search-btn">Chercher</button>
+        </div>
+        <div class="popular-tags">
+          <span class="ptag-lbl">Populaire :</span>
+          <span class="ptag">Mobile Money</span>
+          <span class="ptag">React</span>
+          <span class="ptag">Tarifs</span>
+          <span class="ptag">Figma</span>
+          <span class="ptag">SEO</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats blog -->
+    <div style="display:flex;gap:0;padding-top:32px;border-top:1px solid rgba(255,255,255,.08)">
+      <div style="padding:0 32px 0 0;border-right:1px solid rgba(255,255,255,.08)">
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:28px;font-weight:800;background:linear-gradient(135deg,var(--green),var(--lime));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">240+</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.4);margin-top:3px">Articles publiés</div>
+      </div>
+      <div style="padding:0 32px;border-right:1px solid rgba(255,255,255,.08)">
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:28px;font-weight:800;background:linear-gradient(135deg,var(--green),var(--lime));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">28K+</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.4);margin-top:3px">Lecteurs/mois</div>
+      </div>
+      <div style="padding:0 32px;border-right:1px solid rgba(255,255,255,.08)">
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:28px;font-weight:800;background:linear-gradient(135deg,var(--green),var(--lime));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">38</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.4);margin-top:3px">Auteurs actifs</div>
+      </div>
+      <div style="padding:0 32px">
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:28px;font-weight:800;background:linear-gradient(135deg,var(--green),var(--lime));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">6</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.4);margin-top:3px">Langues africaines</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ████ CATÉGORIES BAR ████ -->
+<div class="cats-bar">
+  <div class="cats-inner">
+    <button class="cat-btn active" onclick="filterCat(this)">
+      <div class="cat-dot" style="background:var(--green)"></div>Tous les articles
+    </button>
+    <button class="cat-btn" onclick="filterCat(this)">
+      <div class="cat-dot" style="background:var(--blue)"></div>Conseils Freelance
+    </button>
+    <button class="cat-btn" onclick="filterCat(this)">
+      <div class="cat-dot" style="background:var(--purple)"></div>Success Stories
+    </button>
+    <button class="cat-btn" onclick="filterCat(this)">
+      <div class="cat-dot" style="background:var(--orange)"></div>Entrepreneurs
+    </button>
+    <button class="cat-btn" onclick="filterCat(this)">
+      <div class="cat-dot" style="background:var(--green)"></div>Tech & Dev
+    </button>
+    <button class="cat-btn" onclick="filterCat(this)">
+      <div class="cat-dot" style="background:var(--gold)"></div>Design
+    </button>
+    <button class="cat-btn" onclick="filterCat(this)">
+      <div class="cat-dot" style="background:var(--lime)"></div>Finance & Paiement
+    </button>
+  </div>
+</div>
+
+<!-- ████ ARTICLE FEATURED ████ -->
+<div class="featured-section">
+  <div class="feat-inner">
+    <div class="feat-label r">✦ Article à la une</div>
+    <div class="feat-card r">
+      <!-- Image gauche -->
+      <div class="feat-img" style="background:linear-gradient(135deg,#0F2535,#1A4A6A)">
+        <svg width="200" height="160" viewBox="0 0 200 160" fill="none">
+          <rect x="20" y="20" width="160" height="120" rx="8" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.1)" stroke-width="1"/>
+          <path d="M40 100L70 50L100 75L130 40L160 100Z" stroke="rgba(60,184,120,.5)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="rgba(60,184,120,.08)"/>
+          <circle cx="70" cy="50" r="12" fill="rgba(60,184,120,.2)" stroke="rgba(60,184,120,.5)" stroke-width="1.5"/>
+          <circle cx="130" cy="40" r="10" fill="rgba(41,171,226,.2)" stroke="rgba(41,171,226,.5)" stroke-width="1.5"/>
+          <rect x="40" y="108" width="120" height="18" rx="4" fill="rgba(255,255,255,.06)"/>
+          <rect x="44" y="112" width="60" height="10" rx="2" fill="rgba(60,184,120,.3)"/>
+          <rect x="108" y="112" width="48" height="10" rx="2" fill="rgba(255,255,255,.15)"/>
+        </svg>
+        <div class="feat-img-overlay">
+          <span class="feat-cat-pill" style="background:rgba(60,184,120,.25);color:var(--green);border:1px solid rgba(60,184,120,.3)">
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 8L5 5L8 8M5 5V2" stroke="var(--green)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Conseils Freelance
+          </span>
+          <div class="feat-h">Comment j'ai généré 500 000 FCFA en 3 mois sur Oriupe — mon parcours complet</div>
+          <div class="feat-meta">
+            <div style="display:flex;align-items:center;gap:6px">
+              <div style="width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--lime));display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800;color:#fff">KA</div>
+              Kofi Asante
+            </div>
+            <span>·</span>
+            <span>12 Janvier 2025</span>
+            <span>·</span>
+            <span>8 min de lecture</span>
+          </div>
+        </div>
+      </div>
+      <!-- Body droite -->
+      <div class="feat-body">
+        <div class="feat-tag">⭐ ARTICLE DE LA SEMAINE · CONSEILS FREELANCE</div>
+        <div class="feat-title">Comment j'ai généré 500 000 FCFA en 3 mois sur Oriupe — mon parcours complet</div>
+        <div class="feat-excerpt">Développeur junior au Ghana, je gagnais 80 000 FCFA par mois dans une agence locale. Aujourd'hui, grâce à Oriupe, je génère 5 fois plus en travaillant depuis chez moi. Voici exactement comment j'ai procédé, les erreurs à éviter et les conseils que j'aurais aimé avoir au début.</div>
+        <div class="feat-author">
+          <div class="author-av" style="background:linear-gradient(135deg,var(--green),var(--lime))">KA</div>
+          <div>
+            <div class="author-name">Kofi Asante</div>
+            <div class="author-role">Top Oriupe · Développeur Full-Stack · 🇬🇭 Ghana</div>
+          </div>
+        </div>
+        <div class="feat-info">
+          <span style="display:flex;align-items:center;gap:4px"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="4.5" stroke="var(--muted2)" stroke-width="1.1"/><path d="M6 3.5V6L7.5 7.5" stroke="var(--muted2)" stroke-width="1.2" stroke-linecap="round"/></svg>8 min de lecture</span>
+          <span style="display:flex;align-items:center;gap:4px"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6C2 6 4 2 6 2s4 4 4 4-2 4-4 4-4-4-4-4Z" stroke="var(--muted2)" stroke-width="1.1"/><circle cx="6" cy="6" r="1.5" stroke="var(--muted2)" stroke-width="1.1"/></svg>4 823 vues</span>
+          <span style="display:flex;align-items:center;gap:4px"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 3H10V8.5H7L5.5 10.5V8.5H2V3Z" stroke="var(--muted2)" stroke-width="1.1" stroke-linejoin="round"/></svg>147 commentaires</span>
+          <span style="display:flex;align-items:center;gap:4px"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1.5L7.5 4.5H11L8.5 6.5L9.5 10.5L6 8.5L2.5 10.5L3.5 6.5L1 4.5H4.5Z" stroke="var(--muted2)" stroke-width="1.1" stroke-linejoin="round"/></svg>289 j'aime</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:0;margin-top:20px">
+          <button class="btn-read">
+            Lire l'article
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2.5 6.5H10.5M7.5 3.5L10.5 6.5L7.5 9.5" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button class="btn-read-outline">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 7.5L4.5 10L11 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Sauvegarder
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ████ MAIN LAYOUT ████ -->
+<div class="main-wrap">
+
+  <!-- ═══ ARTICLES ═══ -->
+  <div class="articles-col">
+
+    <!-- Top articles à la une -->
+    <div class="top-articles">
+      <div class="sec-divider r">
+        <span class="sd-label">Tendance cette semaine</span>
+        <div class="sd-line"></div>
+        <span class="sd-see-all">Voir tout <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M3 6.5H10M7.5 4L10 6.5L7.5 9" stroke="var(--green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </div>
+
+      <div class="articles-grid sg">
+
+        <!-- Article 1 -->
+        <div class="art-card r">
+          <div class="art-img" style="background:linear-gradient(135deg,#3D1A78,#6B36D1)">
+            <span class="art-cat-badge" style="background:var(--purple-l);color:var(--purple)">Success Story</span>
+            <span class="art-read-time">6 min</span>
+            <svg width="80" height="64" viewBox="0 0 80 64" fill="none">
+              <path d="M10 48L25 20L40 32L55 12L70 48Z" stroke="#A78BFA" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="rgba(124,58,237,.12)"/>
+              <circle cx="40" cy="32" r="16" fill="rgba(124,58,237,.1)" stroke="rgba(124,58,237,.25)" stroke-width="1.5"/>
+            </svg>
+            <div class="art-overlay"><div class="read-ico"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3L11 7L5 11V3Z" fill="var(--navy2)"/></svg></div></div>
+          </div>
+          <div class="art-body">
+            <div class="art-cat">Success Story · Design</div>
+            <div class="art-title">De Lomé au monde : comment Yawa est devenue designer de renommée internationale</div>
+            <div class="art-excerpt">Elle gagnait 60 000 FCFA dans une imprimerie. 18 mois plus tard, elle décroche des clients en France et au Canada depuis son domicile à Lomé.</div>
+            <div class="art-footer">
+              <div class="art-author">
+                <div class="art-av" style="background:linear-gradient(135deg,var(--purple),#A78BFA)">YK</div>
+                <div>
+                  <div class="art-aname">Yawa Koffi</div>
+                  <div class="art-date">10 Jan 2025 · 2 184 vues</div>
+                </div>
+              </div>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7H11M8 4L11 7L8 10" stroke="var(--green)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Article 2 -->
+        <div class="art-card r">
+          <div class="art-img" style="background:linear-gradient(135deg,#0C304A,#1A5A7A)">
+            <span class="art-cat-badge" style="background:var(--blue-l);color:var(--blue-d)">Tech & Dev</span>
+            <span class="art-read-time">10 min</span>
+            <svg width="80" height="64" viewBox="0 0 80 64" fill="none">
+              <path d="M20 28L12 34L20 40M60 28L68 34L60 40M46 16L34 52" stroke="#29ABE2" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <rect x="14" y="20" width="52" height="28" rx="5" stroke="rgba(41,171,226,.2)" stroke-width="1.5"/>
+            </svg>
+            <div class="art-overlay"><div class="read-ico"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3L11 7L5 11V3Z" fill="var(--navy2)"/></svg></div></div>
+          </div>
+          <div class="art-body">
+            <div class="art-cat">Tech & Dev · Mobile Money</div>
+            <div class="art-title">Intégrer CinetPay dans votre app React — guide complet étape par étape</div>
+            <div class="art-excerpt">CinetPay supporte Orange Money, MTN MoMo et Wave. Voici comment l'intégrer proprement avec gestion des webhooks et de l'escrow.</div>
+            <div class="art-footer">
+              <div class="art-author">
+                <div class="art-av" style="background:linear-gradient(135deg,var(--blue),#7DD6F0)">CB</div>
+                <div>
+                  <div class="art-aname">Chidi Bello</div>
+                  <div class="art-date">8 Jan 2025 · 3 412 vues</div>
+                </div>
+              </div>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7H11M8 4L11 7L8 10" stroke="var(--green)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Article 3 -->
+        <div class="art-card r">
+          <div class="art-img" style="background:linear-gradient(135deg,#2A1A08,#5A3010)">
+            <span class="art-cat-badge" style="background:var(--gold-l);color:#92400E">Entrepreneurs</span>
+            <span class="art-read-time">7 min</span>
+            <svg width="80" height="64" viewBox="0 0 80 64" fill="none">
+              <rect x="14" y="14" width="52" height="38" rx="5" fill="rgba(245,158,11,.08)" stroke="rgba(245,158,11,.3)" stroke-width="1.5"/>
+              <path d="M24 38L34 24L44 30L54 18" stroke="#FCD34D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="54" cy="18" r="7" fill="rgba(245,158,11,.2)" stroke="#F59E0B" stroke-width="1.5"/>
+            </svg>
+            <div class="art-overlay"><div class="read-ico"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3L11 7L5 11V3Z" fill="var(--navy2)"/></svg></div></div>
+          </div>
+          <div class="art-body">
+            <div class="art-cat">Entrepreneurs · Finance</div>
+            <div class="art-title">Fixer ses tarifs en FCFA — la méthode exacte pour ne plus sous-facturer</div>
+            <div class="art-excerpt">La majorité des freelances africains débutants sous-facturent de 40 à 60%. Voici la formule concrète pour calculer vos tarifs et les défendre face aux clients.</div>
+            <div class="art-footer">
+              <div class="art-author">
+                <div class="art-av" style="background:linear-gradient(135deg,var(--gold),#FCD34D);color:#78350F">AM</div>
+                <div>
+                  <div class="art-aname">Aminata Koné</div>
+                  <div class="art-date">5 Jan 2025 · 5 892 vues</div>
+                </div>
+              </div>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7H11M8 4L11 7L8 10" stroke="var(--green)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Article 4 -->
+        <div class="art-card r">
+          <div class="art-img" style="background:linear-gradient(135deg,#0A3020,#1A6038)">
+            <span class="art-cat-badge" style="background:var(--green-l);color:var(--green-d)">Conseils Freelance</span>
+            <span class="art-read-time">5 min</span>
+            <svg width="80" height="64" viewBox="0 0 80 64" fill="none">
+              <circle cx="40" cy="32" r="20" fill="rgba(60,184,120,.08)" stroke="rgba(60,184,120,.2)" stroke-width="1.5"/>
+              <path d="M40 12C40 12 30 20 30 32s10 20 10 20M40 12c0 0 10 8 10 20s-10 20-10 20M20 32H60" stroke="rgba(60,184,120,.5)" stroke-width="2"/>
+              <circle cx="40" cy="32" r="5" fill="rgba(60,184,120,.4)" stroke="#3CB878" stroke-width="1.5"/>
+            </svg>
+            <div class="art-overlay"><div class="read-ico"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3L11 7L5 11V3Z" fill="var(--navy2)"/></svg></div></div>
+          </div>
+          <div class="art-body">
+            <div class="art-cat">Conseils Freelance · International</div>
+            <div class="art-title">5 stratégies pour attirer des clients européens depuis l'Afrique</div>
+            <div class="art-excerpt">Les clients français, belges et suisses paient 3 à 5 fois plus que les clients locaux pour les mêmes prestations. Voici comment les atteindre depuis Abidjan ou Dakar.</div>
+            <div class="art-footer">
+              <div class="art-author">
+                <div class="art-av" style="background:linear-gradient(135deg,var(--green),var(--lime))">OD</div>
+                <div>
+                  <div class="art-aname">Ousmane Diallo</div>
+                  <div class="art-date">3 Jan 2025 · 4 127 vues</div>
+                </div>
+              </div>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7H11M8 4L11 7L8 10" stroke="var(--green)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Autres articles en liste -->
+    <div>
+      <div class="sec-divider r">
+        <span class="sd-label">Tous les articles</span>
+        <div class="sd-line"></div>
+        <div style="display:flex;gap:7px">
+          <button style="font-size:12px;font-weight:600;padding:5px 13px;border-radius:20px;border:1.5px solid var(--border);background:#fff;color:var(--muted);cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='var(--green)';this.style.color='var(--green)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">Récents</button>
+          <button style="font-size:12px;font-weight:600;padding:5px 13px;border-radius:20px;border:none;background:var(--navy2);color:#fff;cursor:pointer">Populaires</button>
+        </div>
+      </div>
+
+      <!-- Article liste 1 -->
+      <div class="art-card-list r" style="margin-bottom:14px">
+        <div class="art-list-img" style="background:linear-gradient(135deg,#1A0A3A,#3D1A78);min-height:130px">
+          <svg width="60" height="48" viewBox="0 0 60 48" fill="none"><rect x="6" y="6" width="48" height="36" rx="4" stroke="rgba(196,181,253,.25)" stroke-width="1.2"/><path d="M10 38L20 16L30 26L40 10L50 38Z" stroke="#A78BFA" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="rgba(124,58,237,.1)"/></svg>
+        </div>
+        <div class="art-list-body">
+          <div>
+            <div style="display:flex;gap:7px;margin-bottom:8px">
+              <span style="font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;background:var(--purple-l);color:var(--purple)">Design</span>
+              <span style="font-size:10px;color:var(--muted2);padding:3px 0">8 min</span>
+            </div>
+            <div style="font-size:14px;font-weight:700;color:var(--navy2);margin-bottom:7px;line-height:1.5">Les 10 plugins Figma indispensables pour les designers africains en 2025</div>
+            <div style="font-size:12px;color:var(--muted);line-height:1.65;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">Des plugins gratuits et payants qui vont transformer votre workflow Figma. Choisis spécifiquement pour les contextes africains.</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;margin-top:12px;padding-top:10px;border-top:1px solid var(--border2)">
+            <div style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--purple),#A78BFA);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800;color:#fff">OD</div>
+            <span style="font-size:11px;color:var(--muted)">Ousmane D. · 28 Déc 2024</span>
+            <span style="font-size:10px;color:var(--muted2);margin-left:auto">2 341 vues</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Article liste 2 -->
+      <div class="art-card-list r" style="margin-bottom:14px">
+        <div class="art-list-img" style="background:linear-gradient(135deg,#0F2535,#1A4A6A);min-height:130px">
+          <svg width="60" height="48" viewBox="0 0 60 48" fill="none"><path d="M10 28L18 20L24 26L34 14L50 28" stroke="#3CB878" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="18" cy="20" r="5" fill="rgba(60,184,120,.2)" stroke="rgba(60,184,120,.4)" stroke-width="1"/><circle cx="34" cy="14" r="5" fill="rgba(41,171,226,.2)" stroke="rgba(41,171,226,.4)" stroke-width="1"/></svg>
+        </div>
+        <div class="art-list-body">
+          <div>
+            <div style="display:flex;gap:7px;margin-bottom:8px">
+              <span style="font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;background:var(--green-l);color:var(--green-d)">Tech & Dev</span>
+              <span style="font-size:10px;color:var(--muted2);padding:3px 0">12 min</span>
+            </div>
+            <div style="font-size:14px;font-weight:700;color:var(--navy2);margin-bottom:7px;line-height:1.5">Next.js 14 — ce qui change pour les devs freelances africains</div>
+            <div style="font-size:12px;color:var(--muted);line-height:1.65;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">Server Components, App Router, optimisations de performance. Tout ce que vous devez savoir pour rester compétitif en 2025.</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;margin-top:12px;padding-top:10px;border-top:1px solid var(--border2)">
+            <div style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--lime));display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800;color:#fff">KA</div>
+            <span style="font-size:11px;color:var(--muted)">Kofi Asante · 22 Déc 2024</span>
+            <span style="font-size:10px;color:var(--muted2);margin-left:auto">4 876 vues</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Article liste 3 -->
+      <div class="art-card-list r" style="margin-bottom:14px">
+        <div class="art-list-img" style="background:linear-gradient(135deg,#2A1A08,#5A3010);min-height:130px">
+          <svg width="60" height="48" viewBox="0 0 60 48" fill="none"><path d="M10 36L20 20L30 28L40 14L50 36Z" stroke="#FCD34D" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="rgba(245,158,11,.08)"/></svg>
+        </div>
+        <div class="art-list-body">
+          <div>
+            <div style="display:flex;gap:7px;margin-bottom:8px">
+              <span style="font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;background:var(--gold-l);color:#92400E">Finance</span>
+              <span style="font-size:10px;color:var(--muted2);padding:3px 0">6 min</span>
+            </div>
+            <div style="font-size:14px;font-weight:700;color:var(--navy2);margin-bottom:7px;line-height:1.5">Gérer sa fiscalité de freelance en Côte d'Ivoire — ce que vous devez absolument savoir</div>
+            <div style="font-size:12px;color:var(--muted);line-height:1.65;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">Déclaration de revenus, TVA, statut auto-entrepreneur, DFE. Un avocat fiscaliste vous explique tout en langage simple.</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;margin-top:12px;padding-top:10px;border-top:1px solid var(--border2)">
+            <div style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#FCD34D);color:#78350F;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800">AK</div>
+            <span style="font-size:11px;color:var(--muted)">Aminata K. · 18 Déc 2024</span>
+            <span style="font-size:10px;color:var(--muted2);margin-left:auto">6 234 vues</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Article liste 4 -->
+      <div class="art-card-list r" style="margin-bottom:14px">
+        <div class="art-list-img" style="background:linear-gradient(135deg,#0C304A,#1A5A7A);min-height:130px">
+          <svg width="60" height="48" viewBox="0 0 60 48" fill="none"><circle cx="30" cy="24" r="16" fill="rgba(41,171,226,.08)" stroke="rgba(41,171,226,.2)" stroke-width="1.2"/><path d="M30 8C30 8 22 14 22 24s8 16 8 16M30 8c0 0 8 6 8 16s-8 16-8 16M14 24H46" stroke="rgba(41,171,226,.5)" stroke-width="1.8"/></svg>
+        </div>
+        <div class="art-list-body">
+          <div>
+            <div style="display:flex;gap:7px;margin-bottom:8px">
+              <span style="font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;background:var(--blue-l);color:var(--blue-d)">Conseils SEO</span>
+              <span style="font-size:10px;color:var(--muted2);padding:3px 0">9 min</span>
+            </div>
+            <div style="font-size:14px;font-weight:700;color:var(--navy2);margin-bottom:7px;line-height:1.5">SEO pour les marchés francophones africains — pourquoi c'est différent et comment l'exploiter</div>
+            <div style="font-size:12px;color:var(--muted);line-height:1.65;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">Google Africa est sous-exploité. Moins de concurrence, requêtes spécifiques, comportements utilisateurs uniques. Un guide complet pour dominer votre niche.</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;margin-top:12px;padding-top:10px;border-top:1px solid var(--border2)">
+            <div style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--blue),#7DD6F0);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800;color:#fff">CB</div>
+            <span style="font-size:11px;color:var(--muted)">Chidi Bello · 15 Déc 2024</span>
+            <span style="font-size:10px;color:var(--muted2);margin-left:auto">3 198 vues</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Article liste 5 -->
+      <div class="art-card-list r">
+        <div class="art-list-img" style="background:linear-gradient(135deg,#1A4726,#2D7A3E);min-height:130px">
+          <svg width="60" height="48" viewBox="0 0 60 48" fill="none"><path d="M10 38L22 14L34 26L46 10L52 38" stroke="#8DC63F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="rgba(141,198,63,.08)"/></svg>
+        </div>
+        <div class="art-list-body">
+          <div>
+            <div style="display:flex;gap:7px;margin-bottom:8px">
+              <span style="font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;background:var(--lime-l);color:#3A6010">Success Story</span>
+              <span style="font-size:10px;color:var(--muted2);padding:3px 0">5 min</span>
+            </div>
+            <div style="font-size:14px;font-weight:700;color:var(--navy2);margin-bottom:7px;line-height:1.5">Moussa, 23 ans, Bamako — comment il finance ses études avec Oriupe</div>
+            <div style="font-size:12px;color:var(--muted);line-height:1.65;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">Étudiant en informatique, Moussa a découvert Oriupe en deuxième année. Aujourd'hui il gagne plus que ses professeurs grâce au développement web freelance.</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;margin-top:12px;padding-top:10px;border-top:1px solid var(--border2)">
+            <div style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--lime));display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800;color:#fff">MT</div>
+            <span style="font-size:11px;color:var(--muted)">Rédaction Oriupe · 10 Déc 2024</span>
+            <span style="font-size:10px;color:var(--muted2);margin-left:auto">7 512 vues</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination" style="margin-top:32px">
+      <button class="pg" disabled><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3L5 7L9 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <button class="pg active">1</button>
+      <button class="pg">2</button>
+      <button class="pg">3</button>
+      <span style="color:var(--muted);padding:0 4px">…</span>
+      <button class="pg">20</button>
+      <button class="pg"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3L9 7L5 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    </div>
+
+  </div>
+
+  <!-- ═══ SIDEBAR ═══ -->
+  <aside class="sidebar">
+
+    <!-- Newsletter -->
+    <div class="newsletter-card">
+      <div class="nl-bg"></div>
+      <div class="nl-title">Ne ratez aucun article 📬</div>
+      <p class="nl-sub">Recevez chaque semaine les meilleurs articles, conseils et success stories de la communauté Oriupe directement dans votre boîte mail.</p>
+      <input class="nl-inp" type="email" placeholder="votre@email.com"/>
+      <button class="btn-nl">S'abonner gratuitement</button>
+      <div class="nl-note">5 000+ abonnés · 0 spam · résiliable en 1 clic</div>
+    </div>
+
+    <!-- Articles populaires -->
+    <div class="sb-card">
+      <div class="sb-title">📈 Les plus lus</div>
+      <div class="pop-list">
+        <div class="pop-item">
+          <div class="pop-num">01</div>
+          <div class="pop-info">
+            <div class="pop-cat">CONSEILS FREELANCE</div>
+            <div class="pop-title">Comment j'ai généré 500 000 FCFA en 3 mois sur Oriupe</div>
+            <div class="pop-meta">8 min · 4 823 vues</div>
+          </div>
+        </div>
+        <div class="pop-item">
+          <div class="pop-num">02</div>
+          <div class="pop-info">
+            <div class="pop-cat">FINANCE</div>
+            <div class="pop-title">Fixer ses tarifs en FCFA — la méthode exacte</div>
+            <div class="pop-meta">7 min · 5 892 vues</div>
+          </div>
+        </div>
+        <div class="pop-item">
+          <div class="pop-num">03</div>
+          <div class="pop-info">
+            <div class="pop-cat">SUCCESS STORY</div>
+            <div class="pop-title">Moussa, 23 ans, Bamako — comment il finance ses études</div>
+            <div class="pop-meta">5 min · 7 512 vues</div>
+          </div>
+        </div>
+        <div class="pop-item">
+          <div class="pop-num">04</div>
+          <div class="pop-info">
+            <div class="pop-cat">TECH & DEV</div>
+            <div class="pop-title">Intégrer CinetPay dans votre app React</div>
+            <div class="pop-meta">10 min · 3 412 vues</div>
+          </div>
+        </div>
+        <div class="pop-item">
+          <div class="pop-num">05</div>
+          <div class="pop-info">
+            <div class="pop-cat">INTERNATIONAL</div>
+            <div class="pop-title">5 stratégies pour attirer des clients européens</div>
+            <div class="pop-meta">5 min · 4 127 vues</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tags cloud -->
+    <div class="sb-card">
+      <div class="sb-title">🏷️ Sujets populaires</div>
+      <div class="tags-cloud">
+        <span class="tag-item hot">🔥 Mobile Money</span>
+        <span class="tag-item">React.js</span>
+        <span class="tag-item hot">🔥 Tarifs Freelance</span>
+        <span class="tag-item">Figma</span>
+        <span class="tag-item">SEO Afrique</span>
+        <span class="tag-item hot">🔥 Success Story</span>
+        <span class="tag-item">Next.js</span>
+        <span class="tag-item">Fiscalité CI</span>
+        <span class="tag-item">Design System</span>
+        <span class="tag-item">CinetPay</span>
+        <span class="tag-item">Clients Internationaux</span>
+        <span class="tag-item">Escrow</span>
+        <span class="tag-item">Flutter</span>
+        <span class="tag-item">Portfolio</span>
+        <span class="tag-item">LinkedIn</span>
+        <span class="tag-item">Wave Pay</span>
+      </div>
+    </div>
+
+    <!-- Partager -->
+    <div class="sb-card">
+      <div class="sb-title">📤 Partager le blog</div>
+      <p style="font-size:12px;color:var(--muted);line-height:1.65;margin-bottom:14px">Aidez votre communauté à découvrir ces ressources. Chaque partage compte.</p>
+      <div class="social-row" style="flex-wrap:wrap">
+        <button class="soc-btn soc-wa">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1C3.7 1 1 3.7 1 7c0 1.1.3 2.1.8 3L1 13l3.2-.8C5.2 12.7 6.1 13 7 13c3.3 0 6-2.7 6-6S10.3 1 7 1Z" stroke="#fff" stroke-width="1.2"/><path d="M5 5.5c0 0 .5 1 1 1.5s1.5 1 1.5 1L8.5 7" stroke="#fff" stroke-width="1.1" stroke-linecap="round"/></svg>
+          WhatsApp
+        </button>
+        <button class="soc-btn soc-li">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1.5" y="1.5" width="11" height="11" rx="2" stroke="#fff" stroke-width="1.2"/><path d="M4 6V10M4 4.5V5M6.5 10V8C6.5 7 7 6.5 8 6.5S9.5 7 9.5 8V10M6.5 6V10" stroke="#fff" stroke-width="1.1" stroke-linecap="round"/></svg>
+          LinkedIn
+        </button>
+        <button class="soc-btn soc-fb" style="flex:1">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1.5" y="1.5" width="11" height="11" rx="2" stroke="#fff" stroke-width="1.2"/><path d="M8 12.5V9H9.5L10 7.5H8V6.5C8 6 8.2 5.5 9 5.5H10V4C10 4 9.3 4 8.5 4C7 4 6 5 6 6.5V7.5H4.5V9H6V12.5" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Facebook
+        </button>
+      </div>
+    </div>
+
+    <!-- Auteurs du blog -->
+    <div class="sb-card">
+      <div class="sb-title">✍️ Nos auteurs</div>
+      <div class="authors-list">
+        <div class="sb-author">
+          <div class="sb-av" style="background:linear-gradient(135deg,var(--green),var(--lime))">KA</div>
+          <div>
+            <div class="sb-aname">Kofi Asante</div>
+            <div class="sb-arole">Dev Full-Stack · 🇬🇭</div>
+          </div>
+          <span class="sb-acount">12 articles</span>
+        </div>
+        <div class="sb-author">
+          <div class="sb-av" style="background:linear-gradient(135deg,var(--gold),#FCD34D);color:#78350F">AM</div>
+          <div>
+            <div class="sb-aname">Aminata Koné</div>
+            <div class="sb-arole">Entrepreneur · 🇨🇮</div>
+          </div>
+          <span class="sb-acount">9 articles</span>
+        </div>
+        <div class="sb-author">
+          <div class="sb-av" style="background:linear-gradient(135deg,var(--blue),#7DD6F0)">CB</div>
+          <div>
+            <div class="sb-aname">Chidi Bello</div>
+            <div class="sb-arole">Expert SEO · 🇳🇬</div>
+          </div>
+          <span class="sb-acount">8 articles</span>
+        </div>
+        <div class="sb-author">
+          <div class="sb-av" style="background:linear-gradient(135deg,var(--purple),#A78BFA)">OD</div>
+          <div>
+            <div class="sb-aname">Ousmane Diallo</div>
+            <div class="sb-arole">Designer · 🇸🇳</div>
+          </div>
+          <span class="sb-acount">7 articles</span>
+        </div>
+      </div>
+      <button style="width:100%;background:var(--bg);color:var(--navy2);border:1.5px solid var(--border);border-radius:9px;padding:10px;font-size:12px;font-weight:700;cursor:pointer;margin-top:14px;transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif" onmouseover="this.style.borderColor='var(--green)';this.style.color='var(--green)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--navy2)'">Voir tous les auteurs</button>
+    </div>
+
+    <!-- CTA sidebar — devenir auteur -->
+    <div style="background:linear-gradient(135deg,var(--navy),#1A4A6A);border-radius:18px;padding:22px;position:relative;overflow:hidden">
+      <div style="position:absolute;right:-20px;bottom:-20px;width:90px;height:90px;border-radius:50%;background:rgba(60,184,120,.15);filter:blur(20px)"></div>
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;color:#fff;margin-bottom:8px;line-height:1.25;position:relative;z-index:1">Vous avez quelque chose à partager ?</div>
+      <p style="font-size:12px;color:rgba(255,255,255,.45);line-height:1.7;margin-bottom:16px;position:relative;z-index:1">Devenez auteur sur le Blog Oriupe. Partagez votre expertise avec 28 000 lecteurs africains.</p>
+      <button style="width:100%;background:var(--green);color:#fff;border:none;border-radius:9px;padding:12px;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif;position:relative;z-index:1" onmouseover="this.style.background='var(--green-d)'" onmouseout="this.style.background='var(--green)'">Proposer un article</button>
+    </div>
+
+  </aside>
+
+</div><!-- /main-wrap -->
+
+<!-- ████ CTA FINAL ████ -->
+<div class="cta-section">
+  <div class="cta-inner">
+    <div class="r"><div class="cta-title">Prêt à rejoindre<br><span>la communauté Oriupe ?</span></div></div>
+    <div class="r"><p class="cta-sub">50 000 freelances africains utilisent déjà Oriupe. Rejoignez-les, vendez vos services et lisez chaque semaine des conseils qui changent une carrière.</p></div>
+    <div class="r">
+      <div class="cta-btns">
+        <button class="btn-cta-g" onclick="window.location.href='oriupe_auth.html'">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="6" r="3" stroke="#fff" stroke-width="1.4"/><path d="M2 13.5C2 10.7 4.5 8.5 7.5 8.5s5.5 2.2 5.5 5" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/></svg>
+          Créer mon compte gratuit
+        </button>
+        <button class="btn-cta-t" onclick="window.location.href='oriupe_catalogue.html'">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="#fff" stroke-width="1.3"/><path d="M9.5 9.5L13 13" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/></svg>
+          Explorer les services
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ████ FOOTER ████ -->
+<footer>
+  <div class="foot-logo">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="7" cy="7" r="5.5" fill="#8DC63F" opacity=".85"/><circle cx="17" cy="7" r="5.5" fill="#29ABE2" opacity=".85"/><circle cx="7" cy="17" r="5.5" fill="#3CB878" opacity=".85"/><circle cx="17" cy="17" r="5.5" fill="rgba(255,255,255,.1)"/><rect x="6.5" y="6.5" width="11" height="11" rx="1" fill="rgba(60,184,120,.4)"/></svg>
+    <span class="foot-t">Oriupe</span>
+    <span style="font-size:12px;color:rgba(255,255,255,.35);margin-left:6px">Blog</span>
+  </div>
+  <span class="foot-copy">© 2025 Oriupe — Abidjan, Côte d'Ivoire · Tous droits réservés</span>
+</footer>
+
+<script>
+/* Scroll progress */
+window.addEventListener('scroll',()=>{
+  const t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;
+  document.getElementById('progress').style.width=(t/h*100)+'%';
+},{passive:true});
+
+/* Reveal */
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('vis')})},{threshold:.08,rootMargin:'0px 0px -20px 0px'});
+document.querySelectorAll('.r').forEach(el=>obs.observe(el));
+
+/* Category filter */
+function filterCat(btn){
+  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+/* Pagination */
+document.querySelectorAll('.pg:not(:disabled)').forEach(btn=>{
+  btn.addEventListener('click',function(){
+    if(this.querySelector('svg'))return;
+    document.querySelectorAll('.pg').forEach(b=>b.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+
+/* Newsletter */
+document.querySelector('.btn-nl').addEventListener('click',function(){
+  const inp=document.querySelector('.nl-inp');
+  if(!inp.value.includes('@')){inp.style.borderColor='rgba(239,68,68,.5)';inp.placeholder='Entrez un email valide';return}
+  this.textContent='✓ Abonné avec succès !';
+  this.style.background='rgba(60,184,120,.3)';
+  inp.value='';
+  inp.disabled=true;
+});
+</script>
+  <script type="module" src="/src/scripts/main.js"></script>
+</body>
+</html>

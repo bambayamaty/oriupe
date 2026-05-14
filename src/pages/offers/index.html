@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Oriupe — Appels d'Offres</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#F4F6F9;color:#1B3A4A;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer}
+:root{
+  --navy:#0F2535;--navy2:#1B3A4A;
+  --green:#3CB878;--green-d:#27965D;--green-l:#E4F7EE;--green-xl:#F0FBF5;
+  --blue:#29ABE2;--blue-l:#E2F4FB;--blue-d:#1A8BC0;
+  --lime:#8DC63F;--lime-l:#EEF7D6;
+  --gold:#F59E0B;--gold-l:#FEF3C7;
+  --purple:#7C3AED;--purple-l:#EDE9FE;
+  --red:#EF4444;--red-l:#FEE2E2;
+  --bg:#F4F6F9;--bg2:#ECEEF3;--white:#fff;
+  --border:rgba(27,58,74,.1);--border2:rgba(27,58,74,.06);
+  --muted:rgba(27,58,74,.52);--muted2:rgba(27,58,74,.32);
+  --shadow:0 2px 12px rgba(15,37,53,.08);
+  --shadow-md:0 8px 32px rgba(15,37,53,.12);
+  --shadow-lg:0 20px 60px rgba(15,37,53,.18);
+  --spring:cubic-bezier(.34,1.56,.64,1);
+  --ease:cubic-bezier(.25,.46,.45,.94);
+}
+
+/* ── SCROLL PROGRESS ── */
+#progress{position:fixed;top:0;left:0;height:3px;z-index:9999;width:0;
+  background:linear-gradient(90deg,var(--green),var(--blue),var(--lime));
+  border-radius:0 3px 3px 0}
+
+/* ── NAV ── */
+nav{background:rgba(255,255,255,.96);backdrop-filter:blur(18px);height:64px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 52px;border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:300;box-shadow:var(--shadow)}
+.logo{display:flex;align-items:center;gap:9px}
+.logo-t{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:var(--navy2)}
+.nav-links{display:flex;gap:2px}
+.nav-links a{font-size:13px;color:var(--muted);font-weight:500;padding:7px 13px;
+  border-radius:8px;transition:all .2s;cursor:pointer}
+.nav-links a:hover{color:var(--navy2);background:var(--bg)}
+.nav-links a.active{color:var(--green);font-weight:700}
+.nav-right{display:flex;align-items:center;gap:9px}
+.pill{font-size:12px;color:var(--muted);background:var(--bg);border:1px solid var(--border);
+  padding:5px 12px;border-radius:6px;font-weight:600;cursor:pointer}
+.btn-ghost{font-size:13px;font-weight:600;color:var(--navy2);padding:8px 14px;
+  border:none;background:transparent;border-radius:8px;transition:background .2s}
+.btn-ghost:hover{background:var(--bg)}
+.btn-g{background:var(--green);color:#fff;font-size:13px;font-weight:700;
+  padding:10px 22px;border-radius:9px;border:none;
+  box-shadow:0 2px 10px rgba(60,184,120,.28);
+  transition:all .2s var(--spring)}
+.btn-g:hover{background:var(--green-d);transform:translateY(-1px)}
+
+/* ── HERO BANNER ── */
+.hero-ao{
+  background:var(--navy);padding:56px 52px;
+  position:relative;overflow:hidden
+}
+.hero-mesh{position:absolute;inset:0;pointer-events:none}
+.mesh-a{position:absolute;width:500px;height:500px;border-radius:50%;
+  background:radial-gradient(circle,rgba(60,184,120,.18) 0%,transparent 70%);
+  top:-150px;left:-100px;filter:blur(70px)}
+.mesh-b{position:absolute;width:400px;height:400px;border-radius:50%;
+  background:radial-gradient(circle,rgba(41,171,226,.15) 0%,transparent 70%);
+  bottom:-100px;right:-80px;filter:blur(70px)}
+.mesh-c{position:absolute;width:300px;height:300px;border-radius:50%;
+  background:radial-gradient(circle,rgba(141,198,63,.12) 0%,transparent 70%);
+  top:50%;right:30%;filter:blur(60px)}
+.hero-grid{position:absolute;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+  linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+  background-size:52px 52px}
+.hero-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:40px;position:relative;z-index:1;flex-wrap:wrap}
+.hero-left{max-width:580px}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;
+  background:rgba(60,184,120,.12);border:1px solid rgba(60,184,120,.25);
+  padding:6px 14px;border-radius:20px;margin-bottom:20px}
+.hero-eyebrow span{font-size:11px;font-weight:700;color:var(--green);letter-spacing:1px}
+.hero-dot{width:7px;height:7px;background:var(--green);border-radius:50%;
+  animation:pulse 2s ease-in-out infinite;flex-shrink:0}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(60,184,120,.4)}50%{box-shadow:0 0 0 6px rgba(60,184,120,0)}}
+.hero-h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,3.2vw,44px);
+  font-weight:800;color:#fff;letter-spacing:-1px;line-height:1.12;margin-bottom:14px}
+.hero-h1 span{color:var(--green)}
+.hero-p{font-size:15px;color:rgba(255,255,255,.55);line-height:1.82;max-width:440px}
+/* Hero stats */
+.hero-stats{display:flex;gap:0;margin-top:32px}
+.hs-item{text-align:center;padding:0 24px;position:relative}
+.hs-item::after{content:'';position:absolute;right:0;top:10%;height:80%;width:1px;background:rgba(255,255,255,.1)}
+.hs-item:last-child::after{display:none}
+.hs-val{font-family:'Bricolage Grotesque',sans-serif;font-size:26px;font-weight:800;
+  background:linear-gradient(135deg,var(--green),var(--lime));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hs-lbl{font-size:11px;color:rgba(255,255,255,.4);margin-top:2px;font-weight:500}
+/* Hero right — submit CTA */
+.hero-cta-box{
+  background:rgba(255,255,255,.06);backdrop-filter:blur(20px);
+  border:1px solid rgba(255,255,255,.12);border-radius:20px;
+  padding:28px 30px;min-width:300px
+}
+.hcb-title{font-family:'Bricolage Grotesque',sans-serif;font-size:19px;font-weight:800;
+  color:#fff;margin-bottom:10px;line-height:1.25}
+.hcb-sub{font-size:13px;color:rgba(255,255,255,.5);line-height:1.7;margin-bottom:22px}
+.hcb-rules{display:flex;flex-direction:column;gap:8px;margin-bottom:22px}
+.hcb-rule{display:flex;align-items:center;gap:9px;font-size:12px;color:rgba(255,255,255,.55)}
+.hcb-rule-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.btn-submit-ao{width:100%;background:linear-gradient(135deg,var(--green),#4FD090);
+  color:#fff;border:none;border-radius:12px;padding:14px;
+  font-size:14px;font-weight:800;
+  box-shadow:0 4px 20px rgba(60,184,120,.4);
+  transition:all .2s var(--spring);display:flex;align-items:center;justify-content:center;gap:9px}
+.btn-submit-ao:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(60,184,120,.5)}
+
+/* ── MAIN LAYOUT ── */
+.page-wrap{max-width:1280px;margin:0 auto;padding:32px 52px 80px;
+  display:grid;grid-template-columns:280px 1fr;gap:28px;align-items:start}
+
+/* ── SIDEBAR FILTERS ── */
+.filters{background:#fff;border:1px solid var(--border);border-radius:18px;
+  overflow:hidden;box-shadow:var(--shadow);position:sticky;top:80px}
+.fil-head{padding:18px 20px;border-bottom:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center}
+.fil-title{font-size:14px;font-weight:700;color:var(--navy2)}
+.fil-reset{font-size:12px;color:var(--green);font-weight:700;cursor:pointer;transition:opacity .2s}
+.fil-reset:hover{opacity:.7}
+.fil-section{padding:16px 20px;border-bottom:1px solid var(--border)}
+.fil-section:last-child{border-bottom:none}
+.fil-sec-title{font-size:11px;font-weight:700;color:var(--navy2);
+  letter-spacing:.6px;margin-bottom:12px;
+  display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+.fil-arrow{font-size:10px;color:var(--muted);transition:transform .2s}
+.fil-arrow.open{transform:rotate(180deg)}
+.fil-opts{display:flex;flex-direction:column;gap:8px}
+.fil-opt{display:flex;align-items:center;gap:9px;cursor:pointer;padding:3px 0}
+.fil-opt input[type=checkbox]{width:16px;height:16px;accent-color:var(--green);cursor:pointer;flex-shrink:0}
+.fil-opt label{font-size:13px;color:var(--navy2);cursor:pointer;flex:1}
+.fil-count{font-size:10px;color:var(--muted);background:var(--bg);
+  padding:2px 7px;border-radius:10px;font-weight:600}
+.fil-range{margin-top:4px}
+.range-inputs{display:flex;gap:8px;margin-top:10px}
+.range-inp{width:100%;border:1.5px solid var(--border);border-radius:8px;
+  padding:8px 10px;font-size:12px;color:var(--navy2);outline:none;
+  background:#fff;font-family:'Plus Jakarta Sans',sans-serif;transition:border-color .2s}
+.range-inp:focus{border-color:var(--green)}
+.fil-apply{margin:16px 20px}
+.btn-apply{width:100%;background:var(--green);color:#fff;border:none;
+  border-radius:9px;padding:12px;font-size:13px;font-weight:700;
+  transition:background .2s;font-family:'Plus Jakarta Sans',sans-serif}
+.btn-apply:hover{background:var(--green-d)}
+
+/* ── MAIN CONTENT ── */
+.main-col{}
+
+/* Search + sort bar */
+.search-sort{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap}
+.search-wrap{position:relative;flex:1;min-width:200px}
+.search-inp{width:100%;background:#fff;border:1.5px solid var(--border);
+  border-radius:12px;padding:12px 16px 12px 44px;font-size:14px;
+  color:var(--navy2);outline:none;
+  transition:border-color .2s,box-shadow .2s;font-family:'Plus Jakarta Sans',sans-serif}
+.search-inp:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(60,184,120,.1)}
+.search-ico{position:absolute;left:15px;top:50%;transform:translateY(-50%);pointer-events:none}
+.sort-sel{border:1.5px solid var(--border);border-radius:11px;
+  padding:12px 36px 12px 14px;font-size:13px;font-weight:600;
+  color:var(--navy2);background:#fff;outline:none;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 7L11 1' stroke='%231B3A4A' stroke-opacity='.4' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 12px center;cursor:pointer}
+.sort-sel:focus{border-color:var(--green)}
+
+/* Active filters chips */
+.active-chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:16px}
+.achip{display:flex;align-items:center;gap:6px;background:#fff;
+  border:1px solid var(--border);border-radius:20px;
+  padding:5px 12px;font-size:12px;font-weight:600;color:var(--navy2);
+  transition:border-color .2s}
+.achip:hover{border-color:var(--green)}
+.achip-rm{color:var(--muted);cursor:pointer;font-size:14px;
+  line-height:1;transition:color .15s;background:none;border:none}
+.achip-rm:hover{color:var(--red)}
+
+/* Results header */
+.results-hdr{display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:18px;flex-wrap:wrap;gap:8px}
+.results-count{font-size:14px;color:var(--muted)}
+.results-count strong{color:var(--navy2)}
+.view-toggle{display:flex;gap:4px;background:var(--bg);padding:4px;border-radius:8px}
+.vt{width:32px;height:32px;border:none;background:transparent;border-radius:6px;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s}
+.vt.active{background:#fff;box-shadow:var(--shadow)}
+
+/* AO CARDS */
+.ao-list{display:flex;flex-direction:column;gap:16px}
+
+.ao-card{
+  background:#fff;border:1px solid var(--border);border-radius:18px;
+  padding:24px 26px;cursor:pointer;
+  transition:all .25s var(--spring);position:relative;overflow:hidden
+}
+.ao-card::before{content:'';position:absolute;left:0;top:0;bottom:0;
+  width:4px;background:var(--border);border-radius:4px 0 0 4px;transition:background .2s}
+.ao-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);border-color:rgba(60,184,120,.25)}
+.ao-card:hover::before{background:var(--green)}
+.ao-card.urgent::before{background:var(--gold)}
+.ao-card.featured{border-color:rgba(124,58,237,.2)}
+.ao-card.featured::before{background:var(--purple)}
+
+.ao-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;gap:12px}
+.ao-badges{display:flex;flex-wrap:wrap;gap:6px;flex:1}
+.ao-badge{font-size:10px;font-weight:700;padding:4px 10px;border-radius:20px;display:inline-flex;align-items:center;gap:4px}
+.ab-verified{background:var(--green-l);color:var(--green-d)}
+.ab-urgent{background:var(--gold-l);color:#92400E}
+.ab-featured{background:var(--purple-l);color:var(--purple)}
+.ab-new{background:var(--blue-l);color:var(--blue-d)}
+.ab-cat{background:var(--bg2);color:var(--muted)}
+.ao-save{width:32px;height:32px;border:1.5px solid var(--border);border-radius:8px;
+  background:#fff;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;cursor:pointer;transition:all .2s}
+.ao-save:hover{border-color:var(--green)}
+.ao-save.saved svg{fill:var(--red);stroke:var(--red)}
+
+.ao-title{font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;
+  color:var(--navy2);letter-spacing:-.3px;line-height:1.25;margin-bottom:8px}
+.ao-company{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--muted);margin-bottom:12px}
+.company-av{width:26px;height:26px;border-radius:6px;display:flex;align-items:center;
+  justify-content:center;font-size:9px;font-weight:800;color:#fff;flex-shrink:0}
+
+.ao-desc{font-size:13px;color:var(--muted);line-height:1.78;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+  margin-bottom:16px}
+
+.ao-meta{display:flex;flex-wrap:wrap;gap:12px;padding-top:16px;
+  border-top:1px solid var(--border2);align-items:center}
+.ao-meta-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);font-weight:500}
+.ao-meta-item strong{color:var(--navy2);font-weight:700}
+.ao-meta-sep{width:4px;height:4px;border-radius:50%;background:var(--border);flex-shrink:0}
+
+/* Budget highlight */
+.ao-budget{margin-left:auto;text-align:right;flex-shrink:0}
+.ao-budget-val{font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;color:var(--green)}
+.ao-budget-lbl{font-size:10px;color:var(--muted);margin-top:1px}
+
+/* Deadline countdown */
+.ao-deadline{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:700}
+.dl-urgent{color:#92400E;background:var(--gold-l);padding:3px 9px;border-radius:6px}
+.dl-normal{color:var(--muted);background:var(--bg);padding:3px 9px;border-radius:6px}
+.dl-late{color:var(--red);background:var(--red-l);padding:3px 9px;border-radius:6px}
+
+/* Offers count */
+.ao-offers{display:flex;align-items:center;gap:6px}
+.offer-avatars{display:flex;margin-right:2px}
+.oa-av{width:22px;height:22px;border-radius:50%;border:2px solid #fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:7px;font-weight:800;color:#fff;margin-left:-6px;flex-shrink:0}
+.oa-av:first-child{margin-left:0}
+
+/* CTA on card */
+.ao-card-cta{
+  margin-top:14px;display:flex;gap:9px;flex-wrap:wrap
+}
+.btn-voir{font-size:12px;font-weight:700;color:var(--navy2);
+  background:#fff;border:1.5px solid var(--border);border-radius:8px;
+  padding:8px 16px;transition:all .2s;display:flex;align-items:center;gap:5px}
+.btn-voir:hover{border-color:var(--green);color:var(--green)}
+.btn-postuler{font-size:12px;font-weight:700;color:#fff;
+  background:var(--green);border:none;border-radius:8px;
+  padding:8px 18px;transition:all .2s var(--spring);
+  box-shadow:0 2px 8px rgba(60,184,120,.3);
+  display:flex;align-items:center;gap:6px}
+.btn-postuler:hover{background:var(--green-d);transform:translateY(-1px)}
+
+/* ── PAGINATION ── */
+.pagination{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:36px}
+.pg{width:38px;height:38px;border:1.5px solid var(--border);border-radius:8px;
+  background:#fff;display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:600;color:var(--navy2);cursor:pointer;transition:all .2s}
+.pg:hover{border-color:var(--green);color:var(--green)}
+.pg.active{background:var(--green);border-color:var(--green);color:#fff}
+.pg:disabled{opacity:.35;cursor:not-allowed}
+.pg-dots{color:var(--muted);font-size:14px;padding:0 4px}
+
+/* ── HOW IT WORKS SECTION ── */
+.how-section{background:var(--navy);padding:64px 52px;margin-top:0}
+.how-inner{max-width:1280px;margin:0 auto}
+.how-eyebrow{font-size:11px;font-weight:700;color:rgba(255,255,255,.35);
+  letter-spacing:1.4px;margin-bottom:10px}
+.how-title{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(26px,3vw,38px);
+  font-weight:800;color:#fff;letter-spacing:-.8px;margin-bottom:42px}
+.how-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.how-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);
+  border-radius:16px;padding:24px;transition:background .2s,border-color .2s}
+.how-card:hover{background:rgba(255,255,255,.09);border-color:rgba(60,184,120,.3)}
+.how-num{font-family:'Bricolage Grotesque',sans-serif;font-size:36px;font-weight:800;
+  background:linear-gradient(135deg,var(--green),var(--lime));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;margin-bottom:14px;line-height:1}
+.how-card-icon{width:44px;height:44px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+.how-card-title{font-size:15px;font-weight:700;color:#fff;margin-bottom:8px}
+.how-card-desc{font-size:13px;color:rgba(255,255,255,.45);line-height:1.78}
+
+/* ── MODAL ── */
+.modal-bg{
+  position:fixed;inset:0;background:rgba(15,37,53,.55);
+  backdrop-filter:blur(8px);z-index:500;
+  display:none;align-items:center;justify-content:center;padding:20px
+}
+.modal-bg.open{display:flex}
+.modal{
+  background:#fff;border-radius:24px;width:100%;max-width:680px;
+  max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);
+  animation:slideUp .35s var(--spring) both
+}
+.modal::-webkit-scrollbar{width:4px}
+.modal::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+@keyframes slideUp{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+.modal-head{padding:26px 28px;border-bottom:1px solid var(--border);
+  display:flex;align-items:flex-start;justify-content:space-between;gap:14px;
+  position:sticky;top:0;background:#fff;z-index:1;border-radius:24px 24px 0 0}
+.modal-close{width:34px;height:34px;border:1.5px solid var(--border);border-radius:9px;
+  background:#fff;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;flex-shrink:0;transition:all .2s}
+.modal-close:hover{border-color:var(--red);color:var(--red)}
+.modal-body{padding:26px 28px}
+.modal-section{margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid var(--border2)}
+.modal-section:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.ms-title{font-size:13px;font-weight:700;color:var(--navy2);margin-bottom:12px;
+  display:flex;align-items:center;gap:8px}
+.modal-foot{padding:20px 28px;border-top:1px solid var(--border);
+  display:flex;gap:10px;background:var(--bg);
+  border-radius:0 0 24px 24px;flex-wrap:wrap}
+/* Form in modal */
+.fg{margin-bottom:18px}
+.fg:last-child{margin-bottom:0}
+.fl{font-size:12px;font-weight:700;color:var(--navy2);display:block;margin-bottom:7px}
+.inp{width:100%;background:#fff;border:1.5px solid var(--border);border-radius:11px;
+  padding:12px 15px;font-size:14px;color:var(--navy2);outline:none;
+  transition:border-color .2s,box-shadow .2s;font-family:'Plus Jakarta Sans',sans-serif}
+.inp:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(60,184,120,.1)}
+.inp::placeholder{color:var(--muted2)}
+textarea.inp{resize:vertical;min-height:100px;line-height:1.7}
+.inp-note{font-size:11px;color:var(--muted2);margin-top:5px}
+.char-count{font-size:11px;color:var(--muted2);text-align:right;margin-top:4px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.btn-full-green{width:100%;background:linear-gradient(135deg,var(--green),#4FD090);
+  color:#fff;border:none;border-radius:11px;padding:14px;
+  font-size:14px;font-weight:800;
+  box-shadow:0 4px 16px rgba(60,184,120,.35);
+  transition:all .2s var(--spring);font-family:'Plus Jakarta Sans',sans-serif}
+.btn-full-green:hover{transform:translateY(-1px);box-shadow:0 8px 28px rgba(60,184,120,.45)}
+.btn-outline-m{background:#fff;color:var(--navy2);border:1.5px solid var(--border);
+  border-radius:11px;padding:12px 20px;font-size:13px;font-weight:700;
+  transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif;flex:1}
+.btn-outline-m:hover{border-color:var(--green);color:var(--green)}
+
+/* Budget input */
+.budget-wrap{display:flex;align-items:center;gap:8px}
+.budget-cur{font-size:13px;font-weight:700;color:var(--muted);white-space:nowrap}
+
+/* ── REVEAL ── */
+.r{opacity:0;transform:translateY(22px);transition:opacity .55s var(--ease),transform .55s var(--ease)}
+.r.vis{opacity:1;transform:none}
+.sg .r:nth-child(1){transition-delay:.04s}
+.sg .r:nth-child(2){transition-delay:.1s}
+.sg .r:nth-child(3){transition-delay:.16s}
+.sg .r:nth-child(4){transition-delay:.22s}
+.sg .r:nth-child(5){transition-delay:.28s}
+.sg .r:nth-child(6){transition-delay:.34s}
+
+/* ── FOOTER ── */
+footer{background:var(--navy2);padding:28px 52px;display:flex;
+  justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.foot-logo{display:flex;align-items:center;gap:9px}
+.foot-logo-t{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:800;color:#fff}
+.foot-copy{font-size:12px;color:rgba(255,255,255,.28)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1100px){
+  .page-wrap{padding:24px 28px 60px;grid-template-columns:240px 1fr;gap:20px}
+  nav{padding:0 28px}
+  .hero-ao{padding:44px 28px}
+  .how-section{padding:48px 28px}
+  .how-grid{grid-template-columns:repeat(2,1fr)}
+  footer{padding:22px 28px}
+}
+@media(max-width:768px){
+  nav{padding:0 16px}
+  .nav-links,.nav-right .pill,.nav-right .btn-ghost{display:none}
+  .hero-ao{padding:36px 16px}
+  .hero-cta-box{min-width:unset;width:100%}
+  .page-wrap{padding:16px 16px 48px;grid-template-columns:1fr}
+  .filters{position:static}
+  .how-section{padding:40px 16px}
+  .how-grid{grid-template-columns:1fr 1fr}
+  .modal{max-width:100%;border-radius:16px}
+  .g2{grid-template-columns:1fr}
+  footer{padding:18px 16px}
+}
+@media(max-width:480px){
+  .how-grid{grid-template-columns:1fr}
+  .hero-stats{flex-wrap:wrap}
+}
+</style>
+  <script type="module" src="/src/components/nav.js"></script>
+</head>
+<body>
+<div id="progress"></div>
+
+<!-- ████ NAV ████ -->
+<nav>
+  <div style="display:flex;align-items:center;gap:36px">
+    <div class="logo">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <circle cx="8.5" cy="8.5" r="7" fill="#8DC63F" opacity=".9"/>
+        <circle cx="19.5" cy="8.5" r="7" fill="#29ABE2" opacity=".9"/>
+        <circle cx="8.5" cy="19.5" r="7" fill="#3CB878" opacity=".9"/>
+        <circle cx="19.5" cy="19.5" r="7" fill="#1B3A4A"/>
+        <rect x="8" y="8" width="12" height="12" rx="1.2" fill="rgba(60,184,120,.42)"/>
+      </svg>
+      <span class="logo-t">Oriupe</span>
+    </div>
+    <div class="nav-links">
+      <a href="oriupe_ULTIMATE.html">Accueil</a>
+      <a href="oriupe_catalogue.html">Explorer</a>
+      <a class="active" href="#">Appels d'offres</a>
+      <a href="#">Academy</a>
+      <a href="#">Blog</a>
+    </div>
+  </div>
+  <div class="nav-right">
+    <div class="pill">🌍 FR ▾</div>
+    <div class="pill">FCFA ▾</div>
+    <button class="btn-ghost">Se connecter</button>
+    <button class="btn-g">S'inscrire</button>
+  </div>
+</nav>
+
+<!-- ████ HERO BANNER ████ -->
+<div class="hero-ao">
+  <div class="hero-mesh"><div class="mesh-a"></div><div class="mesh-b"></div><div class="mesh-c"></div></div>
+  <div class="hero-grid"></div>
+  <div class="hero-inner">
+
+    <div class="hero-left">
+      <div class="hero-eyebrow">
+        <div class="hero-dot"></div>
+        <span>PROJETS VÉRIFIÉS MANUELLEMENT PAR L'ÉQUIPE ORIUPE</span>
+      </div>
+      <h1 class="hero-h1">Des projets africains<br><span>qui valent le coup</span></h1>
+      <p class="hero-p">Des Appels d'Offres vérifiés, avec budgets confirmés. Postulez en quelques clics et recevez votre contrat sécurisé via Escrow Oriupe.</p>
+
+      <div class="hero-stats">
+        <div class="hs-item" style="padding-left:0">
+          <div class="hs-val">47</div>
+          <div class="hs-lbl">AO actifs</div>
+        </div>
+        <div class="hs-item">
+          <div class="hs-val">8,2M</div>
+          <div class="hs-lbl">FCFA mis en jeu</div>
+        </div>
+        <div class="hs-item">
+          <div class="hs-val">20</div>
+          <div class="hs-lbl">Pays couverts</div>
+        </div>
+        <div class="hs-item">
+          <div class="hs-val">24h</div>
+          <div class="hs-lbl">Délai de vérification</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-cta-box r">
+      <div class="hcb-title">Vous avez un projet ?<br>Publiez un Appel d'Offres.</div>
+      <div class="hcb-sub">Décrivez votre besoin, notre équipe le vérifie et le diffuse aux meilleurs freelances africains.</div>
+      <div class="hcb-rules">
+        <div class="hcb-rule"><div class="hcb-rule-dot" style="background:var(--green)"></div>Budget minimum 500 000 FCFA</div>
+        <div class="hcb-rule"><div class="hcb-rule-dot" style="background:var(--blue)"></div>Vérification en 24-72h ouvrées</div>
+        <div class="hcb-rule"><div class="hcb-rule-dot" style="background:var(--lime)"></div>Paiement Escrow sécurisé garanti</div>
+        <div class="hcb-rule"><div class="hcb-rule-dot" style="background:var(--gold)"></div>Publication gratuite</div>
+      </div>
+      <button class="btn-submit-ao" onclick="openModal('submit')">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2V14M2 8H14" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+        Soumettre mon projet
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ████ MAIN LAYOUT ████ -->
+<div class="page-wrap">
+
+  <!-- ═══ SIDEBAR FILTRES ═══ -->
+  <aside class="filters r">
+    <div class="fil-head">
+      <span class="fil-title">Filtres</span>
+      <span class="fil-reset" onclick="resetFilters()">Réinitialiser</span>
+    </div>
+
+    <!-- Catégorie -->
+    <div class="fil-section">
+      <div class="fil-sec-title" onclick="toggleFil(this)">CATÉGORIE <span class="fil-arrow open">▼</span></div>
+      <div class="fil-opts">
+        <label class="fil-opt"><input type="checkbox" checked/><label>Développement Web & Mobile</label><span class="fil-count">18</span></label>
+        <label class="fil-opt"><input type="checkbox"/><label>Design & Créatif</label><span class="fil-count">9</span></label>
+        <label class="fil-opt"><input type="checkbox"/><label>Marketing Digital</label><span class="fil-count">7</span></label>
+        <label class="fil-opt"><input type="checkbox"/><label>Finance & Comptabilité</label><span class="fil-count">5</span></label>
+        <label class="fil-opt"><input type="checkbox"/><label>Rédaction & Contenu</label><span class="fil-count">4</span></label>
+        <label class="fil-opt"><input type="checkbox"/><label>Formation & Conseil</label><span class="fil-count">4</span></label>
+      </div>
+    </div>
+
+    <!-- Budget -->
+    <div class="fil-section">
+      <div class="fil-sec-title" onclick="toggleFil(this)">BUDGET <span class="fil-arrow open">▼</span></div>
+      <div class="fil-range">
+        <input type="range" style="width:100%;accent-color:var(--green)" min="500000" max="10000000" value="5000000"/>
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:4px"><span>500K</span><span>10M FCFA</span></div>
+        <div class="range-inputs">
+          <input class="range-inp" placeholder="Min (FCFA)" type="number"/>
+          <input class="range-inp" placeholder="Max (FCFA)" type="number"/>
+        </div>
+      </div>
+    </div>
+
+    <!-- Délai -->
+    <div class="fil-section">
+      <div class="fil-sec-title" onclick="toggleFil(this)">DÉLAI DU PROJET <span class="fil-arrow open">▼</span></div>
+      <div class="fil-opts">
+        <label class="fil-opt"><input type="checkbox"/><label>Moins de 1 mois</label><span class="fil-count">8</span></label>
+        <label class="fil-opt"><input type="checkbox" checked/><label>1 à 3 mois</label><span class="fil-count">22</span></label>
+        <label class="fil-opt"><input type="checkbox"/><label>3 à 6 mois</label><span class="fil-count">12</span></label>
+        <label class="fil-opt"><input type="checkbox"/><label>Plus de 6 mois</label><span class="fil-count">5</span></label>
+      </div>
+    </div>
+
+    <!-- Pays -->
+    <div class="fil-section">
+      <div class="fil-sec-title" onclick="toggleFil(this)">PAYS DU CLIENT <span class="fil-arrow open">▼</span></div>
+      <div class="fil-opts">
+        <label class="fil-opt"><input type="checkbox" checked/><label>Côte d'Ivoire 🇨🇮</label><span class="fil-count">14</span></label>
+        <label class="fil-opt"><input type="checkbox"/><label>Sénégal 🇸🇳</label><span class="fil-count">9</span></label>
+        <label class="fil-opt"><input type="checkbox"/><label>Ghana 🇬🇭</label><span class="fil-count">7</span></label>
+        <label class="fil-opt"><input type="checkbox"/><label>Nigeria 🇳🇬</label><span class="fil-count">6</span></label>
+        <label class="fil-opt"><input type="checkbox"/><label>Cameroun 🇨🇲</label><span class="fil-count">5</span></label>
+        <label class="fil-opt"><input type="checkbox"/><label>Kenya 🇰🇪</label><span class="fil-count">4</span></label>
+        <label class="fil-opt"><input type="checkbox"/><label>Mali 🇲🇱</label><span class="fil-count">2</span></label>
+      </div>
+    </div>
+
+    <!-- Statut -->
+    <div class="fil-section">
+      <div class="fil-sec-title" onclick="toggleFil(this)">STATUT <span class="fil-arrow open">▼</span></div>
+      <div class="fil-opts">
+        <label class="fil-opt"><input type="checkbox" checked/><label>Ouvert aux offres</label><span class="fil-count">39</span></label>
+        <label class="fil-opt"><input type="checkbox"/><label>Attribution en cours</label><span class="fil-count">6</span></label>
+        <label class="fil-opt"><input type="checkbox"/><label>Clôturé</label><span class="fil-count">82</span></label>
+      </div>
+    </div>
+
+    <div class="fil-apply">
+      <button class="btn-apply">Appliquer les filtres</button>
+    </div>
+  </aside>
+
+  <!-- ═══ LISTE AO ═══ -->
+  <main class="main-col">
+
+    <!-- Search + sort -->
+    <div class="search-sort">
+      <div class="search-wrap">
+        <svg class="search-ico" width="17" height="17" viewBox="0 0 17 17" fill="none"><circle cx="7.5" cy="7.5" r="5.5" stroke="var(--muted2)" stroke-width="1.6"/><path d="M11.5 11.5L16 16" stroke="var(--muted2)" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <input class="search-inp" placeholder="Rechercher un projet, une technologie, un secteur..."/>
+      </div>
+      <select class="sort-sel">
+        <option>Plus récents</option>
+        <option>Budget croissant</option>
+        <option>Budget décroissant</option>
+        <option>Date limite proche</option>
+        <option>Moins d'offres</option>
+      </select>
+    </div>
+
+    <!-- Active chips -->
+    <div class="active-chips">
+      <div class="achip">Développement <button class="achip-rm">×</button></div>
+      <div class="achip">Budget : 500K – 5M FCFA <button class="achip-rm">×</button></div>
+      <div class="achip">Côte d'Ivoire <button class="achip-rm">×</button></div>
+      <div class="achip">Ouvert aux offres <button class="achip-rm">×</button></div>
+    </div>
+
+    <!-- Results header -->
+    <div class="results-hdr">
+      <div class="results-count"><strong>47</strong> appels d'offres actifs</div>
+      <div class="view-toggle">
+        <button class="vt active"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 3H13M1 7H13M1 11H13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></button>
+        <button class="vt"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="8" y="1" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="1" y="8" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="8" y="8" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/></svg></button>
+      </div>
+    </div>
+
+    <!-- AO Cards -->
+    <div class="ao-list sg">
+
+      <!-- AO 1 — Featured + Urgent -->
+      <div class="ao-card featured r" onclick="openModal('detail1')">
+        <div class="ao-top">
+          <div class="ao-badges">
+            <span class="ao-badge ab-featured">⭐ À la une</span>
+            <span class="ao-badge ab-verified"><svg width="9" height="9" viewBox="0 0 9 9" fill="none"><circle cx="4.5" cy="4.5" r="4" stroke="#27965D" stroke-width="1"/><path d="M2.5 4.5L4 6L6.5 3" stroke="#27965D" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Vérifié Oriupe</span>
+            <span class="ao-badge ab-urgent">⚡ Urgent</span>
+            <span class="ao-badge ab-cat">Développement</span>
+          </div>
+          <button class="ao-save" onclick="event.stopPropagation();toggleSave(this)"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#1B3A4A" stroke-width="1.4"><path d="M7 12.5L1.5 7A3.3 3.3 0 116.5 2.5c.3.3.6.6 1 1 .4-.3.7-.7 1-1A3.3 3.3 0 1112.5 7L7 12.5Z"/></svg></button>
+        </div>
+        <div class="ao-title">Développement plateforme e-commerce B2B avec intégration Mobile Money</div>
+        <div class="ao-company">
+          <div class="company-av" style="background:linear-gradient(135deg,var(--blue),#7DD6F0)">AG</div>
+          <span>AgriTrack Africa</span>
+          <span style="color:var(--muted2)">·</span>
+          <span>🇨🇮 Abidjan, Côte d'Ivoire</span>
+          <span style="color:var(--muted2)">·</span>
+          <span style="font-size:11px;font-weight:700;color:var(--green);background:var(--green-l);padding:2px 8px;border-radius:20px">Entreprise vérifiée</span>
+        </div>
+        <div class="ao-desc">Nous recherchons une équipe de développement pour concevoir et développer une plateforme e-commerce B2B complète pour la distribution agricole en Afrique de l'Ouest. La plateforme devra gérer les commandes, stocks, livraisons et paiements via Orange Money, MTN MoMo et Wave.</div>
+        <div class="ao-meta">
+          <div class="ao-meta-item">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="var(--muted2)" stroke-width="1.2"/><path d="M6.5 3.5V6.5L8.5 8.5" stroke="var(--muted2)" stroke-width="1.3" stroke-linecap="round"/></svg>
+            Publié il y a <strong>2 heures</strong>
+          </div>
+          <div class="ao-meta-sep"></div>
+          <div class="ao-meta-item">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="1.5" y="2" width="10" height="9" rx="1.5" stroke="var(--muted2)" stroke-width="1.2"/><path d="M1.5 5H11.5" stroke="var(--muted2)" stroke-width="1.1"/></svg>
+            Durée : <strong>3 mois</strong>
+          </div>
+          <div class="ao-meta-sep"></div>
+          <div class="ao-offers">
+            <div class="offer-avatars">
+              <div class="oa-av" style="background:var(--green)">KA</div>
+              <div class="oa-av" style="background:var(--blue)">AM</div>
+              <div class="oa-av" style="background:var(--lime);color:#2D5016">YK</div>
+            </div>
+            <span class="ao-meta-item"><strong>6 offres</strong> reçues</span>
+          </div>
+          <div class="ao-meta-sep"></div>
+          <div><span class="ao-deadline dl-urgent">⏰ 3 jours restants</span></div>
+          <div class="ao-budget">
+            <div class="ao-budget-val">800 000 – 1,5M FCFA</div>
+            <div class="ao-budget-lbl">Budget total estimé</div>
+          </div>
+        </div>
+        <div class="ao-card-cta">
+          <button class="btn-voir" onclick="event.stopPropagation();openModal('detail1')">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.3"/><path d="M4 6.5C4 6.5 5 4 6.5 4s2.5 2.5 2.5 2.5S7.5 9 6.5 9 4 6.5 4 6.5Z" stroke="currentColor" stroke-width="1.1"/><circle cx="6.5" cy="6.5" r="1" fill="currentColor"/></svg>
+            Voir le détail
+          </button>
+          <button class="btn-postuler" onclick="event.stopPropagation();openModal('submit')">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 11L11 2M11 2H6M11 2V7" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Soumettre une offre
+          </button>
+        </div>
+      </div>
+
+      <!-- AO 2 -->
+      <div class="ao-card r" onclick="openModal('detail1')">
+        <div class="ao-top">
+          <div class="ao-badges">
+            <span class="ao-badge ab-verified"><svg width="9" height="9" viewBox="0 0 9 9" fill="none"><circle cx="4.5" cy="4.5" r="4" stroke="#27965D" stroke-width="1"/><path d="M2.5 4.5L4 6L6.5 3" stroke="#27965D" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Vérifié Oriupe</span>
+            <span class="ao-badge ab-new">Nouveau</span>
+            <span class="ao-badge ab-cat">Design</span>
+          </div>
+          <button class="ao-save" onclick="event.stopPropagation();toggleSave(this)"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#1B3A4A" stroke-width="1.4"><path d="M7 12.5L1.5 7A3.3 3.3 0 116.5 2.5c.3.3.6.6 1 1 .4-.3.7-.7 1-1A3.3 3.3 0 1112.5 7L7 12.5Z"/></svg></button>
+        </div>
+        <div class="ao-title">Refonte complète de l'identité visuelle et du site web d'une startup FinTech</div>
+        <div class="ao-company">
+          <div class="company-av" style="background:linear-gradient(135deg,var(--purple),#A78BFA)">PY</div>
+          <span>PayNow Sénégal</span>
+          <span style="color:var(--muted2)">·</span>
+          <span>🇸🇳 Dakar, Sénégal</span>
+        </div>
+        <div class="ao-desc">Startup fintech en pleine croissance cherche un designer créatif pour refondre notre identité visuelle (logo, charte graphique, brand book) et notre site web institutionnel. Nous voulons un rendu moderne, professionnel et en accord avec notre positionnement premium africain.</div>
+        <div class="ao-meta">
+          <div class="ao-meta-item"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="var(--muted2)" stroke-width="1.2"/><path d="M6.5 3.5V6.5L8.5 8.5" stroke="var(--muted2)" stroke-width="1.3" stroke-linecap="round"/></svg>Publié il y a <strong>5 heures</strong></div>
+          <div class="ao-meta-sep"></div>
+          <div class="ao-meta-item"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="1.5" y="2" width="10" height="9" rx="1.5" stroke="var(--muted2)" stroke-width="1.2"/><path d="M1.5 5H11.5" stroke="var(--muted2)" stroke-width="1.1"/></svg>Durée : <strong>45 jours</strong></div>
+          <div class="ao-meta-sep"></div>
+          <div class="ao-offers"><div class="offer-avatars"><div class="oa-av" style="background:var(--green)">OD</div><div class="oa-av" style="background:var(--gold)">FT</div></div><span class="ao-meta-item"><strong>2 offres</strong> reçues</span></div>
+          <div class="ao-meta-sep"></div>
+          <div><span class="ao-deadline dl-normal">📅 14 jours restants</span></div>
+          <div class="ao-budget">
+            <div class="ao-budget-val">600 000 – 900 000 FCFA</div>
+            <div class="ao-budget-lbl">Budget total estimé</div>
+          </div>
+        </div>
+        <div class="ao-card-cta">
+          <button class="btn-voir" onclick="event.stopPropagation();openModal('detail1')">Voir le détail</button>
+          <button class="btn-postuler" onclick="event.stopPropagation();openModal('submit')">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 11L11 2M11 2H6M11 2V7" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Soumettre une offre
+          </button>
+        </div>
+      </div>
+
+      <!-- AO 3 -->
+      <div class="ao-card r" onclick="openModal('detail1')">
+        <div class="ao-top">
+          <div class="ao-badges">
+            <span class="ao-badge ab-verified"><svg width="9" height="9" viewBox="0 0 9 9" fill="none"><circle cx="4.5" cy="4.5" r="4" stroke="#27965D" stroke-width="1"/><path d="M2.5 4.5L4 6L6.5 3" stroke="#27965D" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Vérifié Oriupe</span>
+            <span class="ao-badge ab-cat">Marketing</span>
+          </div>
+          <button class="ao-save" onclick="event.stopPropagation();toggleSave(this)"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#1B3A4A" stroke-width="1.4"><path d="M7 12.5L1.5 7A3.3 3.3 0 116.5 2.5c.3.3.6.6 1 1 .4-.3.7-.7 1-1A3.3 3.3 0 1112.5 7L7 12.5Z"/></svg></button>
+        </div>
+        <div class="ao-title">Stratégie et exécution marketing digital 6 mois — ONG santé Afrique de l'Ouest</div>
+        <div class="ao-company">
+          <div class="company-av" style="background:linear-gradient(135deg,var(--red),#F87171)">SH</div>
+          <span>SantéHub Africa</span>
+          <span style="color:var(--muted2)">·</span>
+          <span>🇨🇮 Abidjan & 🇸🇳 Dakar</span>
+          <span style="color:var(--muted2)">·</span>
+          <span style="font-size:11px;font-weight:700;color:var(--blue);background:var(--blue-l);padding:2px 8px;border-radius:20px">ONG</span>
+        </div>
+        <div class="ao-desc">ONG spécialisée dans la santé maternelle et infantile en Afrique de l'Ouest recherche un expert en marketing digital pour développer notre présence en ligne sur 6 pays : CI, SN, GH, ML, BF, TG. Budget exécution inclus. Résultats mesurables attendus.</div>
+        <div class="ao-meta">
+          <div class="ao-meta-item"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="var(--muted2)" stroke-width="1.2"/><path d="M6.5 3.5V6.5L8.5 8.5" stroke="var(--muted2)" stroke-width="1.3" stroke-linecap="round"/></svg>Publié il y a <strong>1 jour</strong></div>
+          <div class="ao-meta-sep"></div>
+          <div class="ao-meta-item"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="1.5" y="2" width="10" height="9" rx="1.5" stroke="var(--muted2)" stroke-width="1.2"/><path d="M1.5 5H11.5" stroke="var(--muted2)" stroke-width="1.1"/></svg>Durée : <strong>6 mois</strong></div>
+          <div class="ao-meta-sep"></div>
+          <div class="ao-offers"><div class="offer-avatars"><div class="oa-av" style="background:var(--green)">CB</div><div class="oa-av" style="background:var(--blue)">AM</div><div class="oa-av" style="background:var(--purple)">FT</div><div class="oa-av" style="background:var(--navy2)">+2</div></div><span class="ao-meta-item"><strong>5 offres</strong> reçues</span></div>
+          <div class="ao-meta-sep"></div>
+          <div><span class="ao-deadline dl-normal">📅 21 jours restants</span></div>
+          <div class="ao-budget">
+            <div class="ao-budget-val">1,2M – 2M FCFA</div>
+            <div class="ao-budget-lbl">Budget total estimé</div>
+          </div>
+        </div>
+        <div class="ao-card-cta">
+          <button class="btn-voir" onclick="event.stopPropagation();openModal('detail1')">Voir le détail</button>
+          <button class="btn-postuler" onclick="event.stopPropagation();openModal('submit')">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 11L11 2M11 2H6M11 2V7" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Soumettre une offre
+          </button>
+        </div>
+      </div>
+
+      <!-- AO 4 -->
+      <div class="ao-card r" onclick="openModal('detail1')">
+        <div class="ao-top">
+          <div class="ao-badges">
+            <span class="ao-badge ab-verified"><svg width="9" height="9" viewBox="0 0 9 9" fill="none"><circle cx="4.5" cy="4.5" r="4" stroke="#27965D" stroke-width="1"/><path d="M2.5 4.5L4 6L6.5 3" stroke="#27965D" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Vérifié Oriupe</span>
+            <span class="ao-badge ab-cat">Développement</span>
+          </div>
+          <button class="ao-save saved" onclick="event.stopPropagation();toggleSave(this)"><svg width="14" height="14" viewBox="0 0 14 14" fill="var(--red)" stroke="var(--red)" stroke-width="1.4"><path d="M7 12.5L1.5 7A3.3 3.3 0 116.5 2.5c.3.3.6.6 1 1 .4-.3.7-.7 1-1A3.3 3.3 0 1112.5 7L7 12.5Z"/></svg></button>
+        </div>
+        <div class="ao-title">Application mobile de gestion de flotte de transport — Nigeria & Ghana</div>
+        <div class="ao-company">
+          <div class="company-av" style="background:linear-gradient(135deg,var(--gold),#FCD34D);color:#92400E">LG</div>
+          <span>LogiTrans West Africa</span>
+          <span style="color:var(--muted2)">·</span>
+          <span>🇳🇬 Lagos, Nigeria</span>
+        </div>
+        <div class="ao-desc">Société de transport avec 200+ véhicules cherche une équipe pour développer une application mobile (iOS & Android) de gestion de flotte en temps réel : localisation GPS, rapports conducteurs, gestion carburant, alertes incidents.</div>
+        <div class="ao-meta">
+          <div class="ao-meta-item"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="var(--muted2)" stroke-width="1.2"/><path d="M6.5 3.5V6.5L8.5 8.5" stroke="var(--muted2)" stroke-width="1.3" stroke-linecap="round"/></svg>Publié il y a <strong>2 jours</strong></div>
+          <div class="ao-meta-sep"></div>
+          <div class="ao-meta-item"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="1.5" y="2" width="10" height="9" rx="1.5" stroke="var(--muted2)" stroke-width="1.2"/><path d="M1.5 5H11.5" stroke="var(--muted2)" stroke-width="1.1"/></svg>Durée : <strong>4 mois</strong></div>
+          <div class="ao-meta-sep"></div>
+          <div class="ao-offers"><div class="offer-avatars"><div class="oa-av" style="background:var(--green)">KA</div></div><span class="ao-meta-item"><strong>1 offre</strong> reçue</span></div>
+          <div class="ao-meta-sep"></div>
+          <div><span class="ao-deadline dl-normal">📅 28 jours restants</span></div>
+          <div class="ao-budget">
+            <div class="ao-budget-val">2,5M – 4M FCFA</div>
+            <div class="ao-budget-lbl">Budget total estimé</div>
+          </div>
+        </div>
+        <div class="ao-card-cta">
+          <button class="btn-voir" onclick="event.stopPropagation();openModal('detail1')">Voir le détail</button>
+          <button class="btn-postuler" onclick="event.stopPropagation();openModal('submit')">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 11L11 2M11 2H6M11 2V7" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Soumettre une offre
+          </button>
+        </div>
+      </div>
+
+      <!-- AO 5 -->
+      <div class="ao-card r" onclick="openModal('detail1')">
+        <div class="ao-top">
+          <div class="ao-badges">
+            <span class="ao-badge ab-verified"><svg width="9" height="9" viewBox="0 0 9 9" fill="none"><circle cx="4.5" cy="4.5" r="4" stroke="#27965D" stroke-width="1"/><path d="M2.5 4.5L4 6L6.5 3" stroke="#27965D" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Vérifié Oriupe</span>
+            <span class="ao-badge ab-cat">Formation</span>
+          </div>
+          <button class="ao-save" onclick="event.stopPropagation();toggleSave(this)"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#1B3A4A" stroke-width="1.4"><path d="M7 12.5L1.5 7A3.3 3.3 0 116.5 2.5c.3.3.6.6 1 1 .4-.3.7-.7 1-1A3.3 3.3 0 1112.5 7L7 12.5Z"/></svg></button>
+        </div>
+        <div class="ao-title">Formation digitale 500 jeunes entrepreneurs — Programme gouvernemental Cameroun</div>
+        <div class="ao-company">
+          <div class="company-av" style="background:linear-gradient(135deg,var(--green),var(--lime))">CM</div>
+          <span>Ministère PME Cameroun</span>
+          <span style="color:var(--muted2)">·</span>
+          <span>🇨🇲 Yaoundé, Cameroun</span>
+          <span style="color:var(--muted2)">·</span>
+          <span style="font-size:11px;font-weight:700;color:var(--purple);background:var(--purple-l);padding:2px 8px;border-radius:20px">Gouvernement</span>
+        </div>
+        <div class="ao-desc">Programme national de digitalisation des PME au Cameroun. Nous recherchons des formateurs et experts en transformation digitale pour animer 50 ateliers de 10 personnes dans 10 villes du Cameroun sur 3 mois. Contenu, matériels et logistique fournis.</div>
+        <div class="ao-meta">
+          <div class="ao-meta-item"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="var(--muted2)" stroke-width="1.2"/><path d="M6.5 3.5V6.5L8.5 8.5" stroke="var(--muted2)" stroke-width="1.3" stroke-linecap="round"/></svg>Publié il y a <strong>3 jours</strong></div>
+          <div class="ao-meta-sep"></div>
+          <div class="ao-meta-item"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="1.5" y="2" width="10" height="9" rx="1.5" stroke="var(--muted2)" stroke-width="1.2"/><path d="M1.5 5H11.5" stroke="var(--muted2)" stroke-width="1.1"/></svg>Durée : <strong>3 mois</strong></div>
+          <div class="ao-meta-sep"></div>
+          <div class="ao-offers"><div class="offer-avatars"><div class="oa-av" style="background:var(--green)">KA</div><div class="oa-av" style="background:var(--blue)">AM</div><div class="oa-av" style="background:var(--purple)">OD</div></div><span class="ao-meta-item"><strong>3 offres</strong> reçues</span></div>
+          <div class="ao-meta-sep"></div>
+          <div><span class="ao-deadline dl-late">🔴 Dernier jour !</span></div>
+          <div class="ao-budget">
+            <div class="ao-budget-val">3M – 5M FCFA</div>
+            <div class="ao-budget-lbl">Budget total estimé</div>
+          </div>
+        </div>
+        <div class="ao-card-cta">
+          <button class="btn-voir" onclick="event.stopPropagation();openModal('detail1')">Voir le détail</button>
+          <button class="btn-postuler" onclick="event.stopPropagation();openModal('submit')">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 11L11 2M11 2H6M11 2V7" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Soumettre une offre
+          </button>
+        </div>
+      </div>
+
+    </div><!-- /ao-list -->
+
+    <!-- Pagination -->
+    <div class="pagination">
+      <button class="pg" disabled><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3L5 7L9 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <button class="pg active">1</button>
+      <button class="pg">2</button>
+      <button class="pg">3</button>
+      <span class="pg-dots">…</span>
+      <button class="pg">8</button>
+      <button class="pg"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3L9 7L5 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    </div>
+
+  </main>
+</div><!-- /page-wrap -->
+
+<!-- ████ HOW IT WORKS ████ -->
+<div class="how-section">
+  <div class="how-inner">
+    <div class="how-eyebrow">COMMENT ÇA MARCHE</div>
+    <div class="how-title">Appels d'Offres Oriupe — le processus</div>
+    <div class="how-grid sg">
+
+      <div class="how-card r">
+        <div class="how-num">01</div>
+        <div class="how-card-icon" style="background:rgba(60,184,120,.15)">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M3 18L9 12L12 15L17 8L21 18Z" stroke="#3CB878" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="how-card-title">Client soumet son projet</div>
+        <div class="how-card-desc">Le client décrit son besoin, budget et délai. Notre équipe examine et valide le projet sous 24-72h ouvrées.</div>
+      </div>
+
+      <div class="how-card r">
+        <div class="how-num">02</div>
+        <div class="how-card-icon" style="background:rgba(41,171,226,.15)">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 3L13.5 8H19L15 11L16.5 17L11 14L5.5 17L7 11L3 8H8.5Z" stroke="#29ABE2" stroke-width="1.6" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="how-card-title">Freelances postulent</div>
+        <div class="how-card-desc">Les freelances qualifiés soumettent leurs offres avec budget, portfolio et délai proposé. Chaque offre est horodatée.</div>
+      </div>
+
+      <div class="how-card r">
+        <div class="how-num">03</div>
+        <div class="how-card-icon" style="background:rgba(141,198,63,.15)">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="9" r="4" stroke="#8DC63F" stroke-width="1.6"/><path d="M4 20C4 16.7 7.1 14 11 14s7 2.7 7 6" stroke="#8DC63F" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </div>
+        <div class="how-card-title">Client choisit son freelance</div>
+        <div class="how-card-desc">Le client compare les offres, consulte les portfolios et sélectionne le freelance idéal. Échange de messages sécurisé.</div>
+      </div>
+
+      <div class="how-card r">
+        <div class="how-num">04</div>
+        <div class="how-card-icon" style="background:rgba(245,158,11,.15)">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 2.5L14 9H21L15.5 13L18 20.5L11 16.5L4 20.5L6.5 13L1 9H8Z" stroke="#F59E0B" stroke-width="1.6" stroke-linejoin="round" fill="rgba(245,158,11,.1)"/></svg>
+        </div>
+        <div class="how-card-title">Paiement Escrow & livraison</div>
+        <div class="how-card-desc">Le budget est bloqué en Escrow Oriupe. Libéré uniquement à la validation du livrable. Zéro risque pour les deux parties.</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-logo">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="7" cy="7" r="5.5" fill="#8DC63F" opacity=".85"/><circle cx="17" cy="7" r="5.5" fill="#29ABE2" opacity=".85"/><circle cx="7" cy="17" r="5.5" fill="#3CB878" opacity=".85"/><circle cx="17" cy="17" r="5.5" fill="rgba(255,255,255,.1)"/><rect x="6.5" y="6.5" width="11" height="11" rx="1" fill="rgba(60,184,120,.4)"/></svg>
+    <span class="foot-logo-t">Oriupe</span>
+  </div>
+  <span class="foot-copy">© 2025 Oriupe — Abidjan, Côte d'Ivoire. Tous droits réservés.</span>
+</footer>
+
+<!-- ████ MODAL DÉTAIL AO ████ -->
+<div class="modal-bg" id="modal-detail1">
+  <div class="modal">
+    <div class="modal-head">
+      <div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px">
+          <span class="ao-badge ab-featured">⭐ À la une</span>
+          <span class="ao-badge ab-verified"><svg width="9" height="9" viewBox="0 0 9 9" fill="none"><circle cx="4.5" cy="4.5" r="4" stroke="#27965D" stroke-width="1"/><path d="M2.5 4.5L4 6L6.5 3" stroke="#27965D" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Vérifié Oriupe</span>
+          <span class="ao-badge ab-urgent">⚡ Urgent</span>
+        </div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:var(--navy2);letter-spacing:-.4px;line-height:1.2">Développement plateforme e-commerce B2B avec intégration Mobile Money</div>
+      </div>
+      <button class="modal-close" onclick="closeModal('detail1')">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2L12 12M12 2L2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+
+      <!-- Company info -->
+      <div class="modal-section">
+        <div class="ms-title">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="2" y="3" width="11" height="9" rx="2" stroke="var(--navy2)" stroke-width="1.3"/><path d="M5 3V2C5 1.4 5.4 1 6 1H9C9.6 1 10 1.4 10 2V3" stroke="var(--navy2)" stroke-width="1.2"/></svg>
+          Entreprise cliente
+        </div>
+        <div style="display:flex;align-items:center;gap:14px;padding:14px;background:var(--bg);border-radius:12px">
+          <div class="company-av" style="width:48px;height:48px;border-radius:12px;font-size:16px;font-weight:800;background:linear-gradient(135deg,var(--blue),#7DD6F0);display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0">AG</div>
+          <div style="flex:1">
+            <div style="font-size:15px;font-weight:700;color:var(--navy2);margin-bottom:3px">AgriTrack Africa</div>
+            <div style="font-size:12px;color:var(--muted)">🇨🇮 Abidjan, Côte d'Ivoire · Secteur Agritech & Distribution</div>
+            <div style="display:flex;gap:7px;margin-top:6px">
+              <span style="font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;background:var(--green-l);color:var(--green-d)">Entreprise vérifiée ✓</span>
+              <span style="font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;background:var(--bg2);color:var(--muted)">3 AO précédents</span>
+            </div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:10px;color:var(--muted)">Budget total</div>
+            <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:var(--green)">800K – 1,5M</div>
+            <div style="font-size:10px;color:var(--muted)">FCFA</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="modal-section">
+        <div class="ms-title"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="2" y="2" width="11" height="11" rx="2" stroke="var(--navy2)" stroke-width="1.3"/><path d="M4.5 6H10.5M4.5 8.5H8.5" stroke="var(--navy2)" stroke-width="1.2" stroke-linecap="round"/></svg>Description du projet</div>
+        <p style="font-size:13px;color:var(--muted);line-height:1.85;margin-bottom:12px">Nous recherchons une équipe de développement pour concevoir et développer une plateforme e-commerce B2B complète dédiée à la distribution agricole en Afrique de l'Ouest.</p>
+        <p style="font-size:13px;color:var(--muted);line-height:1.85">La plateforme devra permettre aux distributeurs de passer des commandes en ligne, suivre leurs livraisons en temps réel, gérer leur crédit client, et effectuer des paiements via <strong style="color:var(--navy2)">Orange Money, MTN MoMo et Wave</strong>. Une interface admin complète pour la gestion des catalogues, stocks et rapports est également requise.</p>
+      </div>
+
+      <!-- Compétences requises -->
+      <div class="modal-section">
+        <div class="ms-title"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M3 14L6.5 10.5L8.5 12.5L12.5 7.5L15 14Z" stroke="var(--navy2)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Compétences requises</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          <span style="font-size:12px;font-weight:600;background:var(--navy2);color:#fff;padding:5px 13px;border-radius:20px">React.js / Next.js</span>
+          <span style="font-size:12px;font-weight:600;background:var(--navy2);color:#fff;padding:5px 13px;border-radius:20px">Node.js / Express</span>
+          <span style="font-size:12px;font-weight:600;background:var(--navy2);color:#fff;padding:5px 13px;border-radius:20px">PostgreSQL</span>
+          <span style="font-size:12px;font-weight:600;background:var(--navy2);color:#fff;padding:5px 13px;border-radius:20px">Mobile Money API</span>
+          <span style="font-size:12px;font-weight:600;background:var(--bg2);color:var(--muted);padding:5px 13px;border-radius:20px">CinetPay / Wave</span>
+          <span style="font-size:12px;font-weight:600;background:var(--bg2);color:var(--muted);padding:5px 13px;border-radius:20px">Docker</span>
+          <span style="font-size:12px;font-weight:600;background:var(--bg2);color:var(--muted);padding:5px 13px;border-radius:20px">AWS / Vercel</span>
+        </div>
+      </div>
+
+      <!-- Infos clés -->
+      <div class="modal-section">
+        <div class="ms-title"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="7.5" r="5.5" stroke="var(--navy2)" stroke-width="1.3"/><path d="M7.5 4V7.5L10 10" stroke="var(--navy2)" stroke-width="1.4" stroke-linecap="round"/></svg>Informations clés</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div style="background:var(--bg);border-radius:10px;padding:13px 15px">
+            <div style="font-size:10px;color:var(--muted);margin-bottom:4px">DURÉE DU PROJET</div>
+            <div style="font-size:14px;font-weight:700;color:var(--navy2)">3 mois</div>
+          </div>
+          <div style="background:var(--bg);border-radius:10px;padding:13px 15px">
+            <div style="font-size:10px;color:var(--muted);margin-bottom:4px">DATE LIMITE DE CANDIDATURE</div>
+            <div style="font-size:14px;font-weight:700;color:#92400E">27 Janvier 2025 (3 jours)</div>
+          </div>
+          <div style="background:var(--bg);border-radius:10px;padding:13px 15px">
+            <div style="font-size:10px;color:var(--muted);margin-bottom:4px">OFFRES REÇUES</div>
+            <div style="font-size:14px;font-weight:700;color:var(--navy2)">6 freelances ont postulé</div>
+          </div>
+          <div style="background:var(--bg);border-radius:10px;padding:13px 15px">
+            <div style="font-size:10px;color:var(--muted);margin-bottom:4px">TYPE DE CONTRAT</div>
+            <div style="font-size:14px;font-weight:700;color:var(--navy2)">Projet fixe · Escrow Oriupe</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Documents joints -->
+      <div class="modal-section">
+        <div class="ms-title"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="2" y="1" width="11" height="13" rx="2" stroke="var(--navy2)" stroke-width="1.3"/><path d="M4.5 5H10.5M4.5 7.5H10.5M4.5 10H8" stroke="var(--navy2)" stroke-width="1.2" stroke-linecap="round"/></svg>Documents joints</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--bg);border-radius:9px;cursor:pointer;transition:background .2s" onmouseover="this.style.background='var(--green-xl)'" onmouseout="this.style.background='var(--bg)'">
+            <div style="width:32px;height:32px;background:var(--red-l);border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="1" width="10" height="12" rx="1.5" stroke="var(--red)" stroke-width="1.2"/><path d="M4 5H10M4 7.5H10M4 10H7" stroke="var(--red)" stroke-width="1.1" stroke-linecap="round"/></svg></div>
+            <div style="flex:1"><div style="font-size:12px;font-weight:700;color:var(--navy2)">Cahier_des_charges_AgriTrack.pdf</div><div style="font-size:10px;color:var(--muted)">2.4 Mo · PDF</div></div>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2V9M3.5 6.5L7 10L10.5 6.5" stroke="var(--green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--bg);border-radius:9px;cursor:pointer;transition:background .2s" onmouseover="this.style.background='var(--green-xl)'" onmouseout="this.style.background='var(--bg)'">
+            <div style="width:32px;height:32px;background:var(--blue-l);border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="2.5" width="12" height="9" rx="1.5" stroke="var(--blue)" stroke-width="1.2"/><path d="M1 5.5L7 8.5L13 5.5" stroke="var(--blue)" stroke-width="1.1"/></svg></div>
+            <div style="flex:1"><div style="font-size:12px;font-weight:700;color:var(--navy2)">Maquettes_UI_AgriTrack.fig</div><div style="font-size:10px;color:var(--muted)">8.1 Mo · Figma</div></div>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2V9M3.5 6.5L7 10L10.5 6.5" stroke="var(--green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-foot">
+      <button class="btn-outline-m" onclick="closeModal('detail1')">Fermer</button>
+      <button class="btn-full-green" style="flex:2" onclick="closeModal('detail1');openModal('submit')">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2.5 12.5L12 3M12 3H7M12 3V8" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Soumettre mon offre pour ce projet
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ████ MODAL SOUMETTRE UNE OFFRE ████ -->
+<div class="modal-bg" id="modal-submit">
+  <div class="modal">
+    <div class="modal-head">
+      <div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:var(--navy2);letter-spacing:-.4px">Soumettre une offre</div>
+        <div style="font-size:13px;color:var(--muted);margin-top:4px">Développement plateforme e-commerce B2B — AgriTrack Africa</div>
+      </div>
+      <button class="modal-close" onclick="closeModal('submit')">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2L12 12M12 2L2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+
+      <!-- Budget proposé -->
+      <div class="modal-section">
+        <div class="ms-title"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="1" y="3" width="13" height="9" rx="2" stroke="var(--navy2)" stroke-width="1.3"/><path d="M1 7H14" stroke="var(--navy2)" stroke-width="1.2"/></svg>Votre proposition financière</div>
+        <div class="g2">
+          <div class="fg">
+            <label class="fl">Budget proposé <span style="color:var(--red)">*</span></label>
+            <div class="budget-wrap">
+              <input type="number" class="inp" placeholder="900 000" style="text-align:right"/>
+              <span class="budget-cur">FCFA</span>
+            </div>
+            <div class="inp-note">Budget client : 800 000 – 1 500 000 FCFA</div>
+          </div>
+          <div class="fg">
+            <label class="fl">Délai de livraison <span style="color:var(--red)">*</span></label>
+            <select class="inp">
+              <option>-- Choisir --</option>
+              <option>2 mois</option>
+              <option selected>3 mois</option>
+              <option>4 mois</option>
+              <option>5 mois</option>
+              <option>6 mois</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lettre de motivation -->
+      <div class="modal-section">
+        <div class="ms-title"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="2" y="2" width="11" height="11" rx="2" stroke="var(--navy2)" stroke-width="1.3"/><path d="M4.5 5.5H10.5M4.5 8H8" stroke="var(--navy2)" stroke-width="1.2" stroke-linecap="round"/></svg>Lettre de candidature <span style="color:var(--red)">*</span></div>
+        <textarea class="inp" rows="6" id="cover-letter" maxlength="2000" oninput="cnt(this,'cl-count',2000)" placeholder="Expliquez pourquoi vous êtes le meilleur candidat pour ce projet. Mentionnez vos expériences similaires, votre approche technique et pourquoi vous comprenez les spécificités africaines du projet (Mobile Money, connexion variable, multilinguisme...)"></textarea>
+        <div class="char-count"><span id="cl-count">0</span> / 2000</div>
+      </div>
+
+      <!-- Exemples de travaux -->
+      <div class="modal-section">
+        <div class="ms-title"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="1.5" y="2" width="12" height="11" rx="2" stroke="var(--navy2)" stroke-width="1.3"/><path d="M4 9L6.5 6.5L8.5 8.5L11 5.5" stroke="var(--navy2)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Projets similaires réalisés</div>
+        <div class="inp-note" style="margin-bottom:12px">Partagez des liens vers des projets similaires ou téléchargez des captures d'écran.</div>
+        <div class="fg">
+          <input type="url" class="inp" placeholder="https://monprojet.com ou lien GitHub..." style="margin-bottom:8px"/>
+          <input type="url" class="inp" placeholder="Deuxième lien (optionnel)..."/>
+        </div>
+        <div style="border:2px dashed var(--border);border-radius:11px;padding:20px;text-align:center;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='var(--green)';this.style.background='var(--green-xl)'" onmouseout="this.style.borderColor='var(--border)';this.style.background='transparent'">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" style="margin:0 auto 8px"><path d="M14 6V18M7 13L14 20L21 13" stroke="var(--muted2)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><rect x="4" y="20" width="20" height="4" rx="2" stroke="var(--muted2)" stroke-width="1.5"/></svg>
+          <div style="font-size:13px;font-weight:700;color:var(--navy2)">Joindre des fichiers</div>
+          <div style="font-size:11px;color:var(--muted2);margin-top:3px">PDF, images, ZIP · Max 25 Mo par fichier</div>
+        </div>
+      </div>
+
+      <!-- Disponibilité -->
+      <div class="modal-section">
+        <div class="ms-title"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="7.5" r="5.5" stroke="var(--navy2)" stroke-width="1.3"/><path d="M7.5 4.5V7.5L9.5 9.5" stroke="var(--navy2)" stroke-width="1.4" stroke-linecap="round"/></svg>Votre disponibilité</div>
+        <div class="g2">
+          <div class="fg">
+            <label class="fl">Peut commencer le</label>
+            <input type="date" class="inp"/>
+          </div>
+          <div class="fg">
+            <label class="fl">Disponibilité</label>
+            <select class="inp">
+              <option>Temps plein (40h/semaine)</option>
+              <option>Mi-temps (20h/semaine)</option>
+              <option>Partiel — sur devis</option>
+            </select>
+          </div>
+        </div>
+        <div class="fg" style="margin-bottom:0">
+          <label class="fl">Question pour le client (optionnel)</label>
+          <input type="text" class="inp" placeholder="Une question sur le projet avant de postuler ?"/>
+        </div>
+      </div>
+
+      <!-- Conditions -->
+      <div style="display:flex;align-items:flex-start;gap:10px;padding:14px 16px;background:var(--green-xl);border:1px solid rgba(60,184,120,.2);border-radius:12px">
+        <div onclick="this.classList.toggle('checked');this.style.background=this.classList.contains('checked')?'var(--green)':'#fff';this.style.borderColor=this.classList.contains('checked')?'var(--green)':'var(--border)'" style="width:18px;height:18px;border:1.5px solid var(--border);border-radius:5px;flex-shrink:0;margin-top:1px;cursor:pointer;display:flex;align-items:center;justify-content:center;background:#fff;transition:all .2s"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" class="chk"><path d="M2 5L4.5 7.5L8 3" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <p style="font-size:12px;color:var(--muted);line-height:1.65">Je confirme que mon offre est sérieuse et que je suis disponible pour ce projet. Je m'engage à respecter la charte qualité Oriupe et le système Escrow sécurisé.</p>
+      </div>
+
+    </div>
+    <div class="modal-foot">
+      <button class="btn-outline-m" onclick="closeModal('submit')">Annuler</button>
+      <button class="btn-full-green" style="flex:2" onclick="submitOffer()">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2.5 12.5L12 3M12 3H7M12 3V8" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Envoyer mon offre
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ████ MODAL SUCCÈS ████ -->
+<div class="modal-bg" id="modal-success">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-body" style="padding:40px 36px;text-align:center">
+      <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--lime));margin:0 auto 24px;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 24px rgba(60,184,120,.4);animation:popIn .5s var(--spring) both">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M6 16L13 23L26 9" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:24px;font-weight:800;color:var(--navy2);letter-spacing:-.5px;margin-bottom:10px">Offre envoyée ! 🎉</div>
+      <div style="font-size:14px;color:var(--muted);line-height:1.8;margin-bottom:28px">Votre candidature a bien été transmise à AgriTrack Africa. Vous recevrez une réponse sous <strong style="color:var(--navy2)">48 heures</strong>. Bonne chance !</div>
+      <div style="background:var(--bg);border-radius:12px;padding:14px 18px;margin-bottom:24px;text-align:left">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:8px">RÉCAPITULATIF DE VOTRE OFFRE</div>
+        <div style="font-size:13px;color:var(--navy2);margin-bottom:4px"><strong>Budget proposé :</strong> 900 000 FCFA</div>
+        <div style="font-size:13px;color:var(--navy2);margin-bottom:4px"><strong>Délai :</strong> 3 mois</div>
+        <div style="font-size:13px;color:var(--navy2)"><strong>Statut :</strong> <span style="color:var(--gold);font-weight:700">En attente de réponse</span></div>
+      </div>
+      <button class="btn-full-green" onclick="closeModal('success')">Voir mes candidatures</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* Scroll progress */
+window.addEventListener('scroll',()=>{
+  const t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;
+  document.getElementById('progress').style.width=(t/h*100)+'%';
+},{passive:true});
+
+/* Reveal */
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('vis')})},{threshold:.08,rootMargin:'0px 0px -20px 0px'});
+document.querySelectorAll('.r').forEach(el=>obs.observe(el));
+
+/* Modals */
+function openModal(id){document.getElementById('modal-'+id).classList.add('open');document.body.style.overflow='hidden'}
+function closeModal(id){document.getElementById('modal-'+id).classList.remove('open');if(!document.querySelector('.modal-bg.open'))document.body.style.overflow=''}
+document.querySelectorAll('.modal-bg').forEach(bg=>{bg.addEventListener('click',function(e){if(e.target===this){const id=this.id.replace('modal-','');closeModal(id)}})});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){document.querySelectorAll('.modal-bg.open').forEach(m=>{const id=m.id.replace('modal-','');closeModal(id)})}});
+
+/* Save toggle */
+function toggleSave(btn){
+  btn.classList.toggle('saved');
+  const svg=btn.querySelector('svg');
+  if(btn.classList.contains('saved')){svg.setAttribute('fill','var(--red)');svg.setAttribute('stroke','var(--red)')}
+  else{svg.setAttribute('fill','none');svg.setAttribute('stroke','#1B3A4A')}
+}
+
+/* Char count */
+function cnt(inp,id,max){const el=document.getElementById(id);if(el){el.textContent=inp.value.length;el.style.color=inp.value.length/max>.9?'var(--gold)':'var(--muted2)'}}
+
+/* Submit offer */
+function submitOffer(){
+  closeModal('submit');
+  setTimeout(()=>openModal('success'),200);
+}
+
+/* Filter section toggle */
+function toggleFil(el){
+  const content=el.nextElementSibling;
+  const arrow=el.querySelector('.fil-arrow');
+  if(content.style.display==='none'){content.style.display='flex';if(arrow)arrow.classList.add('open')}
+  else{content.style.display='none';if(arrow)arrow.classList.remove('open')}
+}
+
+/* Reset filters */
+function resetFilters(){
+  document.querySelectorAll('.filters input[type=checkbox]').forEach(c=>c.checked=false);
+  document.querySelectorAll('.filters input[type=radio]').forEach(r=>r.checked=false);
+}
+
+/* View toggle */
+document.querySelectorAll('.vt').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.vt').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+});
+
+/* Pagination */
+document.querySelectorAll('.pg:not(:disabled)').forEach(btn=>{
+  btn.addEventListener('click',function(){
+    if(this.querySelector('svg'))return;
+    document.querySelectorAll('.pg').forEach(b=>b.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+
+/* AChip remove */
+document.querySelectorAll('.achip-rm').forEach(btn=>{
+  btn.addEventListener('click',function(){this.closest('.achip').remove()});
+});
+</script>
+
+  <script type="module" src="/src/scripts/main.js"></script>
+</body>
+</html>

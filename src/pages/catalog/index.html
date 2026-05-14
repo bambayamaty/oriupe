@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Oriupe — Catalogue des services</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#F5F7FA;color:#1B3A4A;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+button,input,select{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer}
+:root{
+  --navy:#1B3A4A;--green:#3CB878;--green-d:#2E9060;--green-l:#E8F8F1;
+  --blue:#29ABE2;--blue-l:#E3F5FC;--lime:#8DC63F;--lime-l:#F0F8E3;
+  --bg:#F5F7FA;--bg2:#EEF1F5;--white:#fff;
+  --border:rgba(27,58,74,.1);--muted:rgba(27,58,74,.5);--muted2:rgba(27,58,74,.35);
+  --shadow:0 2px 12px rgba(27,58,74,.08);--shadow-lg:0 12px 40px rgba(27,58,74,.16);
+  --r:8px;--r-md:12px;--r-lg:16px;--ease:cubic-bezier(.25,.46,.45,.94);--spring:cubic-bezier(.34,1.56,.64,1);
+}
+#progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--green),var(--blue));width:0;z-index:9999;border-radius:0 2px 2px 0}
+/* NAV */
+nav{background:rgba(255,255,255,.95);backdrop-filter:blur(16px);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 56px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:999}
+.logo{display:flex;align-items:center;gap:9px;text-decoration:none}
+.logo-t{font-size:20px;font-weight:800;color:var(--navy);letter-spacing:-.3px}
+.nav-links{display:flex;gap:24px}.nav-links a{font-size:13px;color:var(--muted);font-weight:500;transition:color .2s}.nav-links a:hover,.nav-links a.active{color:var(--green)}
+.nav-links a.active{font-weight:700}
+.nav-right{display:flex;align-items:center;gap:10px}
+.pill{font-size:12px;color:var(--muted);background:var(--bg);border:1px solid var(--border);padding:5px 12px;border-radius:6px;font-weight:600}
+.btn-ghost{font-size:13px;font-weight:600;color:var(--navy);padding:8px 14px;border:none;background:transparent;border-radius:7px}
+.btn-cta{background:var(--green);color:#fff;font-size:13px;font-weight:700;padding:10px 22px;border-radius:8px;border:none;box-shadow:0 2px 10px rgba(60,184,120,.28);transition:background .2s,transform .15s}
+.btn-cta:hover{background:var(--green-d);transform:translateY(-1px)}
+
+/* BREADCRUMB */
+.breadcrumb{padding:18px 56px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
+.breadcrumb a{color:var(--muted);transition:color .2s}.breadcrumb a:hover{color:var(--green)}
+.bc-sep{color:var(--muted2)}
+.bc-cur{color:var(--navy);font-weight:600}
+
+/* LAYOUT */
+.page-wrap{display:flex;max-width:1400px;margin:0 auto;padding:28px 56px 56px;gap:28px;align-items:flex-start}
+
+/* SIDEBAR FILTERS */
+.sidebar{width:260px;flex-shrink:0;background:#fff;border-radius:var(--r-lg);border:1px solid var(--border);padding:0;position:sticky;top:80px;max-height:calc(100vh - 100px);overflow-y:auto}
+.sidebar::-webkit-scrollbar{width:4px}.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.filter-header{padding:18px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.filter-title{font-size:15px;font-weight:700;color:var(--navy)}
+.filter-reset{font-size:12px;color:var(--green);font-weight:600;cursor:pointer}
+.filter-section{padding:16px 20px;border-bottom:1px solid var(--border)}
+.filter-section:last-child{border-bottom:none}
+.fs-title{font-size:12px;font-weight:700;color:var(--navy);letter-spacing:.5px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none}
+.fs-arrow{transition:transform .2s;font-size:10px;color:var(--muted)}
+.fs-arrow.open{transform:rotate(180deg)}
+.fs-content{display:flex;flex-direction:column;gap:8px}
+.filter-opt{display:flex;align-items:center;gap:9px;cursor:pointer;padding:5px 0;transition:background .15s;border-radius:5px}
+.filter-opt input[type=checkbox]{width:16px;height:16px;accent-color:var(--green);flex-shrink:0;cursor:pointer}
+.filter-opt label{font-size:13px;color:var(--navy);cursor:pointer;flex:1}
+.filter-opt .count{font-size:11px;color:var(--muted);background:var(--bg);padding:2px 7px;border-radius:10px}
+/* Price range */
+.range-wrap{padding:4px 0}
+.range-inputs{display:flex;gap:8px;margin-top:10px}
+.range-inp{width:100%;border:1.5px solid var(--border);border-radius:6px;padding:8px 10px;font-size:12px;color:var(--navy);outline:none;background:#fff;font-family:'Plus Jakarta Sans',sans-serif}
+.range-inp:focus{border-color:var(--green)}
+input[type=range]{width:100%;accent-color:var(--green);height:4px;margin:8px 0}
+/* Rating stars filter */
+.star-opt{display:flex;align-items:center;gap:6px;padding:5px 0;cursor:pointer}
+.star-opt input[type=radio]{accent-color:var(--green);cursor:pointer}
+
+/* MAIN CONTENT */
+.main-content{flex:1;min-width:0}
+/* Search bar */
+.search-bar-page{background:#fff;border:1.5px solid var(--border);border-radius:10px;padding:10px 10px 10px 18px;display:flex;align-items:center;gap:10px;margin-bottom:20px;transition:border-color .2s,box-shadow .2s}
+.search-bar-page:focus-within{border-color:var(--green);box-shadow:0 0 0 3px rgba(60,184,120,.1)}
+.search-bar-page input{border:none;background:transparent;font-size:14px;color:var(--navy);flex:1;outline:none;font-family:'Plus Jakarta Sans',sans-serif}
+.search-bar-page input::placeholder{color:var(--muted2)}
+/* Results header */
+.results-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:10px}
+.results-count{font-size:14px;color:var(--muted);font-weight:500}
+.results-count strong{color:var(--navy)}
+.sort-wrap{display:flex;align-items:center;gap:10px}
+.sort-lbl{font-size:13px;color:var(--muted);font-weight:500}
+.sort-sel{border:1.5px solid var(--border);border-radius:7px;padding:8px 12px;font-size:13px;color:var(--navy);background:#fff;outline:none;font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;cursor:pointer}
+.sort-sel:focus{border-color:var(--green)}
+/* View toggle */
+.view-toggle{display:flex;gap:4px;background:var(--bg);padding:4px;border-radius:7px}
+.vt-btn{width:32px;height:32px;border:none;background:transparent;border-radius:5px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s}
+.vt-btn.active{background:#fff;box-shadow:var(--shadow)}
+
+/* SERVICE CARDS GRID */
+.svc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px}
+.svc-card{background:#fff;border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;cursor:pointer;transition:transform .25s var(--spring),box-shadow .25s,border-color .2s;position:relative}
+.svc-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg);border-color:rgba(60,184,120,.3)}
+.svc-img{height:148px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.svc-img svg{transition:transform .3s var(--spring)}
+.svc-card:hover .svc-img svg{transform:scale(1.08)}
+.svc-fav{position:absolute;top:10px;right:10px;width:30px;height:30px;background:rgba(255,255,255,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;transition:background .2s,transform .15s var(--spring)}
+.svc-fav:hover{background:#fff;transform:scale(1.15)}
+.svc-fav.active svg{fill:#E53935}
+.svc-body{padding:14px}
+.svc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.svc-author{display:flex;align-items:center;gap:7px}
+.svc-av{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800}
+.svc-name{font-size:12px;font-weight:600;color:var(--navy)}
+.svc-country{font-size:10px;color:var(--muted)}
+.svc-title{font-size:13px;font-weight:600;color:var(--navy);line-height:1.48;margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.svc-bot{display:flex;justify-content:space-between;align-items:center}
+.svc-stars{display:flex;align-items:center;gap:3px;font-size:12px;color:var(--navy);font-weight:700}
+.svc-reviews{font-size:11px;color:var(--muted);font-weight:400;margin-left:2px}
+.svc-price{font-size:13px;font-weight:700;color:var(--navy)}
+.svc-price-from{font-size:10px;font-weight:400;color:var(--muted)}
+/* Badges on cards */
+.card-badge{position:absolute;top:10px;left:10px;font-size:10px;font-weight:700;padding:4px 9px;border-radius:20px}
+.cb-top{background:var(--green);color:#fff}
+.cb-hot{background:#FFF3CD;color:#B45309}
+.cb-new{background:var(--blue-l);color:#0A6A90}
+.cb-exp{background:var(--lime-l);color:#3A6010}
+
+/* ONLINE INDICATOR */
+.online-dot{width:8px;height:8px;background:#22C55E;border-radius:50%;border:1.5px solid #fff;flex-shrink:0}
+
+/* PAGINATION */
+.pagination{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:40px}
+.pg-btn{width:38px;height:38px;border:1.5px solid var(--border);border-radius:7px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:var(--navy);cursor:pointer;transition:border-color .2s,background .2s}
+.pg-btn:hover{border-color:var(--green);color:var(--green)}
+.pg-btn.active{background:var(--green);border-color:var(--green);color:#fff}
+.pg-btn:disabled{opacity:.4;cursor:not-allowed}
+.pg-dots{color:var(--muted);font-size:14px;padding:0 4px}
+
+/* ACTIVE FILTERS CHIPS */
+.active-filters{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:16px}
+.af-chip{display:flex;align-items:center;gap:5px;background:#fff;border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:600;color:var(--navy);transition:border-color .2s}
+.af-chip:hover{border-color:var(--green)}
+.af-remove{color:var(--muted);font-size:14px;cursor:pointer;line-height:1;margin-left:2px;transition:color .2s}
+.af-remove:hover{color:#E53935}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .55s var(--ease),transform .55s var(--ease)}
+.reveal.visible{opacity:1;transform:none}
+.stagger .reveal:nth-child(1){transition-delay:.04s}
+.stagger .reveal:nth-child(2){transition-delay:.09s}
+.stagger .reveal:nth-child(3){transition-delay:.14s}
+.stagger .reveal:nth-child(4){transition-delay:.19s}
+.stagger .reveal:nth-child(5){transition-delay:.24s}
+.stagger .reveal:nth-child(6){transition-delay:.29s}
+.stagger .reveal:nth-child(7){transition-delay:.34s}
+.stagger .reveal:nth-child(8){transition-delay:.39s}
+.stagger .reveal:nth-child(9){transition-delay:.44s}
+.stagger .reveal:nth-child(10){transition-delay:.49s}
+.stagger .reveal:nth-child(11){transition-delay:.54s}
+.stagger .reveal:nth-child(12){transition-delay:.59s}
+
+/* SKELETON LOADING */
+@keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
+.skeleton{background:linear-gradient(90deg,#f0f0f0 25%,#e8e8e8 50%,#f0f0f0 75%);background-size:800px 100%;animation:shimmer 1.5s infinite;border-radius:6px}
+
+/* RESPONSIVE */
+@media(max-width:1024px){
+  .page-wrap{padding:20px 28px 40px}
+  .sidebar{width:220px}
+  nav{padding:0 28px}
+  .breadcrumb{padding:14px 28px}
+}
+@media(max-width:768px){
+  nav{padding:0 16px}
+  .nav-links,.nav-right .pill,.nav-right .btn-ghost{display:none}
+  .breadcrumb{padding:12px 16px;display:none}
+  .page-wrap{flex-direction:column;padding:16px 16px 40px;gap:16px}
+  .sidebar{width:100%;position:static;max-height:none}
+  .svc-grid{grid-template-columns:repeat(2,1fr);gap:12px}
+}
+@media(max-width:480px){.svc-grid{grid-template-columns:1fr}}
+</style>
+  <script type="module" src="/src/components/nav.js"></script>
+</head>
+<body>
+<div id="progress"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div style="display:flex;align-items:center;gap:40px">
+    <a href="oriupe_v5_jakarta.html" class="logo">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="8.5" cy="8.5" r="7" fill="#8DC63F" opacity=".9"/><circle cx="19.5" cy="8.5" r="7" fill="#29ABE2" opacity=".9"/><circle cx="8.5" cy="19.5" r="7" fill="#3CB878" opacity=".9"/><circle cx="19.5" cy="19.5" r="7" fill="#1B3A4A"/><rect x="8" y="8" width="12" height="12" rx="1" fill="rgba(60,184,120,.4)"/></svg>
+      <span class="logo-t">Oriupe</span>
+    </a>
+    <div class="nav-links">
+      <a href="#" class="active">Explorer</a>
+      <a href="#">Appels d'offres</a>
+      <a href="#">Academy</a>
+      <a href="#">Blog</a>
+      <a href="#">Tarifs</a>
+    </div>
+  </div>
+  <div class="nav-right">
+    <div class="pill">🌍 FR ▾</div>
+    <div class="pill">FCFA ▾</div>
+    <button class="btn-ghost">Se connecter</button>
+    <button class="btn-cta">S'inscrire</button>
+  </div>
+</nav>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  <a href="#">Accueil</a>
+  <span class="bc-sep">›</span>
+  <span class="bc-cur">Explorer les services</span>
+</div>
+
+<!-- MAIN LAYOUT -->
+<div class="page-wrap">
+
+  <!-- ═══ SIDEBAR FILTERS ═══ -->
+  <aside class="sidebar">
+    <div class="filter-header">
+      <span class="filter-title">Filtres</span>
+      <span class="filter-reset" id="resetBtn">Réinitialiser</span>
+    </div>
+
+    <!-- Catégorie -->
+    <div class="filter-section">
+      <div class="fs-title" onclick="toggleSection(this)">CATÉGORIE <span class="fs-arrow open">▼</span></div>
+      <div class="fs-content">
+        <label class="filter-opt"><input type="checkbox" checked/><label>Développement Web & Mobile</label><span class="count">892</span></label>
+        <label class="filter-opt"><input type="checkbox"/><label>Design & Créatif</label><span class="count">734</span></label>
+        <label class="filter-opt"><input type="checkbox"/><label>Marketing Digital</label><span class="count">561</span></label>
+        <label class="filter-opt"><input type="checkbox"/><label>Rédaction & Traduction</label><span class="count">423</span></label>
+        <label class="filter-opt"><input type="checkbox"/><label>Finance & Comptabilité</label><span class="count">287</span></label>
+        <label class="filter-opt"><input type="checkbox"/><label>Vidéo & Animation</label><span class="count">318</span></label>
+        <label class="filter-opt"><input type="checkbox"/><label>Musique & Audio</label><span class="count">145</span></label>
+        <label class="filter-opt"><input type="checkbox"/><label>Formation & Coaching</label><span class="count">203</span></label>
+      </div>
+    </div>
+
+    <!-- Budget -->
+    <div class="filter-section">
+      <div class="fs-title" onclick="toggleSection(this)">BUDGET (FCFA) <span class="fs-arrow open">▼</span></div>
+      <div class="fs-content">
+        <div class="range-wrap">
+          <input type="range" min="0" max="500000" value="200000" id="rangeSlider" oninput="document.getElementById('rangeVal').textContent=parseInt(this.value).toLocaleString('fr-FR')"/>
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:2px"><span>0 FCFA</span><span id="rangeVal">200 000</span> FCFA</div>
+        </div>
+        <div class="range-inputs">
+          <input class="range-inp" placeholder="Min" type="number"/>
+          <input class="range-inp" placeholder="Max" type="number"/>
+        </div>
+      </div>
+    </div>
+
+    <!-- Délai -->
+    <div class="filter-section">
+      <div class="fs-title" onclick="toggleSection(this)">DÉLAI DE LIVRAISON <span class="fs-arrow open">▼</span></div>
+      <div class="fs-content">
+        <label class="filter-opt"><input type="checkbox"/><label>Express 24h</label><span class="count">198</span></label>
+        <label class="filter-opt"><input type="checkbox" checked/><label>Jusqu'à 3 jours</label><span class="count">456</span></label>
+        <label class="filter-opt"><input type="checkbox"/><label>Jusqu'à 7 jours</label><span class="count">712</span></label>
+        <label class="filter-opt"><input type="checkbox"/><label>Plus de 7 jours</label><span class="count">301</span></label>
+      </div>
+    </div>
+
+    <!-- Niveau -->
+    <div class="filter-section">
+      <div class="fs-title" onclick="toggleSection(this)">NIVEAU FREELANCE <span class="fs-arrow open">▼</span></div>
+      <div class="fs-content">
+        <label class="filter-opt"><input type="checkbox"/><label>Nouveau venu</label><span class="count">234</span></label>
+        <label class="filter-opt"><input type="checkbox"/><label>Niveau 1</label><span class="count">489</span></label>
+        <label class="filter-opt"><input type="checkbox" checked/><label>Niveau 2</label><span class="count">367</span></label>
+        <label class="filter-opt"><input type="checkbox"/><label>Top Oriupe</label><span class="count">89</span></label>
+        <label class="filter-opt"><input type="checkbox"/><label>Identité vérifiée</label><span class="count">701</span></label>
+      </div>
+    </div>
+
+    <!-- Note -->
+    <div class="filter-section">
+      <div class="fs-title" onclick="toggleSection(this)">NOTE MINIMALE <span class="fs-arrow open">▼</span></div>
+      <div class="fs-content">
+        <label class="star-opt"><input type="radio" name="rating"/><span style="font-size:12px;color:var(--navy)">Toutes les notes</span></label>
+        <label class="star-opt"><input type="radio" name="rating" checked/><span style="display:flex;gap:2px;align-items:center">
+          <svg width="11" height="11" viewBox="0 0 11 11" fill="#3CB878"><path d="M5.5 1L6.8 4H10L7.5 6.2L8.5 9.5L5.5 7.5L2.5 9.5L3.5 6.2L1 4H4.2Z"/></svg>
+          <svg width="11" height="11" viewBox="0 0 11 11" fill="#3CB878"><path d="M5.5 1L6.8 4H10L7.5 6.2L8.5 9.5L5.5 7.5L2.5 9.5L3.5 6.2L1 4H4.2Z"/></svg>
+          <svg width="11" height="11" viewBox="0 0 11 11" fill="#3CB878"><path d="M5.5 1L6.8 4H10L7.5 6.2L8.5 9.5L5.5 7.5L2.5 9.5L3.5 6.2L1 4H4.2Z"/></svg>
+          <svg width="11" height="11" viewBox="0 0 11 11" fill="#3CB878"><path d="M5.5 1L6.8 4H10L7.5 6.2L8.5 9.5L5.5 7.5L2.5 9.5L3.5 6.2L1 4H4.2Z"/></svg>
+          <span style="font-size:12px;color:var(--muted);margin-left:4px">4+ étoiles</span>
+        </span></label>
+        <label class="star-opt"><input type="radio" name="rating"/><span style="display:flex;gap:2px;align-items:center">
+          <svg width="11" height="11" viewBox="0 0 11 11" fill="#3CB878"><path d="M5.5 1L6.8 4H10L7.5 6.2L8.5 9.5L5.5 7.5L2.5 9.5L3.5 6.2L1 4H4.2Z"/></svg>
+          <svg width="11" height="11" viewBox="0 0 11 11" fill="#3CB878"><path d="M5.5 1L6.8 4H10L7.5 6.2L8.5 9.5L5.5 7.5L2.5 9.5L3.5 6.2L1 4H4.2Z"/></svg>
+          <svg width="11" height="11" viewBox="0 0 11 11" fill="#3CB878"><path d="M5.5 1L6.8 4H10L7.5 6.2L8.5 9.5L5.5 7.5L2.5 9.5L3.5 6.2L1 4H4.2Z"/></svg>
+          <svg width="11" height="11" viewBox="0 0 11 11" fill="#3CB878"><path d="M5.5 1L6.8 4H10L7.5 6.2L8.5 9.5L5.5 7.5L2.5 9.5L3.5 6.2L1 4H4.2Z"/></svg>
+          <svg width="11" height="11" viewBox="0 0 11 11" fill="#3CB878"><path d="M5.5 1L6.8 4H10L7.5 6.2L8.5 9.5L5.5 7.5L2.5 9.5L3.5 6.2L1 4H4.2Z"/></svg>
+          <span style="font-size:12px;color:var(--muted);margin-left:4px">4,5+ étoiles</span>
+        </span></label>
+      </div>
+    </div>
+
+    <!-- Options -->
+    <div class="filter-section">
+      <div class="fs-title" onclick="toggleSection(this)">OPTIONS <span class="fs-arrow open">▼</span></div>
+      <div class="fs-content">
+        <label class="filter-opt"><input type="checkbox"/><label>Révisions illimitées</label></label>
+        <label class="filter-opt"><input type="checkbox"/><label>Disponible maintenant</label></label>
+        <label class="filter-opt"><input type="checkbox"/><label>En ligne maintenant</label></label>
+      </div>
+    </div>
+
+    <!-- Langue -->
+    <div class="filter-section">
+      <div class="fs-title" onclick="toggleSection(this)">LANGUE DU SERVICE <span class="fs-arrow open">▼</span></div>
+      <div class="fs-content">
+        <label class="filter-opt"><input type="checkbox" checked/><label>Français</label><span class="count">1 247</span></label>
+        <label class="filter-opt"><input type="checkbox"/><label>Anglais</label><span class="count">834</span></label>
+        <label class="filter-opt"><input type="checkbox"/><label>Arabe</label><span class="count">312</span></label>
+        <label class="filter-opt"><input type="checkbox"/><label>Swahili</label><span class="count">201</span></label>
+        <label class="filter-opt"><input type="checkbox"/><label>Portugais</label><span class="count">178</span></label>
+        <label class="filter-opt"><input type="checkbox"/><label>Haoussa</label><span class="count">89</span></label>
+      </div>
+    </div>
+
+    <div style="padding:16px 20px">
+      <button class="btn-cta" style="width:100%;padding:12px">Appliquer les filtres</button>
+    </div>
+  </aside>
+
+  <!-- ═══ MAIN RESULTS ═══ -->
+  <main class="main-content">
+    <!-- Search bar -->
+    <div class="search-bar-page">
+      <svg width="17" height="17" viewBox="0 0 17 17" fill="none" style="flex-shrink:0;opacity:.35"><circle cx="7.5" cy="7.5" r="5.5" stroke="#1B3A4A" stroke-width="1.7"/><path d="M11 11L16 16" stroke="#1B3A4A" stroke-width="1.7" stroke-linecap="round"/></svg>
+      <input placeholder="Rechercher un service, une compétence, un freelance..." value="Développement web"/>
+      <button class="btn-cta" style="padding:9px 22px;border-radius:7px;font-size:13px">Rechercher</button>
+    </div>
+
+    <!-- Active filters chips -->
+    <div class="active-filters">
+      <div class="af-chip">Développement Web <span class="af-remove">×</span></div>
+      <div class="af-chip">Niveau 2 <span class="af-remove">×</span></div>
+      <div class="af-chip">Budget max 200 000 FCFA <span class="af-remove">×</span></div>
+      <div class="af-chip">4+ étoiles <span class="af-remove">×</span></div>
+    </div>
+
+    <!-- Results header -->
+    <div class="results-hdr">
+      <div class="results-count"><strong>892</strong> services trouvés</div>
+      <div class="sort-wrap">
+        <span class="sort-lbl">Trier par</span>
+        <select class="sort-sel">
+          <option>Pertinence</option>
+          <option>Mieux notés</option>
+          <option>Plus récents</option>
+          <option>Prix croissant</option>
+          <option>Prix décroissant</option>
+          <option>Plus populaires</option>
+        </select>
+        <div class="view-toggle">
+          <button class="vt-btn active">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="5" height="5" rx="1" stroke="#1B3A4A" stroke-width="1.3"/><rect x="8" y="1" width="5" height="5" rx="1" stroke="#1B3A4A" stroke-width="1.3"/><rect x="1" y="8" width="5" height="5" rx="1" stroke="#1B3A4A" stroke-width="1.3"/><rect x="8" y="8" width="5" height="5" rx="1" stroke="#1B3A4A" stroke-width="1.3"/></svg>
+          </button>
+          <button class="vt-btn">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 3H13M1 7H13M1 11H13" stroke="#1B3A4A" stroke-width="1.4" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Service cards -->
+    <div class="svc-grid stagger">
+
+      <!-- Card 1 -->
+      <div class="svc-card reveal">
+        <div class="svc-img" style="background:#1B3A4A">
+          <svg width="52" height="52" viewBox="0 0 52 52" fill="none"><path d="M14 20L6 26L14 32M38 20L46 26L38 32M29 14L23 38" stroke="#3CB878" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="card-badge cb-top">Top Oriupe</span>
+          <button class="svc-fav"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#1B3A4A" stroke-width="1.4"><path d="M7 12.5L1.5 7C1 6.5.5 5.5.5 4.5A3 3 0 016 2.5c.4.3.7.6 1 1 .3-.4.6-.7 1-1A3 3 0 0113.5 4.5C13.5 5.5 13 6.5 12.5 7L7 12.5Z"/></svg></button>
+        </div>
+        <div class="svc-body">
+          <div class="svc-top">
+            <div class="svc-author">
+              <div class="svc-av" style="background:#3CB878;color:#fff">KA</div>
+              <div><div class="svc-name">Kofi Asante</div><div class="svc-country">🇬🇭 Ghana</div></div>
+            </div>
+            <div style="width:8px;height:8px;background:#22C55E;border-radius:50%;border:1.5px solid #fff;flex-shrink:0"></div>
+          </div>
+          <div class="svc-title">Création de site web React professionnel et 100% responsive</div>
+          <div class="svc-bot">
+            <div class="svc-stars">
+              <svg width="11" height="11" viewBox="0 0 11 11" fill="#3CB878"><path d="M5.5 1L6.8 4H10L7.5 6.2L8.5 9.5L5.5 7.5L2.5 9.5L3.5 6.2L1 4H4.2Z"/></svg>
+              4,9 <span class="svc-reviews">(124)</span>
+            </div>
+            <div class="svc-price"><span class="svc-price-from">À partir de </span>35 000 FCFA</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="svc-card reveal">
+        <div class="svc-img" style="background:#E8F8F1">
+          <svg width="52" height="52" viewBox="0 0 52 52" fill="none"><path d="M14 20L6 26L14 32M38 20L46 26L38 32M29 14L23 38" stroke="#3CB878" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="card-badge cb-hot">Populaire</span>
+          <button class="svc-fav"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#1B3A4A" stroke-width="1.4"><path d="M7 12.5L1.5 7C1 6.5.5 5.5.5 4.5A3 3 0 016 2.5c.4.3.7.6 1 1 .3-.4.6-.7 1-1A3 3 0 0113.5 4.5C13.5 5.5 13 6.5 12.5 7L7 12.5Z"/></svg></button>
+        </div>
+        <div class="svc-body">
+          <div class="svc-top">
+            <div class="svc-author">
+              <div class="svc-av" style="background:#29ABE2;color:#fff">YK</div>
+              <div><div class="svc-name">Yaw Kojo</div><div class="svc-country">🇳🇬 Nigeria</div></div>
+            </div>
+          </div>
+          <div class="svc-title">Application mobile Flutter cross-platform iOS & Android</div>
+          <div class="svc-bot">
+            <div class="svc-stars">
+              <svg width="11" height="11" viewBox="0 0 11 11" fill="#3CB878"><path d="M5.5 1L6.8 4H10L7.5 6.2L8.5 9.5L5.5 7.5L2.5 9.5L3.5 6.2L1 4H4.2Z"/></svg>
+              4,8 <span class="svc-reviews">(87)</span>
+            </div>
+            <div class="svc-price"><span class="svc-price-from">À partir de </span>80 000 FCFA</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="svc-card reveal">
+        <div class="svc-img" style="background:#1B3A4A">
+          <svg width="52" height="52" viewBox="0 0 52 52" fill="none"><rect x="8" y="8" width="36" height="36" rx="6" stroke="#8DC63F" stroke-width="3"/><path d="M16 26H36M16 18H28M16 34H22" stroke="#8DC63F" stroke-width="3" stroke-linecap="round"/></svg>
+          <span class="card-badge cb-exp">Express 24h</span>
+          <button class="svc-fav"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#1B3A4A" stroke-width="1.4"><path d="M7 12.5L1.5 7C1 6.5.5 5.5.5 4.5A3 3 0 016 2.5c.4.3.7.6 1 1 .3-.4.6-.7 1-1A3 3 0 0113.5 4.5C13.5 5.5 13 6.5 12.5 7L7 12.5Z"/></svg></button>
+        </div>
+        <div class="svc-body">
+          <div class="svc-top">
+            <div class="svc-author">
+              <div class="svc-av" style="background:#8DC63F;color:#fff">CB</div>
+              <div><div class="svc-name">Chidi Bello</div><div class="svc-country">🇸🇳 Sénégal</div></div>
+            </div>
+            <div style="width:8px;height:8px;background:#22C55E;border-radius:50%;border:1.5px solid #fff"></div>
+          </div>
+          <div class="svc-title">API REST Node.js sécurisée avec documentation complète</div>
+          <div class="svc-bot">
+            <div class="svc-stars">
+              <svg width="11" height="11" viewBox="0 0 11 11" fill="#3CB878"><path d="M5.5 1L6.8 4H10L7.5 6.2L8.5 9.5L5.5 7.5L2.5 9.5L3.5 6.2L1 4H4.2Z"/></svg>
+              5,0 <span class="svc-reviews">(203)</span>
+            </div>
+            <div class="svc-price"><span class="svc-price-from">À partir de </span>45 000 FCFA</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="svc-card reveal">
+        <div class="svc-img" style="background:#E3F5FC">
+          <svg width="52" height="52" viewBox="0 0 52 52" fill="none"><rect x="8" y="10" width="36" height="28" rx="4" stroke="#29ABE2" stroke-width="3"/><path d="M16 20H36M16 26H28" stroke="#29ABE2" stroke-width="3" stroke-linecap="round"/><circle cx="38" cy="38" r="7" fill="#29ABE2"/><path d="M35 38H41M38 35V41" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <button class="svc-fav active"><svg width="14" height="14" viewBox="0 0 14 14" fill="#E53935" stroke="#E53935" stroke-width="1.4"><path d="M7 12.5L1.5 7C1 6.5.5 5.5.5 4.5A3 3 0 016 2.5c.4.3.7.6 1 1 .3-.4.6-.7 1-1A3 3 0 0113.5 4.5C13.5 5.5 13 6.5 12.5 7L7 12.5Z"/></svg></button>
+        </div>
+        <div class="svc-body">
+          <div class="svc-top">
+            <div class="svc-author">
+              <div class="svc-av" style="background:#29ABE2;color:#fff">AM</div>
+              <div><div class="svc-name">Ama Mensah</div><div class="svc-country">🇨🇮 Côte d'Ivoire</div></div>
+            </div>
+          </div>
+          <div class="svc-title">WordPress professionnel + plugins premium + SEO on-page</div>
+          <div class="svc-bot">
+            <div class="svc-stars">
+              <svg width="11" height="11" viewBox="0 0 11 11" fill="#3CB878"><path d="M5.5 1L6.8 4H10L7.5 6.2L8.5 9.5L5.5 7.5L2.5 9.5L3.5 6.2L1 4H4.2Z"/></svg>
+              4,7 <span class="svc-reviews">(56)</span>
+            </div>
+            <div class="svc-price"><span class="svc-price-from">À partir de </span>25 000 FCFA</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cards 5-12 (simplified) -->
+      <div class="svc-card reveal">
+        <div class="svc-img" style="background:#F0F8E3"><svg width="52" height="52" viewBox="0 0 52 52" fill="none"><path d="M12 38L26 14L40 38" stroke="#8DC63F" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 30H35" stroke="#8DC63F" stroke-width="3" stroke-linecap="round"/></svg><button class="svc-fav"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#1B3A4A" stroke-width="1.4"><path d="M7 12.5L1.5 7C1 6.5.5 5.5.5 4.5A3 3 0 016 2.5c.4.3.7.6 1 1 .3-.4.6-.7 1-1A3 3 0 0113.5 4.5C13.5 5.5 13 6.5 12.5 7L7 12.5Z"/></svg></button></div>
+        <div class="svc-body"><div class="svc-top"><div class="svc-author"><div class="svc-av" style="background:#8DC63F;color:#fff">FK</div><div><div class="svc-name">Fatima Kamara</div><div class="svc-country">🇲🇱 Mali</div></div></div></div><div class="svc-title">E-commerce Shopify complet avec intégration paiement Mobile Money</div><div class="svc-bot"><div class="svc-stars"><svg width="11" height="11" viewBox="0 0 11 11" fill="#3CB878"><path d="M5.5 1L6.8 4H10L7.5 6.2L8.5 9.5L5.5 7.5L2.5 9.5L3.5 6.2L1 4H4.2Z"/></svg>4,6 <span class="svc-reviews">(34)</span></div><div class="svc-price"><span class="svc-price-from">À partir de </span>60 000 FCFA</div></div></div>
+      </div>
+
+      <div class="svc-card reveal">
+        <div class="svc-img" style="background:#1B3A4A"><svg width="52" height="52" viewBox="0 0 52 52" fill="none"><circle cx="26" cy="26" r="16" stroke="#29ABE2" stroke-width="3"/><path d="M26 10C26 10 19 17 19 26S26 42 26 42M26 10C26 10 33 17 33 26S26 42 26 42M10 26H42" stroke="#29ABE2" stroke-width="2.5"/></svg><span class="card-badge cb-new">Nouveau</span><button class="svc-fav"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#1B3A4A" stroke-width="1.4"><path d="M7 12.5L1.5 7C1 6.5.5 5.5.5 4.5A3 3 0 016 2.5c.4.3.7.6 1 1 .3-.4.6-.7 1-1A3 3 0 0113.5 4.5C13.5 5.5 13 6.5 12.5 7L7 12.5Z"/></svg></button></div>
+        <div class="svc-body"><div class="svc-top"><div class="svc-author"><div class="svc-av" style="background:#29ABE2;color:#fff">SO</div><div><div class="svc-name">Seun Okafor</div><div class="svc-country">🇰🇪 Kenya</div></div></div><div style="width:8px;height:8px;background:#22C55E;border-radius:50%;border:1.5px solid #fff"></div></div><div class="svc-title">Intégration API tiers et webhooks (Stripe, PayPal, Mobile Money)</div><div class="svc-bot"><div class="svc-stars"><svg width="11" height="11" viewBox="0 0 11 11" fill="#3CB878"><path d="M5.5 1L6.8 4H10L7.5 6.2L8.5 9.5L5.5 7.5L2.5 9.5L3.5 6.2L1 4H4.2Z"/></svg>4,9 <span class="svc-reviews">(18)</span></div><div class="svc-price"><span class="svc-price-from">À partir de </span>50 000 FCFA</div></div></div>
+      </div>
+
+      <div class="svc-card reveal">
+        <div class="svc-img" style="background:#E8F8F1"><svg width="52" height="52" viewBox="0 0 52 52" fill="none"><rect x="8" y="8" width="36" height="36" rx="4" stroke="#3CB878" stroke-width="3"/><path d="M16 26H36M26 16V36" stroke="#3CB878" stroke-width="3" stroke-linecap="round"/></svg><button class="svc-fav"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#1B3A4A" stroke-width="1.4"><path d="M7 12.5L1.5 7C1 6.5.5 5.5.5 4.5A3 3 0 016 2.5c.4.3.7.6 1 1 .3-.4.6-.7 1-1A3 3 0 0113.5 4.5C13.5 5.5 13 6.5 12.5 7L7 12.5Z"/></svg></button></div>
+        <div class="svc-body"><div class="svc-top"><div class="svc-author"><div class="svc-av" style="background:#1B3A4A;color:#fff">BN</div><div><div class="svc-name">Bienvenu Nkosi</div><div class="svc-country">🇿🇦 Afrique du Sud</div></div></div></div><div class="svc-title">Audit et optimisation de performance web (Core Web Vitals, SEO technique)</div><div class="svc-bot"><div class="svc-stars"><svg width="11" height="11" viewBox="0 0 11 11" fill="#3CB878"><path d="M5.5 1L6.8 4H10L7.5 6.2L8.5 9.5L5.5 7.5L2.5 9.5L3.5 6.2L1 4H4.2Z"/></svg>4,8 <span class="svc-reviews">(71)</span></div><div class="svc-price"><span class="svc-price-from">À partir de </span>30 000 FCFA</div></div></div>
+      </div>
+
+      <div class="svc-card reveal">
+        <div class="svc-img" style="background:#1B3A4A"><svg width="52" height="52" viewBox="0 0 52 52" fill="none"><path d="M10 42L26 10L42 42" stroke="#F39C12" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 33H36" stroke="#F39C12" stroke-width="3" stroke-linecap="round"/></svg><span class="card-badge cb-top">Top Oriupe</span><button class="svc-fav"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#1B3A4A" stroke-width="1.4"><path d="M7 12.5L1.5 7C1 6.5.5 5.5.5 4.5A3 3 0 016 2.5c.4.3.7.6 1 1 .3-.4.6-.7 1-1A3 3 0 0113.5 4.5C13.5 5.5 13 6.5 12.5 7L7 12.5Z"/></svg></button></div>
+        <div class="svc-body"><div class="svc-top"><div class="svc-author"><div class="svc-av" style="background:#3CB878;color:#fff">MT</div><div><div class="svc-name">Moussa Touré</div><div class="svc-country">🇧🇫 Burkina Faso</div></div></div><div style="width:8px;height:8px;background:#22C55E;border-radius:50%;border:1.5px solid #fff"></div></div><div class="svc-title">Dashboard analytique React avec charts et exports CSV/PDF</div><div class="svc-bot"><div class="svc-stars"><svg width="11" height="11" viewBox="0 0 11 11" fill="#3CB878"><path d="M5.5 1L6.8 4H10L7.5 6.2L8.5 9.5L5.5 7.5L2.5 9.5L3.5 6.2L1 4H4.2Z"/></svg>5,0 <span class="svc-reviews">(41)</span></div><div class="svc-price"><span class="svc-price-from">À partir de </span>70 000 FCFA</div></div></div>
+      </div>
+
+    </div><!-- /svc-grid -->
+
+    <!-- Pagination -->
+    <div class="pagination">
+      <button class="pg-btn" disabled><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3L5 7L9 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <button class="pg-btn active">1</button>
+      <button class="pg-btn">2</button>
+      <button class="pg-btn">3</button>
+      <span class="pg-dots">…</span>
+      <button class="pg-btn">48</button>
+      <button class="pg-btn"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3L9 7L5 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    </div>
+
+  </main>
+</div><!-- /page-wrap -->
+
+<!-- FOOTER minimal -->
+<footer style="background:#1B3A4A;padding:32px 56px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+  <div style="display:flex;align-items:center;gap:8px">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="7" cy="7" r="5.5" fill="#8DC63F" opacity=".85"/><circle cx="17" cy="7" r="5.5" fill="#29ABE2" opacity=".85"/><circle cx="7" cy="17" r="5.5" fill="#3CB878" opacity=".85"/><circle cx="17" cy="17" r="5.5" fill="rgba(255,255,255,.1)"/><rect x="6.5" y="6.5" width="11" height="11" rx="1" fill="rgba(60,184,120,.4)"/></svg>
+    <span style="font-size:15px;font-weight:800;color:#fff">Oriupe</span>
+  </div>
+  <span style="font-size:12px;color:rgba(255,255,255,.3)">© 2025 Oriupe — Tous droits réservés — Abidjan, Côte d'Ivoire</span>
+</footer>
+
+<script>
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible')})},{threshold:.1,rootMargin:'0px 0px -30px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+window.addEventListener('scroll',()=>{
+  const t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;
+  document.getElementById('progress').style.width=(t/h*100)+'%';
+  document.getElementById('nav').style.boxShadow=t>30?'0 2px 16px rgba(27,58,74,.1)':'none';
+},{passive:true});
+function toggleSection(el){const c=el.parentElement.querySelector('.fs-content');const a=el.querySelector('.fs-arrow');if(c.style.display==='none'){c.style.display='flex';a.classList.add('open')}else{c.style.display='none';a.classList.remove('open')}}
+// Fav toggle
+document.querySelectorAll('.svc-fav').forEach(btn=>{btn.addEventListener('click',e=>{e.stopPropagation();btn.classList.toggle('active');const svg=btn.querySelector('svg');if(btn.classList.contains('active')){svg.setAttribute('fill','#E53935');svg.setAttribute('stroke','#E53935')}else{svg.setAttribute('fill','none');svg.setAttribute('stroke','#1B3A4A')}})});
+// Reset filters
+document.getElementById('resetBtn').addEventListener('click',()=>{document.querySelectorAll('.sidebar input[type=checkbox]').forEach(c=>c.checked=false);document.querySelectorAll('.sidebar input[type=radio]').forEach(r=>r.checked=false)});
+// View toggle
+document.querySelectorAll('.vt-btn').forEach(btn=>{btn.addEventListener('click',()=>{document.querySelectorAll('.vt-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active')})});
+</script>
+  <script type="module" src="/src/scripts/main.js"></script>
+</body>
+</html>

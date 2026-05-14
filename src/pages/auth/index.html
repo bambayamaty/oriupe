@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Oriupe — Inscription & Connexion</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;height:100%}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#F4F6F9;color:#1B3A4A;min-height:100vh;display:flex;flex-direction:column}
+:root{
+  --navy:#0F2535;--navy2:#1B3A4A;
+  --green:#3CB878;--green-d:#27965D;--green-l:#E4F7EE;--green-xl:#F0FBF5;
+  --blue:#29ABE2;--blue-l:#E2F4FB;--lime:#8DC63F;
+  --bg:#F4F6F9;--bg2:#ECEEF3;--white:#fff;
+  --border:rgba(27,58,74,.1);--muted:rgba(27,58,74,.52);--muted2:rgba(27,58,74,.32);
+  --shadow:0 2px 12px rgba(15,37,53,.08);--shadow-md:0 8px 32px rgba(15,37,53,.13);--shadow-lg:0 24px 64px rgba(15,37,53,.18);
+  --spring:cubic-bezier(.34,1.56,.64,1);--ease:cubic-bezier(.25,.46,.45,.94);
+  --red:#EF4444;--red-l:#FEE2E2;
+}
+
+/* LAYOUT SPLIT */
+.auth-layout{flex:1;display:flex;min-height:100vh}
+
+/* LEFT PANEL – branding */
+.auth-left{
+  width:480px;flex-shrink:0;
+  background:var(--navy);
+  display:flex;flex-direction:column;
+  padding:48px;
+  position:relative;overflow:hidden
+}
+.al-mesh{position:absolute;inset:0;pointer-events:none}
+.al-orb{position:absolute;border-radius:50%;filter:blur(70px)}
+.orb-a{width:400px;height:400px;background:radial-gradient(circle,rgba(60,184,120,.2) 0%,transparent 70%);top:-80px;left:-80px}
+.orb-b{width:350px;height:350px;background:radial-gradient(circle,rgba(41,171,226,.18) 0%,transparent 70%);bottom:-60px;right:-60px}
+.orb-c{width:250px;height:250px;background:radial-gradient(circle,rgba(141,198,63,.12) 0%,transparent 70%);top:50%;left:30%}
+.al-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:44px 44px}
+.al-logo{display:flex;align-items:center;gap:10px;margin-bottom:auto;position:relative;z-index:1}
+.al-logo-t{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;color:#fff}
+.al-content{position:relative;z-index:1;margin-top:auto}
+.al-h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,3vw,40px);font-weight:800;color:#fff;letter-spacing:-1px;line-height:1.12;margin-bottom:16px}
+.al-h1 span{color:var(--green)}
+.al-p{font-size:15px;color:rgba(255,255,255,.55);line-height:1.82;margin-bottom:32px;max-width:320px}
+/* Stats bottom */
+.al-stats{display:flex;gap:28px}
+.als-item{text-align:center}
+.als-val{font-family:'Bricolage Grotesque',sans-serif;font-size:24px;font-weight:800;background:linear-gradient(135deg,var(--green),var(--lime));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.als-lbl{font-size:11px;color:rgba(255,255,255,.4);font-weight:500;margin-top:2px}
+/* Testimonial */
+.al-testi{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:20px;margin-bottom:28px;backdrop-filter:blur(12px)}
+.al-testi-text{font-size:13px;color:rgba(255,255,255,.65);line-height:1.75;font-style:italic;margin-bottom:14px}
+.al-testi-author{display:flex;align-items:center;gap:10px}
+.al-tav{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--lime));display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff}
+.al-tname{font-size:12px;font-weight:700;color:#fff}
+.al-trole{font-size:10px;color:rgba(255,255,255,.4)}
+
+/* RIGHT PANEL – form */
+.auth-right{
+  flex:1;display:flex;align-items:center;justify-content:center;
+  padding:40px 32px;background:var(--bg)
+}
+.auth-box{
+  width:100%;max-width:440px;
+  background:#fff;border-radius:24px;border:1px solid var(--border);
+  padding:40px;box-shadow:var(--shadow-lg)
+}
+
+/* AUTH TOGGLE */
+.auth-toggle{
+  display:flex;background:var(--bg);border-radius:12px;padding:4px;margin-bottom:32px
+}
+.at-btn{
+  flex:1;padding:10px;border-radius:9px;border:none;background:transparent;
+  font-size:13px;font-weight:700;color:var(--muted);cursor:pointer;
+  transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif
+}
+.at-btn.active{background:#fff;color:var(--navy2);box-shadow:var(--shadow)}
+
+/* PANEL */
+.auth-panel{display:none}
+.auth-panel.active{display:block}
+
+/* FORM */
+.auth-title{font-family:'Bricolage Grotesque',sans-serif;font-size:24px;font-weight:800;color:var(--navy2);letter-spacing:-.5px;margin-bottom:6px}
+.auth-sub{font-size:13px;color:var(--muted);margin-bottom:28px;line-height:1.6}
+.form-group{margin-bottom:18px;position:relative}
+label.fl{font-size:12px;font-weight:700;color:var(--navy2);display:block;margin-bottom:7px}
+.fl-required{color:var(--red);margin-left:2px}
+.inp{
+  width:100%;background:#fff;border:1.5px solid var(--border);border-radius:11px;
+  padding:13px 16px;font-size:14px;color:var(--navy2);outline:none;
+  transition:border-color .2s,box-shadow .2s;font-family:'Plus Jakarta Sans',sans-serif
+}
+.inp:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(60,184,120,.1)}
+.inp.error{border-color:var(--red);box-shadow:0 0 0 3px rgba(239,68,68,.08)}
+.inp.success{border-color:var(--green)}
+.inp::placeholder{color:var(--muted2)}
+.inp-icon{position:relative}
+.inp-icon .inp{padding-left:44px}
+.inp-icon .icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);pointer-events:none}
+.inp-eye{position:absolute;right:14px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--muted2);background:none;border:none;padding:0;display:flex;align-items:center}
+.inp-eye:hover{color:var(--navy2)}
+.field-error{font-size:11px;color:var(--red);margin-top:5px;display:none;align-items:center;gap:4px}
+.field-error.show{display:flex}
+/* Password strength */
+.pw-strength{margin-top:8px;display:none}
+.pw-strength.show{display:block}
+.pw-bars{display:flex;gap:4px;margin-bottom:4px}
+.pw-bar{height:4px;flex:1;border-radius:2px;background:var(--bg2);transition:background .3s}
+.pw-bar.filled-weak{background:var(--red)}
+.pw-bar.filled-medium{background:var(--gold,#F59E0B)}
+.pw-bar.filled-strong{background:var(--green)}
+.pw-label{font-size:11px;color:var(--muted);font-weight:500}
+
+/* PHONE INPUT */
+.phone-wrap{display:flex;gap:8px}
+.phone-prefix{
+  display:flex;align-items:center;gap:6px;
+  background:#fff;border:1.5px solid var(--border);border-radius:11px;
+  padding:0 14px;font-size:13px;font-weight:700;color:var(--navy2);
+  cursor:pointer;flex-shrink:0;min-width:100px;transition:border-color .2s;
+  position:relative
+}
+.phone-prefix:focus{outline:none;border-color:var(--green)}
+.phone-prefix select{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;border:none;background:transparent}
+.pp-flag{font-size:16px}
+
+/* ROLE SELECT */
+.role-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+.role-card{
+  border:2px solid var(--border);border-radius:12px;padding:16px;
+  cursor:pointer;transition:all .2s;text-align:center
+}
+.role-card:hover{border-color:var(--green)}
+.role-card.selected{border-color:var(--green);background:var(--green-xl)}
+.role-card input[type=radio]{display:none}
+.rc-icon{width:40px;height:40px;border-radius:10px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center}
+.rc-title{font-size:13px;font-weight:700;color:var(--navy2);margin-bottom:3px}
+.rc-sub{font-size:11px;color:var(--muted)}
+
+/* SOCIAL LOGIN */
+.social-divider{display:flex;align-items:center;gap:12px;margin:20px 0;font-size:12px;color:var(--muted2)}
+.social-divider::before,.social-divider::after{content:'';flex:1;height:1px;background:var(--border)}
+.social-btns{display:flex;gap:10px;margin-bottom:20px}
+.social-btn{
+  flex:1;background:#fff;border:1.5px solid var(--border);border-radius:11px;
+  padding:12px;display:flex;align-items:center;justify-content:center;gap:8px;
+  font-size:13px;font-weight:600;color:var(--navy2);cursor:pointer;
+  transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif
+}
+.social-btn:hover{border-color:var(--navy2);background:var(--bg)}
+
+/* SUBMIT BTN */
+.btn-submit{
+  width:100%;background:linear-gradient(135deg,var(--green),#4FD090);color:#fff;
+  border:none;border-radius:12px;padding:15px;font-size:15px;font-weight:800;
+  font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;
+  transition:all .2s var(--spring);box-shadow:0 4px 20px rgba(60,184,120,.35);
+  letter-spacing:-.2px;display:flex;align-items:center;justify-content:center;gap:9px
+}
+.btn-submit:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(60,184,120,.45)}
+.btn-submit:active{transform:none}
+.btn-submit:disabled{opacity:.6;cursor:not-allowed;transform:none}
+
+/* CHECKBOX */
+.check-wrap{display:flex;align-items:flex-start;gap:10px;margin-bottom:20px}
+.check-box{width:18px;height:18px;border:1.5px solid var(--border);border-radius:5px;flex-shrink:0;margin-top:1px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;background:#fff}
+.check-box.checked{background:var(--green);border-color:var(--green)}
+.check-label{font-size:12px;color:var(--muted);line-height:1.6;cursor:pointer}
+.check-label a{color:var(--green);font-weight:700}
+
+/* FORGOT */
+.forgot-link{font-size:12px;color:var(--blue);font-weight:700;cursor:pointer;text-align:right;display:block;margin-top:6px;transition:color .2s}
+.forgot-link:hover{color:var(--navy2)}
+
+/* SUCCESS state */
+.auth-success{text-align:center;padding:20px 0;display:none}
+.success-icon{width:64px;height:64px;border-radius:50%;background:var(--green-l);margin:0 auto 20px;display:flex;align-items:center;justify-content:center}
+
+/* MOBILE */
+@media(max-width:900px){
+  .auth-left{display:none}
+  .auth-right{padding:24px 16px}
+  .auth-box{padding:28px 24px}
+}
+@media(max-width:480px){
+  .auth-box{padding:24px 20px}
+  .auth-title{font-size:20px}
+}
+</style>
+  <script type="module" src="/src/components/nav.js"></script>
+</head>
+<body>
+<div class="auth-layout">
+
+  <!-- ██ LEFT ██ -->
+  <div class="auth-left">
+    <div class="al-mesh"><div class="al-orb orb-a"></div><div class="al-orb orb-b"></div><div class="al-orb orb-c"></div></div>
+    <div class="al-grid"></div>
+
+    <div class="al-logo" style="position:relative;z-index:1">
+      <svg width="30" height="30" viewBox="0 0 30 30" fill="none"><circle cx="9" cy="9" r="7.5" fill="#8DC63F" opacity=".9"/><circle cx="21" cy="9" r="7.5" fill="#29ABE2" opacity=".9"/><circle cx="9" cy="21" r="7.5" fill="#3CB878" opacity=".9"/><circle cx="21" cy="21" r="7.5" fill="rgba(255,255,255,.1)"/><rect x="8.5" y="8.5" width="13" height="13" rx="1.5" fill="rgba(60,184,120,.42)"/></svg>
+      <span class="al-logo-t">Oriupe</span>
+    </div>
+
+    <div class="al-content">
+      <div class="al-testi">
+        <div class="al-testi-text">"Grâce à Oriupe, j'ai pu trouver un développeur React en 30 minutes. Mon site e-commerce était en ligne 5 jours plus tard. Paiement Orange Money sans friction."</div>
+        <div class="al-testi-author">
+          <div class="al-tav">AK</div>
+          <div><div class="al-tname">Aminata Koné</div><div class="al-trole">CEO Startup · Abidjan 🇨🇮</div></div>
+        </div>
+      </div>
+
+      <div class="al-h1">Le talent africain,<br><span>à portée de clic.</span></div>
+      <div class="al-p">Rejoignez 50 000 freelances et entrepreneurs qui bâtissent l'Afrique numérique.</div>
+
+      <div class="al-stats">
+        <div class="als-item"><div class="als-val">50K+</div><div class="als-lbl">Freelances</div></div>
+        <div class="als-item"><div class="als-val">200K+</div><div class="als-lbl">Services</div></div>
+        <div class="als-item"><div class="als-val">20</div><div class="als-lbl">Pays</div></div>
+        <div class="als-item"><div class="als-val">4,9★</div><div class="als-lbl">Note moy.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ██ RIGHT ██ -->
+  <div class="auth-right">
+    <div class="auth-box">
+
+      <!-- TOGGLE -->
+      <div class="auth-toggle">
+        <button class="at-btn active" id="btnLogin" onclick="switchAuth('login')">Se connecter</button>
+        <button class="at-btn" id="btnRegister" onclick="switchAuth('register')">Créer un compte</button>
+      </div>
+
+      <!-- ═ CONNEXION ═ -->
+      <div class="auth-panel active" id="panel-login">
+        <div class="auth-title">Bon retour 👋</div>
+        <div class="auth-sub">Connectez-vous à votre espace Oriupe</div>
+
+        <!-- Social -->
+        <div class="social-btns">
+          <button class="social-btn">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M17.1 9.2c0-.6-.1-1.2-.2-1.8H9v3.4h4.5c-.2 1-.8 1.9-1.7 2.5v2h2.7c1.6-1.5 2.6-3.7 2.6-6.1Z" fill="#4285F4"/><path d="M9 18c2.2 0 4.1-.7 5.5-2L11.8 14c-.8.5-1.7.8-2.8.8-2.2 0-4-1.4-4.7-3.4H1.5v2.1C2.9 16.3 5.8 18 9 18Z" fill="#34A853"/><path d="M4.3 11.4C4.1 10.8 4 10.2 4 9.5s.1-1.3.3-1.9V5.5H1.5C.5 7 0 8.7 0 10.5s.5 3.5 1.5 5L4.3 13V11.4Z" fill="#FBBC04"/><path d="M9 3.6c1.2 0 2.3.4 3.2 1.2L15 2c-1.4-1.3-3.3-2-5-2C5.8 0 2.9 1.7 1.5 4.5L4.3 6.5C5 4.6 6.8 3.6 9 3.6Z" fill="#EA4335"/></svg>
+            Google
+          </button>
+          <button class="social-btn">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect width="18" height="18" rx="3" fill="#1877F2"/><path d="M12 9H10V13.5H7.5V9H6V7H7.5V5.8C7.5 4.4 8.4 3.5 9.7 3.5C10.2 3.5 10.7 3.5 11 3.5V5.5H10C9.4 5.5 9.3 5.8 9.3 6.2V7H11.3L12 9Z" fill="white"/></svg>
+            Facebook
+          </button>
+        </div>
+        <div class="social-divider">ou par email</div>
+
+        <div class="form-group">
+          <label class="fl">Email <span class="fl-required">*</span></label>
+          <div class="inp-icon">
+            <svg class="icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1.5" y="3" width="13" height="10" rx="2" stroke="var(--muted2)" stroke-width="1.3"/><path d="M1.5 6L8 10L14.5 6" stroke="var(--muted2)" stroke-width="1.2"/></svg>
+            <input type="email" class="inp" placeholder="votre@email.com" id="loginEmail" oninput="validateEmail(this)"/>
+          </div>
+          <div class="field-error" id="loginEmailErr"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="var(--red)" stroke-width="1.2"/><path d="M6 4V6.5M6 8.5V9" stroke="var(--red)" stroke-width="1.3" stroke-linecap="round"/></svg> Adresse email invalide</div>
+        </div>
+
+        <div class="form-group">
+          <label class="fl">Mot de passe <span class="fl-required">*</span></label>
+          <a class="forgot-link" onclick="switchAuth('forgot')">Mot de passe oublié ?</a>
+          <div class="inp-icon" style="position:relative">
+            <svg class="icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="7" rx="2" stroke="var(--muted2)" stroke-width="1.3"/><path d="M5 7V5.5A3 3 0 0111 5.5V7" stroke="var(--muted2)" stroke-width="1.3"/><circle cx="8" cy="10.5" r="1.5" stroke="var(--muted2)" stroke-width="1.2"/></svg>
+            <input type="password" class="inp" placeholder="Votre mot de passe" id="loginPwd" style="padding-right:44px"/>
+            <button class="inp-eye" type="button" onclick="togglePwd('loginPwd',this)"><svg id="eyeL" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 8C1 8 3.5 3 8 3s7 5 7 5-2.5 5-7 5-7-5-7-5Z" stroke="var(--muted2)" stroke-width="1.3"/><circle cx="8" cy="8" r="2.5" stroke="var(--muted2)" stroke-width="1.3"/></svg></button>
+          </div>
+        </div>
+
+        <button class="btn-submit" onclick="handleLogin()">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 3H3C2 3 1.5 3.5 1.5 4.5V12C1.5 13 2 13.5 3 13.5H6M10 11L14 8L10 5M5 8H14" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Se connecter
+        </button>
+
+        <div style="text-align:center;margin-top:18px;font-size:13px;color:var(--muted)">
+          Pas encore de compte ? <a onclick="switchAuth('register')" style="color:var(--green);font-weight:700;cursor:pointer">Créer un compte gratuit</a>
+        </div>
+      </div>
+
+      <!-- ═ INSCRIPTION ═ -->
+      <div class="auth-panel" id="panel-register">
+        <div class="auth-title">Rejoindre Oriupe</div>
+        <div class="auth-sub">Création de compte gratuite en 2 minutes</div>
+
+        <!-- Rôle -->
+        <div style="font-size:12px;font-weight:700;color:var(--navy2);margin-bottom:10px">Je suis <span class="fl-required">*</span></div>
+        <div class="role-grid" id="roleGrid">
+          <label class="role-card selected" onclick="selectRole(this,'client')">
+            <input type="radio" name="role" value="client" checked/>
+            <div class="rc-icon" style="background:var(--blue-l)">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="8" r="4" stroke="#29ABE2" stroke-width="1.6"/><path d="M3 18C3 14.7 6.1 12 10 12s7 2.7 7 6" stroke="#29ABE2" stroke-width="1.6" stroke-linecap="round"/></svg>
+            </div>
+            <div class="rc-title">Client</div>
+            <div class="rc-sub">Je cherche un freelance</div>
+          </label>
+          <label class="role-card" onclick="selectRole(this,'freelance')">
+            <input type="radio" name="role" value="freelance"/>
+            <div class="rc-icon" style="background:var(--green-l)">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 14L10 5L15 14M7 11H13" stroke="#3CB878" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="rc-title">Freelance</div>
+            <div class="rc-sub">Je vends mes services</div>
+          </label>
+        </div>
+
+        <!-- Social -->
+        <div class="social-btns">
+          <button class="social-btn">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M17.1 9.2c0-.6-.1-1.2-.2-1.8H9v3.4h4.5c-.2 1-.8 1.9-1.7 2.5v2h2.7c1.6-1.5 2.6-3.7 2.6-6.1Z" fill="#4285F4"/><path d="M9 18c2.2 0 4.1-.7 5.5-2L11.8 14c-.8.5-1.7.8-2.8.8-2.2 0-4-1.4-4.7-3.4H1.5v2.1C2.9 16.3 5.8 18 9 18Z" fill="#34A853"/><path d="M4.3 11.4C4.1 10.8 4 10.2 4 9.5s.1-1.3.3-1.9V5.5H1.5C.5 7 0 8.7 0 10.5s.5 3.5 1.5 5L4.3 13V11.4Z" fill="#FBBC04"/><path d="M9 3.6c1.2 0 2.3.4 3.2 1.2L15 2c-1.4-1.3-3.3-2-5-2C5.8 0 2.9 1.7 1.5 4.5L4.3 6.5C5 4.6 6.8 3.6 9 3.6Z" fill="#EA4335"/></svg>
+            Google
+          </button>
+          <button class="social-btn">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect width="18" height="18" rx="3" fill="#1877F2"/><path d="M12 9H10V13.5H7.5V9H6V7H7.5V5.8C7.5 4.4 8.4 3.5 9.7 3.5C10.2 3.5 10.7 3.5 11 3.5V5.5H10C9.4 5.5 9.3 5.8 9.3 6.2V7H11.3L12 9Z" fill="white"/></svg>
+            Facebook
+          </button>
+        </div>
+        <div class="social-divider">ou avec un formulaire</div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div class="form-group" style="margin-bottom:0">
+            <label class="fl">Prénom <span class="fl-required">*</span></label>
+            <input type="text" class="inp" placeholder="Jean-Pierre"/>
+          </div>
+          <div class="form-group" style="margin-bottom:0">
+            <label class="fl">Nom <span class="fl-required">*</span></label>
+            <input type="text" class="inp" placeholder="Kouassi"/>
+          </div>
+        </div>
+        <div style="margin-top:16px"></div>
+
+        <div class="form-group">
+          <label class="fl">Email <span class="fl-required">*</span></label>
+          <div class="inp-icon">
+            <svg class="icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1.5" y="3" width="13" height="10" rx="2" stroke="var(--muted2)" stroke-width="1.3"/><path d="M1.5 6L8 10L14.5 6" stroke="var(--muted2)" stroke-width="1.2"/></svg>
+            <input type="email" class="inp" placeholder="votre@email.com"/>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="fl">Numéro Mobile Money <span class="fl-required">*</span></label>
+          <div class="phone-wrap">
+            <div class="phone-prefix">
+              <span class="pp-flag" id="pflag">🇨🇮</span>
+              <span id="pcode">+225</span>
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2.5 4L5 6.5L7.5 4" stroke="var(--muted)" stroke-width="1.3" stroke-linecap="round"/></svg>
+              <select onchange="changePrefix(this)">
+                <option value="+225" data-flag="🇨🇮">🇨🇮 +225 Côte d'Ivoire</option>
+                <option value="+221" data-flag="🇸🇳">🇸🇳 +221 Sénégal</option>
+                <option value="+233" data-flag="🇬🇭">🇬🇭 +233 Ghana</option>
+                <option value="+234" data-flag="🇳🇬">🇳🇬 +234 Nigeria</option>
+                <option value="+237" data-flag="🇨🇲">🇨🇲 +237 Cameroun</option>
+                <option value="+254" data-flag="🇰🇪">🇰🇪 +254 Kenya</option>
+                <option value="+228" data-flag="🇹🇬">🇹🇬 +228 Togo</option>
+                <option value="+229" data-flag="🇧🇯">🇧🇯 +229 Bénin</option>
+                <option value="+226" data-flag="🇧🇫">🇧🇫 +226 Burkina Faso</option>
+                <option value="+223" data-flag="🇲🇱">🇲🇱 +223 Mali</option>
+              </select>
+            </div>
+            <input type="tel" class="inp" style="flex:1" placeholder="07 00 00 00 00"/>
+          </div>
+          <div style="font-size:11px;color:var(--muted);margin-top:5px;display:flex;align-items:center;gap:5px">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="var(--muted2)" stroke-width="1.1"/><path d="M6 5V8M6 3.5V4" stroke="var(--muted2)" stroke-width="1.2" stroke-linecap="round"/></svg>
+            Utilisé pour les paiements Mobile Money — vérifié par SMS
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="fl">Mot de passe <span class="fl-required">*</span></label>
+          <div class="inp-icon" style="position:relative">
+            <svg class="icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="7" rx="2" stroke="var(--muted2)" stroke-width="1.3"/><path d="M5 7V5.5A3 3 0 0111 5.5V7" stroke="var(--muted2)" stroke-width="1.3"/></svg>
+            <input type="password" class="inp" id="regPwd" placeholder="Minimum 8 caractères" style="padding-right:44px" oninput="checkStrength(this.value)"/>
+            <button class="inp-eye" type="button" onclick="togglePwd('regPwd',this)"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 8C1 8 3.5 3 8 3s7 5 7 5-2.5 5-7 5-7-5-7-5Z" stroke="var(--muted2)" stroke-width="1.3"/><circle cx="8" cy="8" r="2.5" stroke="var(--muted2)" stroke-width="1.3"/></svg></button>
+          </div>
+          <div class="pw-strength" id="pwStrength">
+            <div class="pw-bars"><div class="pw-bar" id="pb1"></div><div class="pw-bar" id="pb2"></div><div class="pw-bar" id="pb3"></div><div class="pw-bar" id="pb4"></div></div>
+            <div class="pw-label" id="pwLabel">Trop court</div>
+          </div>
+        </div>
+
+        <!-- Langue préférée -->
+        <div class="form-group">
+          <label class="fl">Langue préférée</label>
+          <div style="position:relative">
+            <svg style="position:absolute;left:14px;top:50%;transform:translateY(-50%);pointer-events:none" width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="var(--muted2)" stroke-width="1.2"/><path d="M8 1.5C8 1.5 5.5 4 5.5 8s2.5 6.5 2.5 6.5M8 1.5c0 0 2.5 2.5 2.5 6.5S8 14.5 8 14.5M1.5 8H14.5" stroke="var(--muted2)" stroke-width="1.1"/></svg>
+            <select class="inp" style="padding-left:42px;cursor:pointer">
+              <option>🇫🇷 Français</option>
+              <option>🇬🇧 English</option>
+              <option>🇸🇦 العربية</option>
+              <option>🇰🇪 Swahili</option>
+              <option>🇧🇷 Português</option>
+              <option>🇳🇬 Haoussa</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="check-wrap" onclick="toggleCheck('chkCgu')">
+          <div class="check-box" id="chkCgu"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" class="chk-icon" style="display:none"><path d="M2 5L4.5 7.5L8 3" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="check-label">J'accepte les <a>Conditions Générales</a> et la <a>Politique de Confidentialité</a> d'Oriupe. Je confirme avoir au moins 18 ans.</div>
+        </div>
+        <div class="check-wrap" onclick="toggleCheck('chkNews')">
+          <div class="check-box checked" id="chkNews"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" class="chk-icon"><path d="M2 5L4.5 7.5L8 3" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="check-label">Recevoir les nouveautés Oriupe, conseils et offres exclusives par email (modifiable à tout moment)</div>
+        </div>
+
+        <button class="btn-submit" onclick="handleRegister()">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#fff" stroke-width="1.4"/><path d="M5.5 8L7.5 10L10.5 6" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Créer mon compte gratuitement
+        </button>
+
+        <div style="text-align:center;margin-top:14px;font-size:12px;color:var(--muted)">
+          Déjà membre ? <a onclick="switchAuth('login')" style="color:var(--green);font-weight:700;cursor:pointer">Se connecter</a>
+        </div>
+      </div>
+
+      <!-- ═ MOT DE PASSE OUBLIÉ ═ -->
+      <div class="auth-panel" id="panel-forgot">
+        <button onclick="switchAuth('login')" style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);background:none;border:none;margin-bottom:20px;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;padding:0;transition:color .2s" onmouseover="this.style.color='var(--navy2)'" onmouseout="this.style.color='var(--muted)'">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3L5 7L9 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Retour à la connexion
+        </button>
+        <div class="auth-title">Mot de passe oublié</div>
+        <div class="auth-sub">Entrez votre email pour recevoir un lien de réinitialisation.</div>
+        <div class="form-group">
+          <label class="fl">Adresse email <span class="fl-required">*</span></label>
+          <div class="inp-icon">
+            <svg class="icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1.5" y="3" width="13" height="10" rx="2" stroke="var(--muted2)" stroke-width="1.3"/><path d="M1.5 6L8 10L14.5 6" stroke="var(--muted2)" stroke-width="1.2"/></svg>
+            <input type="email" class="inp" placeholder="votre@email.com"/>
+          </div>
+        </div>
+        <button class="btn-submit" onclick="handleForgot()">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1.5" y="3" width="13" height="10" rx="2" stroke="#fff" stroke-width="1.3"/><path d="M1.5 6L8 10L14.5 6" stroke="#fff" stroke-width="1.2"/></svg>
+          Envoyer le lien
+        </button>
+        <!-- Success after forgot -->
+        <div class="auth-success" id="forgotSuccess">
+          <div class="success-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M5 14L11.5 20.5L23 8" stroke="var(--green)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div style="font-size:16px;font-weight:700;color:var(--navy2);margin-bottom:8px">Email envoyé !</div>
+          <div style="font-size:13px;color:var(--muted)">Vérifiez votre boîte mail. Le lien expire dans 15 minutes.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+function switchAuth(mode){
+  ['login','register','forgot'].forEach(m=>{
+    document.getElementById('panel-'+m)?.classList.remove('active');
+  });
+  document.getElementById('panel-'+mode)?.classList.add('active');
+  document.getElementById('btnLogin')?.classList.toggle('active',mode==='login');
+  document.getElementById('btnRegister')?.classList.toggle('active',mode==='register');
+  if(mode==='forgot'){document.getElementById('btnLogin')?.classList.remove('active');document.getElementById('btnRegister')?.classList.remove('active')}
+}
+function selectRole(el,role){
+  document.querySelectorAll('.role-card').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+}
+function toggleCheck(id){
+  const box=document.getElementById(id);
+  box.classList.toggle('checked');
+  const icon=box.querySelector('.chk-icon');
+  if(icon)icon.style.display=box.classList.contains('checked')?'block':'none';
+}
+function changePrefix(sel){
+  const opt=sel.options[sel.selectedIndex];
+  document.getElementById('pflag').textContent=opt.dataset.flag||'🌍';
+  document.getElementById('pcode').textContent=sel.value;
+}
+function togglePwd(id,btn){
+  const inp=document.getElementById(id);
+  inp.type=inp.type==='password'?'text':'password';
+  const svg=btn.querySelector('svg');
+  if(inp.type==='text'){svg.querySelector('circle')?.setAttribute('stroke','var(--green)');btn.style.color='var(--green)'}
+  else{svg.querySelector('circle')?.setAttribute('stroke','var(--muted2)');btn.style.color='var(--muted2)'}
+}
+function checkStrength(val){
+  const el=document.getElementById('pwStrength');
+  el.classList.add('show');
+  const bars=[document.getElementById('pb1'),document.getElementById('pb2'),document.getElementById('pb3'),document.getElementById('pb4')];
+  const label=document.getElementById('pwLabel');
+  bars.forEach(b=>{b.className='pw-bar'});
+  let score=0;
+  if(val.length>=8)score++;
+  if(val.length>=12)score++;
+  if(/[A-Z]/.test(val)&&/[0-9]/.test(val))score++;
+  if(/[^A-Za-z0-9]/.test(val))score++;
+  const cls=score<=1?'filled-weak':score<=2?'filled-medium':'filled-strong';
+  const labels=['Trop court','Faible','Moyen','Fort','Très fort'];
+  for(let i=0;i<score;i++)bars[i].classList.add(cls);
+  label.textContent=labels[score];
+  label.style.color=score<=1?'var(--red)':score<=2?'var(--gold)':'var(--green)';
+}
+function validateEmail(inp){
+  const valid=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inp.value);
+  const err=document.getElementById('loginEmailErr');
+  if(inp.value&&!valid){inp.classList.add('error');err.classList.add('show')}
+  else{inp.classList.remove('error');err.classList.remove('show')}
+}
+function handleLogin(){
+  const btn=document.querySelector('#panel-login .btn-submit');
+  btn.disabled=true;
+  btn.innerHTML='<svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="animation:spin 1s linear infinite"><path d="M8 2C4.7 2 2 4.7 2 8" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>Connexion en cours...';
+  setTimeout(()=>{window.location.href='oriupe_dashboard_client.html'},1800);
+}
+function handleRegister(){
+  const btn=document.querySelector('#panel-register .btn-submit');
+  btn.disabled=true;
+  btn.innerHTML='<svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="animation:spin 1s linear infinite"><path d="M8 2C4.7 2 2 4.7 2 8" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>Création du compte...';
+  setTimeout(()=>{window.location.href='oriupe_onboarding_freelance.html'},1800);
+}
+function handleForgot(){
+  const btn=document.querySelector('#panel-forgot .btn-submit');
+  btn.style.display='none';
+  document.getElementById('forgotSuccess').style.display='block';
+}
+// Add spin keyframe
+const style=document.createElement('style');
+style.textContent='@keyframes spin{to{transform:rotate(360deg)}}';
+document.head.appendChild(style);
+</script>
+  <script type="module" src="/src/scripts/main.js"></script>
+</body>
+</html>

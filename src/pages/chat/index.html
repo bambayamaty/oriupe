@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Oriupe — Messagerie</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;height:100%}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#F4F6F9;color:#1B3A4A;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+a{text-decoration:none;color:inherit}
+button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer}
+:root{
+  --navy:#0F2535;--navy2:#1B3A4A;
+  --green:#3CB878;--green-d:#27965D;--green-l:#E4F7EE;--green-xl:#F0FBF5;
+  --blue:#29ABE2;--blue-l:#E2F4FB;--blue-d:#1A8BC0;
+  --lime:#8DC63F;--lime-l:#EEF7D6;
+  --gold:#F59E0B;--gold-l:#FEF3C7;
+  --purple:#7C3AED;--purple-l:#EDE9FE;
+  --red:#EF4444;--red-l:#FEE2E2;
+  --bg:#F4F6F9;--bg2:#ECEEF3;--white:#fff;
+  --border:rgba(27,58,74,.1);--border2:rgba(27,58,74,.06);
+  --muted:rgba(27,58,74,.52);--muted2:rgba(27,58,74,.32);
+  --shadow:0 2px 10px rgba(15,37,53,.07);
+  --shadow-md:0 6px 24px rgba(15,37,53,.11);
+  --shadow-lg:0 16px 48px rgba(15,37,53,.16);
+  --spring:cubic-bezier(.34,1.56,.64,1);
+  --ease:cubic-bezier(.25,.46,.45,.94);
+  --nav-h:64px;
+}
+
+/* ── NAV ── */
+nav{
+  background:rgba(255,255,255,.96);backdrop-filter:blur(18px);
+  height:var(--nav-h);display:flex;align-items:center;
+  justify-content:space-between;padding:0 48px;
+  border-bottom:1px solid var(--border);
+  flex-shrink:0;z-index:100;box-shadow:var(--shadow)
+}
+.logo{display:flex;align-items:center;gap:9px}
+.logo-t{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:var(--navy2)}
+.nav-links{display:flex;gap:2px}
+.nav-links a{font-size:13px;color:var(--muted);font-weight:500;padding:7px 13px;border-radius:8px;transition:all .2s;cursor:pointer}
+.nav-links a:hover{color:var(--navy2);background:var(--bg)}
+.nav-links a.active{color:var(--green);font-weight:700}
+.nav-right{display:flex;align-items:center;gap:9px}
+.pill{font-size:12px;color:var(--muted);background:var(--bg);border:1px solid var(--border);padding:5px 12px;border-radius:6px;font-weight:600}
+.btn-ghost{font-size:13px;font-weight:600;color:var(--navy2);padding:8px 14px;border:none;background:transparent;border-radius:8px;transition:background .2s}
+.btn-ghost:hover{background:var(--bg)}
+.btn-g{background:var(--green);color:#fff;font-size:13px;font-weight:700;padding:10px 22px;border-radius:9px;border:none;box-shadow:0 2px 10px rgba(60,184,120,.28);transition:all .2s var(--spring)}
+.btn-g:hover{background:var(--green-d);transform:translateY(-1px)}
+
+/* ── MAIN CHAT LAYOUT ── */
+.chat-app{
+  flex:1;display:flex;overflow:hidden;
+  height:calc(100vh - var(--nav-h))
+}
+
+/* ═══ COLUMN 1 : SIDEBAR ═══ */
+.chat-sidebar{
+  width:320px;flex-shrink:0;
+  background:#fff;border-right:1px solid var(--border);
+  display:flex;flex-direction:column;overflow:hidden
+}
+.cs-head{
+  padding:16px 18px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between
+}
+.cs-title{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:800;color:var(--navy2)}
+.cs-actions{display:flex;gap:6px}
+.cs-btn{width:32px;height:32px;border:1.5px solid var(--border);border-radius:9px;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s}
+.cs-btn:hover{border-color:var(--green);color:var(--green)}
+/* Search */
+.cs-search{padding:12px 16px;border-bottom:1px solid var(--border)}
+.cs-sinp-wrap{position:relative}
+.cs-sinp{width:100%;background:var(--bg);border:1.5px solid transparent;border-radius:10px;padding:9px 12px 9px 36px;font-size:13px;color:var(--navy2);outline:none;transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif}
+.cs-sinp:focus{background:#fff;border-color:var(--green);box-shadow:0 0 0 3px rgba(60,184,120,.09)}
+.cs-sinp::placeholder{color:var(--muted2)}
+.cs-search-ico{position:absolute;left:11px;top:50%;transform:translateY(-50%);pointer-events:none}
+/* Filter tabs */
+.cs-tabs{padding:0 12px 10px;display:flex;gap:4px;border-bottom:1px solid var(--border)}
+.cs-tab{flex:1;padding:7px 4px;border:none;background:transparent;border-radius:8px;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif;text-align:center}
+.cs-tab.active{background:var(--navy2);color:#fff}
+.cs-tab:hover:not(.active){background:var(--bg);color:var(--navy2)}
+/* Conv list */
+.conv-list{flex:1;overflow-y:auto}
+.conv-list::-webkit-scrollbar{width:4px}
+.conv-list::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.conv-item{
+  display:flex;align-items:center;gap:12px;
+  padding:14px 16px;cursor:pointer;
+  border-bottom:1px solid var(--border2);
+  transition:background .15s;position:relative
+}
+.conv-item:hover{background:var(--bg)}
+.conv-item.active{background:var(--blue-l)}
+.conv-item.active .conv-name{color:var(--blue-d)}
+/* Avatar */
+.conv-av{position:relative;flex-shrink:0}
+.cav{
+  width:42px;height:42px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:800;color:#fff;flex-shrink:0
+}
+.cav-online{position:absolute;bottom:1px;right:1px;width:11px;height:11px;background:#22C55E;border-radius:50%;border:2px solid #fff}
+.cav-offline{position:absolute;bottom:1px;right:1px;width:11px;height:11px;background:var(--muted2);border-radius:50%;border:2px solid #fff}
+/* Conv info */
+.conv-info{flex:1;min-width:0}
+.conv-name{font-size:13px;font-weight:700;color:var(--navy2);margin-bottom:3px}
+.conv-preview{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.4}
+.conv-preview.unread{color:var(--navy2);font-weight:600}
+/* Conv meta */
+.conv-meta{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0}
+.conv-time{font-size:10px;color:var(--muted2);font-weight:500}
+.conv-unread{min-width:20px;height:20px;background:var(--blue);color:#fff;border-radius:20px;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;padding:0 5px}
+.conv-unread.orange{background:var(--gold)}
+.conv-unread.green{background:var(--green)}
+/* Conv indicator */
+.conv-order-badge{
+  position:absolute;left:16px;bottom:10px;
+  font-size:9px;font-weight:700;padding:2px 7px;border-radius:10px
+}
+.cob-active{background:var(--green-l);color:var(--green-d)}
+.cob-pending{background:var(--gold-l);color:#92400E}
+.cob-done{background:var(--bg2);color:var(--muted)}
+.cob-support{background:var(--blue-l);color:var(--blue-d)}
+
+/* ═══ COLUMN 2 : MAIN CHAT ═══ */
+.chat-main{
+  flex:1;display:flex;flex-direction:column;overflow:hidden;
+  background:#fff
+}
+
+/* Chat header */
+.chat-head{
+  padding:14px 22px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:14px;flex-shrink:0;
+  background:#fff;box-shadow:var(--shadow)
+}
+.ch-av{position:relative;flex-shrink:0}
+.ch-cav{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff}
+.ch-online{position:absolute;bottom:1px;right:1px;width:10px;height:10px;background:#22C55E;border-radius:50%;border:2px solid #fff}
+.ch-info{flex:1}
+.ch-name{font-size:15px;font-weight:700;color:var(--navy2)}
+.ch-status{font-size:12px;color:#22C55E;font-weight:600}
+.ch-status.away{color:var(--muted)}
+.ch-actions{display:flex;gap:7px;flex-shrink:0}
+.ch-btn{width:36px;height:36px;border:1.5px solid var(--border);border-radius:9px;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;color:var(--muted)}
+.ch-btn:hover{border-color:var(--green);color:var(--green)}
+/* Escrow / Order bar */
+.order-bar{
+  padding:10px 22px;border-bottom:1px solid var(--border);
+  background:var(--green-xl);display:flex;align-items:center;
+  gap:12px;flex-shrink:0;flex-wrap:wrap
+}
+.ob-icon{width:32px;height:32px;border-radius:8px;background:var(--green-l);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ob-info{flex:1;min-width:0}
+.ob-title{font-size:12px;font-weight:700;color:var(--navy2)}
+.ob-sub{font-size:11px;color:var(--muted)}
+.ob-actions{display:flex;gap:7px;flex-shrink:0;flex-wrap:wrap}
+.ob-btn{font-size:11px;font-weight:700;padding:5px 12px;border-radius:7px;border:none;cursor:pointer;transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif}
+.ob-btn-green{background:var(--green);color:#fff}
+.ob-btn-green:hover{background:var(--green-d)}
+.ob-btn-outline{background:#fff;color:var(--navy2);border:1.5px solid var(--border)}
+.ob-btn-outline:hover{border-color:var(--green);color:var(--green)}
+/* Progress bar in order bar */
+.ob-prog{width:100%;height:4px;background:var(--bg2);border-radius:2px;overflow:hidden;margin-top:6px}
+.ob-prog-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--lime));border-radius:2px}
+
+/* Messages area */
+.messages-area{
+  flex:1;overflow-y:auto;padding:24px 22px;
+  display:flex;flex-direction:column;gap:4px;
+  background:var(--bg)
+}
+.messages-area::-webkit-scrollbar{width:4px}
+.messages-area::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+
+/* Date separator */
+.date-sep{
+  display:flex;align-items:center;gap:12px;
+  margin:16px 0;
+}
+.date-sep::before,.date-sep::after{content:'';flex:1;height:1px;background:var(--border)}
+.date-sep span{font-size:11px;font-weight:600;color:var(--muted2);white-space:nowrap;background:var(--bg);padding:0 4px}
+
+/* Messages */
+.msg-group{display:flex;flex-direction:column;gap:2px;margin-bottom:10px}
+.msg-group.sent{align-items:flex-end}
+.msg-group.recv{align-items:flex-start}
+.msg-row{display:flex;align-items:flex-end;gap:8px;max-width:68%}
+.msg-group.sent .msg-row{flex-direction:row-reverse}
+.msg-av-small{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:#fff;flex-shrink:0}
+.bubble{
+  padding:11px 15px;border-radius:18px;
+  font-size:13px;line-height:1.65;word-break:break-word;
+  max-width:100%;position:relative
+}
+.msg-group.sent .bubble{
+  background:var(--navy2);color:#fff;
+  border-radius:18px 18px 4px 18px
+}
+.msg-group.recv .bubble{
+  background:#fff;color:var(--navy2);
+  border-radius:18px 18px 18px 4px;
+  box-shadow:var(--shadow)
+}
+.bubble-time{
+  font-size:10px;margin-top:4px;padding:0 4px
+}
+.msg-group.sent .bubble-time{color:var(--muted2);text-align:right}
+.msg-group.recv .bubble-time{color:var(--muted2)}
+/* Status ticks */
+.msg-tick{display:inline-flex;gap:1px;margin-left:5px;vertical-align:middle}
+/* File bubble */
+.file-bubble{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px;border-radius:12px;cursor:pointer;
+  transition:opacity .2s;min-width:200px
+}
+.msg-group.sent .file-bubble{background:rgba(255,255,255,.1)}
+.msg-group.recv .file-bubble{background:var(--bg)}
+.file-bubble:hover{opacity:.85}
+.fb-icon{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.fb-name{font-size:12px;font-weight:700;color:inherit;display:block}
+.fb-size{font-size:10px;opacity:.6;margin-top:2px;display:block}
+/* Image bubble */
+.img-bubble{border-radius:12px;overflow:hidden;cursor:pointer;max-width:220px}
+.img-bubble img{width:100%;display:block}
+.img-placeholder{background:linear-gradient(135deg,var(--navy),#1A4A6A);height:140px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:opacity .2s}
+.img-placeholder:hover{opacity:.85}
+/* System message */
+.sys-msg{
+  text-align:center;margin:12px 0;
+  font-size:11px;font-weight:600;color:var(--muted);
+  display:flex;align-items:center;gap:8px
+}
+.sys-msg::before,.sys-msg::after{content:'';flex:1;height:1px;background:var(--border)}
+/* Reaction */
+.reactions{display:flex;gap:4px;margin-top:4px;flex-wrap:wrap}
+.reaction{display:flex;align-items:center;gap:3px;background:#fff;border:1px solid var(--border);border-radius:20px;padding:2px 8px;font-size:12px;cursor:pointer;transition:all .15s;box-shadow:var(--shadow)}
+.reaction:hover{border-color:var(--green);background:var(--green-xl)}
+.reaction span{font-size:11px;color:var(--muted);font-weight:600}
+/* Typing indicator */
+.typing-indicator{display:flex;align-items:center;gap:8px;padding:4px 0}
+.typing-dots{display:flex;gap:4px}
+.typing-dot{width:8px;height:8px;border-radius:50%;background:var(--muted2);animation:bounce .6s ease-in-out infinite}
+.typing-dot:nth-child(2){animation-delay:.15s}
+.typing-dot:nth-child(3){animation-delay:.3s}
+@keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
+
+/* Input area */
+.input-area{
+  padding:14px 18px;border-top:1px solid var(--border);
+  flex-shrink:0;background:#fff
+}
+/* Reply preview */
+.reply-preview{
+  background:var(--bg);border-left:3px solid var(--green);
+  border-radius:0 8px 8px 0;padding:8px 12px;margin-bottom:10px;
+  display:flex;align-items:center;justify-content:space-between;gap:8px
+}
+.rp-text{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rp-close{width:20px;height:20px;border:none;background:transparent;color:var(--muted);cursor:pointer;font-size:16px;line-height:1;display:flex;align-items:center;justify-content:center;transition:color .15s;flex-shrink:0}
+.rp-close:hover{color:var(--red)}
+/* Toolbar */
+.input-toolbar{display:flex;align-items:center;gap:6px}
+.tool-btn{width:34px;height:34px;border:1.5px solid var(--border);border-radius:9px;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;color:var(--muted);flex-shrink:0}
+.tool-btn:hover{border-color:var(--green);color:var(--green);background:var(--green-xl)}
+.inp-msg{
+  flex:1;background:var(--bg);border:1.5px solid transparent;
+  border-radius:12px;padding:11px 15px;font-size:13px;
+  color:var(--navy2);outline:none;resize:none;
+  max-height:120px;min-height:42px;
+  transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif;
+  line-height:1.55
+}
+.inp-msg:focus{background:#fff;border-color:var(--green);box-shadow:0 0 0 3px rgba(60,184,120,.09)}
+.inp-msg::placeholder{color:var(--muted2)}
+.send-btn{
+  width:40px;height:40px;border-radius:11px;border:none;
+  background:var(--navy2);display:flex;align-items:center;
+  justify-content:center;cursor:pointer;flex-shrink:0;
+  transition:all .2s var(--spring)
+}
+.send-btn:hover{background:var(--navy);transform:scale(1.08)}
+.send-btn.green{background:var(--green)}
+.send-btn.green:hover{background:var(--green-d)}
+/* Char limit */
+.input-footer{display:flex;align-items:center;justify-content:space-between;margin-top:8px;flex-wrap:wrap;gap:4px}
+.if-note{font-size:10px;color:var(--muted2)}
+.if-count{font-size:10px;color:var(--muted2)}
+
+/* ═══ COLUMN 3 : INFO PANEL ═══ */
+.chat-info{
+  width:280px;flex-shrink:0;
+  border-left:1px solid var(--border);
+  background:#fff;display:flex;flex-direction:column;
+  overflow-y:auto
+}
+.chat-info::-webkit-scrollbar{width:4px}
+.chat-info::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+/* Profile section */
+.ci-profile{padding:24px 20px;text-align:center;border-bottom:1px solid var(--border)}
+.ci-av{width:64px;height:64px;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:#fff;position:relative}
+.ci-av-online{position:absolute;bottom:3px;right:3px;width:14px;height:14px;background:#22C55E;border-radius:50%;border:2.5px solid #fff}
+.ci-name{font-size:15px;font-weight:800;color:var(--navy2);margin-bottom:3px;font-family:'Bricolage Grotesque',sans-serif}
+.ci-role{font-size:12px;color:var(--muted)}
+.ci-badges{display:flex;justify-content:center;flex-wrap:wrap;gap:5px;margin-top:10px}
+.ci-badge{font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px}
+.ci-b-top{background:linear-gradient(135deg,var(--green),var(--lime));color:#fff}
+.ci-b-kyc{background:var(--blue-l);color:var(--blue-d)}
+.ci-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+.ci-stat{background:var(--bg);border-radius:10px;padding:10px;text-align:center}
+.ci-sv{font-size:16px;font-weight:800;color:var(--navy2)}
+.ci-sl{font-size:10px;color:var(--muted);margin-top:2px}
+.ci-action-btns{display:flex;flex-direction:column;gap:7px;margin-top:14px}
+.ci-ab{width:100%;border-radius:9px;padding:9px;font-size:12px;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;border:none;cursor:pointer;transition:all .2s}
+.ci-ab-green{background:var(--green);color:#fff}
+.ci-ab-green:hover{background:var(--green-d)}
+.ci-ab-outline{background:#fff;color:var(--navy2);border:1.5px solid var(--border)}
+.ci-ab-outline:hover{border-color:var(--green);color:var(--green)}
+/* Info sections */
+.ci-section{padding:16px 20px;border-bottom:1px solid var(--border)}
+.ci-section:last-child{border-bottom:none}
+.ci-sec-title{font-size:11px;font-weight:700;color:var(--navy2);letter-spacing:.6px;margin-bottom:12px}
+/* Order card */
+.order-card{background:var(--green-xl);border:1px solid rgba(60,184,120,.2);border-radius:12px;padding:14px}
+.oc-title{font-size:12px;font-weight:700;color:var(--navy2);margin-bottom:5px}
+.oc-num{font-size:10px;color:var(--muted);margin-bottom:10px}
+.oc-prog{height:6px;background:var(--bg2);border-radius:3px;overflow:hidden;margin-bottom:6px}
+.oc-prog-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--lime));border-radius:3px}
+.oc-meta{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:12px}
+.oc-amount{font-size:16px;font-weight:800;color:var(--green)}
+.oc-btn{width:100%;background:var(--navy2);color:#fff;border:none;border-radius:8px;padding:9px;font-size:12px;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:background .2s}
+.oc-btn:hover{background:var(--navy)}
+/* Files shared */
+.files-list{display:flex;flex-direction:column;gap:7px}
+.file-item{display:flex;align-items:center;gap:10px;padding:9px;background:var(--bg);border-radius:9px;cursor:pointer;transition:background .2s}
+.file-item:hover{background:var(--bg2)}
+.fi-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.fi-name{font-size:11px;font-weight:700;color:var(--navy2);display:block}
+.fi-meta{font-size:10px;color:var(--muted);display:block;margin-top:1px}
+.fi-dl{color:var(--muted);transition:color .15s;margin-left:auto;flex-shrink:0}
+.file-item:hover .fi-dl{color:var(--green)}
+/* Escrow info */
+.escrow-card{background:var(--navy);border-radius:12px;padding:16px;position:relative;overflow:hidden}
+.escrow-card::after{content:'';position:absolute;right:-20px;bottom:-20px;width:80px;height:80px;border-radius:50%;background:rgba(60,184,120,.15)}
+.ec-label{font-size:10px;color:rgba(255,255,255,.4);margin-bottom:6px}
+.ec-amount{font-size:22px;font-weight:800;color:var(--green);margin-bottom:4px;font-family:'Bricolage Grotesque',sans-serif;line-height:1;position:relative;z-index:1}
+.ec-sub{font-size:11px;color:rgba(255,255,255,.4);margin-bottom:14px;position:relative;z-index:1}
+.ec-prog{height:5px;background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden;margin-bottom:10px;position:relative;z-index:1}
+.ec-prog-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--lime));border-radius:3px}
+.ec-step{display:flex;align-items:center;gap:7px;font-size:11px;color:rgba(255,255,255,.5);margin-bottom:6px;position:relative;z-index:1}
+.ec-dot-on{width:7px;height:7px;border-radius:50%;background:var(--green);flex-shrink:0}
+.ec-dot-off{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.15);flex-shrink:0}
+/* Report section */
+.report-btn{width:100%;background:var(--red-l);color:var(--red);border:1.5px solid rgba(239,68,68,.2);border-radius:9px;padding:9px;font-size:12px;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:7px}
+.report-btn:hover{background:rgba(239,68,68,.15);border-color:rgba(239,68,68,.35)}
+
+/* ── EMOJI PICKER (simple) ── */
+.emoji-picker{
+  position:absolute;bottom:70px;left:18px;
+  background:#fff;border:1px solid var(--border);border-radius:14px;
+  padding:12px;display:none;grid-template-columns:repeat(8,1fr);gap:6px;
+  box-shadow:var(--shadow-md);z-index:50;animation:fadeUp .2s var(--ease) both
+}
+.emoji-picker.open{display:grid}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.emoji-btn{width:32px;height:32px;border:none;background:transparent;font-size:18px;border-radius:7px;cursor:pointer;transition:background .15s;display:flex;align-items:center;justify-content:center}
+.emoji-btn:hover{background:var(--bg)}
+
+/* ── MOBILE ── */
+@media(max-width:1100px){
+  .chat-info{display:none}
+  nav{padding:0 24px}
+}
+@media(max-width:768px){
+  nav{padding:0 14px}
+  .nav-links,.nav-right .pill,.nav-right .btn-ghost{display:none}
+  .chat-sidebar{width:70px}
+  .conv-info,.conv-meta,.cs-head .cs-title,.cs-search,.cs-tabs{display:none}
+  .conv-item{justify-content:center;padding:12px 0}
+  .messages-area{padding:16px 14px}
+  .chat-head{padding:12px 14px}
+  .input-area{padding:10px 14px}
+  .order-bar{padding:8px 14px}
+}
+</style>
+  <script type="module" src="/src/components/nav.js"></script>
+</head>
+<body>
+
+<!-- ████ NAV ████ -->
+<nav>
+  <div style="display:flex;align-items:center;gap:36px">
+    <div class="logo">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <circle cx="8.5" cy="8.5" r="7" fill="#8DC63F" opacity=".9"/>
+        <circle cx="19.5" cy="8.5" r="7" fill="#29ABE2" opacity=".9"/>
+        <circle cx="8.5" cy="19.5" r="7" fill="#3CB878" opacity=".9"/>
+        <circle cx="19.5" cy="19.5" r="7" fill="#1B3A4A"/>
+        <rect x="8" y="8" width="12" height="12" rx="1.2" fill="rgba(60,184,120,.42)"/>
+      </svg>
+      <span class="logo-t">Oriupe</span>
+    </div>
+    <div class="nav-links">
+      <a href="oriupe_ULTIMATE.html">Accueil</a>
+      <a href="oriupe_catalogue.html">Explorer</a>
+      <a href="oriupe_appels_offres.html">Appels d'offres</a>
+      <a class="active" href="#">Messagerie</a>
+    </div>
+  </div>
+  <div class="nav-right">
+    <div class="pill">🌍 FR ▾</div>
+    <button class="btn-ghost">Tableau de bord</button>
+    <button class="btn-g">Mon compte</button>
+  </div>
+</nav>
+
+<!-- ████ CHAT APP ████ -->
+<div class="chat-app">
+
+  <!-- ═══════════════ SIDEBAR ═══════════════ -->
+  <aside class="chat-sidebar">
+
+    <div class="cs-head">
+      <span class="cs-title">Messages</span>
+      <div class="cs-actions">
+        <button class="cs-btn" title="Nouvelle conversation">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2V12M2 7H12" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+        </button>
+        <button class="cs-btn" title="Paramètres">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1V3M7 11V13M1 7H3M11 7H13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><circle cx="7" cy="7" r="2.5" stroke="currentColor" stroke-width="1.4"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="cs-search">
+      <div class="cs-sinp-wrap">
+        <svg class="cs-search-ico" width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="var(--muted2)" stroke-width="1.4"/><path d="M9.5 9.5L13 13" stroke="var(--muted2)" stroke-width="1.4" stroke-linecap="round"/></svg>
+        <input class="cs-sinp" placeholder="Rechercher une conversation..."/>
+      </div>
+    </div>
+
+    <div class="cs-tabs">
+      <button class="cs-tab active" onclick="filterConvs(this,'all')">Tout</button>
+      <button class="cs-tab" onclick="filterConvs(this,'active')">En cours</button>
+      <button class="cs-tab" onclick="filterConvs(this,'unread')">Non lus</button>
+      <button class="cs-tab" onclick="filterConvs(this,'done')">Terminés</button>
+    </div>
+
+    <div class="conv-list">
+
+      <!-- Conv 1 — Active / Unread -->
+      <div class="conv-item active" onclick="switchConv(this,'kofi')">
+        <div class="conv-av">
+          <div class="cav" style="background:linear-gradient(135deg,var(--green),var(--lime))">KA</div>
+          <div class="cav-online"></div>
+        </div>
+        <div class="conv-info">
+          <div class="conv-name">Kofi Asante</div>
+          <div class="conv-preview unread">Ok je regarde ça de suite, merci !</div>
+          <div class="conv-order-badge cob-active">Commande active</div>
+        </div>
+        <div class="conv-meta">
+          <div class="conv-time">12 min</div>
+          <div class="conv-unread">2</div>
+        </div>
+      </div>
+
+      <!-- Conv 2 — Delivered waiting -->
+      <div class="conv-item" onclick="switchConv(this,'amina')">
+        <div class="conv-av">
+          <div class="cav" style="background:linear-gradient(135deg,var(--blue),#7DD6F0)">AM</div>
+          <div class="cav-online"></div>
+        </div>
+        <div class="conv-info">
+          <div class="conv-name">Amina Mbaye</div>
+          <div class="conv-preview">J'ai livré le fichier Figma ✓</div>
+          <div class="conv-order-badge cob-pending">En attente validation</div>
+        </div>
+        <div class="conv-meta">
+          <div class="conv-time">1h</div>
+          <div class="conv-unread orange">!</div>
+        </div>
+      </div>
+
+      <!-- Conv 3 — Issue / Late -->
+      <div class="conv-item" onclick="switchConv(this,'chidi')">
+        <div class="conv-av">
+          <div class="cav" style="background:linear-gradient(135deg,#8DC63F,#C5E17A);color:#2D5016">CB</div>
+          <div class="cav-offline"></div>
+        </div>
+        <div class="conv-info">
+          <div class="conv-name">Chidi Bello</div>
+          <div class="conv-preview unread">Désolé pour le retard, je vous explique...</div>
+          <div class="conv-order-badge" style="background:var(--red-l);color:var(--red)">En retard</div>
+        </div>
+        <div class="conv-meta">
+          <div class="conv-time">3h</div>
+          <div class="conv-unread" style="background:var(--red)">3</div>
+        </div>
+      </div>
+
+      <!-- Conv 4 — Completed -->
+      <div class="conv-item" onclick="switchConv(this,'fatou')">
+        <div class="conv-av">
+          <div class="cav" style="background:linear-gradient(135deg,#7B4FBA,#A67CE8)">FT</div>
+          <div class="cav-offline"></div>
+        </div>
+        <div class="conv-info">
+          <div class="conv-name">Fatou Traoré</div>
+          <div class="conv-preview">Merci beaucoup pour votre confiance ! ⭐</div>
+          <div class="conv-order-badge cob-done">Terminé</div>
+        </div>
+        <div class="conv-meta">
+          <div class="conv-time">Hier</div>
+        </div>
+      </div>
+
+      <!-- Conv 5 — Yaw -->
+      <div class="conv-item" onclick="switchConv(this,'yaw')">
+        <div class="conv-av">
+          <div class="cav" style="background:linear-gradient(135deg,var(--navy),var(--navy3,#264B5E))">YK</div>
+          <div class="cav-online"></div>
+        </div>
+        <div class="conv-info">
+          <div class="conv-name">Yaw Kojo</div>
+          <div class="conv-preview">Parfait, on commence lundi 🚀</div>
+          <div class="conv-order-badge cob-active">Commande active</div>
+        </div>
+        <div class="conv-meta">
+          <div class="conv-time">2j</div>
+        </div>
+      </div>
+
+      <!-- Conv 6 — Support -->
+      <div class="conv-item" onclick="switchConv(this,'support')">
+        <div class="conv-av">
+          <div class="cav" style="background:var(--green)">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 1.5L10.5 5H14.5L11.5 7.5L12.5 11.5L9 9.2L5.5 11.5L6.5 7.5L3.5 5H7.5Z" stroke="#fff" stroke-width="1.4" stroke-linejoin="round" fill="rgba(255,255,255,.3)"/></svg>
+          </div>
+          <div class="cav-online"></div>
+        </div>
+        <div class="conv-info">
+          <div class="conv-name">Support Oriupe</div>
+          <div class="conv-preview">Votre commande #0892 a été validée ✓</div>
+          <div class="conv-order-badge cob-support">Support officiel</div>
+        </div>
+        <div class="conv-meta">
+          <div class="conv-time">Hier</div>
+        </div>
+      </div>
+
+      <!-- Conv 7 — Moussa -->
+      <div class="conv-item" onclick="switchConv(this,'moussa')">
+        <div class="conv-av">
+          <div class="cav" style="background:linear-gradient(135deg,var(--gold),#FCD34D);color:#78350F">MT</div>
+          <div class="cav-offline"></div>
+        </div>
+        <div class="conv-info">
+          <div class="conv-name">Moussa Touré</div>
+          <div class="conv-preview">Voici le dashboard React avec les charts</div>
+          <div class="conv-order-badge cob-done">Terminé</div>
+        </div>
+        <div class="conv-meta">
+          <div class="conv-time">3j</div>
+        </div>
+      </div>
+
+    </div>
+  </aside>
+
+  <!-- ═══════════════ MAIN CHAT ═══════════════ -->
+  <main class="chat-main">
+
+    <!-- Chat header -->
+    <div class="chat-head">
+      <div class="ch-av">
+        <div class="ch-cav" style="background:linear-gradient(135deg,var(--green),var(--lime))">KA</div>
+        <div class="ch-online"></div>
+      </div>
+      <div class="ch-info">
+        <div class="ch-name">Kofi Asante</div>
+        <div class="ch-status">● En ligne · Répond en général en moins d'1h · 🇬🇭 Ghana</div>
+      </div>
+      <div class="ch-actions">
+        <button class="ch-btn" title="Voir le profil" onclick="window.open('oriupe_profil_freelance.html')">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="6" r="3" stroke="currentColor" stroke-width="1.3"/><path d="M2 14C2 11.2 4.5 9 7.5 9s5.5 2.2 5.5 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </button>
+        <button class="ch-btn" title="Voir la commande">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2 2H3.5L4.5 10H12L13.5 5.5H5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="12.5" r="1.5" stroke="currentColor" stroke-width="1.2"/><circle cx="11" cy="12.5" r="1.5" stroke="currentColor" stroke-width="1.2"/></svg>
+        </button>
+        <button class="ch-btn" title="Appel vidéo">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="1.5" y="4" width="9" height="7" rx="2" stroke="currentColor" stroke-width="1.3"/><path d="M10.5 7L14 4.5V10.5L10.5 8" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="ch-btn" title="Plus d'options">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="3.5" r="1" fill="currentColor"/><circle cx="7.5" cy="7.5" r="1" fill="currentColor"/><circle cx="7.5" cy="11.5" r="1" fill="currentColor"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Order / Escrow bar -->
+    <div class="order-bar">
+      <div class="ob-icon">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1L10 5H14L11 7.5L12 12L8 9.5L4 12L5 7.5L2 5H6Z" stroke="#3CB878" stroke-width="1.3" stroke-linejoin="round" fill="rgba(60,184,120,.2)"/></svg>
+      </div>
+      <div class="ob-info">
+        <div class="ob-title">Commande #ORU-2025-0031 — Création site web React · Escrow actif : 35 000 FCFA</div>
+        <div class="ob-prog"><div class="ob-prog-fill" style="width:65%"></div></div>
+        <div class="ob-sub">Avancement 65% · Livraison dans 2 jours · 2 révisions restantes</div>
+      </div>
+      <div class="ob-actions">
+        <button class="ob-btn ob-btn-green">Valider la livraison ✓</button>
+        <button class="ob-btn ob-btn-outline">Voir la commande</button>
+      </div>
+    </div>
+
+    <!-- Messages -->
+    <div class="messages-area" id="messagesArea">
+
+      <div class="date-sep"><span>Hier, 14 Janvier 2025</span></div>
+
+      <!-- Group 1 — received -->
+      <div class="msg-group recv">
+        <div class="msg-row">
+          <div class="msg-av-small" style="background:linear-gradient(135deg,var(--green),var(--lime))">KA</div>
+          <div>
+            <div class="bubble">Bonjour Amadou ! J'ai bien reçu le brief complet. Je commence à travailler sur votre site dès aujourd'hui. Vous avez bien fait de préciser l'intégration Mobile Money, c'est mon domaine de prédilection 💪</div>
+          </div>
+        </div>
+        <div class="bubble-time">14:32</div>
+      </div>
+
+      <!-- Group 2 — sent -->
+      <div class="msg-group sent">
+        <div class="msg-row">
+          <div>
+            <div class="bubble">Parfait Kofi ! N'oubliez pas d'intégrer Orange Money ET Wave comme convenu. Et si possible, pensez à optimiser pour les connexions lentes.</div>
+          </div>
+        </div>
+        <div class="bubble-time">15:01 <span class="msg-tick"><svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5L4 8L9 2" stroke="rgba(255,255,255,.6)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 5L8 8L13 2" stroke="rgba(255,255,255,.6)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+      </div>
+
+      <!-- Group 3 — received -->
+      <div class="msg-group recv">
+        <div class="msg-row">
+          <div class="msg-av-small" style="background:linear-gradient(135deg,var(--green),var(--lime))">KA</div>
+          <div>
+            <div class="bubble">Bien sûr, c'est noté. J'ai déjà intégré CinetPay + Wave pour plusieurs clients en CI. Aussi, j'ai prévu un service worker pour le mode hors-ligne — très utile pour les zones rurales avec connexion instable.</div>
+          </div>
+        </div>
+        <div class="bubble-time">15:15</div>
+        <div class="reactions">
+          <div class="reaction">👍 <span>1</span></div>
+          <div class="reaction">🔥 <span>1</span></div>
+        </div>
+      </div>
+
+      <div class="date-sep"><span>Aujourd'hui, 24 Janvier 2025</span></div>
+
+      <!-- System message -->
+      <div class="sys-msg">
+        <span>📋 Commande #ORU-2025-0031 démarrée · Escrow 35 000 FCFA activé</span>
+      </div>
+
+      <!-- Group 4 — received with file -->
+      <div class="msg-group recv">
+        <div class="msg-row">
+          <div class="msg-av-small" style="background:linear-gradient(135deg,var(--green),var(--lime))">KA</div>
+          <div>
+            <div class="bubble">Voici la première version de la page d'accueil. J'ai intégré le design que vous m'avez envoyé avec quelques améliorations UX.</div>
+            <div class="bubble" style="margin-top:4px;padding:0;overflow:hidden;border-radius:12px">
+              <!-- Simulated screenshot -->
+              <div class="img-placeholder" onclick="this.style.opacity='.5'">
+                <svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="4" y="8" width="40" height="32" rx="4" stroke="rgba(255,255,255,.3)" stroke-width="1.5"/><path d="M4 16H44" stroke="rgba(255,255,255,.2)" stroke-width="1"/><circle cx="10" cy="12" r="2" fill="rgba(255,255,255,.25)"/><circle cx="16" cy="12" r="2" fill="rgba(255,255,255,.25)"/><circle cx="22" cy="12" r="2" fill="rgba(255,255,255,.25)"/><rect x="8" y="20" width="32" height="4" rx="2" fill="rgba(255,255,255,.12)"/><rect x="8" y="28" width="20" height="4" rx="2" fill="rgba(255,255,255,.1)"/><rect x="32" y="28" width="8" height="8" rx="2" fill="rgba(60,184,120,.4)"/></svg>
+              </div>
+            </div>
+            <div class="file-bubble" style="margin-top:4px">
+              <div class="fb-icon" style="background:rgba(37,99,235,.15)"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 14.5C2.9 14.5 2 13.6 2 12.5V5L6 1H12C13.1 1 14 1.9 14 3V12.5C14 13.6 13.1 14.5 12 14.5H4Z" stroke="#29ABE2" stroke-width="1.3"/><path d="M6 1V5H2" stroke="#29ABE2" stroke-width="1.3" stroke-linejoin="round"/></svg></div>
+              <div><span class="fb-name">homepage_v1_oriupe.fig</span><span class="fb-size">4.2 Mo · Figma · Cliquer pour télécharger</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="bubble-time">11:48</div>
+      </div>
+
+      <!-- Group 5 — sent -->
+      <div class="msg-group sent">
+        <div class="msg-row">
+          <div>
+            <div class="bubble">Excellent travail ! Le design est exactement dans l'esprit qu'on voulait. Juste une question : la section hero, est-ce qu'on peut avoir une animation un peu plus dynamique à l'entrée de la page ?</div>
+          </div>
+        </div>
+        <div class="bubble-time">12:03 <span class="msg-tick"><svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5L4 8L9 2" stroke="rgba(255,255,255,.6)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 5L8 8L13 2" stroke="rgba(255,255,255,.6)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+      </div>
+
+      <!-- Group 6 — received -->
+      <div class="msg-group recv">
+        <div class="msg-row">
+          <div class="msg-av-small" style="background:linear-gradient(135deg,var(--green),var(--lime))">KA</div>
+          <div>
+            <div class="bubble">Oui, absolument ! Je peux ajouter des animations CSS avec Framer Motion — scroll reveal, compteurs animés, un hero avec gradient mesh animé comme sur les meilleures plateformes SaaS. Je vous montre ça dans la v2 demain matin.</div>
+          </div>
+        </div>
+        <div class="bubble-time">12:18</div>
+        <div class="reactions">
+          <div class="reaction">🙏 <span>1</span></div>
+        </div>
+      </div>
+
+      <!-- Group 7 — sent with file -->
+      <div class="msg-group sent">
+        <div class="msg-row">
+          <div>
+            <div class="bubble">Super ! En attendant, voici le document de référence pour les animations qu'on aime :</div>
+            <div class="file-bubble" style="margin-top:4px">
+              <div class="fb-icon" style="background:rgba(239,68,68,.15)"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 14.5C2.9 14.5 2 13.6 2 12.5V5L6 1H12C13.1 1 14 1.9 14 3V12.5C14 13.6 13.1 14.5 12 14.5H4Z" stroke="#EF4444" stroke-width="1.3"/><path d="M6 1V5H2" stroke="#EF4444" stroke-width="1.3" stroke-linejoin="round"/><path d="M5 8.5H11M5 11H9" stroke="#EF4444" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+              <div><span class="fb-name">References_animations.pdf</span><span class="fb-size">1.8 Mo · PDF</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="bubble-time">12:31 <span class="msg-tick"><svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5L4 8L9 2" stroke="rgba(255,255,255,.6)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 5L8 8L13 2" stroke="#22C55E" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+      </div>
+
+      <!-- Group 8 — received (latest) -->
+      <div class="msg-group recv">
+        <div class="msg-row">
+          <div class="msg-av-small" style="background:linear-gradient(135deg,var(--green),var(--lime))">KA</div>
+          <div>
+            <div class="bubble">Ok je regarde ça de suite, merci ! Je vous envoie la v2 demain avant 10h. 🚀</div>
+          </div>
+        </div>
+        <div class="bubble-time">12 min</div>
+      </div>
+
+      <!-- Typing indicator -->
+      <div class="typing-indicator" id="typingIndicator" style="display:none">
+        <div class="msg-av-small" style="background:linear-gradient(135deg,var(--green),var(--lime))">KA</div>
+        <div class="bubble" style="padding:12px 16px">
+          <div class="typing-dots">
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /messages-area -->
+
+    <!-- Emoji picker -->
+    <div class="emoji-picker" id="emojiPicker">
+      <button class="emoji-btn" onclick="insertEmoji('😊')">😊</button>
+      <button class="emoji-btn" onclick="insertEmoji('👍')">👍</button>
+      <button class="emoji-btn" onclick="insertEmoji('🙏')">🙏</button>
+      <button class="emoji-btn" onclick="insertEmoji('🔥')">🔥</button>
+      <button class="emoji-btn" onclick="insertEmoji('✅')">✅</button>
+      <button class="emoji-btn" onclick="insertEmoji('🚀')">🚀</button>
+      <button class="emoji-btn" onclick="insertEmoji('💪')">💪</button>
+      <button class="emoji-btn" onclick="insertEmoji('❤️')">❤️</button>
+      <button class="emoji-btn" onclick="insertEmoji('👏')">👏</button>
+      <button class="emoji-btn" onclick="insertEmoji('😂')">😂</button>
+      <button class="emoji-btn" onclick="insertEmoji('🤝')">🤝</button>
+      <button class="emoji-btn" onclick="insertEmoji('⭐')">⭐</button>
+      <button class="emoji-btn" onclick="insertEmoji('💡')">💡</button>
+      <button class="emoji-btn" onclick="insertEmoji('📁')">📁</button>
+      <button class="emoji-btn" onclick="insertEmoji('📝')">📝</button>
+      <button class="emoji-btn" onclick="insertEmoji('🎉')">🎉</button>
+    </div>
+
+    <!-- Input area -->
+    <div class="input-area">
+      <!-- Reply preview (hidden by default) -->
+      <div class="reply-preview" id="replyPreview" style="display:none">
+        <div class="rp-text">↩ Répondre à : "Ok je regarde ça de suite, merci !"</div>
+        <button class="rp-close" onclick="closeReply()">×</button>
+      </div>
+
+      <div class="input-toolbar">
+        <button class="tool-btn" title="Joindre un fichier" onclick="document.getElementById('fileInput').click()">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M12.5 7L7 12.5C5.6 13.9 3.4 13.9 2 12.5s-1.4-3.6 0-5L8 2C9 1 10.5 1 11.5 2s1 2.5 0 3.5L5 12C4.5 12.5 3.5 12.5 3 12s-.5-1 0-1.5L8.5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          <input type="file" id="fileInput" style="display:none" onchange="handleFileUpload(this)"/>
+        </button>
+        <button class="tool-btn" title="Image" onclick="document.getElementById('imgInput').click()">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="1.5" y="2.5" width="12" height="10" rx="2" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 10L5 7L7.5 9.5L10 7.5L13.5 10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="5" cy="6" r="1.2" stroke="currentColor" stroke-width="1.1"/></svg>
+          <input type="file" id="imgInput" accept="image/*" style="display:none"/>
+        </button>
+        <button class="tool-btn" title="Emoji" onclick="toggleEmoji()">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="7.5" r="5.5" stroke="currentColor" stroke-width="1.3"/><circle cx="5.5" cy="6.5" r=".8" fill="currentColor"/><circle cx="9.5" cy="6.5" r=".8" fill="currentColor"/><path d="M5 9.5C5.5 10.5 6.4 11 7.5 11s2-.5 2.5-1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        </button>
+
+        <textarea class="inp-msg" id="msgInput" placeholder="Écrire un message... (Entrée pour envoyer, Maj+Entrée pour sauter une ligne)" rows="1" onkeydown="handleKeydown(event)" oninput="handleInput(this)" maxlength="2000"></textarea>
+
+        <button class="tool-btn" title="Répondre" onclick="showReply()">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M5 4L1 7.5L5 11M1 7.5H9.5C11.5 7.5 13 9 13 11V13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="send-btn green" id="sendBtn" onclick="sendMessage()">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1.5 8L14 2L8 14.5L7 9L1.5 8Z" fill="#fff"/></svg>
+        </button>
+      </div>
+
+      <div class="input-footer">
+        <div class="if-note">
+          <svg width="11" height="11" viewBox="0 0 11 11" fill="none" style="display:inline;vertical-align:middle;margin-right:3px"><path d="M5.5 1L6.5 3.8H9.5L7.2 5.5L8 8.5L5.5 7L3 8.5L3.8 5.5L1.5 3.8H4.5Z" stroke="#3CB878" stroke-width=".9" stroke-linejoin="round" fill="rgba(60,184,120,.2)"/></svg>
+          Conversation archivée à vie · Escrow actif protège votre paiement
+        </div>
+        <div class="if-count"><span id="charCount">0</span> / 2000</div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ═══════════════ INFO PANEL ═══════════════ -->
+  <aside class="chat-info">
+
+    <!-- Profile -->
+    <div class="ci-profile">
+      <div class="ci-av" style="background:linear-gradient(135deg,var(--green),var(--lime))">
+        KA
+        <div class="ci-av-online"></div>
+      </div>
+      <div class="ci-name">Kofi Asante</div>
+      <div class="ci-role">Développeur Full-Stack · 🇬🇭 Ghana</div>
+      <div class="ci-badges">
+        <span class="ci-badge ci-b-top">Top Oriupe</span>
+        <span class="ci-badge ci-b-kyc">KYC ✓</span>
+      </div>
+      <div class="ci-stats">
+        <div class="ci-stat">
+          <div class="ci-sv" style="color:var(--gold)">4,9</div>
+          <div class="ci-sl">Note</div>
+        </div>
+        <div class="ci-stat">
+          <div class="ci-sv">892</div>
+          <div class="ci-sl">Commandes</div>
+        </div>
+        <div class="ci-stat">
+          <div class="ci-sv" style="color:var(--blue)">&lt;1h</div>
+          <div class="ci-sl">Répond</div>
+        </div>
+        <div class="ci-stat">
+          <div class="ci-sv" style="color:var(--green)">98%</div>
+          <div class="ci-sl">Complétion</div>
+        </div>
+      </div>
+      <div class="ci-action-btns">
+        <button class="ci-ab ci-ab-outline" onclick="window.open('oriupe_profil_freelance.html')">Voir le profil</button>
+        <button class="ci-ab ci-ab-outline" onclick="window.open('oriupe_detail_service.html')">Voir ses services</button>
+      </div>
+    </div>
+
+    <!-- Commande en cours -->
+    <div class="ci-section">
+      <div class="ci-sec-title">COMMANDE EN COURS</div>
+      <div class="order-card">
+        <div class="oc-title">Création site web React</div>
+        <div class="oc-num">#ORU-2025-0031 · Commencée le 20 Jan</div>
+        <div class="oc-prog"><div class="oc-prog-fill" style="width:65%"></div></div>
+        <div class="oc-meta"><span>Avancement 65%</span><span style="color:#92400E;font-weight:600">2j restants</span></div>
+        <div class="oc-amount">35 000 FCFA</div>
+        <div style="font-size:10px;color:var(--muted);margin-bottom:12px;display:flex;align-items:center;gap:5px">
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 1L6 3.5H8.5L6.5 5L7.5 8L5 6.5L2.5 8L3.5 5L1.5 3.5H4Z" stroke="#3CB878" stroke-width=".8" stroke-linejoin="round" fill="rgba(60,184,120,.15)"/></svg>
+          Bloqué en Escrow Oriupe
+        </div>
+        <button class="oc-btn">Gérer la commande</button>
+      </div>
+    </div>
+
+    <!-- Escrow -->
+    <div class="ci-section">
+      <div class="ci-sec-title">ESCROW ORIUPE</div>
+      <div class="escrow-card">
+        <div class="ec-label">MONTANT PROTÉGÉ</div>
+        <div class="ec-amount">35 000 FCFA</div>
+        <div class="ec-sub">Libéré à votre validation uniquement</div>
+        <div class="ec-prog"><div class="ec-prog-fill" style="width:65%"></div></div>
+        <div class="ec-step"><div class="ec-dot-on"></div>Paiement reçu & bloqué</div>
+        <div class="ec-step"><div class="ec-dot-on"></div>Travaux en cours (65%)</div>
+        <div class="ec-step"><div class="ec-dot-off"></div>Livraison finale</div>
+        <div class="ec-step"><div class="ec-dot-off"></div>Votre validation → Déblocage</div>
+      </div>
+    </div>
+
+    <!-- Fichiers partagés -->
+    <div class="ci-section">
+      <div class="ci-sec-title">FICHIERS PARTAGÉS (3)</div>
+      <div class="files-list">
+        <div class="file-item">
+          <div class="fi-icon" style="background:rgba(37,99,235,.12)">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3.5 13C2.7 13 2 12.3 2 11.5V5L5 2H10.5C11.3 2 12 2.7 12 3.5V11.5C12 12.3 11.3 13 10.5 13H3.5Z" stroke="#29ABE2" stroke-width="1.2"/><path d="M5 2V5H2" stroke="#29ABE2" stroke-width="1.2" stroke-linejoin="round"/></svg>
+          </div>
+          <div style="flex:1;min-width:0">
+            <span class="fi-name">homepage_v1.fig</span>
+            <span class="fi-meta">4.2 Mo · Aujourd'hui 11:48</span>
+          </div>
+          <div class="fi-dl"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 2V9M3.5 6.5L6.5 9.5L9.5 6.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+        <div class="file-item">
+          <div class="fi-icon" style="background:rgba(239,68,68,.12)">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3.5 13C2.7 13 2 12.3 2 11.5V5L5 2H10.5C11.3 2 12 2.7 12 3.5V11.5C12 12.3 11.3 13 10.5 13H3.5Z" stroke="#EF4444" stroke-width="1.2"/><path d="M4.5 7.5H9.5M4.5 9.5H7.5" stroke="#EF4444" stroke-width="1.1" stroke-linecap="round"/></svg>
+          </div>
+          <div style="flex:1;min-width:0">
+            <span class="fi-name">References_animations.pdf</span>
+            <span class="fi-meta">1.8 Mo · Aujourd'hui 12:31</span>
+          </div>
+          <div class="fi-dl"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 2V9M3.5 6.5L6.5 9.5L9.5 6.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+        <div class="file-item">
+          <div class="fi-icon" style="background:var(--green-l)">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1.5" y="2" width="11" height="10" rx="2" stroke="#3CB878" stroke-width="1.2"/><path d="M4 6H10M4 8.5H7.5" stroke="#3CB878" stroke-width="1.1" stroke-linecap="round"/></svg>
+          </div>
+          <div style="flex:1;min-width:0">
+            <span class="fi-name">Brief_complet.docx</span>
+            <span class="fi-meta">0.8 Mo · Hier 09:15</span>
+          </div>
+          <div class="fi-dl"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 2V9M3.5 6.5L6.5 9.5L9.5 6.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Signalement -->
+    <div class="ci-section">
+      <div class="ci-sec-title">SÉCURITÉ</div>
+      <div style="font-size:11px;color:var(--muted);line-height:1.7;margin-bottom:10px">Toutes les conversations sont archivées et protégées. Signalez tout comportement suspect à notre équipe.</div>
+      <button class="report-btn">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1L7.5 5H11L8.5 7L9.5 11L6.5 9L3.5 11L4.5 7L2 5H5.5Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
+        Signaler un problème
+      </button>
+    </div>
+
+  </aside>
+
+</div><!-- /chat-app -->
+
+<script>
+/* ── SEND MESSAGE ── */
+function sendMessage(){
+  const inp=document.getElementById('msgInput');
+  const txt=inp.value.trim();
+  if(!txt)return;
+
+  const area=document.getElementById('messagesArea');
+
+  // Remove typing indicator if visible
+  const typer=document.getElementById('typingIndicator');
+  if(typer.style.display!=='none') typer.style.display='none';
+
+  // Create message group
+  const group=document.createElement('div');
+  group.className='msg-group sent';
+  group.style.animation='fadeIn .2s ease both';
+  group.innerHTML=`
+    <div class="msg-row">
+      <div><div class="bubble">${txt.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br/>')}</div></div>
+    </div>
+    <div class="bubble-time">${getTime()} <span class="msg-tick"><svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5L4 8L9 2" stroke="rgba(255,255,255,.6)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>`;
+  area.insertBefore(group,typer);
+
+  inp.value='';
+  inp.style.height='auto';
+  document.getElementById('charCount').textContent='0';
+  document.getElementById('replyPreview').style.display='none';
+  scrollBottom();
+
+  // Simulate typing response
+  setTimeout(()=>{
+    typer.style.display='flex';
+    scrollBottom();
+    setTimeout(()=>{
+      typer.style.display='none';
+      const resp=document.createElement('div');
+      resp.className='msg-group recv';
+      resp.style.animation='fadeIn .2s ease both';
+      const responses=["Bien reçu, merci !","Parfait, je m'en occupe de suite.","Ok je regarde ça 👍","Compris, je vous tiens au courant.","Entendu, pas de souci 🙏","Super, merci pour la précision !"];
+      const r=responses[Math.floor(Math.random()*responses.length)];
+      resp.innerHTML=`
+        <div class="msg-row">
+          <div class="msg-av-small" style="background:linear-gradient(135deg,var(--green),var(--lime))">KA</div>
+          <div><div class="bubble">${r}</div></div>
+        </div>
+        <div class="bubble-time">${getTime()}</div>`;
+      area.insertBefore(resp,typer);
+      scrollBottom();
+    },2000);
+  },800);
+}
+
+function getTime(){
+  const now=new Date();
+  return now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
+}
+function scrollBottom(){
+  const area=document.getElementById('messagesArea');
+  area.scrollTop=area.scrollHeight;
+}
+
+/* Keydown */
+function handleKeydown(e){
+  if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage()}
+}
+
+/* Input auto-resize + counter */
+function handleInput(el){
+  el.style.height='auto';
+  el.style.height=Math.min(el.scrollHeight,120)+'px';
+  document.getElementById('charCount').textContent=el.value.length;
+  const btn=document.getElementById('sendBtn');
+  btn.style.background=el.value.trim()?'var(--green)':'var(--navy2)';
+}
+
+/* Emoji */
+function toggleEmoji(){
+  const p=document.getElementById('emojiPicker');
+  p.classList.toggle('open');
+}
+function insertEmoji(e){
+  const inp=document.getElementById('msgInput');
+  inp.value+=e;
+  inp.focus();
+  document.getElementById('charCount').textContent=inp.value.length;
+  document.getElementById('emojiPicker').classList.remove('open');
+}
+
+/* Reply */
+function showReply(){document.getElementById('replyPreview').style.display='flex'}
+function closeReply(){document.getElementById('replyPreview').style.display='none'}
+
+/* File upload feedback */
+function handleFileUpload(inp){
+  if(!inp.files[0])return;
+  const f=inp.files[0];
+  const area=document.getElementById('messagesArea');
+  const typer=document.getElementById('typingIndicator');
+  const group=document.createElement('div');
+  group.className='msg-group sent';
+  const ext=f.name.split('.').pop().toLowerCase();
+  const colors={'pdf':'rgba(239,68,68,.15)','fig':'rgba(37,99,235,.15)','docx':'rgba(60,184,120,.15)','xlsx':'rgba(21,128,61,.15)'};
+  const strokeColors={'pdf':'#EF4444','fig':'#29ABE2','docx':'#3CB878','xlsx':'#16A34A'};
+  const sc=strokeColors[ext]||'var(--muted)';
+  const bg=colors[ext]||'var(--bg)';
+  group.innerHTML=`
+    <div class="msg-row">
+      <div>
+        <div class="file-bubble">
+          <div class="fb-icon" style="background:${bg}"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 14.5C2.9 14.5 2 13.6 2 12.5V5L6 1H12C13.1 1 14 1.9 14 3V12.5C14 13.6 13.1 14.5 12 14.5H4Z" stroke="${sc}" stroke-width="1.3"/><path d="M6 1V5H2" stroke="${sc}" stroke-width="1.3" stroke-linejoin="round"/></svg></div>
+          <div><span class="fb-name">${f.name}</span><span class="fb-size">${(f.size/1024/1024).toFixed(1)} Mo</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="bubble-time">${getTime()}</div>`;
+  area.insertBefore(group,typer);
+  scrollBottom();
+}
+
+/* Conv switch */
+function switchConv(el,id){
+  document.querySelectorAll('.conv-item').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  const unread=el.querySelector('.conv-unread');
+  if(unread)unread.remove();
+}
+
+/* Filter tabs */
+function filterConvs(btn,type){
+  document.querySelectorAll('.cs-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+/* Close emoji on outside click */
+document.addEventListener('click',function(e){
+  if(!e.target.closest('.emoji-picker')&&!e.target.closest('.tool-btn')){
+    document.getElementById('emojiPicker').classList.remove('open');
+  }
+});
+
+/* Scroll to bottom on load */
+window.addEventListener('load',scrollBottom);
+
+/* Keyframe for sent messages */
+const style=document.createElement('style');
+style.textContent='@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}';
+document.head.appendChild(style);
+</script>
+  <script type="module" src="/src/scripts/main.js"></script>
+</body>
+</html>

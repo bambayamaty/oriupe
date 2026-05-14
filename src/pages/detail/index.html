@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Oriupe — Création de site web React professionnel</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#F4F6F9;color:#1B3A4A}
+a{text-decoration:none;color:inherit}
+button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer}
+:root{
+  --navy:#0F2535;--navy2:#1B3A4A;
+  --green:#3CB878;--green-d:#27965D;--green-l:#E4F7EE;--green-xl:#F0FBF5;
+  --blue:#29ABE2;--blue-l:#E2F4FB;--lime:#8DC63F;
+  --bg:#F4F6F9;--bg2:#ECEEF3;--white:#fff;
+  --border:rgba(27,58,74,.1);--border2:rgba(27,58,74,.06);
+  --muted:rgba(27,58,74,.52);--muted2:rgba(27,58,74,.35);
+  --shadow:0 2px 12px rgba(15,37,53,.08);--shadow-md:0 8px 32px rgba(15,37,53,.13);--shadow-lg:0 20px 60px rgba(15,37,53,.18);
+  --r:8px;--r-md:12px;--r-lg:16px;--r-xl:20px;
+  --spring:cubic-bezier(.34,1.56,.64,1);--ease:cubic-bezier(.25,.46,.45,.94);
+}
+#progress{position:fixed;top:0;left:0;height:3px;z-index:9999;width:0;background:linear-gradient(90deg,var(--green),var(--blue));border-radius:0 3px 3px 0}
+
+/* NAV */
+nav{background:rgba(255,255,255,.95);backdrop-filter:blur(16px);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 52px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:200;box-shadow:var(--shadow)}
+.logo{display:flex;align-items:center;gap:9px;text-decoration:none}
+.logo-t{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:var(--navy2)}
+.nav-links{display:flex;gap:4px}.nav-links a{font-size:13px;color:var(--muted);font-weight:500;padding:7px 13px;border-radius:8px;transition:color .2s,background .2s}.nav-links a:hover{color:var(--navy2);background:var(--bg)}.nav-links a.active{color:var(--green);font-weight:700}
+.nav-right{display:flex;align-items:center;gap:9px}
+.pill{font-size:12px;color:var(--muted);background:var(--bg);border:1px solid var(--border);padding:5px 12px;border-radius:6px;font-weight:600}
+.btn-ghost{font-size:13px;font-weight:600;color:var(--navy2);padding:8px 14px;border:none;background:transparent;border-radius:8px;transition:background .2s}.btn-ghost:hover{background:var(--bg)}
+.btn-g{background:var(--green);color:#fff;font-size:13px;font-weight:700;padding:10px 22px;border-radius:9px;border:none;box-shadow:0 2px 10px rgba(60,184,120,.28);transition:all .2s var(--spring)}.btn-g:hover{background:var(--green-d);transform:translateY(-1px);box-shadow:0 5px 18px rgba(60,184,120,.38)}
+
+/* BREADCRUMB */
+.bread{max-width:1280px;margin:0 auto;padding:16px 52px;display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
+.bread a{color:var(--muted);transition:color .2s}.bread a:hover{color:var(--green)}
+.bread .sep{color:var(--muted2);font-size:11px}
+.bread .cur{color:var(--navy2);font-weight:600}
+
+/* MAIN LAYOUT */
+.page{max-width:1280px;margin:0 auto;padding:0 52px 80px;display:grid;grid-template-columns:1fr 380px;gap:40px;align-items:start}
+
+/* LEFT */
+.left-col{}
+
+/* GALLERY */
+.gallery{background:#fff;border-radius:var(--r-xl);border:1px solid var(--border);overflow:hidden;margin-bottom:24px;box-shadow:var(--shadow)}
+.gallery-main{height:380px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:linear-gradient(135deg,#0F2535 0%,#1E4D6B 60%,#0A3A28 100%)}
+.gallery-main svg{transition:transform .4s var(--ease)}
+.gallery-main:hover svg{transform:scale(1.04)}
+.gallery-thumbs{display:flex;gap:0;border-top:1px solid var(--border)}
+.thumb{flex:1;height:80px;display:flex;align-items:center;justify-content:center;cursor:pointer;border-right:1px solid var(--border);transition:background .2s;position:relative}
+.thumb:last-child{border-right:none}
+.thumb.active::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--green)}
+.thumb:hover,.thumb.active{background:var(--green-xl)}
+
+/* SECTION CARD */
+.sec-card{background:#fff;border-radius:var(--r-xl);border:1px solid var(--border);padding:28px 32px;margin-bottom:20px;box-shadow:var(--shadow)}
+.sec-card-title{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:var(--navy2);margin-bottom:18px;letter-spacing:-.4px}
+
+/* SERVICE TITLE AREA */
+.svc-title-area{background:#fff;border-radius:var(--r-xl);border:1px solid var(--border);padding:28px 32px;margin-bottom:20px;box-shadow:var(--shadow)}
+.svc-h1{font-family:'Bricolage Grotesque',sans-serif;font-size:26px;font-weight:800;color:var(--navy2);line-height:1.2;letter-spacing:-.6px;margin-bottom:16px}
+.svc-tags{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:20px}
+.svc-tag{font-size:12px;font-weight:600;color:var(--muted);background:var(--bg);border:1px solid var(--border);padding:5px 12px;border-radius:20px;transition:all .2s;cursor:pointer}
+.svc-tag:hover{border-color:var(--green);color:var(--green);background:var(--green-xl)}
+.svc-meta-row{display:flex;align-items:center;gap:20px;flex-wrap:wrap;padding-top:16px;border-top:1px solid var(--border2)}
+.meta-item{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:var(--muted)}
+.meta-item strong{color:var(--navy2);font-weight:700}
+
+/* SELLER MINI */
+.seller-mini{display:flex;align-items:center;gap:14px;padding:18px 0;border-bottom:1px solid var(--border2);margin-bottom:20px}
+.seller-av{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--lime));display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff;flex-shrink:0;position:relative}
+.seller-av .online{position:absolute;bottom:2px;right:2px;width:12px;height:12px;background:#22C55E;border-radius:50%;border:2px solid #fff}
+.seller-info{flex:1}
+.seller-name{font-size:15px;font-weight:700;color:var(--navy2)}
+.seller-title{font-size:12px;color:var(--muted)}
+.seller-badges{display:flex;gap:6px;margin-top:5px}
+.sbadge{font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px}
+.sbadge-g{background:var(--green-l);color:var(--green-d)}
+.sbadge-b{background:var(--blue-l);color:#0A6A90}
+
+/* DESCRIPTION */
+.desc-text{font-size:14px;color:var(--muted);line-height:1.85}
+.desc-text p{margin-bottom:14px}
+.desc-text ul{margin:12px 0 14px 18px;display:flex;flex-direction:column;gap:6px}
+.desc-text li{font-size:14px;color:var(--muted)}
+.desc-text li::marker{color:var(--green)}
+.desc-text strong{color:var(--navy2);font-weight:700}
+
+/* INCLUDES */
+.includes-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.inc-item{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:500;color:var(--navy2)}
+.inc-check{width:20px;height:20px;border-radius:50%;background:var(--green-l);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.exc-item{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:500;color:var(--muted);margin-top:8px}
+.exc-x{width:20px;height:20px;border-radius:50%;background:var(--bg2);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+
+/* FAQ */
+.faq-item{border-bottom:1px solid var(--border2)}
+.faq-item:last-child{border-bottom:none}
+.faq-q{padding:16px 0;display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-size:14px;font-weight:700;color:var(--navy2);gap:12px;transition:color .2s}
+.faq-q:hover{color:var(--green)}
+.faq-arrow{flex-shrink:0;transition:transform .25s var(--ease)}
+.faq-a{font-size:13px;color:var(--muted);line-height:1.75;padding-bottom:16px;display:none}
+
+/* REVIEWS */
+.rating-overview{display:flex;align-items:center;gap:28px;padding-bottom:24px;border-bottom:1px solid var(--border2);margin-bottom:24px;flex-wrap:wrap}
+.rating-big{text-align:center}
+.rating-num{font-family:'Bricolage Grotesque',sans-serif;font-size:52px;font-weight:800;color:var(--navy2);line-height:1}
+.rating-stars{display:flex;gap:3px;justify-content:center;margin:6px 0 4px}
+.rating-count{font-size:12px;color:var(--muted)}
+.rating-bars{flex:1;min-width:200px;display:flex;flex-direction:column;gap:7px}
+.rbar-row{display:flex;align-items:center;gap:10px}
+.rbar-lbl{font-size:12px;font-weight:600;color:var(--muted);width:12px;text-align:right;flex-shrink:0}
+.rbar-track{flex:1;height:7px;background:var(--bg2);border-radius:4px;overflow:hidden}
+.rbar-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--lime));border-radius:4px;transition:width .8s var(--ease)}
+.rbar-pct{font-size:11px;color:var(--muted);width:30px;text-align:right;flex-shrink:0}
+.review-card{padding:20px 0;border-bottom:1px solid var(--border2)}
+.review-card:last-child{border-bottom:none}
+.review-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;gap:12px}
+.reviewer{display:flex;align-items:center;gap:11px}
+.rev-av{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0}
+.rev-name{font-size:14px;font-weight:700;color:var(--navy2)}
+.rev-country{font-size:11px;color:var(--muted)}
+.rev-date{font-size:11px;color:var(--muted2);white-space:nowrap}
+.rev-stars{display:flex;gap:2px;margin-bottom:10px}
+.rev-text{font-size:13px;color:var(--muted);line-height:1.75}
+.rev-reply{background:var(--green-xl);border-left:3px solid var(--green);padding:12px 14px;border-radius:0 8px 8px 0;margin-top:12px;font-size:12px;color:var(--muted)}
+.rev-reply strong{color:var(--navy2);font-size:12px}
+
+/* SIMILAR */
+.similar-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.sim-card{background:#fff;border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;cursor:pointer;transition:all .25s var(--spring)}
+.sim-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md);border-color:rgba(60,184,120,.25)}
+.sim-img{height:100px;display:flex;align-items:center;justify-content:center}
+.sim-body{padding:12px 14px}
+.sim-title{font-size:12px;font-weight:700;color:var(--navy2);margin-bottom:6px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.sim-price{font-size:12px;font-weight:800;color:var(--navy2)}
+
+/* RIGHT STICKY */
+.right-col{position:sticky;top:80px}
+
+/* OFFER CARD */
+.offer-card{background:#fff;border-radius:var(--r-xl);border:1px solid var(--border);overflow:hidden;box-shadow:var(--shadow-md);margin-bottom:16px}
+.offer-tabs{display:flex;border-bottom:1px solid var(--border)}
+.offer-tab{flex:1;padding:14px 10px;text-align:center;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;background:transparent;border:none;border-bottom:2px solid transparent;font-family:'Plus Jakarta Sans',sans-serif}
+.offer-tab.active{color:var(--navy2);border-bottom-color:var(--green);font-weight:700}
+.offer-tab:hover:not(.active){color:var(--navy2);background:var(--bg)}
+.offer-body{padding:22px}
+.offer-price{font-family:'Bricolage Grotesque',sans-serif;font-size:32px;font-weight:800;color:var(--navy2);letter-spacing:-.8px;margin-bottom:6px}
+.offer-desc{font-size:13px;color:var(--muted);line-height:1.65;margin-bottom:20px}
+.offer-details{display:flex;flex-direction:column;gap:9px;margin-bottom:22px}
+.od-row{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:500;color:var(--navy2)}
+.od-icon{width:22px;height:22px;border-radius:6px;background:var(--green-l);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.offer-includes{display:flex;flex-direction:column;gap:7px;margin-bottom:22px;padding-top:16px;border-top:1px solid var(--border2)}
+.oi-row{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
+.oi-row.checked{color:var(--navy2);font-weight:500}
+.oi-check{width:16px;height:16px;border-radius:50%;background:var(--green-l);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.oi-x{width:16px;height:16px;border-radius:50%;background:var(--bg2);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.btn-order{width:100%;background:linear-gradient(135deg,var(--green),#4FD090);color:#fff;border:none;border-radius:12px;padding:16px;font-size:15px;font-weight:800;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:all .2s var(--spring);box-shadow:0 4px 20px rgba(60,184,120,.35);margin-bottom:10px;letter-spacing:-.2px}
+.btn-order:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(60,184,120,.45)}
+.btn-order:active{transform:none}
+.btn-contact{width:100%;background:#fff;color:var(--navy2);border:1.5px solid var(--border);border-radius:12px;padding:13px;font-size:14px;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-contact:hover{border-color:var(--green);color:var(--green)}
+.escrow-notice{margin-top:12px;display:flex;align-items:center;gap:8px;background:var(--green-xl);border:1px solid rgba(60,184,120,.2);border-radius:9px;padding:10px 13px}
+.escrow-notice p{font-size:11px;color:var(--muted);line-height:1.5}
+.escrow-notice strong{color:var(--navy2)}
+
+/* EXTRAS */
+.extras-card{background:#fff;border-radius:var(--r-xl);border:1px solid var(--border);padding:22px;box-shadow:var(--shadow);margin-bottom:16px}
+.extras-title{font-size:14px;font-weight:700;color:var(--navy2);margin-bottom:14px}
+.extra-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border2)}
+.extra-item:last-child{border-bottom:none}
+.extra-check{width:20px;height:20px;border:1.5px solid var(--border);border-radius:5px;flex-shrink:0;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center}
+.extra-check.checked{background:var(--green);border-color:var(--green)}
+.extra-info{flex:1}
+.extra-name{font-size:13px;font-weight:600;color:var(--navy2)}
+.extra-desc{font-size:11px;color:var(--muted);margin-top:2px}
+.extra-price{font-size:13px;font-weight:800;color:var(--navy2);white-space:nowrap;flex-shrink:0}
+
+/* SELLER CARD */
+.seller-card{background:#fff;border-radius:var(--r-xl);border:1px solid var(--border);padding:24px;box-shadow:var(--shadow)}
+.sc-top{display:flex;align-items:center;gap:14px;margin-bottom:18px;padding-bottom:18px;border-bottom:1px solid var(--border2)}
+.sc-av{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--lime));display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:#fff;flex-shrink:0;position:relative}
+.sc-av .online{position:absolute;bottom:2px;right:2px;width:13px;height:13px;background:#22C55E;border-radius:50%;border:2.5px solid #fff}
+.sc-name{font-size:16px;font-weight:800;color:var(--navy2);font-family:'Bricolage Grotesque',sans-serif}
+.sc-title{font-size:12px;color:var(--muted)}
+.sc-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.sc-stat{background:var(--bg);border-radius:9px;padding:10px 12px}
+.sc-stat-val{font-size:16px;font-weight:800;color:var(--navy2)}
+.sc-stat-lbl{font-size:10px;color:var(--muted);margin-top:2px}
+.btn-view-profile{width:100%;background:var(--navy2);color:#fff;border:none;border-radius:10px;padding:12px;font-size:13px;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:background .2s}
+.btn-view-profile:hover{background:var(--navy)}
+
+/* REVEAL */
+.r{opacity:0;transform:translateY(20px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.r.vis{opacity:1;transform:none}
+.stg .r:nth-child(1){transition-delay:.04s}
+.stg .r:nth-child(2){transition-delay:.1s}
+.stg .r:nth-child(3){transition-delay:.16s}
+.stg .r:nth-child(4){transition-delay:.22s}
+
+/* RESPONSIVE */
+@media(max-width:1100px){
+  .page{padding:0 28px 60px;grid-template-columns:1fr 340px;gap:28px}
+  .bread{padding:14px 28px}
+  nav{padding:0 28px}
+}
+@media(max-width:900px){
+  .page{grid-template-columns:1fr}
+  .right-col{position:static}
+  nav{padding:0 20px}
+  .bread{padding:12px 20px}
+  .page{padding:0 20px 48px}
+  .includes-grid{grid-template-columns:1fr}
+  .similar-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:600px){
+  .nav-links,.nav-right .pill,.nav-right .btn-ghost{display:none}
+  .gallery-main{height:240px}
+  .svc-h1{font-size:20px}
+  .similar-grid{grid-template-columns:1fr}
+}
+</style>
+  <script type="module" src="/src/components/nav.js"></script>
+</head>
+<body>
+<div id="progress"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="8.5" cy="8.5" r="7" fill="#8DC63F" opacity=".9"/><circle cx="19.5" cy="8.5" r="7" fill="#29ABE2" opacity=".9"/><circle cx="8.5" cy="19.5" r="7" fill="#3CB878" opacity=".9"/><circle cx="19.5" cy="19.5" r="7" fill="#1B3A4A"/><rect x="8" y="8" width="12" height="12" rx="1" fill="rgba(60,184,120,.4)"/></svg>
+    <span class="logo-t">Oriupe</span>
+  </div>
+  <div class="nav-links">
+    <a class="active" href="#">Explorer</a>
+    <a href="#">Appels d'offres</a>
+    <a href="#">Academy</a>
+    <a href="#">Blog</a>
+  </div>
+  <div class="nav-right">
+    <div class="pill">🌍 FR ▾</div>
+    <div class="pill">FCFA ▾</div>
+    <button class="btn-ghost">Se connecter</button>
+    <button class="btn-g">S'inscrire</button>
+  </div>
+</nav>
+
+<!-- BREADCRUMB -->
+<div class="bread">
+  <a href="#">Accueil</a><span class="sep">›</span>
+  <a href="#">Développement Web</a><span class="sep">›</span>
+  <span class="cur">Création site web React</span>
+</div>
+
+<div class="page">
+  <!-- ═══ LEFT ═══ -->
+  <div class="left-col">
+
+    <!-- Gallery -->
+    <div class="gallery r">
+      <div class="gallery-main">
+        <!-- Main illustration SVG -->
+        <svg width="320" height="260" viewBox="0 0 320 260" fill="none">
+          <!-- Monitor frame -->
+          <rect x="30" y="20" width="260" height="180" rx="8" fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.2)" stroke-width="1.5"/>
+          <!-- Browser chrome -->
+          <rect x="30" y="20" width="260" height="32" rx="8" fill="rgba(255,255,255,.1)"/>
+          <rect x="30" y="44" width="260" height="8" fill="rgba(255,255,255,.08)"/>
+          <!-- Traffic lights -->
+          <circle cx="50" cy="36" r="5" fill="#FF6058"/>
+          <circle cx="65" cy="36" r="5" fill="#FFC130"/>
+          <circle cx="80" cy="36" r="5" fill="#28CA40"/>
+          <!-- URL bar -->
+          <rect x="100" y="29" width="140" height="14" rx="7" fill="rgba(255,255,255,.08)"/>
+          <text x="115" y="39.5" font-family="monospace" font-size="7" fill="rgba(255,255,255,.4)">oriupe.com/portfolio</text>
+          <!-- Content -->
+          <rect x="40" y="60" width="80" height="130" rx="4" fill="rgba(60,184,120,.12)" stroke="rgba(60,184,120,.2)" stroke-width="1"/>
+          <rect x="44" y="64" width="72" height="40" rx="3" fill="rgba(60,184,120,.2)"/>
+          <rect x="44" y="110" width="50" height="8" rx="4" fill="rgba(255,255,255,.2)"/>
+          <rect x="44" y="122" width="65" height="5" rx="2.5" fill="rgba(255,255,255,.1)"/>
+          <rect x="44" y="131" width="55" height="5" rx="2.5" fill="rgba(255,255,255,.1)"/>
+          <rect x="44" y="140" width="60" height="5" rx="2.5" fill="rgba(255,255,255,.1)"/>
+          <rect x="44" y="155" width="36" height="20" rx="4" fill="rgba(60,184,120,.5)"/>
+          <rect x="130" y="60" width="150" height="60" rx="4" fill="rgba(41,171,226,.1)" stroke="rgba(41,171,226,.2)" stroke-width="1"/>
+          <rect x="136" y="66" width="45" height="45" rx="3" fill="rgba(41,171,226,.2)"/>
+          <rect x="188" y="68" width="85" height="8" rx="4" fill="rgba(255,255,255,.2)"/>
+          <rect x="188" y="80" width="65" height="5" rx="2.5" fill="rgba(255,255,255,.1)"/>
+          <rect x="188" y="89" width="75" height="5" rx="2.5" fill="rgba(255,255,255,.1)"/>
+          <rect x="188" y="100" width="40" height="5" rx="2.5" fill="rgba(255,255,255,.1)"/>
+          <rect x="130" y="128" width="70" height="60" rx="4" fill="rgba(141,198,63,.1)" stroke="rgba(141,198,63,.2)" stroke-width="1"/>
+          <rect x="136" y="134" width="58" height="48" rx="3" fill="rgba(141,198,63,.2)"/>
+          <rect x="208" y="128" width="72" height="60" rx="4" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.1)" stroke-width="1"/>
+          <!-- Accent lines -->
+          <path d="M270 30L280 30" stroke="rgba(255,255,255,.3)" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M273 36L283 36" stroke="rgba(255,255,255,.2)" stroke-width="1.5" stroke-linecap="round"/>
+          <!-- Stand -->
+          <rect x="135" y="200" width="50" height="8" rx="4" fill="rgba(255,255,255,.1)"/>
+          <rect x="115" y="208" width="90" height="6" rx="3" fill="rgba(255,255,255,.08)"/>
+          <!-- Code floating -->
+          <rect x="225" y="135" width="65" height="50" rx="6" fill="rgba(0,0,0,.3)" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
+          <text x="230" y="150" font-family="monospace" font-size="5" fill="#3CB878">const App = () =&gt;</text>
+          <text x="230" y="160" font-family="monospace" font-size="5" fill="rgba(255,255,255,.5)">  return &lt;div&gt;</text>
+          <text x="230" y="170" font-family="monospace" font-size="5" fill="#29ABE2">    &lt;Hero /&gt;</text>
+          <text x="230" y="180" font-family="monospace" font-size="5" fill="rgba(255,255,255,.5)">  &lt;/div&gt;</text>
+        </svg>
+        <!-- Overlay badge -->
+        <div style="position:absolute;top:16px;left:16px;background:linear-gradient(135deg,var(--green),var(--lime));color:#fff;font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;box-shadow:0 2px 10px rgba(60,184,120,.4)">Top Oriupe</div>
+      </div>
+      <!-- Thumbs -->
+      <div class="gallery-thumbs">
+        <div class="thumb active" style="background:linear-gradient(135deg,#0F2535,#1E4D6B)">
+          <svg width="32" height="24" viewBox="0 0 32 24" fill="none"><rect x="2" y="2" width="28" height="20" rx="3" stroke="rgba(255,255,255,.4)" stroke-width="1.2"/><path d="M5 8L16 4L27 8L16 12Z" stroke="#3CB878" stroke-width="1.3" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="thumb" style="background:linear-gradient(135deg,#0A3020,#1A5038)">
+          <svg width="32" height="24" viewBox="0 0 32 24" fill="none"><rect x="2" y="3" width="14" height="18" rx="3" stroke="rgba(255,255,255,.4)" stroke-width="1.2"/><rect x="18" y="3" width="12" height="8" rx="2" stroke="rgba(255,255,255,.3)" stroke-width="1.2"/><rect x="18" y="13" width="12" height="8" rx="2" stroke="rgba(255,255,255,.3)" stroke-width="1.2"/></svg>
+        </div>
+        <div class="thumb" style="background:linear-gradient(135deg,#0C304A,#1A5A7A)">
+          <svg width="32" height="24" viewBox="0 0 32 24" fill="none"><path d="M4 18L10 8L16 13L22 5L28 18Z" stroke="#29ABE2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="thumb" style="background:linear-gradient(135deg,#1A1240,#2D1E78)">
+          <svg width="32" height="24" viewBox="0 0 32 24" fill="none"><circle cx="11" cy="12" r="7" stroke="rgba(141,198,63,.6)" stroke-width="1.2"/><circle cx="21" cy="12" r="7" stroke="rgba(196,181,253,.6)" stroke-width="1.2"/><path d="M14 8L18 12L14 16" stroke="rgba(255,255,255,.4)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Title + meta -->
+    <div class="svc-title-area r">
+      <div class="seller-mini">
+        <div class="seller-av">
+          KA
+          <div class="online"></div>
+        </div>
+        <div class="seller-info">
+          <div class="seller-name">Kofi Asante</div>
+          <div class="seller-title">Développeur Full-Stack · Ghana 🇬🇭</div>
+          <div class="seller-badges">
+            <span class="sbadge sbadge-g">Top Oriupe</span>
+            <span class="sbadge sbadge-b">Identité vérifiée ✓</span>
+          </div>
+        </div>
+        <a href="#" style="font-size:13px;font-weight:700;color:var(--green);text-decoration:none;display:flex;align-items:center;gap:4px;flex-shrink:0">
+          Voir profil
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6H9.5M7 3.5L9.5 6L7 8.5" stroke="var(--green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+
+      <h1 class="svc-h1">Création de site web React professionnel, responsive & optimisé SEO</h1>
+
+      <div class="svc-tags">
+        <span class="svc-tag">React.js</span>
+        <span class="svc-tag">Next.js</span>
+        <span class="svc-tag">Responsive</span>
+        <span class="svc-tag">SEO</span>
+        <span class="svc-tag">TypeScript</span>
+        <span class="svc-tag">Tailwind CSS</span>
+      </div>
+
+      <div class="svc-meta-row">
+        <div class="meta-item">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1L8.5 4.8H13L9.5 7.5L11 12L7 9.5L3 12L4.5 7.5L1 4.8H5.5Z" fill="rgba(255,215,0,.3)" stroke="#FFD700" stroke-width="1.2" stroke-linejoin="round"/></svg>
+          <strong>4,9</strong> / 5 (124 avis)
+        </div>
+        <div class="meta-item">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2H3.5L4.5 10H11.5L13 5H5" stroke="var(--muted2)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="12.5" r="1.5" stroke="var(--muted2)" stroke-width="1.2"/><circle cx="11" cy="12.5" r="1.5" stroke="var(--muted2)" stroke-width="1.2"/></svg>
+          <strong>892</strong> commandes réalisées
+        </div>
+        <div class="meta-item">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="var(--muted2)" stroke-width="1.3"/><path d="M7 3.5V7L9.5 9.5" stroke="var(--muted2)" stroke-width="1.4" stroke-linecap="round"/></svg>
+          Répond en moyenne en <strong>&lt; 1h</strong>
+        </div>
+        <div class="meta-item">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1.5C4 1.5 1.5 4 1.5 7S4 12.5 7 12.5 12.5 10 12.5 7 10 1.5 7 1.5ZM7 1.5C7 1.5 5 4 5 7s2 5.5 2 5.5M7 1.5c0 0 2 2.5 2 5.5s-2 5.5-2 5.5M1.5 7H12.5" stroke="var(--muted2)" stroke-width="1.2"/></svg>
+          Membre depuis <strong>2022</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- Description -->
+    <div class="sec-card r">
+      <div class="sec-card-title">À propos de ce service</div>
+      <div class="desc-text">
+        <p>Je crée des <strong>sites web professionnels</strong> avec React.js et Next.js pour les startups, entrepreneurs et entreprises qui veulent une présence digitale impactante. Chaque projet est pensé pour être <strong>rapide, responsive et optimisé pour Google</strong>.</p>
+        <p>Avec plus de 5 ans d'expérience et 892 projets livrés, je comprends les besoins des entreprises africaines et internationales. J'utilise les meilleures pratiques modernes pour créer des interfaces qui convertissent.</p>
+        <ul>
+          <li>Design UI/UX personnalisé (pas de template générique)</li>
+          <li>Code clean, commenté et maintenable</li>
+          <li>Performance optimale (score Lighthouse &gt; 90)</li>
+          <li>SEO technique intégré dès la conception</li>
+          <li>Intégration Mobile Money disponible en option</li>
+        </ul>
+        <p>Je livre les projets avec une <strong>documentation complète</strong> et reste disponible après livraison pour les questions techniques.</p>
+      </div>
+    </div>
+
+    <!-- What's included -->
+    <div class="sec-card r">
+      <div class="sec-card-title">Ce qui est inclus</div>
+      <div class="includes-grid">
+        <div class="inc-item"><div class="inc-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5L4.5 7.5L8 3" stroke="#3CB878" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Design responsive mobile & desktop</div>
+        <div class="inc-item"><div class="inc-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5L4.5 7.5L8 3" stroke="#3CB878" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Optimisation SEO on-page</div>
+        <div class="inc-item"><div class="inc-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5L4.5 7.5L8 3" stroke="#3CB878" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Code source livré (GitHub)</div>
+        <div class="inc-item"><div class="inc-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5L4.5 7.5L8 3" stroke="#3CB878" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Déploiement sur Vercel/Netlify</div>
+        <div class="inc-item"><div class="inc-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5L4.5 7.5L8 3" stroke="#3CB878" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Documentation technique</div>
+        <div class="inc-item"><div class="inc-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5L4.5 7.5L8 3" stroke="#3CB878" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Support 30 jours post-livraison</div>
+      </div>
+      <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border2)">
+        <div style="font-size:13px;font-weight:700;color:var(--muted);margin-bottom:8px">Non inclus</div>
+        <div class="exc-item"><div class="exc-x"><svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M2 2L7 7M7 2L2 7" stroke="var(--muted)" stroke-width="1.3" stroke-linecap="round"/></svg></div>Contenu rédactionnel (textes & images)</div>
+        <div class="exc-item"><div class="exc-x"><svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M2 2L7 7M7 2L2 7" stroke="var(--muted)" stroke-width="1.3" stroke-linecap="round"/></svg></div>Nom de domaine et hébergement premium</div>
+        <div class="exc-item"><div class="exc-x"><svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M2 2L7 7M7 2L2 7" stroke="var(--muted)" stroke-width="1.3" stroke-linecap="round"/></svg></div>Logo (disponible en service séparé)</div>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="sec-card r">
+      <div class="sec-card-title">Questions fréquentes</div>
+      <div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            Combien de pages pouvez-vous créer ?
+            <svg class="faq-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="faq-a">Le forfait Basique inclut jusqu'à 5 pages. Standard jusqu'à 10 pages, Premium jusqu'à 20 pages. Des pages supplémentaires peuvent être ajoutées en option à 15 000 FCFA par page.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            Avez-vous de l'expérience avec les entreprises africaines ?
+            <svg class="faq-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="faq-a">Absolument. Plus de 70% de mes clients sont des entreprises africaines (Côte d'Ivoire, Sénégal, Ghana, Nigeria, Kenya). Je comprends les spécificités locales : intégration Mobile Money, multilinguisme, connexions lentes.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            Que se passe-t-il si je ne suis pas satisfait ?
+            <svg class="faq-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="faq-a">Le système Escrow Oriupe protège votre paiement. Vous n'êtes débité que si vous validez la livraison. En cas de litige, l'équipe Oriupe arbitre sur la base des échanges archivés dans le chat.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            Peut-on communiquer en français ?
+            <svg class="faq-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="faq-a">Oui, je parle couramment français, anglais et twi. Je préfère même travailler en français avec les clients francophones, c'est plus précis pour définir vos besoins.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reviews -->
+    <div class="sec-card r">
+      <div class="sec-card-title">Avis clients (124)</div>
+      <div class="rating-overview">
+        <div class="rating-big">
+          <div class="rating-num">4,9</div>
+          <div class="rating-stars">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="#FFD700"><path d="M7 1L8.5 4.8H13L9.5 7.5L11 12L7 9.5L3 12L4.5 7.5L1 4.8H5.5Z"/></svg>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="#FFD700"><path d="M7 1L8.5 4.8H13L9.5 7.5L11 12L7 9.5L3 12L4.5 7.5L1 4.8H5.5Z"/></svg>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="#FFD700"><path d="M7 1L8.5 4.8H13L9.5 7.5L11 12L7 9.5L3 12L4.5 7.5L1 4.8H5.5Z"/></svg>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="#FFD700"><path d="M7 1L8.5 4.8H13L9.5 7.5L11 12L7 9.5L3 12L4.5 7.5L1 4.8H5.5Z"/></svg>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="#FFD700"><path d="M7 1L8.5 4.8H13L9.5 7.5L11 12L7 9.5L3 12L4.5 7.5L1 4.8H5.5Z"/></svg>
+          </div>
+          <div class="rating-count">124 avis</div>
+        </div>
+        <div class="rating-bars">
+          <div class="rbar-row"><span class="rbar-lbl">5</span><div class="rbar-track"><div class="rbar-fill" style="width:88%"></div></div><span class="rbar-pct">88%</span></div>
+          <div class="rbar-row"><span class="rbar-lbl">4</span><div class="rbar-track"><div class="rbar-fill" style="width:9%;background:linear-gradient(90deg,#A8D8A8,#8DC63F)"></div></div><span class="rbar-pct">9%</span></div>
+          <div class="rbar-row"><span class="rbar-lbl">3</span><div class="rbar-track"><div class="rbar-fill" style="width:2%;background:linear-gradient(90deg,#FFD700,#FFA500)"></div></div><span class="rbar-pct">2%</span></div>
+          <div class="rbar-row"><span class="rbar-lbl">2</span><div class="rbar-track"><div class="rbar-fill" style="width:1%;background:linear-gradient(90deg,#FFA500,#FF6B35)"></div></div><span class="rbar-pct">1%</span></div>
+          <div class="rbar-row"><span class="rbar-lbl">1</span><div class="rbar-track"><div class="rbar-fill" style="width:0%;background:linear-gradient(90deg,#FF6B35,#E53935)"></div></div><span class="rbar-pct">0%</span></div>
+        </div>
+      </div>
+
+      <!-- Review cards -->
+      <div class="review-card">
+        <div class="review-top">
+          <div class="reviewer">
+            <div class="rev-av" style="background:linear-gradient(135deg,var(--green),var(--lime));color:#fff">AK</div>
+            <div>
+              <div class="rev-name">Aminata Koné</div>
+              <div class="rev-country">🇨🇮 Abidjan, Côte d'Ivoire</div>
+            </div>
+          </div>
+          <div class="rev-date">Il y a 3 jours</div>
+        </div>
+        <div class="rev-stars">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="#FFD700"><path d="M6 1L7.4 4.2H11L8.2 6.2L9.2 10L6 7.8L2.8 10L3.8 6.2L1 4.2H4.6Z"/></svg>
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="#FFD700"><path d="M6 1L7.4 4.2H11L8.2 6.2L9.2 10L6 7.8L2.8 10L3.8 6.2L1 4.2H4.6Z"/></svg>
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="#FFD700"><path d="M6 1L7.4 4.2H11L8.2 6.2L9.2 10L6 7.8L2.8 10L3.8 6.2L1 4.2H4.6Z"/></svg>
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="#FFD700"><path d="M6 1L7.4 4.2H11L8.2 6.2L9.2 10L6 7.8L2.8 10L3.8 6.2L1 4.2H4.6Z"/></svg>
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="#FFD700"><path d="M6 1L7.4 4.2H11L8.2 6.2L9.2 10L6 7.8L2.8 10L3.8 6.2L1 4.2H4.6Z"/></svg>
+        </div>
+        <div class="rev-text">Site livré en 4 jours seulement (délai annoncé : 5 jours). Le code est propre, la performance est excellente. Kofi a même ajouté des fonctionnalités que je n'avais pas demandées et qui améliorent vraiment l'UX.</div>
+        <div class="rev-reply">
+          <strong>Réponse de Kofi Asante :</strong> Merci Aminata ! C'était un plaisir de travailler avec vous. N'hésitez pas à me recontacter pour les prochaines évolutions de votre site.
+        </div>
+      </div>
+
+      <div class="review-card">
+        <div class="review-top">
+          <div class="reviewer">
+            <div class="rev-av" style="background:linear-gradient(135deg,var(--blue),#7DD6F0);color:#fff">OD</div>
+            <div>
+              <div class="rev-name">Oumar Diallo</div>
+              <div class="rev-country">🇸🇳 Dakar, Sénégal</div>
+            </div>
+          </div>
+          <div class="rev-date">Il y a 1 semaine</div>
+        </div>
+        <div class="rev-stars">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="#FFD700"><path d="M6 1L7.4 4.2H11L8.2 6.2L9.2 10L6 7.8L2.8 10L3.8 6.2L1 4.2H4.6Z"/></svg>
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="#FFD700"><path d="M6 1L7.4 4.2H11L8.2 6.2L9.2 10L6 7.8L2.8 10L3.8 6.2L1 4.2H4.6Z"/></svg>
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="#FFD700"><path d="M6 1L7.4 4.2H11L8.2 6.2L9.2 10L6 7.8L2.8 10L3.8 6.2L1 4.2H4.6Z"/></svg>
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="#FFD700"><path d="M6 1L7.4 4.2H11L8.2 6.2L9.2 10L6 7.8L2.8 10L3.8 6.2L1 4.2H4.6Z"/></svg>
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="#FFD700"><path d="M6 1L7.4 4.2H11L8.2 6.2L9.2 10L6 7.8L2.8 10L3.8 6.2L1 4.2H4.6Z"/></svg>
+        </div>
+        <div class="rev-text">Communication excellente pendant tout le projet. Kofi a pris le temps de comprendre mes besoins avant de commencer à coder. Résultat professionnel qui dépasse mes attentes.</div>
+      </div>
+
+      <div style="text-align:center;margin-top:16px">
+        <button style="font-size:13px;font-weight:700;color:var(--green);background:transparent;border:1.5px solid var(--green);padding:10px 28px;border-radius:9px;cursor:pointer;transition:all .2s" onmouseover="this.style.background='var(--green-xl)'" onmouseout="this.style.background='transparent'">Voir les 124 avis</button>
+      </div>
+    </div>
+
+    <!-- Similar services -->
+    <div class="sec-card r">
+      <div class="sec-card-title">Services similaires</div>
+      <div class="similar-grid stg">
+        <div class="sim-card r">
+          <div class="sim-img" style="background:linear-gradient(135deg,#1A4726,#2D7A3E)">
+            <svg width="40" height="32" viewBox="0 0 40 32" fill="none"><rect x="2" y="4" width="36" height="24" rx="4" stroke="rgba(141,198,63,.5)" stroke-width="1.5"/><path d="M6 12L20 4L34 12L20 20Z" stroke="#8DC63F" stroke-width="1.5" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="sim-body">
+            <div class="sim-title">Application mobile Flutter iOS & Android</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:4px">
+              <div style="display:flex;align-items:center;gap:3px;font-size:11px;color:var(--muted)">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="#FFD700"><path d="M5 1L6.2 3.8H9L6.8 5.4L7.6 8.5L5 6.8L2.4 8.5L3.2 5.4L1 3.8H3.8Z"/></svg>
+                4,8 <span>(56)</span>
+              </div>
+              <div class="sim-price">80 000 FCFA</div>
+            </div>
+          </div>
+        </div>
+        <div class="sim-card r">
+          <div class="sim-img" style="background:linear-gradient(135deg,#0C304A,#1A5A7A)">
+            <svg width="40" height="32" viewBox="0 0 40 32" fill="none"><path d="M5 22L14 10L22 16L30 6L38 22Z" stroke="#29ABE2" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="sim-body">
+            <div class="sim-title">WordPress professionnel + WooCommerce</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:4px">
+              <div style="display:flex;align-items:center;gap:3px;font-size:11px;color:var(--muted)">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="#FFD700"><path d="M5 1L6.2 3.8H9L6.8 5.4L7.6 8.5L5 6.8L2.4 8.5L3.2 5.4L1 3.8H3.8Z"/></svg>
+                4,7 <span>(89)</span>
+              </div>
+              <div class="sim-price">25 000 FCFA</div>
+            </div>
+          </div>
+        </div>
+        <div class="sim-card r">
+          <div class="sim-img" style="background:linear-gradient(135deg,#1A1240,#2D1E78)">
+            <svg width="40" height="32" viewBox="0 0 40 32" fill="none"><rect x="4" y="6" width="32" height="20" rx="4" stroke="rgba(196,181,253,.5)" stroke-width="1.5"/><path d="M10 16H30M10 11H22M10 21H18" stroke="rgba(196,181,253,.8)" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </div>
+          <div class="sim-body">
+            <div class="sim-title">API REST Node.js + documentation Swagger</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:4px">
+              <div style="display:flex;align-items:center;gap:3px;font-size:11px;color:var(--muted)">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="#FFD700"><path d="M5 1L6.2 3.8H9L6.8 5.4L7.6 8.5L5 6.8L2.4 8.5L3.2 5.4L1 3.8H3.8Z"/></svg>
+                5,0 <span>(34)</span>
+              </div>
+              <div class="sim-price">45 000 FCFA</div>
+            </div>
+          </div>
+        </div>
+        <div class="sim-card r">
+          <div class="sim-img" style="background:linear-gradient(135deg,#0A3020,#1A6038)">
+            <svg width="40" height="32" viewBox="0 0 40 32" fill="none"><circle cx="20" cy="16" r="10" stroke="rgba(60,184,120,.5)" stroke-width="1.5"/><circle cx="20" cy="16" r="5" fill="rgba(60,184,120,.3)"/><path d="M20 6C20 6 15 10 15 16s5 10 5 10M20 6c0 0 5 4 5 10s-5 10-5 10M10 16H30" stroke="rgba(60,184,120,.7)" stroke-width="1.2"/></svg>
+          </div>
+          <div class="sim-body">
+            <div class="sim-title">Audit SEO technique + rapport complet</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:4px">
+              <div style="display:flex;align-items:center;gap:3px;font-size:11px;color:var(--muted)">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="#FFD700"><path d="M5 1L6.2 3.8H9L6.8 5.4L7.6 8.5L5 6.8L2.4 8.5L3.2 5.4L1 3.8H3.8Z"/></svg>
+                4,9 <span>(112)</span>
+              </div>
+              <div class="sim-price">30 000 FCFA</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div><!-- /left -->
+
+  <!-- ═══ RIGHT ═══ -->
+  <div class="right-col">
+
+    <!-- Offer card -->
+    <div class="offer-card r">
+      <div class="offer-tabs">
+        <button class="offer-tab active" id="tabB" onclick="setOffer('basic')">Basique</button>
+        <button class="offer-tab" id="tabS" onclick="setOffer('standard')">Standard</button>
+        <button class="offer-tab" id="tabP" onclick="setOffer('premium')">Premium</button>
+      </div>
+      <div class="offer-body">
+        <div class="offer-price" id="offer-price">35 000 FCFA</div>
+        <div class="offer-desc" id="offer-desc">Site vitrine 5 pages, design responsive, déploiement inclus. Idéal pour débuter votre présence en ligne.</div>
+
+        <div class="offer-details">
+          <div class="od-row">
+            <div class="od-icon"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="4.5" stroke="#3CB878" stroke-width="1.2"/><path d="M6 3V6L8 8" stroke="#3CB878" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+            <span id="offer-delay">Livraison en <strong>5 jours</strong></span>
+          </div>
+          <div class="od-row">
+            <div class="od-icon"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6C2 4 3.3 2 5 2s3 1.6 3 3c0 3-3 5-3 5S2 8.7 2 6Z" stroke="#3CB878" stroke-width="1.2"/></svg></div>
+            <span id="offer-revisions"><strong>2 révisions</strong> incluses</span>
+          </div>
+          <div class="od-row">
+            <div class="od-icon"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="2" y="2" width="8" height="8" rx="1.5" stroke="#3CB878" stroke-width="1.2"/><path d="M4 6H8M4 4.5H7M4 7.5H6" stroke="#3CB878" stroke-width="1" stroke-linecap="round"/></svg></div>
+            <span id="offer-pages"><strong>5 pages</strong></span>
+          </div>
+        </div>
+
+        <div class="offer-includes" id="offer-includes">
+          <div class="oi-row checked"><div class="oi-check"><svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5L3.5 6.5L7.5 2.5" stroke="#3CB878" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Design responsive</div>
+          <div class="oi-row checked"><div class="oi-check"><svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5L3.5 6.5L7.5 2.5" stroke="#3CB878" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>SEO on-page</div>
+          <div class="oi-row checked"><div class="oi-check"><svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5L3.5 6.5L7.5 2.5" stroke="#3CB878" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Code source livré</div>
+          <div class="oi-row"><div class="oi-x"><svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1.5 1.5L6.5 6.5M6.5 1.5L1.5 6.5" stroke="var(--muted2)" stroke-width="1.2" stroke-linecap="round"/></svg></div>Intégration Mobile Money</div>
+          <div class="oi-row"><div class="oi-x"><svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1.5 1.5L6.5 6.5M6.5 1.5L1.5 6.5" stroke="var(--muted2)" stroke-width="1.2" stroke-linecap="round"/></svg></div>Dashboard admin</div>
+        </div>
+
+        <button class="btn-order">Commander maintenant</button>
+        <button class="btn-contact">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2 3H13V10H8L5 13V10H2V3Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+          Contacter le vendeur
+        </button>
+
+        <div class="escrow-notice">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="flex-shrink:0"><path d="M10 2L14 4V9C14 13 10 17 10 17C10 17 6 13 6 9V4L10 2Z" stroke="#3CB878" stroke-width="1.5" stroke-linejoin="round" fill="rgba(60,184,120,.1)"/><path d="M8 9.5L9.5 11L12.5 8" stroke="#3CB878" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <p><strong>Paiement Escrow Oriupe :</strong> Votre argent est bloqué et libéré uniquement quand vous validez la livraison. Zéro risque.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Extras -->
+    <div class="extras-card r">
+      <div class="extras-title">Options supplémentaires</div>
+      <div class="extra-item">
+        <div class="extra-check checked" onclick="toggleExtra(this)"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5L4.5 7.5L8 3" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="extra-info">
+          <div class="extra-name">Livraison Express</div>
+          <div class="extra-desc">Livraison en 48h au lieu de 5 jours</div>
+        </div>
+        <div class="extra-price">+15 000 FCFA</div>
+      </div>
+      <div class="extra-item">
+        <div class="extra-check" onclick="toggleExtra(this)"></div>
+        <div class="extra-info">
+          <div class="extra-name">Intégration Mobile Money</div>
+          <div class="extra-desc">Orange Money, MTN MoMo, Wave</div>
+        </div>
+        <div class="extra-price">+25 000 FCFA</div>
+      </div>
+      <div class="extra-item">
+        <div class="extra-check" onclick="toggleExtra(this)"></div>
+        <div class="extra-info">
+          <div class="extra-name">Dashboard Admin</div>
+          <div class="extra-desc">Interface de gestion du contenu</div>
+        </div>
+        <div class="extra-price">+40 000 FCFA</div>
+      </div>
+    </div>
+
+    <!-- Seller card -->
+    <div class="seller-card r">
+      <div class="sc-top">
+        <div class="sc-av">
+          KA
+          <div class="online"></div>
+        </div>
+        <div>
+          <div class="sc-name">Kofi Asante</div>
+          <div class="sc-title">Développeur Full-Stack · 🇬🇭 Ghana</div>
+          <div style="display:flex;gap:5px;margin-top:5px">
+            <span style="font-size:10px;font-weight:700;background:linear-gradient(135deg,var(--green),var(--lime));color:#fff;padding:3px 9px;border-radius:20px">Top Oriupe</span>
+            <span style="font-size:10px;font-weight:700;background:var(--blue-l);color:#0A6A90;padding:3px 9px;border-radius:20px">KYC ✓</span>
+          </div>
+        </div>
+      </div>
+      <div class="sc-stats">
+        <div class="sc-stat">
+          <div class="sc-stat-val" style="color:var(--green)">4,9</div>
+          <div class="sc-stat-lbl">Note moyenne</div>
+        </div>
+        <div class="sc-stat">
+          <div class="sc-stat-val">892</div>
+          <div class="sc-stat-lbl">Commandes</div>
+        </div>
+        <div class="sc-stat">
+          <div class="sc-stat-val" style="color:var(--blue)">&lt; 1h</div>
+          <div class="sc-stat-lbl">Tps réponse</div>
+        </div>
+        <div class="sc-stat">
+          <div class="sc-stat-val">98%</div>
+          <div class="sc-stat-lbl">Complétion</div>
+        </div>
+      </div>
+      <button class="btn-view-profile">Voir le profil complet</button>
+    </div>
+
+  </div><!-- /right -->
+</div><!-- /page -->
+
+<!-- FOOTER MINI -->
+<footer style="background:var(--navy2);padding:28px 52px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+  <div style="display:flex;align-items:center;gap:9px">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="7" cy="7" r="5.5" fill="#8DC63F" opacity=".85"/><circle cx="17" cy="7" r="5.5" fill="#29ABE2" opacity=".85"/><circle cx="7" cy="17" r="5.5" fill="#3CB878" opacity=".85"/><circle cx="17" cy="17" r="5.5" fill="rgba(255,255,255,.1)"/><rect x="6.5" y="6.5" width="11" height="11" rx="1" fill="rgba(60,184,120,.4)"/></svg>
+    <span style="font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;color:#fff">Oriupe</span>
+  </div>
+  <span style="font-size:12px;color:rgba(255,255,255,.3)">© 2025 Oriupe — Abidjan, Côte d'Ivoire</span>
+</footer>
+
+<script>
+/* SCROLL */
+window.addEventListener('scroll',()=>{
+  const t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;
+  document.getElementById('progress').style.width=(t/h*100)+'%';
+},{passive:true});
+
+/* REVEAL */
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('vis')})},{threshold:.08,rootMargin:'0px 0px -20px 0px'});
+document.querySelectorAll('.r').forEach(el=>obs.observe(el));
+
+/* GALLERY THUMBS */
+document.querySelectorAll('.thumb').forEach((t,i)=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('.thumb').forEach(th=>th.classList.remove('active'));
+    t.classList.add('active');
+  });
+});
+
+/* OFFER TABS */
+const offers={
+  basic:{price:'35 000 FCFA',desc:'Site vitrine 5 pages, design responsive, déploiement inclus.',delay:'5 jours',rev:'2 révisions',pages:'5 pages',includes:[true,true,true,false,false]},
+  standard:{price:'65 000 FCFA',desc:'Site 10 pages, animations, formulaires, blog CMS et Mobile Money.',delay:'7 jours',rev:'5 révisions',pages:'10 pages',includes:[true,true,true,true,false]},
+  premium:{price:'120 000 FCFA',desc:'Site complet 20 pages, e-commerce, dashboard admin et maintenance 3 mois.',delay:'14 jours',rev:'Illimitées',pages:'20 pages',includes:[true,true,true,true,true]},
+};
+const offerItems=['Design responsive','SEO on-page','Code source livré','Intégration Mobile Money','Dashboard admin'];
+function setOffer(type){
+  const o=offers[type];
+  document.getElementById('offer-price').textContent=o.price;
+  document.getElementById('offer-desc').textContent=o.desc;
+  document.getElementById('offer-delay').innerHTML=`Livraison en <strong>${o.delay}</strong>`;
+  document.getElementById('offer-revisions').innerHTML=`<strong>${o.rev}</strong> incluses`;
+  document.getElementById('offer-pages').innerHTML=`<strong>${o.pages}</strong>`;
+  const inc=document.getElementById('offer-includes');
+  inc.innerHTML=o.includes.map((v,i)=>v?`<div class="oi-row checked"><div class="oi-check"><svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5L3.5 6.5L7.5 2.5" stroke="#3CB878" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>${offerItems[i]}</div>`:`<div class="oi-row"><div class="oi-x"><svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1.5 1.5L6.5 6.5M6.5 1.5L1.5 6.5" stroke="var(--muted2)" stroke-width="1.2" stroke-linecap="round"/></svg></div>${offerItems[i]}</div>`).join('');
+  ['tabB','tabS','tabP'].forEach((id,i)=>{document.getElementById(id).classList.toggle('active',['basic','standard','premium'][i]===type)});
+}
+
+/* FAQ */
+function toggleFaq(el){
+  const ans=el.nextElementSibling,arrow=el.querySelector('.faq-arrow');
+  const open=ans.style.display==='block';
+  ans.style.display=open?'none':'block';
+  arrow.style.transform=open?'rotate(0)':'rotate(180deg)';
+}
+
+/* EXTRAS */
+function toggleExtra(el){
+  el.classList.toggle('checked');
+  if(el.classList.contains('checked')){
+    el.innerHTML='<svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5L4.5 7.5L8 3" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  }else{
+    el.innerHTML='';
+  }
+}
+</script>
+  <script type="module" src="/src/scripts/main.js"></script>
+</body>
+</html>

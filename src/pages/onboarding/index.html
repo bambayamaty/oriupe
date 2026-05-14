@@ -1,0 +1,1609 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Oriupe — Devenir Freelance</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#F4F6F9;color:#1B3A4A;min-height:100vh}
+a{text-decoration:none;color:inherit}
+button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer}
+
+:root{
+  --navy:#0F2535;
+  --navy2:#1B3A4A;
+  --green:#3CB878;
+  --green-d:#27965D;
+  --green-l:#E4F7EE;
+  --green-xl:#F0FBF5;
+  --blue:#29ABE2;
+  --blue-l:#E2F4FB;
+  --lime:#8DC63F;
+  --lime-l:#EEF7D6;
+  --gold:#F59E0B;
+  --gold-l:#FEF3C7;
+  --bg:#F4F6F9;
+  --bg2:#ECEEF3;
+  --white:#fff;
+  --border:rgba(27,58,74,.1);
+  --border2:rgba(27,58,74,.06);
+  --muted:rgba(27,58,74,.52);
+  --muted2:rgba(27,58,74,.32);
+  --red:#EF4444;
+  --red-l:#FEE2E2;
+  --shadow:0 2px 12px rgba(15,37,53,.08);
+  --shadow-md:0 8px 32px rgba(15,37,53,.13);
+  --shadow-lg:0 20px 60px rgba(15,37,53,.18);
+  --spring:cubic-bezier(.34,1.56,.64,1);
+  --ease:cubic-bezier(.25,.46,.45,.94);
+  --sidebar-w:280px;
+}
+
+/* ─────────────────────────────────────
+   PROGRESS BAR TOP
+───────────────────────────────────── */
+#progress{
+  position:fixed;top:0;left:0;height:3px;z-index:9999;
+  width:0;background:linear-gradient(90deg,var(--green),var(--blue),var(--lime));
+  border-radius:0 3px 3px 0;transition:width .4s var(--ease)
+}
+
+/* ─────────────────────────────────────
+   APP LAYOUT
+───────────────────────────────────── */
+.app{display:flex;min-height:100vh}
+
+/* ─────────────────────────────────────
+   SIDEBAR
+───────────────────────────────────── */
+.sidebar{
+  width:var(--sidebar-w);
+  background:var(--navy);
+  display:flex;flex-direction:column;
+  position:fixed;top:0;left:0;bottom:0;
+  z-index:200;padding:32px 24px;
+  overflow-y:auto
+}
+.sidebar::-webkit-scrollbar{width:3px}
+.sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:2px}
+
+.sb-logo{display:flex;align-items:center;gap:9px;margin-bottom:36px}
+.sb-logo-t{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:-.3px}
+
+.sb-heading{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:#fff;line-height:1.25;margin-bottom:6px}
+.sb-sub{font-size:12px;color:rgba(255,255,255,.4);margin-bottom:32px;line-height:1.7}
+
+/* Steps list */
+.steps-list{display:flex;flex-direction:column;gap:0;flex:1}
+.step-item{
+  display:flex;align-items:flex-start;gap:13px;
+  padding:13px 12px;border-radius:10px;
+  cursor:pointer;position:relative;
+  transition:background .2s
+}
+.step-item:hover{background:rgba(255,255,255,.05)}
+.step-item.active{background:rgba(60,184,120,.12)}
+
+/* Vertical connector line */
+.step-item:not(:last-child) .step-line{
+  position:absolute;left:24px;top:46px;
+  width:2px;height:calc(100% - 6px);
+  background:rgba(255,255,255,.07);
+  border-radius:2px
+}
+.step-item.done:not(:last-child) .step-line{background:rgba(60,184,120,.3)}
+
+.step-dot{
+  width:30px;height:30px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:800;flex-shrink:0;
+  border:2px solid rgba(255,255,255,.12);
+  color:rgba(255,255,255,.25);background:transparent;
+  transition:all .3s var(--spring);position:relative;z-index:1
+}
+.step-item.active .step-dot{
+  background:#fff;border-color:#fff;
+  color:var(--navy2);
+  box-shadow:0 0 0 5px rgba(255,255,255,.12)
+}
+.step-item.done .step-dot{
+  background:var(--green);border-color:var(--green);
+  color:#fff;box-shadow:0 2px 10px rgba(60,184,120,.4)
+}
+
+.step-txt{padding-top:4px}
+.step-lbl{
+  font-size:13px;font-weight:600;
+  color:rgba(255,255,255,.3);
+  transition:color .2s;line-height:1.3
+}
+.step-item.active .step-lbl{color:#fff;font-weight:700}
+.step-item.done .step-lbl{color:rgba(255,255,255,.55)}
+.step-desc{font-size:11px;color:rgba(255,255,255,.18);margin-top:2px}
+.step-item.active .step-desc,.step-item.done .step-desc{color:rgba(255,255,255,.3)}
+
+/* Sidebar bottom tip */
+.sb-tip{
+  margin-top:auto;padding-top:24px;
+  border-top:1px solid rgba(255,255,255,.07)
+}
+.sb-tip-box{
+  background:rgba(60,184,120,.1);
+  border:1px solid rgba(60,184,120,.2);
+  border-radius:12px;padding:14px 16px
+}
+.sb-tip-box p{font-size:12px;color:rgba(255,255,255,.5);line-height:1.7}
+.sb-tip-box strong{color:var(--green)}
+
+/* ─────────────────────────────────────
+   MAIN
+───────────────────────────────────── */
+.main{
+  margin-left:var(--sidebar-w);flex:1;
+  display:flex;flex-direction:column;min-height:100vh
+}
+
+/* Top bar */
+.topbar{
+  background:rgba(255,255,255,.95);backdrop-filter:blur(16px);
+  height:64px;display:flex;align-items:center;
+  justify-content:space-between;
+  padding:0 48px;border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:100;box-shadow:var(--shadow)
+}
+.tb-left{display:flex;align-items:center;gap:18px}
+.tb-step{font-size:12px;font-weight:600;color:var(--muted);white-space:nowrap}
+.progress-wrap{display:flex;align-items:center;gap:10px}
+.progress-bar{width:200px;height:6px;background:var(--bg2);border-radius:3px;overflow:hidden}
+.progress-fill{
+  height:100%;border-radius:3px;
+  background:linear-gradient(90deg,var(--green),var(--lime));
+  transition:width .5s var(--ease)
+}
+.progress-pct{font-size:12px;font-weight:800;color:var(--green);white-space:nowrap}
+.tb-right{display:flex;align-items:center;gap:10px}
+.btn-save-later{
+  font-size:12px;font-weight:600;color:var(--muted);
+  background:transparent;border:1.5px solid var(--border);
+  border-radius:8px;padding:7px 14px;
+  transition:all .2s
+}
+.btn-save-later:hover{border-color:var(--green);color:var(--green)}
+
+/* Content */
+.content{
+  padding:48px;flex:1;
+  max-width:800px
+}
+
+/* ─────────────────────────────────────
+   STEP PANELS
+───────────────────────────────────── */
+.panel{display:none}
+.panel.active{display:block;animation:fadeIn .35s var(--ease)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+.panel-title{
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:28px;font-weight:800;color:var(--navy2);
+  letter-spacing:-.6px;margin-bottom:8px
+}
+.panel-sub{
+  font-size:14px;color:var(--muted);
+  line-height:1.8;margin-bottom:36px;max-width:560px
+}
+
+/* ─────────────────────────────────────
+   CARDS / SECTIONS
+───────────────────────────────────── */
+.section-card{
+  background:#fff;border:1px solid var(--border);
+  border-radius:18px;padding:26px 28px;
+  margin-bottom:20px;box-shadow:var(--shadow)
+}
+.sc-label{
+  font-size:11px;font-weight:700;color:var(--muted);
+  letter-spacing:1px;text-transform:uppercase;margin-bottom:16px
+}
+
+/* ─────────────────────────────────────
+   FORM ELEMENTS
+───────────────────────────────────── */
+.fg{margin-bottom:20px}
+.fg:last-child{margin-bottom:0}
+
+.fl{
+  font-size:12px;font-weight:700;color:var(--navy2);
+  display:flex;align-items:center;gap:6px;margin-bottom:8px
+}
+.req{color:var(--red)}
+.fl-hint{font-size:10px;color:var(--muted2);font-weight:400}
+
+.inp{
+  width:100%;background:#fff;
+  border:1.5px solid var(--border);
+  border-radius:11px;padding:13px 16px;
+  font-size:14px;color:var(--navy2);
+  outline:none;transition:border-color .2s,box-shadow .2s;
+  font-family:'Plus Jakarta Sans',sans-serif
+}
+.inp:focus{
+  border-color:var(--green);
+  box-shadow:0 0 0 3px rgba(60,184,120,.1)
+}
+.inp::placeholder{color:var(--muted2)}
+textarea.inp{resize:vertical;min-height:120px;line-height:1.75}
+select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 7L11 1' stroke='%231B3A4A' stroke-opacity='.4' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:38px}
+
+.char-count{font-size:11px;color:var(--muted2);text-align:right;margin-top:4px}
+.inp-note{font-size:11px;color:var(--muted2);margin-top:5px;display:flex;align-items:center;gap:5px;line-height:1.5}
+
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+
+/* ─────────────────────────────────────
+   AVATAR UPLOAD
+───────────────────────────────────── */
+.avatar-row{display:flex;align-items:center;gap:24px;padding:6px 0}
+.av-circle{
+  width:88px;height:88px;border-radius:50%;
+  background:linear-gradient(135deg,var(--green),var(--lime));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:28px;font-weight:800;color:#fff;
+  flex-shrink:0;cursor:pointer;
+  border:3px solid #fff;box-shadow:var(--shadow-md);
+  overflow:hidden;position:relative;
+  transition:transform .25s var(--spring)
+}
+.av-circle:hover{transform:scale(1.05)}
+.av-hover-overlay{
+  position:absolute;inset:0;
+  background:rgba(0,0,0,.38);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transition:opacity .2s;border-radius:50%
+}
+.av-circle:hover .av-hover-overlay{opacity:1}
+.av-details{flex:1}
+.av-details p{font-size:13px;font-weight:600;color:var(--navy2);margin-bottom:8px}
+.av-details small{font-size:11px;color:var(--muted2);display:block;margin-top:6px;line-height:1.6}
+.btn-av-upload{
+  font-size:13px;font-weight:700;color:var(--green);
+  background:#fff;border:1.5px solid var(--green);
+  border-radius:9px;padding:9px 18px;
+  transition:background .2s
+}
+.btn-av-upload:hover{background:var(--green-xl)}
+
+/* ─────────────────────────────────────
+   BANNER UPLOAD
+───────────────────────────────────── */
+.banner-drop{
+  height:110px;border-radius:14px;
+  background:linear-gradient(135deg,var(--navy),#1A4A6A);
+  border:2px dashed rgba(255,255,255,.15);
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:7px;cursor:pointer;
+  transition:border-color .2s;margin-bottom:6px
+}
+.banner-drop:hover{border-color:rgba(60,184,120,.5)}
+.banner-drop p{font-size:12px;font-weight:600;color:rgba(255,255,255,.45)}
+.banner-drop small{font-size:10px;color:rgba(255,255,255,.25)}
+
+/* ─────────────────────────────────────
+   CATEGORY GRID
+───────────────────────────────────── */
+.cat-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:10px
+}
+.cat-card{
+  border:2px solid var(--border);border-radius:14px;
+  padding:16px 10px;text-align:center;cursor:pointer;
+  transition:all .2s;position:relative;background:#fff
+}
+.cat-card:hover{border-color:var(--green);background:var(--green-xl)}
+.cat-card.sel{border-color:var(--green);background:var(--green-xl)}
+.cat-card.sel::after{
+  content:'✓';position:absolute;top:7px;right:9px;
+  font-size:10px;color:var(--green);font-weight:800
+}
+.cat-card input[type=radio]{display:none}
+.cat-icon{
+  width:38px;height:38px;border-radius:10px;
+  margin:0 auto 10px;display:flex;align-items:center;justify-content:center
+}
+.cat-name{font-size:11px;font-weight:700;color:var(--navy2)}
+
+/* ─────────────────────────────────────
+   TAGS / SKILLS
+───────────────────────────────────── */
+.tags-area{
+  border:1.5px solid var(--border);border-radius:11px;
+  padding:10px 12px;min-height:56px;
+  display:flex;flex-wrap:wrap;gap:7px;align-items:flex-start;
+  cursor:text;transition:border-color .2s,box-shadow .2s;
+  background:#fff
+}
+.tags-area:focus-within{border-color:var(--green);box-shadow:0 0 0 3px rgba(60,184,120,.1)}
+.tag-chip{
+  display:inline-flex;align-items:center;gap:5px;
+  background:var(--navy2);color:#fff;
+  font-size:12px;font-weight:600;
+  padding:5px 12px;border-radius:20px;white-space:nowrap
+}
+.tag-rm{
+  background:none;border:none;color:rgba(255,255,255,.5);
+  font-size:15px;line-height:1;padding:0;
+  cursor:pointer;transition:color .15s
+}
+.tag-rm:hover{color:#fff}
+.tag-input{
+  border:none;outline:none;font-size:13px;
+  color:var(--navy2);background:transparent;
+  min-width:100px;flex:1;font-family:'Plus Jakarta Sans',sans-serif
+}
+.tag-input::placeholder{color:var(--muted2)}
+.suggestions{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px;align-items:center}
+.sugg-lbl{font-size:11px;color:var(--muted2)}
+.sugg-tag{
+  font-size:12px;font-weight:500;color:var(--muted);
+  background:var(--bg);border:1px solid var(--border);
+  padding:4px 12px;border-radius:20px;cursor:pointer;
+  transition:all .2s
+}
+.sugg-tag:hover{border-color:var(--green);color:var(--green);background:var(--green-xl)}
+
+/* ─────────────────────────────────────
+   LANGUAGES
+───────────────────────────────────── */
+.lang-list{display:flex;flex-direction:column;gap:10px}
+.lang-row{display:flex;align-items:center;gap:10px}
+.lang-del{
+  width:34px;height:34px;border:1.5px solid var(--border);
+  border-radius:9px;background:#fff;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;cursor:pointer;transition:all .2s;color:var(--muted)
+}
+.lang-del:hover{border-color:var(--red);color:var(--red);background:var(--red-l)}
+.btn-add-lang{
+  display:inline-flex;align-items:center;gap:7px;
+  font-size:13px;font-weight:700;color:var(--blue);
+  background:#fff;border:1.5px dashed rgba(41,171,226,.3);
+  border-radius:10px;padding:10px 18px;
+  cursor:pointer;margin-top:8px;
+  transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif
+}
+.btn-add-lang:hover{border-color:var(--blue);background:var(--blue-l)}
+
+/* ─────────────────────────────────────
+   LEVEL PICKER
+───────────────────────────────────── */
+.level-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.level-card{
+  border:2px solid var(--border);border-radius:12px;
+  padding:16px;text-align:center;cursor:pointer;
+  transition:all .2s;background:#fff
+}
+.level-card:hover{border-color:var(--green)}
+.level-card.sel{border-color:var(--green);background:var(--green-xl)}
+.level-card input[type=radio]{display:none}
+.level-num{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;color:var(--navy2);margin-bottom:5px}
+.level-name{font-size:13px;font-weight:700;color:var(--navy2);margin-bottom:3px}
+.level-years{font-size:11px;color:var(--muted)}
+
+/* ─────────────────────────────────────
+   PORTFOLIO GRID
+───────────────────────────────────── */
+.portfolio-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.port-card{
+  border:1px solid var(--border);border-radius:12px;
+  overflow:hidden;cursor:pointer;background:#fff;
+  transition:all .25s var(--spring);position:relative
+}
+.port-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md);border-color:rgba(60,184,120,.3)}
+.port-img{height:90px;display:flex;align-items:center;justify-content:center}
+.port-body{padding:10px 12px;background:#fff}
+.port-name{font-size:11px;font-weight:700;color:var(--navy2)}
+.port-tech{font-size:10px;color:var(--muted2);margin-top:2px}
+.port-overlay{
+  position:absolute;inset:0;
+  background:rgba(15,37,53,.55);
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  opacity:0;transition:opacity .2s;backdrop-filter:blur(3px)
+}
+.port-card:hover .port-overlay{opacity:1}
+.port-rm{
+  width:26px;height:26px;background:#fff;
+  border:none;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:13px;color:var(--navy2)
+}
+.port-rm:hover{background:var(--red-l);color:var(--red)}
+.port-add{
+  border:2px dashed var(--border);border-radius:12px;
+  height:130px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:7px;cursor:pointer;transition:all .2s
+}
+.port-add:hover{border-color:var(--green);background:var(--green-xl)}
+.port-add p{font-size:11px;font-weight:600;color:var(--muted2)}
+.port-add:hover p{color:var(--green-d)}
+
+/* ─────────────────────────────────────
+   PRICING CARDS
+───────────────────────────────────── */
+.pricing-stack{display:flex;flex-direction:column;gap:14px}
+.price-card{
+  border:1.5px solid var(--border);border-radius:16px;
+  background:#fff;overflow:hidden;transition:border-color .2s
+}
+.price-card:hover{border-color:rgba(60,184,120,.3)}
+.price-card.highlighted{border-color:var(--blue)}
+.price-card-head{
+  padding:18px 22px;display:flex;
+  align-items:center;justify-content:space-between;
+  border-bottom:1px solid var(--border2)
+}
+.pch-left{display:flex;align-items:center;gap:10px}
+.pch-name{font-size:15px;font-weight:800;color:var(--navy2)}
+.pch-badge{
+  font-size:10px;font-weight:700;
+  padding:3px 9px;border-radius:20px
+}
+.pb-basic{background:var(--bg2);color:var(--muted)}
+.pb-std{background:var(--blue-l);color:#0A6A90}
+.pb-prem{background:var(--gold-l);color:#92400E}
+.pch-right{display:flex;align-items:center;gap:8px}
+.price-inp{
+  width:130px;border:1.5px solid var(--border);
+  border-radius:9px;padding:9px 12px;
+  font-size:16px;font-weight:800;color:var(--navy2);
+  text-align:right;outline:none;
+  transition:border-color .2s;font-family:'Plus Jakarta Sans',sans-serif
+}
+.price-inp:focus{border-color:var(--green)}
+.price-cur{font-size:13px;font-weight:700;color:var(--muted);white-space:nowrap}
+.price-card-body{padding:18px 22px;display:grid;grid-template-columns:1fr;gap:12px}
+
+/* ─────────────────────────────────────
+   DELIVERY CHIPS
+───────────────────────────────────── */
+.delivery-row{display:flex;flex-wrap:wrap;gap:8px}
+.del-chip{
+  padding:8px 18px;border:1.5px solid var(--border);
+  border-radius:22px;font-size:13px;font-weight:600;
+  color:var(--muted);background:#fff;cursor:pointer;
+  transition:all .2s
+}
+.del-chip:hover{border-color:var(--green);color:var(--green-d)}
+.del-chip.sel{border-color:var(--green);background:var(--green-xl);color:var(--green-d)}
+
+/* ─────────────────────────────────────
+   KYC
+───────────────────────────────────── */
+.kyc-list{display:flex;flex-direction:column;gap:14px}
+.kyc-card{
+  border:1.5px solid var(--border);border-radius:16px;
+  background:#fff;overflow:hidden;transition:border-color .2s
+}
+.kyc-card.done{border-color:var(--green);background:var(--green-xl)}
+.kyc-card-head{
+  padding:18px 22px;display:flex;
+  align-items:center;gap:14px
+}
+.kyc-icon{
+  width:44px;height:44px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0
+}
+.kyc-info{flex:1}
+.kyc-title{font-size:14px;font-weight:700;color:var(--navy2);margin-bottom:3px}
+.kyc-desc{font-size:12px;color:var(--muted)}
+.kyc-badge{
+  font-size:11px;font-weight:700;padding:4px 11px;
+  border-radius:20px;white-space:nowrap;flex-shrink:0
+}
+.kb-req{background:var(--gold-l);color:#92400E}
+.kb-done{background:var(--green-l);color:var(--green-d)}
+.kb-opt{background:var(--bg2);color:var(--muted)}
+.kyc-drop{
+  margin:0 22px 18px;border:2px dashed var(--border);
+  border-radius:12px;padding:24px;text-align:center;
+  cursor:pointer;transition:all .2s
+}
+.kyc-drop:hover,.kyc-drop.over{border-color:var(--green);background:var(--green-xl)}
+.kyc-drop h4{font-size:13px;font-weight:700;color:var(--navy2);margin-bottom:4px}
+.kyc-drop p{font-size:11px;color:var(--muted)}
+.kyc-done-row{
+  margin:0 22px 18px;
+  background:var(--green-l);border-radius:10px;
+  padding:11px 14px;display:flex;align-items:center;gap:9px
+}
+.kyc-done-row span{font-size:12px;font-weight:600;color:var(--green-d)}
+
+/* ─────────────────────────────────────
+   SUCCESS
+───────────────────────────────────── */
+.success-page{text-align:center;padding:20px 0 40px}
+.success-icon{
+  width:100px;height:100px;border-radius:50%;
+  background:linear-gradient(135deg,var(--green),var(--lime));
+  margin:0 auto 28px;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 8px 32px rgba(60,184,120,.4);
+  animation:popIn .5s var(--spring) both
+}
+@keyframes popIn{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
+.success-h{
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:34px;font-weight:800;color:var(--navy2);
+  letter-spacing:-.8px;margin-bottom:12px
+}
+.success-sub{
+  font-size:15px;color:var(--muted);
+  line-height:1.85;max-width:480px;
+  margin:0 auto 36px
+}
+.success-stats{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:14px;max-width:520px;margin:0 auto 36px
+}
+.ss-card{
+  background:#fff;border:1px solid var(--border);
+  border-radius:14px;padding:18px;
+  box-shadow:var(--shadow)
+}
+.ss-val{
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:24px;font-weight:800;margin-bottom:4px
+}
+.ss-lbl{font-size:11px;color:var(--muted)}
+.next-steps{
+  background:#fff;border:1px solid var(--border);
+  border-radius:18px;padding:26px 28px;
+  max-width:520px;margin:0 auto 36px;text-align:left;
+  box-shadow:var(--shadow)
+}
+.next-steps h3{font-size:14px;font-weight:700;color:var(--navy2);margin-bottom:18px}
+.ns-row{display:flex;align-items:flex-start;gap:13px;margin-bottom:14px}
+.ns-row:last-child{margin-bottom:0}
+.ns-dot{
+  width:28px;height:28px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px
+}
+.ns-text strong{font-size:13px;font-weight:700;color:var(--navy2);display:block;margin-bottom:2px}
+.ns-text span{font-size:11px;color:var(--muted)}
+.success-btns{display:flex;justify-content:center;gap:14px;flex-wrap:wrap}
+
+/* ─────────────────────────────────────
+   NAV BUTTONS
+───────────────────────────────────── */
+.panel-nav{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-top:40px;padding-top:28px;
+  border-top:1px solid var(--border)
+}
+.btn-back{
+  display:flex;align-items:center;gap:8px;
+  font-size:14px;font-weight:700;color:var(--muted);
+  background:#fff;border:1.5px solid var(--border);
+  border-radius:11px;padding:12px 22px;
+  transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif
+}
+.btn-back:hover{border-color:var(--navy2);color:var(--navy2)}
+.btn-back:disabled{opacity:.3;pointer-events:none}
+.btn-next{
+  display:flex;align-items:center;gap:9px;
+  font-size:14px;font-weight:800;color:#fff;
+  background:linear-gradient(135deg,var(--green),#4FD090);
+  border:none;border-radius:11px;padding:13px 28px;
+  box-shadow:0 4px 20px rgba(60,184,120,.35);
+  transition:all .2s var(--spring);
+  font-family:'Plus Jakarta Sans',sans-serif
+}
+.btn-next:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(60,184,120,.45)}
+.btn-next.blue{background:linear-gradient(135deg,var(--blue),#7DD6F0);box-shadow:0 4px 20px rgba(41,171,226,.3)}
+.btn-next.blue:hover{box-shadow:0 8px 28px rgba(41,171,226,.4)}
+.btn-finish{
+  display:inline-flex;align-items:center;gap:9px;
+  font-size:15px;font-weight:800;color:#fff;
+  background:linear-gradient(135deg,var(--green),#4FD090);
+  border:none;border-radius:12px;padding:15px 32px;
+  box-shadow:0 4px 20px rgba(60,184,120,.35);
+  transition:all .2s var(--spring);
+  font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer
+}
+.btn-finish:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(60,184,120,.45)}
+.btn-secondary{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:14px;font-weight:700;color:var(--navy2);
+  background:#fff;border:1.5px solid var(--border);
+  border-radius:12px;padding:14px 26px;
+  transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer
+}
+.btn-secondary:hover{border-color:var(--green);color:var(--green)}
+
+/* ─────────────────────────────────────
+   CHECKLIST ITEMS
+───────────────────────────────────── */
+.check-list{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.check-item{
+  display:flex;align-items:center;gap:9px;
+  font-size:13px;font-weight:500;color:var(--navy2)
+}
+.ci-on{
+  width:20px;height:20px;border-radius:50%;
+  background:var(--green-l);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center
+}
+.ci-off{
+  width:20px;height:20px;border-radius:50%;
+  background:var(--bg2);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center
+}
+
+/* ─────────────────────────────────────
+   RESPONSIVE
+───────────────────────────────────── */
+@media(max-width:1024px){
+  :root{--sidebar-w:240px}
+  .content{padding:36px 32px}
+  .cat-grid{grid-template-columns:repeat(4,1fr)}
+}
+@media(max-width:768px){
+  .sidebar{display:none}
+  .main{margin-left:0}
+  .topbar{padding:0 20px}
+  .content{padding:24px 16px}
+  .cat-grid{grid-template-columns:repeat(2,1fr)}
+  .g2{grid-template-columns:1fr}
+  .g3{grid-template-columns:1fr 1fr}
+  .portfolio-grid{grid-template-columns:repeat(2,1fr)}
+  .success-stats{grid-template-columns:1fr}
+  .panel-nav{flex-direction:column-reverse;gap:12px}
+  .btn-back,.btn-next{width:100%;justify-content:center}
+}
+@media(max-width:480px){
+  .cat-grid{grid-template-columns:repeat(2,1fr)}
+  .level-grid{grid-template-columns:1fr 1fr 1fr}
+  .progress-bar{width:120px}
+}
+</style>
+  <script type="module" src="/src/components/nav.js"></script>
+</head>
+<body>
+
+<div id="progress"></div>
+<div class="app">
+
+<!-- ████████ SIDEBAR ████████ -->
+<aside class="sidebar">
+
+  <div class="sb-logo">
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+      <circle cx="8.5" cy="8.5" r="7" fill="#8DC63F" opacity=".9"/>
+      <circle cx="19.5" cy="8.5" r="7" fill="#29ABE2" opacity=".9"/>
+      <circle cx="8.5" cy="19.5" r="7" fill="#3CB878" opacity=".9"/>
+      <circle cx="19.5" cy="19.5" r="7" fill="rgba(255,255,255,.1)"/>
+      <rect x="8" y="8" width="12" height="12" rx="1.2" fill="rgba(60,184,120,.42)"/>
+    </svg>
+    <span class="sb-logo-t">Oriupe</span>
+  </div>
+
+  <div class="sb-heading">Devenez<br>Freelance</div>
+  <div class="sb-sub">5 étapes pour créer votre profil et commencer à vendre</div>
+
+  <div class="steps-list">
+
+    <div class="step-item active" id="si1" onclick="goTo(1)">
+      <div class="step-line"></div>
+      <div class="step-dot" id="sd1">1</div>
+      <div class="step-txt">
+        <div class="step-lbl">Identité & Profil</div>
+        <div class="step-desc">Photo · Bio · Catégorie</div>
+      </div>
+    </div>
+
+    <div class="step-item" id="si2" onclick="goTo(2)">
+      <div class="step-line"></div>
+      <div class="step-dot" id="sd2">2</div>
+      <div class="step-txt">
+        <div class="step-lbl">Compétences</div>
+        <div class="step-desc">Skills · Langues · Portfolio</div>
+      </div>
+    </div>
+
+    <div class="step-item" id="si3" onclick="goTo(3)">
+      <div class="step-line"></div>
+      <div class="step-dot" id="sd3">3</div>
+      <div class="step-txt">
+        <div class="step-lbl">Mon premier service</div>
+        <div class="step-desc">Offre · Prix · Délai</div>
+      </div>
+    </div>
+
+    <div class="step-item" id="si4" onclick="goTo(4)">
+      <div class="step-line"></div>
+      <div class="step-dot" id="sd4">4</div>
+      <div class="step-txt">
+        <div class="step-lbl">Vérification KYC</div>
+        <div class="step-desc">Identité · Paiement</div>
+      </div>
+    </div>
+
+    <div class="step-item" id="si5" onclick="goTo(5)">
+      <div class="step-dot" id="sd5">5</div>
+      <div class="step-txt">
+        <div class="step-lbl">Prêt à vendre 🎉</div>
+        <div class="step-desc">Votre profil est actif</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="sb-tip">
+    <div class="sb-tip-box">
+      <p>Les freelances avec un profil <strong>100% complet</strong> reçoivent <strong>3× plus de commandes</strong>. Prenez le temps de soigner chaque étape.</p>
+    </div>
+  </div>
+
+</aside>
+
+<!-- ████████ MAIN ████████ -->
+<div class="main">
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="tb-left">
+      <span class="tb-step" id="tb-step-label">Étape 1 sur 5</span>
+      <div class="progress-wrap">
+        <div class="progress-bar">
+          <div class="progress-fill" id="prog-fill" style="width:20%"></div>
+        </div>
+        <span class="progress-pct" id="prog-pct">20%</span>
+      </div>
+    </div>
+    <div class="tb-right">
+      <button class="btn-save-later">Continuer plus tard</button>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- ══════════════════════════════
+         ÉTAPE 1 — IDENTITÉ
+    ══════════════════════════════ -->
+    <div class="panel active" id="p1">
+
+      <div class="panel-title">Votre identité</div>
+      <div class="panel-sub">Ces informations apparaissent sur votre profil public. C'est votre vitrine — soignez chaque détail pour faire bonne impression.</div>
+
+      <!-- Photo & Bannière -->
+      <div class="section-card">
+        <div class="sc-label">Visuels du profil</div>
+
+        <!-- Avatar -->
+        <div class="fg">
+          <div class="fl">Photo de profil <span class="req">*</span></div>
+          <div class="avatar-row">
+            <div class="av-circle" id="avCircle" onclick="document.getElementById('av-inp').click()">
+              AB
+              <div class="av-hover-overlay">
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M3 16L8 11L11 14L16 8L19 16Z" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/><circle cx="7" cy="8" r="2.5" stroke="#fff" stroke-width="1.4"/><rect x="1" y="1" width="20" height="20" rx="3" stroke="#fff" stroke-width="1.4"/></svg>
+              </div>
+            </div>
+            <div class="av-details">
+              <p>Choisissez une photo professionnelle</p>
+              <button class="btn-av-upload" onclick="document.getElementById('av-inp').click()">Télécharger une photo</button>
+              <small>JPG ou PNG · Max 5 Mo · Fond neutre recommandé</small>
+            </div>
+            <input type="file" id="av-inp" accept="image/*" style="display:none" onchange="previewAvatar(this)"/>
+          </div>
+        </div>
+
+        <!-- Bannière -->
+        <div class="fg" style="margin-bottom:0">
+          <div class="fl">Bannière de profil <span class="fl-hint">(optionnel — recommandé)</span></div>
+          <div class="banner-drop" onclick="document.getElementById('ban-inp').click()">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M14 6V22M6 14H22" stroke="rgba(255,255,255,.4)" stroke-width="2.2" stroke-linecap="round"/></svg>
+            <p>Cliquer pour ajouter une bannière</p>
+            <small>1280 × 320 px · JPG, PNG · Max 8 Mo</small>
+          </div>
+          <input type="file" id="ban-inp" accept="image/*" style="display:none"/>
+        </div>
+      </div>
+
+      <!-- Infos personnelles -->
+      <div class="section-card">
+        <div class="sc-label">Informations personnelles</div>
+
+        <div class="g2">
+          <div class="fg">
+            <div class="fl">Prénom <span class="req">*</span></div>
+            <input type="text" class="inp" placeholder="Kofi" value="Amadou"/>
+          </div>
+          <div class="fg">
+            <div class="fl">Nom <span class="req">*</span></div>
+            <input type="text" class="inp" placeholder="Asante" value="Bamba"/>
+          </div>
+        </div>
+
+        <div class="fg">
+          <div class="fl">Titre professionnel <span class="req">*</span> <span class="fl-hint">ex : Designer UI/UX · Expert Figma & Adobe XD</span></div>
+          <input type="text" class="inp" id="title-inp" maxlength="80" placeholder="Développeur Full-Stack React · Node.js · Mobile Money" oninput="cnt(this,'tc',80)"/>
+          <div class="char-count"><span id="tc">0</span> / 80</div>
+        </div>
+
+        <div class="g2">
+          <div class="fg">
+            <div class="fl">Pays <span class="req">*</span></div>
+            <select class="inp">
+              <option>🇨🇮 Côte d'Ivoire</option>
+              <option>🇸🇳 Sénégal</option>
+              <option>🇬🇭 Ghana</option>
+              <option>🇳🇬 Nigeria</option>
+              <option>🇨🇲 Cameroun</option>
+              <option>🇰🇪 Kenya</option>
+              <option>🇲🇱 Mali</option>
+              <option>🇧🇫 Burkina Faso</option>
+              <option>🇹🇬 Togo</option>
+              <option>🇧🇯 Bénin</option>
+              <option>🇿🇦 Afrique du Sud</option>
+            </select>
+          </div>
+          <div class="fg">
+            <div class="fl">Ville</div>
+            <input type="text" class="inp" placeholder="Abidjan"/>
+          </div>
+        </div>
+
+        <div class="fg" style="margin-bottom:0">
+          <div class="fl">Disponibilité <span class="req">*</span></div>
+          <select class="inp">
+            <option>Disponible — Temps plein (40h / semaine)</option>
+            <option>Disponible — Mi-temps (20h / semaine)</option>
+            <option>Disponible — Week-ends uniquement</option>
+            <option>Temporairement indisponible</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Catégorie -->
+      <div class="section-card">
+        <div class="sc-label">Catégorie principale <span class="req">*</span></div>
+        <div class="cat-grid">
+
+          <label class="cat-card sel" onclick="selCat(this)">
+            <input type="radio" name="cat" value="dev" checked/>
+            <div class="cat-icon" style="background:linear-gradient(135deg,#0F2535,#1A4A6A)">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8L2 10L5 12M15 8L18 10L15 12M12 5L8 15" stroke="#3CB878" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="cat-name">Développement</div>
+          </label>
+
+          <label class="cat-card" onclick="selCat(this)">
+            <input type="radio" name="cat" value="design"/>
+            <div class="cat-icon" style="background:linear-gradient(135deg,#1A4726,#2D7A3E)">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 16L9 11L14.5 5.5C15.5 4.5 16.5 5.5 15.5 6.5L10 12L9 16H4Z" stroke="#8DC63F" stroke-width="1.6" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="cat-name">Design</div>
+          </label>
+
+          <label class="cat-card" onclick="selCat(this)">
+            <input type="radio" name="cat" value="marketing"/>
+            <div class="cat-icon" style="background:linear-gradient(135deg,#0C304A,#1A5A7A)">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 15L6 9L10 12L14 7L17 15Z" stroke="#29ABE2" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="rgba(41,171,226,.1)"/></svg>
+            </div>
+            <div class="cat-name">Marketing</div>
+          </label>
+
+          <label class="cat-card" onclick="selCat(this)">
+            <input type="radio" name="cat" value="redaction"/>
+            <div class="cat-icon" style="background:linear-gradient(135deg,#3D1A78,#6B36D1)">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="3" width="14" height="14" rx="2" stroke="rgba(196,181,253,.8)" stroke-width="1.4"/><path d="M6 8H14M6 11H11" stroke="rgba(196,181,253,.8)" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <div class="cat-name">Rédaction</div>
+          </label>
+
+          <label class="cat-card" onclick="selCat(this)">
+            <input type="radio" name="cat" value="video"/>
+            <div class="cat-icon" style="background:linear-gradient(135deg,#7A1A1A,#C03030)">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="5" width="11" height="10" rx="2" stroke="rgba(255,160,160,.8)" stroke-width="1.4"/><path d="M13 8.5L18 6V14L13 11.5" stroke="rgba(255,160,160,.8)" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="cat-name">Vidéo</div>
+          </label>
+
+          <label class="cat-card" onclick="selCat(this)">
+            <input type="radio" name="cat" value="finance"/>
+            <div class="cat-icon" style="background:linear-gradient(135deg,#2A1A08,#5A3010)">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="4" width="16" height="12" rx="2" stroke="rgba(252,211,77,.8)" stroke-width="1.4"/><path d="M2 8H18M6 12H8M10 12H12" stroke="rgba(252,211,77,.8)" stroke-width="1.3" stroke-linecap="round"/></svg>
+            </div>
+            <div class="cat-name">Finance</div>
+          </label>
+
+          <label class="cat-card" onclick="selCat(this)">
+            <input type="radio" name="cat" value="musique"/>
+            <div class="cat-icon" style="background:linear-gradient(135deg,#063B4B,#0A7090)">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="6.5" cy="14" r="2.5" stroke="rgba(103,232,249,.8)" stroke-width="1.3"/><circle cx="14" cy="12" r="2.5" stroke="rgba(103,232,249,.8)" stroke-width="1.3"/><path d="M9 14V7L16.5 4.5V12" stroke="rgba(103,232,249,.8)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="cat-name">Musique</div>
+          </label>
+
+          <label class="cat-card" onclick="selCat(this)">
+            <input type="radio" name="cat" value="formation"/>
+            <div class="cat-icon" style="background:linear-gradient(135deg,#1A3A78,#2E60C0)">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M2 8L10 5L18 8L10 11L2 8Z" stroke="rgba(165,199,255,.8)" stroke-width="1.4" stroke-linejoin="round"/><path d="M5 9.5V14C5 14 7.5 16 10 16s5-2 5-2V9.5" stroke="rgba(165,199,255,.8)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="cat-name">Formation</div>
+          </label>
+
+        </div>
+      </div>
+
+      <!-- Bio -->
+      <div class="section-card">
+        <div class="sc-label">À propos de vous <span class="req">*</span></div>
+        <div class="fg" style="margin-bottom:0">
+          <textarea class="inp" id="bio-inp" rows="6" maxlength="2000" oninput="cnt(this,'bc',2000)" placeholder="Décrivez votre expertise, votre approche et ce qui vous rend unique. Parlez directement à vos futurs clients. Minimum 150 mots recommandé."></textarea>
+          <div class="char-count"><span id="bc">0</span> / 2000</div>
+        </div>
+      </div>
+
+      <div class="panel-nav">
+        <button class="btn-back" disabled>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3L5 7L9 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Précédent
+        </button>
+        <button class="btn-next" onclick="goTo(2)">
+          Suivant — Compétences
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3L9 7L5 11" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════
+         ÉTAPE 2 — COMPÉTENCES
+    ══════════════════════════════ -->
+    <div class="panel" id="p2">
+
+      <div class="panel-title">Vos compétences</div>
+      <div class="panel-sub">Indiquez vos compétences techniques, votre niveau d'expérience et les langues dans lesquelles vous pouvez travailler.</div>
+
+      <!-- Skills -->
+      <div class="section-card">
+        <div class="sc-label">Compétences techniques <span class="req">*</span></div>
+        <div class="fg">
+          <div class="fl">Tapez une compétence puis appuyez sur <strong>Entrée</strong> <span class="fl-hint">Maximum 15</span></div>
+          <div class="tags-area" id="tags-area" onclick="document.getElementById('tag-inp').focus()">
+            <div class="tag-chip">React.js <button class="tag-rm" onclick="rmTag(this)" type="button">×</button></div>
+            <div class="tag-chip">Next.js <button class="tag-rm" onclick="rmTag(this)" type="button">×</button></div>
+            <div class="tag-chip">Node.js <button class="tag-rm" onclick="rmTag(this)" type="button">×</button></div>
+            <input class="tag-input" id="tag-inp" placeholder="Ajouter une compétence..." onkeydown="addTag(event)"/>
+          </div>
+          <div class="suggestions">
+            <span class="sugg-lbl">Suggestions :</span>
+            <span class="sugg-tag" onclick="addSugg(this)">TypeScript</span>
+            <span class="sugg-tag" onclick="addSugg(this)">MongoDB</span>
+            <span class="sugg-tag" onclick="addSugg(this)">PostgreSQL</span>
+            <span class="sugg-tag" onclick="addSugg(this)">Tailwind CSS</span>
+            <span class="sugg-tag" onclick="addSugg(this)">Docker</span>
+            <span class="sugg-tag" onclick="addSugg(this)">GraphQL</span>
+            <span class="sugg-tag" onclick="addSugg(this)">AWS</span>
+            <span class="sugg-tag" onclick="addSugg(this)">Figma</span>
+            <span class="sugg-tag" onclick="addSugg(this)">Shopify</span>
+          </div>
+        </div>
+
+        <div class="fg" style="margin-bottom:0">
+          <div class="fl">Outils & logiciels</div>
+          <input type="text" class="inp" placeholder="VS Code, GitHub, Jira, Postman, Figma... (séparés par des virgules)"/>
+        </div>
+      </div>
+
+      <!-- Niveau -->
+      <div class="section-card">
+        <div class="sc-label">Niveau d'expérience <span class="req">*</span></div>
+        <div class="level-grid">
+          <label class="level-card" onclick="selLevel(this)">
+            <input type="radio" name="level" value="junior"/>
+            <div class="level-num">🌱</div>
+            <div class="level-name">Junior</div>
+            <div class="level-years">0 – 2 ans</div>
+          </label>
+          <label class="level-card sel" onclick="selLevel(this)">
+            <input type="radio" name="level" value="intermediate" checked/>
+            <div class="level-num">⚡</div>
+            <div class="level-name">Intermédiaire</div>
+            <div class="level-years">2 – 5 ans</div>
+          </label>
+          <label class="level-card" onclick="selLevel(this)">
+            <input type="radio" name="level" value="expert"/>
+            <div class="level-num">🏆</div>
+            <div class="level-name">Expert</div>
+            <div class="level-years">5+ ans</div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Langues -->
+      <div class="section-card">
+        <div class="sc-label">Langues de travail <span class="req">*</span></div>
+        <div class="lang-list" id="lang-list">
+          <div class="lang-row">
+            <select class="inp" style="flex:1">
+              <option>Français</option><option>Anglais</option><option>Arabe</option><option>Swahili</option><option>Portugais</option><option>Haoussa</option>
+            </select>
+            <select class="inp" style="width:170px">
+              <option>Natif</option><option>Courant (C1/C2)</option><option>Intermédiaire (B1/B2)</option><option>Notions (A1/A2)</option>
+            </select>
+            <button class="lang-del" onclick="rmLang(this)">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 2L10 10M10 2L2 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+          <div class="lang-row">
+            <select class="inp" style="flex:1">
+              <option>Anglais</option><option>Français</option><option>Arabe</option><option>Swahili</option>
+            </select>
+            <select class="inp" style="width:170px">
+              <option>Courant (C1/C2)</option><option>Natif</option><option>Intermédiaire</option>
+            </select>
+            <button class="lang-del" onclick="rmLang(this)">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 2L10 10M10 2L2 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+        </div>
+        <button class="btn-add-lang" onclick="addLang()">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2V12M2 7H12" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+          Ajouter une langue
+        </button>
+      </div>
+
+      <!-- Portfolio -->
+      <div class="section-card">
+        <div class="sc-label">
+          Portfolio
+          <span style="background:var(--gold-l);color:#92400E;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;margin-left:6px;text-transform:none;letter-spacing:0">Fortement recommandé</span>
+        </div>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.7">Ajoutez vos meilleures réalisations. Les freelances avec un portfolio reçoivent <strong style="color:var(--navy2)">2× plus de commandes</strong>.</p>
+        <div class="portfolio-grid">
+          <div class="port-card">
+            <div class="port-img" style="background:linear-gradient(135deg,#0F2535,#1A5A7A)">
+              <svg width="40" height="32" viewBox="0 0 40 32" fill="none"><path d="M5 22L14 8L22 14L30 6L36 22Z" stroke="#29ABE2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="rgba(41,171,226,.1)"/></svg>
+            </div>
+            <div class="port-body">
+              <div class="port-name">AgriConnect — App Web</div>
+              <div class="port-tech">Next.js · PostgreSQL · 2024</div>
+            </div>
+            <div class="port-overlay">
+              <button class="port-rm">×</button>
+            </div>
+          </div>
+          <div class="port-card">
+            <div class="port-img" style="background:linear-gradient(135deg,#0A3020,#1A6038)">
+              <svg width="40" height="32" viewBox="0 0 40 32" fill="none"><rect x="12" y="3" width="16" height="26" rx="3" stroke="rgba(141,198,63,.7)" stroke-width="1.8"/><rect x="15" y="7" width="10" height="14" rx="2" fill="rgba(141,198,63,.2)"/><rect x="17" y="23" width="6" height="3" rx="1.5" fill="rgba(141,198,63,.5)"/></svg>
+            </div>
+            <div class="port-body">
+              <div class="port-name">PayFlow — Mobile</div>
+              <div class="port-tech">React Native · 2024</div>
+            </div>
+            <div class="port-overlay">
+              <button class="port-rm">×</button>
+            </div>
+          </div>
+          <div class="port-add" onclick="document.getElementById('port-inp').click()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            <p>Ajouter un projet</p>
+          </div>
+        </div>
+        <input type="file" id="port-inp" accept="image/*,.pdf" multiple style="display:none"/>
+      </div>
+
+      <div class="panel-nav">
+        <button class="btn-back" onclick="goTo(1)">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3L5 7L9 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Précédent
+        </button>
+        <button class="btn-next" onclick="goTo(3)">
+          Suivant — Mon service
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3L9 7L5 11" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════
+         ÉTAPE 3 — SERVICE
+    ══════════════════════════════ -->
+    <div class="panel" id="p3">
+
+      <div class="panel-title">Votre premier service</div>
+      <div class="panel-sub">Définissez ce que vous proposez, à quel prix et en combien de temps. Vous pourrez créer d'autres services après votre inscription.</div>
+
+      <!-- Infos service -->
+      <div class="section-card">
+        <div class="sc-label">Présentation du service <span class="req">*</span></div>
+
+        <div class="fg">
+          <div class="fl">Titre du service <span class="req">*</span> <span class="fl-hint">Commencez par "Je vais..."</span></div>
+          <input type="text" class="inp" id="svc-title" maxlength="80" placeholder="Je vais créer votre site web React professionnel et optimisé SEO" oninput="cnt(this,'stc',80)"/>
+          <div class="char-count"><span id="stc">0</span> / 80</div>
+        </div>
+
+        <div class="fg">
+          <div class="fl">Description <span class="req">*</span></div>
+          <textarea class="inp" rows="5" placeholder="Décrivez en détail ce que vous livrez, votre processus et ce qui rend ce service unique..."></textarea>
+        </div>
+
+        <div class="fg" style="margin-bottom:0">
+          <div class="fl">Tags de recherche <span class="fl-hint">Max 5 — séparés par des virgules</span></div>
+          <input type="text" class="inp" placeholder="React, site web, responsive, SEO, Next.js"/>
+        </div>
+      </div>
+
+      <!-- Délai & révisions -->
+      <div class="section-card">
+        <div class="sc-label">Délai & révisions</div>
+
+        <div class="fg">
+          <div class="fl">Délai de livraison <span class="req">*</span></div>
+          <div class="delivery-row" id="del-row">
+            <div class="del-chip" onclick="selDel(this)">Express 24h</div>
+            <div class="del-chip" onclick="selDel(this)">3 jours</div>
+            <div class="del-chip sel" onclick="selDel(this)">5 jours</div>
+            <div class="del-chip" onclick="selDel(this)">7 jours</div>
+            <div class="del-chip" onclick="selDel(this)">14 jours</div>
+            <div class="del-chip" onclick="selDel(this)">30 jours</div>
+            <div class="del-chip" onclick="selDel(this)">Sur devis</div>
+          </div>
+        </div>
+
+        <div class="fg" style="margin-bottom:0">
+          <div class="fl">Révisions incluses <span class="req">*</span></div>
+          <select class="inp" style="max-width:280px">
+            <option>1 révision</option>
+            <option selected>2 révisions</option>
+            <option>3 révisions</option>
+            <option>5 révisions</option>
+            <option>Révisions illimitées</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Tarifs 3 niveaux -->
+      <div class="section-card">
+        <div class="sc-label">Offres & tarifs <span class="req">*</span></div>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.7">Définissez jusqu'à 3 niveaux d'offre. Les clients pourront choisir le forfait adapté à leur budget.</p>
+
+        <div class="pricing-stack">
+
+          <!-- BASIQUE -->
+          <div class="price-card">
+            <div class="price-card-head">
+              <div class="pch-left">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" stroke="var(--muted)" stroke-width="1.5"/></svg>
+                <span class="pch-name">Basique</span>
+                <span class="pch-badge pb-basic">ESSENTIEL</span>
+              </div>
+              <div class="pch-right">
+                <input type="number" class="price-inp" value="35000" min="1000" step="1000" placeholder="35 000"/>
+                <span class="price-cur">FCFA</span>
+              </div>
+            </div>
+            <div class="price-card-body">
+              <input type="text" class="inp" style="font-size:13px;padding:10px 14px" value="Site vitrine 5 pages, design responsive, déploiement inclus" placeholder="Description du forfait Basique..."/>
+              <div class="check-list">
+                <div class="check-item"><div class="ci-on"><svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5L3.5 6.5L7.5 2.5" stroke="#3CB878" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Design responsive</div>
+                <div class="check-item"><div class="ci-on"><svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5L3.5 6.5L7.5 2.5" stroke="#3CB878" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Code source livré (GitHub)</div>
+                <div class="check-item"><div class="ci-off"><svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1.5 1.5L6.5 6.5M6.5 1.5L1.5 6.5" stroke="var(--muted2)" stroke-width="1.3" stroke-linecap="round"/></svg></div><span style="color:var(--muted)">Intégration Mobile Money</span></div>
+                <div class="check-item"><div class="ci-off"><svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1.5 1.5L6.5 6.5M6.5 1.5L1.5 6.5" stroke="var(--muted2)" stroke-width="1.3" stroke-linecap="round"/></svg></div><span style="color:var(--muted)">Dashboard admin</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- STANDARD -->
+          <div class="price-card highlighted">
+            <div class="price-card-head" style="background:linear-gradient(135deg,rgba(41,171,226,.04),#fff)">
+              <div class="pch-left">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" fill="rgba(41,171,226,.1)" stroke="#29ABE2" stroke-width="1.5"/><path d="M9 5V9L12 11.5" stroke="#29ABE2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span class="pch-name">Standard</span>
+                <span class="pch-badge pb-std">⭐ POPULAIRE</span>
+              </div>
+              <div class="pch-right">
+                <input type="number" class="price-inp" value="65000" min="1000" step="1000" placeholder="65 000" style="border-color:rgba(41,171,226,.4)"/>
+                <span class="price-cur">FCFA</span>
+              </div>
+            </div>
+            <div class="price-card-body">
+              <input type="text" class="inp" style="font-size:13px;padding:10px 14px" value="Site 10 pages, animations, blog CMS, Mobile Money intégré" placeholder="Description du forfait Standard..."/>
+              <div class="check-list">
+                <div class="check-item"><div class="ci-on"><svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5L3.5 6.5L7.5 2.5" stroke="#3CB878" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Design responsive + animations</div>
+                <div class="check-item"><div class="ci-on"><svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5L3.5 6.5L7.5 2.5" stroke="#3CB878" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Intégration Mobile Money</div>
+                <div class="check-item"><div class="ci-on"><svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5L3.5 6.5L7.5 2.5" stroke="#3CB878" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Blog CMS inclus</div>
+                <div class="check-item"><div class="ci-off"><svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1.5 1.5L6.5 6.5M6.5 1.5L1.5 6.5" stroke="var(--muted2)" stroke-width="1.3" stroke-linecap="round"/></svg></div><span style="color:var(--muted)">Dashboard admin</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- PREMIUM -->
+          <div class="price-card">
+            <div class="price-card-head">
+              <div class="pch-left">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2L11 7H16.5L12.5 10L14 15.5L9 12.5L4 15.5L5.5 10L1.5 7H7Z" fill="rgba(245,158,11,.12)" stroke="#F59E0B" stroke-width="1.4" stroke-linejoin="round"/></svg>
+                <span class="pch-name">Premium</span>
+                <span class="pch-badge pb-prem">COMPLET</span>
+              </div>
+              <div class="pch-right">
+                <input type="number" class="price-inp" value="120000" min="1000" step="1000" placeholder="120 000"/>
+                <span class="price-cur">FCFA</span>
+              </div>
+            </div>
+            <div class="price-card-body">
+              <input type="text" class="inp" style="font-size:13px;padding:10px 14px" value="Site complet 20 pages, e-commerce, dashboard admin, maintenance 3 mois" placeholder="Description du forfait Premium..."/>
+              <div class="check-list">
+                <div class="check-item"><div class="ci-on"><svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5L3.5 6.5L7.5 2.5" stroke="#3CB878" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Tout le Standard inclus</div>
+                <div class="check-item"><div class="ci-on"><svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5L3.5 6.5L7.5 2.5" stroke="#3CB878" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Dashboard admin complet</div>
+                <div class="check-item"><div class="ci-on"><svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5L3.5 6.5L7.5 2.5" stroke="#3CB878" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>E-commerce & paiements</div>
+                <div class="check-item"><div class="ci-on"><svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5L3.5 6.5L7.5 2.5" stroke="#3CB878" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Maintenance 3 mois</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="panel-nav">
+        <button class="btn-back" onclick="goTo(2)">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3L5 7L9 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Précédent
+        </button>
+        <button class="btn-next" onclick="goTo(4)">
+          Suivant — Vérification KYC
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3L9 7L5 11" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════
+         ÉTAPE 4 — KYC
+    ══════════════════════════════ -->
+    <div class="panel" id="p4">
+
+      <div class="panel-title">Vérification d'identité</div>
+      <div class="panel-sub">La vérification KYC vous donne le badge <strong style="color:var(--green-d)">Identité vérifiée ✓</strong> et vous permet de recevoir vos paiements via Mobile Money.</div>
+
+      <!-- Security notice -->
+      <div style="background:var(--blue-l);border:1px solid rgba(41,171,226,.2);border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:13px;margin-bottom:24px">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="flex-shrink:0;margin-top:1px"><circle cx="10" cy="10" r="8" stroke="#29ABE2" stroke-width="1.5"/><path d="M10 7V11M10 13.5V14" stroke="#29ABE2" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:var(--navy2);margin-bottom:4px">Processus 100% sécurisé</div>
+          <div style="font-size:12px;color:var(--muted);line-height:1.7">Vos documents sont vérifiés par <strong style="color:var(--navy2)">Smile Identity</strong>, leader africain de la vérification d'identité. Aucune donnée n'est conservée au-delà de la vérification.</div>
+        </div>
+      </div>
+
+      <div class="kyc-list">
+
+        <!-- Pièce d'identité -->
+        <div class="kyc-card" id="kyc1">
+          <div class="kyc-card-head">
+            <div class="kyc-icon" style="background:var(--blue-l)">
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="2" y="5" width="18" height="12" rx="2" stroke="#29ABE2" stroke-width="1.5"/><circle cx="7.5" cy="11" r="2.5" stroke="#29ABE2" stroke-width="1.3"/><path d="M12 9H18M12 11H16M12 13H14" stroke="#29ABE2" stroke-width="1.3" stroke-linecap="round"/></svg>
+            </div>
+            <div class="kyc-info">
+              <div class="kyc-title">Pièce d'identité officielle</div>
+              <div class="kyc-desc">CNI, Passeport ou Permis de conduire — recto et verso</div>
+            </div>
+            <span class="kyc-badge kb-req">Requis</span>
+          </div>
+          <div class="kyc-drop" ondragover="this.classList.add('over');event.preventDefault()" ondragleave="this.classList.remove('over')" ondrop="this.classList.remove('over');kycUploaded('kyc1');event.preventDefault()" onclick="document.getElementById('kyc-id').click()">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" style="margin:0 auto 10px"><rect x="7" y="3" width="22" height="30" rx="3" stroke="var(--muted2)" stroke-width="1.5"/><path d="M11 12H25M11 17H21M11 22H17" stroke="var(--muted2)" stroke-width="1.4" stroke-linecap="round"/><circle cx="26" cy="26" r="8" fill="var(--blue)" stroke="#fff" stroke-width="1.5"/><path d="M23 26H29M26 23V29" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/></svg>
+            <h4>Glisser votre document ici ou cliquer pour sélectionner</h4>
+            <p>JPG, PNG ou PDF — Max 10 Mo</p>
+          </div>
+          <input type="file" id="kyc-id" accept="image/*,.pdf" style="display:none" onchange="kycUploaded('kyc1')"/>
+        </div>
+
+        <!-- Selfie -->
+        <div class="kyc-card" id="kyc2">
+          <div class="kyc-card-head">
+            <div class="kyc-icon" style="background:var(--green-l)">
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="9" r="4" stroke="#3CB878" stroke-width="1.5"/><path d="M4 20C4 16.7 7.1 14 11 14s7 2.7 7 6" stroke="#3CB878" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <div class="kyc-info">
+              <div class="kyc-title">Selfie avec votre document</div>
+              <div class="kyc-desc">Tenez votre pièce d'identité à côté de votre visage — visage bien éclairé</div>
+            </div>
+            <span class="kyc-badge kb-req">Requis</span>
+          </div>
+          <div class="kyc-drop" onclick="document.getElementById('kyc-selfie').click()">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" style="margin:0 auto 10px"><circle cx="18" cy="15" r="6.5" stroke="var(--muted2)" stroke-width="1.5"/><path d="M6 32C6 26.5 11.4 22 18 22s12 4.5 12 10" stroke="var(--muted2)" stroke-width="1.5" stroke-linecap="round"/><circle cx="28" cy="26" r="7" fill="var(--green)" stroke="#fff" stroke-width="1.5"/><path d="M25 26H31M28 23V29" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/></svg>
+            <h4>Ajouter votre selfie</h4>
+            <p>JPG ou PNG — Max 8 Mo · Photo récente</p>
+          </div>
+          <input type="file" id="kyc-selfie" accept="image/*" style="display:none" onchange="kycUploaded('kyc2')"/>
+        </div>
+
+        <!-- Mobile Money — déjà vérifié -->
+        <div class="kyc-card done">
+          <div class="kyc-card-head">
+            <div class="kyc-icon" style="background:rgba(255,102,0,.12)">
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="3" y="5" width="16" height="12" rx="2" stroke="#FF6600" stroke-width="1.5"/><path d="M3 9H19" stroke="#FF6600" stroke-width="1.3"/><circle cx="8" cy="14" r="1.5" stroke="#FF6600" stroke-width="1.2"/></svg>
+            </div>
+            <div class="kyc-info">
+              <div class="kyc-title">Compte Mobile Money</div>
+              <div class="kyc-desc">Pour recevoir vos paiements — Orange Money · MTN MoMo · Wave</div>
+            </div>
+            <span class="kyc-badge kb-done">✓ Vérifié</span>
+          </div>
+          <div class="kyc-done-row">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="var(--green)"/><path d="M5 8L7 10L11 6" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>Orange Money · +225 07 00 00 00 — vérifié lors de l'inscription</span>
+          </div>
+        </div>
+
+        <!-- Certifications optionnelles -->
+        <div class="kyc-card">
+          <div class="kyc-card-head">
+            <div class="kyc-icon" style="background:var(--gold-l)">
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 3L13.5 8H19L15 11L16.5 17L11 14L5.5 17L7 11L3 8H8.5Z" stroke="#F59E0B" stroke-width="1.5" stroke-linejoin="round" fill="rgba(245,158,11,.1)"/></svg>
+            </div>
+            <div class="kyc-info">
+              <div class="kyc-title">Certifications & Diplômes</div>
+              <div class="kyc-desc">Google, Meta, Microsoft, AWS — renforce la confiance des clients</div>
+            </div>
+            <span class="kyc-badge kb-opt">Optionnel</span>
+          </div>
+          <div class="kyc-drop" onclick="document.getElementById('kyc-cert').click()">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" style="margin:0 auto 8px"><path d="M16 4L18.5 9.5H24L20 13L21.5 18.5L16 15.5L10.5 18.5L12 13L8 9.5H13.5Z" stroke="var(--muted2)" stroke-width="1.5" stroke-linejoin="round"/></svg>
+            <h4>Ajouter des certifications</h4>
+            <p>PDF ou image — plusieurs fichiers acceptés</p>
+          </div>
+          <input type="file" id="kyc-cert" accept="image/*,.pdf" multiple style="display:none"/>
+        </div>
+
+      </div>
+
+      <div class="panel-nav">
+        <button class="btn-back" onclick="goTo(3)">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3L5 7L9 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Précédent
+        </button>
+        <button class="btn-next blue" onclick="goTo(5)">
+          Terminer et publier mon profil
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3L9 7L5 11" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════
+         ÉTAPE 5 — SUCCÈS
+    ══════════════════════════════ -->
+    <div class="panel" id="p5">
+      <div class="success-page">
+
+        <div class="success-icon">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+            <path d="M10 24L20 34L38 14" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+
+        <div class="success-h">Félicitations ! 🎉</div>
+        <div class="success-sub">Votre profil freelance est créé et en cours de vérification. Notre équipe vous contacte dans les <strong style="color:var(--navy2)">24 heures ouvrées</strong> pour valider votre identité.</div>
+
+        <div class="success-stats">
+          <div class="ss-card">
+            <div class="ss-val" style="color:var(--green)">24h</div>
+            <div class="ss-lbl">Délai vérification KYC</div>
+          </div>
+          <div class="ss-card">
+            <div class="ss-val" style="color:var(--blue)">1</div>
+            <div class="ss-lbl">Service publié et visible</div>
+          </div>
+          <div class="ss-card">
+            <div class="ss-val" style="color:var(--gold)">0%</div>
+            <div class="ss-lbl">Commission les 30 premiers jours</div>
+          </div>
+        </div>
+
+        <div class="next-steps">
+          <h3>Prochaines étapes recommandées</h3>
+          <div class="ns-row">
+            <div class="ns-dot" style="background:var(--green-l)"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6L5 9L10 3" stroke="var(--green)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div class="ns-text"><strong>Ajouter 3 projets au portfolio</strong><span>Les freelances avec portfolio reçoivent 2× plus de commandes</span></div>
+          </div>
+          <div class="ns-row">
+            <div class="ns-dot" style="background:var(--blue-l)"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6L5 9L10 3" stroke="var(--blue)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div class="ns-text"><strong>Enregistrer une vidéo de présentation</strong><span>+40% de visibilité avec une vidéo de 60 secondes</span></div>
+          </div>
+          <div class="ns-row">
+            <div class="ns-dot" style="background:var(--gold-l)"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6L5 9L10 3" stroke="var(--gold)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div class="ns-text"><strong>Répondre aux Appels d'Offres</strong><span>Des projets vérifiés attendent vos propositions dès maintenant</span></div>
+          </div>
+          <div class="ns-row">
+            <div class="ns-dot" style="background:var(--lime-l)"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6L5 9L10 3" stroke="var(--lime)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div class="ns-text"><strong>Partager votre profil Oriupe</strong><span>Sur WhatsApp, LinkedIn et Instagram pour obtenir vos 1ers clients</span></div>
+          </div>
+        </div>
+
+        <div class="success-btns">
+          <button class="btn-finish" onclick="window.location.href='oriupe_dashboard_freelance.html'">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="6" height="6" rx="1.5" stroke="#fff" stroke-width="1.3"/><rect x="9" y="1" width="6" height="6" rx="1.5" stroke="#fff" stroke-width="1.3"/><rect x="1" y="9" width="6" height="6" rx="1.5" stroke="#fff" stroke-width="1.3"/><rect x="9" y="9" width="6" height="6" rx="1.5" stroke="#fff" stroke-width="1.3"/></svg>
+            Accéder à mon dashboard
+          </button>
+          <button class="btn-secondary" onclick="window.location.href='oriupe_profil_freelance.html'">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="5.5" r="3" stroke="currentColor" stroke-width="1.3"/><path d="M2 13C2 10.2 4.2 8 7 8s5 2.2 5 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            Voir mon profil public
+          </button>
+        </div>
+
+      </div>
+    </div>
+    <!-- /panels -->
+
+  </div><!-- /content -->
+</div><!-- /main -->
+</div><!-- /app -->
+
+<!-- ████████ JAVASCRIPT ████████ -->
+<script>
+let current = 1;
+
+const stepLabels = [
+  'Étape 1 sur 5 — Identité & Profil',
+  'Étape 2 sur 5 — Compétences',
+  'Étape 3 sur 5 — Mon premier service',
+  'Étape 4 sur 5 — Vérification KYC',
+  '✅ Profil créé avec succès !'
+];
+
+function goTo(n) {
+  current = n;
+
+  // Show correct panel
+  document.querySelectorAll('.panel').forEach((p, i) => {
+    p.classList.toggle('active', i + 1 === n);
+  });
+
+  // Update sidebar steps
+  for (let i = 1; i <= 5; i++) {
+    const si = document.getElementById('si' + i);
+    const sd = document.getElementById('sd' + i);
+    si.classList.remove('active', 'done');
+    if (i < n) {
+      si.classList.add('done');
+      sd.innerHTML = '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6L5 9L10 3" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    } else if (i === n) {
+      si.classList.add('active');
+      sd.textContent = i;
+    } else {
+      sd.textContent = i;
+    }
+  }
+
+  // Update top bar
+  const pct = n * 20;
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('prog-pct').textContent = pct + '%';
+  document.getElementById('prog').style.width = pct + '%';
+  document.getElementById('tb-step-label').textContent = stepLabels[n - 1];
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* Category select */
+function selCat(el) {
+  document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+/* Level select */
+function selLevel(el) {
+  document.querySelectorAll('.level-card').forEach(c => c.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+/* Delivery chip */
+function selDel(el) {
+  document.querySelectorAll('.del-chip').forEach(c => c.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+/* Char count */
+function cnt(inp, id, max) {
+  const n = inp.value.length;
+  const el = document.getElementById(id);
+  if (el) {
+    el.textContent = n;
+    el.style.color = n / max > 0.9 ? 'var(--gold)' : n / max > 0.97 ? 'var(--red)' : 'var(--muted2)';
+  }
+}
+
+/* Tags */
+function addTag(e) {
+  if (e.key === 'Enter' || e.key === ',') {
+    e.preventDefault();
+    const inp = e.target;
+    const val = inp.value.trim().replace(',', '');
+    if (!val) return;
+    const chips = document.querySelectorAll('#tags-area .tag-chip');
+    if (chips.length >= 15) { inp.value = ''; return; }
+    const chip = document.createElement('div');
+    chip.className = 'tag-chip';
+    chip.innerHTML = val + ' <button class="tag-rm" onclick="rmTag(this)" type="button">×</button>';
+    document.getElementById('tags-area').insertBefore(chip, inp);
+    inp.value = '';
+  }
+}
+function rmTag(btn) { btn.parentElement.remove(); }
+function addSugg(el) {
+  const inp = document.getElementById('tag-inp');
+  inp.value = el.textContent;
+  addTag({ key: 'Enter', target: inp, preventDefault: () => {} });
+  el.remove();
+}
+
+/* Languages */
+function addLang() {
+  const row = document.createElement('div');
+  row.className = 'lang-row';
+  row.innerHTML = `
+    <select class="inp" style="flex:1">
+      <option>Français</option><option>Anglais</option><option>Arabe</option>
+      <option>Swahili</option><option>Portugais</option><option>Haoussa</option>
+    </select>
+    <select class="inp" style="width:170px">
+      <option>Courant (C1/C2)</option><option>Natif</option>
+      <option>Intermédiaire (B1/B2)</option><option>Notions (A1/A2)</option>
+    </select>
+    <button class="lang-del" onclick="rmLang(this)">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+        <path d="M2 2L10 10M10 2L2 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </button>`;
+  document.getElementById('lang-list').appendChild(row);
+}
+function rmLang(btn) {
+  const rows = document.querySelectorAll('.lang-row');
+  if (rows.length > 1) btn.closest('.lang-row').remove();
+}
+
+/* Avatar preview */
+function previewAvatar(inp) {
+  if (!inp.files[0]) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const av = document.getElementById('avCircle');
+    av.style.background = `url(${e.target.result}) center/cover no-repeat`;
+    av.textContent = '';
+    const ov = document.createElement('div');
+    ov.className = 'av-hover-overlay';
+    ov.innerHTML = '<svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M3 16L8 11L11 14L16 8L19 16Z" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/><circle cx="7" cy="8" r="2.5" stroke="#fff" stroke-width="1.4"/><rect x="1" y="1" width="20" height="20" rx="3" stroke="#fff" stroke-width="1.4"/></svg>';
+    av.appendChild(ov);
+  };
+  reader.readAsDataURL(inp.files[0]);
+}
+
+/* KYC uploaded feedback */
+function kycUploaded(cardId) {
+  const card = document.getElementById(cardId);
+  if (!card) return;
+  const badge = card.querySelector('.kyc-badge');
+  if (badge) {
+    badge.textContent = '✓ Téléchargé';
+    badge.className = 'kyc-badge kb-done';
+  }
+  const drop = card.querySelector('.kyc-drop');
+  if (drop) {
+    drop.style.borderColor = 'var(--green)';
+    drop.style.background = 'var(--green-xl)';
+    drop.querySelector('h4').textContent = '✓ Document téléchargé';
+    drop.querySelector('p').textContent = 'Cliquer pour remplacer';
+  }
+}
+</script>
+
+  <script type="module" src="/src/scripts/main.js"></script>
+</body>
+</html>
