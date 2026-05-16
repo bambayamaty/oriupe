@@ -4,6 +4,7 @@
 <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Oriupe — Inscription & Connexion</title>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-font-smoothing:antialiased;height:100%}
@@ -38,7 +39,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#F4F6F9;color:#1B3A4A
 .al-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:44px 44px}
 .al-logo{display:flex;align-items:center;gap:10px;margin-bottom:auto;position:relative;z-index:1}
 .al-logo-t{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;color:#fff}
-.al-content{position:relative;z-index:1;margin-top:auto}
+.al-content{position:relative;z-index:1;margin-top:0;flex:1;display:flex;flex-direction:column;justify-content:center}
 .al-h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,3vw,40px);font-weight:800;color:#fff;letter-spacing:-1px;line-height:1.12;margin-bottom:16px}
 .al-h1 span{color:var(--green)}
 .al-p{font-size:15px;color:rgba(255,255,255,.55);line-height:1.82;margin-bottom:32px;max-width:320px}
@@ -249,6 +250,28 @@ label.fl{font-size:12px;font-weight:700;color:var(--navy2);display:block;margin-
 .btn-outline{width:100%;background:#fff;border:2px solid var(--navy2);border-radius:12px;padding:13px;font-size:14px;font-weight:700;color:var(--navy2);cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;margin-top:10px;transition:all .2s}
 .btn-outline:hover{background:var(--navy2);color:#fff}
 @media(max-width:600px){.urow,.form-row,.svc-grid{grid-template-columns:1fr}}
+
+/* ── LEFT PANEL ENRICHI ── */
+.al-topbar{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1;margin-bottom:32px}
+.al-live{display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);font-size:12px;color:rgba(255,255,255,.65);flex-shrink:0}
+.al-live-dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);animation:ldot 1.8s ease-in-out infinite;flex-shrink:0}
+@keyframes ldot{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.5);opacity:.5}}
+.al-mini-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:rgba(60,184,120,.12);border:1px solid rgba(60,184,120,.25);margin-bottom:18px;font-size:12px;color:rgba(255,255,255,.8)}
+.al-stat-grid{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px}
+.al-stat-card{flex:1;min-width:100px;padding:14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:14px;transition:all .3s}
+.al-stat-card:hover{transform:translateY(-4px);background:rgba(255,255,255,.08)}
+.al-stat-val{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;background:linear-gradient(135deg,var(--green),var(--lime));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:4px}
+.al-stat-lbl{font-size:10px;color:rgba(255,255,255,.4);line-height:1.5}
+.al-features{display:flex;flex-direction:column;gap:10px}
+.al-feat{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px;transition:all .25s}
+.al-feat:hover{transform:translateX(4px);background:rgba(255,255,255,.055)}
+.al-feat-ic{width:38px;height:38px;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--green),var(--blue));font-size:15px;box-shadow:0 4px 16px rgba(60,184,120,.25)}
+.al-feat h5{font-size:13px;font-weight:700;color:#fff;margin-bottom:3px}
+.al-feat p{font-size:11px;color:rgba(255,255,255,.45);line-height:1.6}
+.al-float{position:absolute;bottom:28px;right:28px;padding:12px 16px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:14px;backdrop-filter:blur(12px);display:flex;align-items:center;gap:10px;animation:alfc 3s ease-in-out infinite;max-width:240px}
+@keyframes alfc{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.al-float-ic{width:34px;height:34px;border-radius:10px;flex-shrink:0;background:linear-gradient(135deg,var(--green),var(--blue));display:flex;align-items:center;justify-content:center;font-size:13px}
+.al-float p{font-size:10px;color:rgba(255,255,255,.6);line-height:1.5}
 </style>
   <script type="module" src="/src/components/nav.js"></script>
 </head>
@@ -260,29 +283,73 @@ label.fl{font-size:12px;font-weight:700;color:var(--navy2);display:block;margin-
     <div class="al-mesh"><div class="al-orb orb-a"></div><div class="al-orb orb-b"></div><div class="al-orb orb-c"></div></div>
     <div class="al-grid"></div>
 
-    <div class="al-logo" style="position:relative;z-index:1">
-      <svg width="30" height="30" viewBox="0 0 30 30" fill="none"><circle cx="9" cy="9" r="7.5" fill="#8DC63F" opacity=".9"/><circle cx="21" cy="9" r="7.5" fill="#29ABE2" opacity=".9"/><circle cx="9" cy="21" r="7.5" fill="#3CB878" opacity=".9"/><circle cx="21" cy="21" r="7.5" fill="rgba(255,255,255,.1)"/><rect x="8.5" y="8.5" width="13" height="13" rx="1.5" fill="rgba(60,184,120,.42)"/></svg>
-      <span class="al-logo-t">Oriupe</span>
+    <div class="al-topbar">
+      <div class="al-logo">
+        <svg width="30" height="30" viewBox="0 0 30 30" fill="none"><circle cx="9" cy="9" r="7.5" fill="#8DC63F" opacity=".9"/><circle cx="21" cy="9" r="7.5" fill="#29ABE2" opacity=".9"/><circle cx="9" cy="21" r="7.5" fill="#3CB878" opacity=".9"/><circle cx="21" cy="21" r="7.5" fill="rgba(255,255,255,.1)"/><rect x="8.5" y="8.5" width="13" height="13" rx="1.5" fill="rgba(60,184,120,.42)"/></svg>
+        <span class="al-logo-t">Oriupe</span>
+      </div>
+      <div class="al-live">
+        <div class="al-live-dot"></div>
+        Plateforme active
+      </div>
     </div>
 
-    <div class="al-content">
-      <div class="al-testi">
-        <div class="al-testi-text">"Grâce à Oriupe, j'ai pu trouver un développeur React en 30 minutes. Mon site e-commerce était en ligne 5 jours plus tard. Paiement Orange Money sans friction."</div>
-        <div class="al-testi-author">
-          <div class="al-tav">AK</div>
-          <div><div class="al-tname">Aminata Koné</div><div class="al-trole">CEO Startup · Abidjan 🇨🇮</div></div>
+    <div class="al-content" style="margin-top:0">
+      <div class="al-mini-badge">
+        <i class="fa-solid fa-sparkles" style="color:var(--green)"></i>
+        Marketplace numérique africaine
+      </div>
+
+      <div class="al-h1">Connectez les <span>talents,</span><br>les clients et<br>les opportunités.</div>
+      <div class="al-p">Oriupe connecte les meilleurs freelances africains à des clients locaux et internationaux. Paiement sécurisé, identité vérifiée, Mobile Money intégré.</div>
+
+      <div class="al-stat-grid">
+        <div class="al-stat-card">
+          <div class="al-stat-val">50K+</div>
+          <div class="al-stat-lbl">Freelances certifiés disponibles</div>
+        </div>
+        <div class="al-stat-card">
+          <div class="al-stat-val">98%</div>
+          <div class="al-stat-lbl">Taux de satisfaction</div>
+        </div>
+        <div class="al-stat-card">
+          <div class="al-stat-val">20+</div>
+          <div class="al-stat-lbl">Pays africains couverts</div>
+        </div>
+        <div class="al-stat-card">
+          <div class="al-stat-val">4,9★</div>
+          <div class="al-stat-lbl">Note moyenne</div>
         </div>
       </div>
 
-      <div class="al-h1">Le talent africain,<br><span>à portée de clic.</span></div>
-      <div class="al-p">Rejoignez 50 000 freelances et entrepreneurs qui bâtissent l'Afrique numérique.</div>
-
-      <div class="al-stats">
-        <div class="als-item"><div class="als-val">50K+</div><div class="als-lbl">Freelances</div></div>
-        <div class="als-item"><div class="als-val">200K+</div><div class="als-lbl">Services</div></div>
-        <div class="als-item"><div class="als-val">20</div><div class="als-lbl">Pays</div></div>
-        <div class="als-item"><div class="als-val">4,9★</div><div class="als-lbl">Note moy.</div></div>
+      <div class="al-features">
+        <div class="al-feat">
+          <div class="al-feat-ic"><i class="fa-solid fa-shield-halved"></i></div>
+          <div>
+            <h5>Identité vérifiée Oriupe</h5>
+            <p>Vérification KYC via Smile Identity. Badge certifié affiché sur le profil.</p>
+          </div>
+        </div>
+        <div class="al-feat">
+          <div class="al-feat-ic"><i class="fa-solid fa-lock"></i></div>
+          <div>
+            <h5>Paiement Escrow sécurisé</h5>
+            <p>L'argent est bloqué chez Oriupe et libéré après accord des deux parties.</p>
+          </div>
+        </div>
+        <div class="al-feat">
+          <div class="al-feat-ic"><i class="fa-solid fa-bolt"></i></div>
+          <div>
+            <h5>Compte actif immédiatement</h5>
+            <p>Inscription en 60 secondes. Complétez votre profil à votre rythme.</p>
+          </div>
+        </div>
       </div>
+    </div>
+
+    <div class="al-float">
+      <div class="al-float-ic"><i class="fa-solid fa-shield-halved"></i></div>
+      <p>SSL chiffré · Conforme RGPD · Vérification Smile Identity</p>
     </div>
   </div>
 
