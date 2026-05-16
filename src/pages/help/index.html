@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Centre d'aide — Oriupe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#F4F6F9;color:#1B3A4A;overflow-x:hidden}
+:root{
+  --navy:#0F2535;--navy2:#1B3A4A;
+  --green:#3CB878;--green-l:#E4F7EE;
+  --blue:#29ABE2;--blue-l:#E2F4FB;
+  --lime:#8DC63F;--lime-l:#EEF7D6;
+  --bg:#F4F6F9;--border:rgba(27,58,74,.1);
+  --shadow:0 4px 16px rgba(15,37,53,.09);
+  --shadow-md:0 8px 32px rgba(15,37,53,.13);
+}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:24px;height:64px;padding:0 32px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-text{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:var(--navy)}
+.nav-links{display:flex;gap:4px;margin-left:32px}
+.nav-links a{text-decoration:none;color:#1B3A4A;font-size:14px;font-weight:500;padding:8px 14px;border-radius:10px;transition:background .2s,color .2s}
+.nav-links a:hover{background:var(--bg);color:var(--navy)}
+.nav-cta{display:flex;align-items:center;gap:10px;margin-left:auto}
+.btn-login{background:transparent;border:1.5px solid rgba(27,58,74,.15);border-radius:10px;padding:8px 18px;font-size:13px;font-weight:600;color:#1B3A4A;cursor:pointer;font-family:inherit;transition:border-color .2s,background .2s}
+.btn-login:hover{border-color:var(--green);background:var(--green-l)}
+.btn-register{background:linear-gradient(135deg,#3CB878,#8DC63F);border:none;border-radius:10px;padding:9px 20px;font-size:13px;font-weight:700;color:#fff;cursor:pointer;font-family:inherit;transition:opacity .2s,transform .15s}
+.btn-register:hover{opacity:.9;transform:translateY(-1px)}
+
+/* HERO */
+.hero{min-height:420px;background:var(--navy);padding:110px 32px 80px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;text-align:center}
+.hero-orb{position:absolute;border-radius:50%;pointer-events:none}
+.hero-orb-1{width:700px;height:700px;background:radial-gradient(circle,rgba(60,184,120,.15) 0%,transparent 70%);top:-250px;left:-100px}
+.hero-orb-2{width:600px;height:600px;background:radial-gradient(circle,rgba(41,171,226,.14) 0%,transparent 70%);top:-200px;right:-120px}
+.hero-orb-3{width:450px;height:450px;background:radial-gradient(circle,rgba(141,198,63,.1) 0%,transparent 70%);bottom:-200px;left:50%;transform:translateX(-50%)}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:48px 48px;pointer-events:none}
+.hero-content{position:relative;z-index:2;max-width:680px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(60,184,120,.15);border:1px solid rgba(60,184,120,.3);border-radius:100px;padding:6px 16px;font-size:12px;font-weight:700;color:#3CB878;letter-spacing:.06em;text-transform:uppercase;margin-bottom:24px}
+.hero h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(32px,5vw,56px);font-weight:800;color:#fff;line-height:1.15;letter-spacing:-.03em;margin-bottom:24px}
+.hero p{font-size:16px;color:rgba(255,255,255,.6);line-height:1.7;margin-bottom:32px}
+
+/* BIG SEARCH */
+.big-search{position:relative;max-width:580px;margin:0 auto}
+.big-search input{width:100%;padding:18px 24px 18px 58px;border-radius:16px;border:1.5px solid rgba(255,255,255,.15);background:rgba(255,255,255,.1);font-family:inherit;font-size:16px;color:#fff;outline:none;backdrop-filter:blur(12px);transition:border-color .2s,background .2s;-webkit-backdrop-filter:blur(12px)}
+.big-search input::placeholder{color:rgba(255,255,255,.4)}
+.big-search input:focus{border-color:rgba(60,184,120,.7);background:rgba(255,255,255,.15)}
+.big-search .s-icon{position:absolute;left:20px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.4);pointer-events:none}
+.big-search .s-btn{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:linear-gradient(135deg,#3CB878,#8DC63F);border:none;border-radius:10px;padding:10px 20px;font-size:13px;font-weight:700;color:#fff;cursor:pointer;font-family:inherit;transition:opacity .2s}
+.big-search .s-btn:hover{opacity:.9}
+
+/* MAIN */
+.main{max-width:1200px;margin:0 auto;padding:64px 32px 80px}
+
+/* CATEGORY GRID */
+.section-title{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(22px,3vw,32px);font-weight:800;color:var(--navy);letter-spacing:-.02em;margin-bottom:8px}
+.section-sub{font-size:15px;color:rgba(27,58,74,.55);margin-bottom:36px;line-height:1.6}
+.cats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:80px}
+.cat-card{background:#fff;border:1.5px solid var(--border);border-radius:18px;padding:28px 28px 24px;cursor:pointer;transition:transform .22s,box-shadow .22s,border-color .22s;text-decoration:none;display:block}
+.cat-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md);border-color:transparent}
+.cat-icon-wrap{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+.cat-card h3{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:800;color:var(--navy);margin-bottom:6px}
+.cat-card p{font-size:13px;color:rgba(27,58,74,.55);line-height:1.6;margin-bottom:14px}
+.cat-count{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;color:rgba(27,58,74,.45);background:var(--bg);padding:4px 10px;border-radius:100px}
+
+/* POPULAR ARTICLES */
+.articles-section{margin-bottom:80px}
+.articles-list{display:flex;flex-direction:column;gap:4px}
+.article-link{display:flex;align-items:center;justify-content:space-between;padding:18px 24px;background:#fff;border:1.5px solid var(--border);border-radius:14px;text-decoration:none;transition:border-color .2s,box-shadow .2s,transform .2s;gap:16px}
+.article-link:hover{border-color:var(--green);box-shadow:var(--shadow);transform:translateX(4px)}
+.article-link-left{display:flex;align-items:center;gap:16px;flex:1;min-width:0}
+.article-link-icon{width:36px;height:36px;border-radius:10px;background:var(--green-l);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--green)}
+.article-link-title{font-size:14px;font-weight:700;color:var(--navy);line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.article-link-desc{font-size:12px;color:rgba(27,58,74,.5);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.article-link-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.read-badge{background:var(--bg);border-radius:100px;padding:4px 10px;font-size:11px;font-weight:600;color:rgba(27,58,74,.5)}
+.arrow-icon{color:rgba(27,58,74,.3);transition:color .2s,transform .2s}
+.article-link:hover .arrow-icon{color:var(--green);transform:translateX(3px)}
+
+/* STILL BLOCKED SECTION */
+.still-blocked{background:linear-gradient(135deg,rgba(60,184,120,.08),rgba(41,171,226,.06));border:1.5px solid rgba(60,184,120,.2);border-radius:24px;padding:56px 48px;text-align:center}
+.still-blocked h2{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(24px,3vw,36px);font-weight:800;color:var(--navy);margin-bottom:12px;letter-spacing:-.02em}
+.still-blocked p{font-size:15px;color:rgba(27,58,74,.6);margin-bottom:36px;max-width:520px;margin-left:auto;margin-right:auto;line-height:1.7}
+.contact-channels{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:720px;margin:0 auto}
+.channel-card{background:#fff;border:1.5px solid var(--border);border-radius:16px;padding:24px 20px;text-align:center;cursor:pointer;text-decoration:none;display:block;transition:border-color .2s,box-shadow .2s,transform .2s}
+.channel-card:hover{border-color:var(--green);box-shadow:var(--shadow);transform:translateY(-3px)}
+.channel-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
+.channel-card h4{font-size:15px;font-weight:800;color:var(--navy);margin-bottom:4px}
+.channel-card p{font-size:12px;color:rgba(27,58,74,.55);line-height:1.5}
+
+/* FOOTER */
+footer{background:var(--navy);padding:64px 32px 32px}
+.footer-grid{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:40px;margin-bottom:48px}
+.footer-col-label{font-size:11px;font-weight:700;color:rgba(255,255,255,.35);letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px}
+.footer-links{display:flex;flex-direction:column;gap:10px}
+.footer-links a{font-size:13px;color:rgba(255,255,255,.6);text-decoration:none;transition:color .2s}
+.footer-links a:hover{color:#fff}
+.footer-bottom{max-width:1280px;margin:0 auto;padding-top:24px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.footer-bottom span,.footer-bottom a{font-size:12px;color:rgba(255,255,255,.3)}
+.footer-bottom a{text-decoration:none;transition:color .2s}
+.footer-bottom a:hover{color:rgba(255,255,255,.6)}
+.footer-bottom-links{display:flex;gap:20px}
+footer{background:var(--navy);padding:64px 24px 32px;margin-top:0}
+.footer-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:40px;margin-bottom:48px}
+.footer-col-title{font-size:11px;font-weight:700;color:rgba(255,255,255,.35);letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px}
+.footer-links{display:flex;flex-direction:column;gap:10px}
+.footer-links a{font-size:13px;color:rgba(255,255,255,.6);text-decoration:none;transition:.2s}
+.footer-links a:hover{color:#fff}
+.footer-tagline{font-size:12px;color:rgba(255,255,255,.4);margin-top:10px;line-height:1.6}
+.footer-bottom{max-width:1280px;margin:0 auto;padding-top:24px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;align-items:center}
+.footer-copy{font-size:12px;color:rgba(255,255,255,.3)}
+.footer-legal{display:flex;gap:20px}
+.footer-legal a{font-size:12px;color:rgba(255,255,255,.3);text-decoration:none}
+.footer-legal a:hover{color:rgba(255,255,255,.7)}
+@media(max-width:900px){.footer-inner{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.footer-inner{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="/src/pages/home/index.html" class="logo">
+      <svg width="30" height="30" viewBox="0 0 32 32" fill="none"><circle cx="10" cy="10" r="8.5" fill="#8DC63F" opacity=".9"/><circle cx="22" cy="10" r="8.5" fill="#29ABE2" opacity=".9"/><circle cx="10" cy="22" r="8.5" fill="#3CB878" opacity=".9"/><circle cx="22" cy="22" r="8.5" fill="#1B3A4A"/><rect x="9.5" y="9.5" width="13" height="13" rx="1.5" fill="rgba(60,184,120,.45)"/></svg>
+      <span class="logo-text">Oriupe</span>
+    </a>
+    <div class="nav-links">
+      <a href="/src/pages/catalog/index.html">Explorer</a>
+      <a href="/src/pages/offers/index.html">Appels d'offres</a>
+      <a href="/src/pages/academy/index.html">Academy</a>
+      <a href="/src/pages/blog/index.html">Blog</a>
+      <a href="/src/pages/pricing/index.html">Tarifs</a>
+    </div>
+    <div class="nav-cta">
+      <button class="btn-login" onclick="location.href='/src/pages/auth/index.html'">Se connecter</button>
+      <button class="btn-register" onclick="location.href='/src/pages/auth/index.html'">S'inscrire</button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+  <div class="hero-orb hero-orb-3"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+      Centre d'aide
+    </div>
+    <h1>Comment pouvons-nous<br/>vous aider ?</h1>
+    <p>Des guides pas à pas, des tutoriels vidéo et des réponses à toutes vos questions sur Oriupe.</p>
+    <div class="big-search">
+      <svg class="s-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="main-search" placeholder="Ex : retirer mes gains, créer un service..." autocomplete="off" onkeydown="if(event.key==='Enter')doSearch()"/>
+      <button class="s-btn" onclick="doSearch()">Rechercher</button>
+    </div>
+  </div>
+</section>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- CATEGORIES -->
+  <div class="section-title">Parcourir par catégorie</div>
+  <p class="section-sub">Trouvez des guides détaillés organisés par thème pour répondre à vos besoins.</p>
+  <div class="cats-grid">
+
+    <a href="/src/pages/faq/index.html" class="cat-card">
+      <div class="cat-icon-wrap" style="background:var(--green-l)">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </div>
+      <h3>Démarrer sur Oriupe</h3>
+      <p>Inscription, configuration de votre profil, premières commandes et bonnes pratiques pour bien débuter.</p>
+      <span class="cat-count">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        14 articles
+      </span>
+    </a>
+
+    <a href="/src/pages/faq/index.html" class="cat-card">
+      <div class="cat-icon-wrap" style="background:var(--blue-l)">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#29ABE2" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+      <h3>Gestion du compte</h3>
+      <p>Paramètres, sécurité, notifications, vérification d'identité, changement de mot de passe et confidentialité.</p>
+      <span class="cat-count">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        11 articles
+      </span>
+    </a>
+
+    <a href="/src/pages/faq/index.html?cat=paiements" class="cat-card">
+      <div class="cat-icon-wrap" style="background:rgba(141,198,63,.12)">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6EA832" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+      </div>
+      <h3>Paiements &amp; Retraits</h3>
+      <p>Moyens de paiement acceptés, escrow, délais de retrait, Mobile Money, reçus et facturation.</p>
+      <span class="cat-count">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        18 articles
+      </span>
+    </a>
+
+    <a href="/src/pages/faq/index.html" class="cat-card">
+      <div class="cat-icon-wrap" style="background:rgba(60,184,120,.12)">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.26 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.17 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      </div>
+      <h3>Commandes &amp; Projets</h3>
+      <p>Passer commande, suivi de projet, révisions, délais, livraison et validation du travail réalisé.</p>
+      <span class="cat-count">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        22 articles
+      </span>
+    </a>
+
+    <a href="/src/pages/disputes/index.html" class="cat-card">
+      <div class="cat-icon-wrap" style="background:rgba(239,68,68,.08)">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#DC2626" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      </div>
+      <h3>Litiges &amp; Remboursements</h3>
+      <p>Procédure de litige, médiation, remboursements, signalement d'abus et protection client.</p>
+      <span class="cat-count">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        9 articles
+      </span>
+    </a>
+
+    <a href="/src/pages/academy/index.html" class="cat-card">
+      <div class="cat-icon-wrap" style="background:rgba(141,198,63,.12)">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6EA832" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+      </div>
+      <h3>Oriupe Academy</h3>
+      <p>Accès aux formations, certificats, parcours d'apprentissage et développement de vos compétences.</p>
+      <span class="cat-count">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        16 articles
+      </span>
+    </a>
+
+  </div>
+
+  <!-- POPULAR ARTICLES -->
+  <div class="articles-section">
+    <div class="section-title">Articles populaires</div>
+    <p class="section-sub">Les guides les plus consultés par notre communauté de freelances et clients.</p>
+    <div class="articles-list">
+
+      <a href="/src/pages/faq/index.html" class="article-link">
+        <div class="article-link-left">
+          <div class="article-link-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+          </div>
+          <div>
+            <div class="article-link-title">Comment créer et optimiser mon profil freelance pour attirer des clients</div>
+            <div class="article-link-desc">Démarrer sur Oriupe · Photo, bio, compétences, portfolio, tarifs</div>
+          </div>
+        </div>
+        <div class="article-link-right">
+          <span class="read-badge">5 min</span>
+          <svg class="arrow-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+      </a>
+
+      <a href="/src/pages/faq/index.html?cat=paiements" class="article-link">
+        <div class="article-link-left">
+          <div class="article-link-icon" style="background:var(--blue-l);color:var(--blue)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          </div>
+          <div>
+            <div class="article-link-title">Comment retirer mes gains via Wave ou Orange Money ?</div>
+            <div class="article-link-desc">Paiements &amp; Retraits · Guide pas à pas, délais, montants minimum</div>
+          </div>
+        </div>
+        <div class="article-link-right">
+          <span class="read-badge">3 min</span>
+          <svg class="arrow-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+      </a>
+
+      <a href="/src/pages/faq/index.html" class="article-link">
+        <div class="article-link-left">
+          <div class="article-link-icon" style="background:rgba(141,198,63,.12);color:#6EA832">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </div>
+          <div>
+            <div class="article-link-title">Comprendre les commissions et choisir le bon plan tarifaire</div>
+            <div class="article-link-desc">Tarifs &amp; Plans · Gratuit vs Pro vs Business, calcul de rentabilité</div>
+          </div>
+        </div>
+        <div class="article-link-right">
+          <span class="read-badge">4 min</span>
+          <svg class="arrow-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+      </a>
+
+      <a href="/src/pages/faq/index.html" class="article-link">
+        <div class="article-link-left">
+          <div class="article-link-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.26 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.17 1h3a2 2 0 0 1 2 1.72"/></svg>
+          </div>
+          <div>
+            <div class="article-link-title">Comment passer commande auprès d'un freelance sur Oriupe</div>
+            <div class="article-link-desc">Commandes &amp; Projets · Trouver, commander, suivre et valider</div>
+          </div>
+        </div>
+        <div class="article-link-right">
+          <span class="read-badge">6 min</span>
+          <svg class="arrow-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+      </a>
+
+      <a href="/src/pages/disputes/index.html" class="article-link">
+        <div class="article-link-left">
+          <div class="article-link-icon" style="background:rgba(239,68,68,.08);color:#DC2626">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/></svg>
+          </div>
+          <div>
+            <div class="article-link-title">Comment ouvrir un litige et obtenir un remboursement ?</div>
+            <div class="article-link-desc">Litiges &amp; Remboursements · Procédure, délais, médiation Oriupe</div>
+          </div>
+        </div>
+        <div class="article-link-right">
+          <span class="read-badge">7 min</span>
+          <svg class="arrow-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+      </a>
+
+      <a href="/src/pages/faq/index.html" class="article-link">
+        <div class="article-link-left">
+          <div class="article-link-icon" style="background:rgba(141,198,63,.1);color:#6EA832">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/></svg>
+          </div>
+          <div>
+            <div class="article-link-title">Accéder aux formations Oriupe Academy et obtenir votre certificat</div>
+            <div class="article-link-desc">Oriupe Academy · Catalogue de formations, progression, certification</div>
+          </div>
+        </div>
+        <div class="article-link-right">
+          <span class="read-badge">4 min</span>
+          <svg class="arrow-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+      </a>
+
+      <a href="/src/pages/faq/index.html" class="article-link">
+        <div class="article-link-left">
+          <div class="article-link-icon" style="background:var(--blue-l);color:var(--blue)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <div>
+            <div class="article-link-title">Vérifier son identité (KYC) pour débloquer les retraits illimités</div>
+            <div class="article-link-desc">Gestion du compte · Documents acceptés, délais de validation</div>
+          </div>
+        </div>
+        <div class="article-link-right">
+          <span class="read-badge">3 min</span>
+          <svg class="arrow-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+      </a>
+
+      <a href="/src/pages/faq/index.html" class="article-link">
+        <div class="article-link-left">
+          <div class="article-link-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          </div>
+          <div>
+            <div class="article-link-title">Répondre aux appels d'offres et soumettre une proposition gagnante</div>
+            <div class="article-link-desc">Commandes &amp; Projets · Rechercher des offres, rédiger une proposition</div>
+          </div>
+        </div>
+        <div class="article-link-right">
+          <span class="read-badge">5 min</span>
+          <svg class="arrow-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- STILL BLOCKED -->
+  <div class="still-blocked">
+    <h2>Toujours bloqué ?</h2>
+    <p>Notre équipe de support est disponible du lundi au samedi, de 8h à 20h (GMT). Choisissez le canal qui vous convient le mieux.</p>
+    <div class="contact-channels">
+
+      <a href="https://wa.me/2250101000000" class="channel-card" target="_blank" rel="noopener">
+        <div class="channel-icon" style="background:#E4F7EE">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="#3CB878"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+        </div>
+        <h4>WhatsApp</h4>
+        <p>Réponse en moins de 2h en journée</p>
+      </a>
+
+      <a href="mailto:support@oriupe.com" class="channel-card">
+        <div class="channel-icon" style="background:var(--blue-l)">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#29ABE2" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </div>
+        <h4>Email</h4>
+        <p>support@oriupe.com · Réponse sous 4h</p>
+      </a>
+
+      <a href="/src/pages/contact/index.html" class="channel-card">
+        <div class="channel-icon" style="background:rgba(141,198,63,.1)">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6EA832" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <h4>Formulaire de contact</h4>
+        <p>Envoyez-nous votre demande détaillée</p>
+      </a>
+
+    </div>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div><a href="/src/pages/home/index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;margin-bottom:12px"><svg width="26" height="26" viewBox="0 0 32 32" fill="none"><circle cx="10" cy="10" r="8.5" fill="#8DC63F" opacity=".9"/><circle cx="22" cy="10" r="8.5" fill="#29ABE2" opacity=".9"/><circle cx="10" cy="22" r="8.5" fill="#3CB878" opacity=".9"/><circle cx="22" cy="22" r="8.5" fill="#1B3A4A"/><rect x="9.5" y="9.5" width="13" height="13" rx="1.5" fill="rgba(60,184,120,.45)"/></svg><span style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;color:#fff">Oriupe</span></a><p class="footer-tagline">"Ton talent. Ton continent. Ton avenir."</p></div>
+    <div><div class="footer-col-title">Oriupe</div><div class="footer-links"><a href="/src/pages/about/index.html">À propos</a><a href="/src/pages/careers/index.html">Carrières</a><a href="/src/pages/press/index.html">Presse &amp; Médias</a><a href="/src/pages/blog/index.html">Blog</a><a href="/src/pages/impact/index.html">Impact ESG</a></div></div>
+    <div><div class="footer-col-title">Freelances</div><div class="footer-links"><a href="/src/pages/auth/index.html">S'inscrire</a><a href="/src/pages/how-it-works/index.html">Comment ça marche</a><a href="/src/pages/academy/index.html">Oriupe Academy</a><a href="/src/pages/pricing/index.html">Tarifs Pro</a><a href="/src/pages/faq/index.html">FAQ Freelances</a></div></div>
+    <div><div class="footer-col-title">Support</div><div class="footer-links"><a href="/src/pages/help/index.html">Centre d'aide</a><a href="/src/pages/contact/index.html">Nous contacter</a><a href="/src/pages/disputes/index.html">Gestion des litiges</a><a href="/src/pages/terms/index.html">CGU &amp; CGV</a><a href="/src/pages/privacy/index.html">Confidentialité</a></div></div>
+  </div>
+  <div class="footer-bottom"><span class="footer-copy">© 2025 Oriupe SAS — Abidjan, Côte d'Ivoire. Tous droits réservés.</span><div class="footer-legal"><a href="/src/pages/privacy/index.html">Confidentialité</a><a href="/src/pages/terms/index.html">CGU &amp; CGV</a></div></div>
+</footer>
+
+<script>
+function doSearch() {
+  const q = document.getElementById('main-search').value.trim();
+  if (q) {
+    location.href = '/src/pages/faq/index.html';
+  }
+}
+</script>
+</body>
+</html>

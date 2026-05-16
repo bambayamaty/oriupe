@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Contact — Oriupe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#F4F6F9;color:#1B3A4A;overflow-x:hidden}
+:root{
+  --navy:#0F2535;--navy2:#1B3A4A;
+  --green:#3CB878;--green-l:#E4F7EE;
+  --blue:#29ABE2;--blue-l:#E2F4FB;
+  --lime:#8DC63F;
+  --bg:#F4F6F9;--border:rgba(27,58,74,.1);
+  --shadow:0 4px 16px rgba(15,37,53,.09);
+  --shadow-md:0 8px 32px rgba(15,37,53,.13);
+}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:24px;height:64px;padding:0 32px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-text{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:var(--navy)}
+.nav-links{display:flex;gap:4px;margin-left:32px}
+.nav-links a{text-decoration:none;color:#1B3A4A;font-size:14px;font-weight:500;padding:8px 14px;border-radius:10px;transition:background .2s,color .2s}
+.nav-links a:hover{background:var(--bg);color:var(--navy)}
+.nav-cta{display:flex;align-items:center;gap:10px;margin-left:auto}
+.btn-login{background:transparent;border:1.5px solid rgba(27,58,74,.15);border-radius:10px;padding:8px 18px;font-size:13px;font-weight:600;color:#1B3A4A;cursor:pointer;font-family:inherit;transition:border-color .2s,background .2s}
+.btn-login:hover{border-color:var(--green);background:var(--green-l)}
+.btn-register{background:linear-gradient(135deg,#3CB878,#8DC63F);border:none;border-radius:10px;padding:9px 20px;font-size:13px;font-weight:700;color:#fff;cursor:pointer;font-family:inherit;transition:opacity .2s,transform .15s}
+.btn-register:hover{opacity:.9;transform:translateY(-1px)}
+
+/* HERO */
+.hero{min-height:360px;background:var(--navy);padding:110px 32px 72px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;text-align:center}
+.hero-orb{position:absolute;border-radius:50%;pointer-events:none}
+.hero-orb-1{width:600px;height:600px;background:radial-gradient(circle,rgba(60,184,120,.16) 0%,transparent 70%);top:-200px;left:-80px}
+.hero-orb-2{width:500px;height:500px;background:radial-gradient(circle,rgba(41,171,226,.14) 0%,transparent 70%);bottom:-200px;right:-80px}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:48px 48px;pointer-events:none}
+.hero-content{position:relative;z-index:2;max-width:680px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(60,184,120,.15);border:1px solid rgba(60,184,120,.3);border-radius:100px;padding:6px 16px;font-size:12px;font-weight:700;color:#3CB878;letter-spacing:.06em;text-transform:uppercase;margin-bottom:24px}
+.hero h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(32px,5vw,56px);font-weight:800;color:#fff;line-height:1.15;letter-spacing:-.03em;margin-bottom:16px}
+.hero p{font-size:16px;color:rgba(255,255,255,.6);line-height:1.7;max-width:500px;margin:0 auto}
+.hero-meta{display:flex;gap:32px;justify-content:center;margin-top:28px;flex-wrap:wrap}
+.hero-meta-item{display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,.55)}
+.hero-meta-item svg{color:var(--green)}
+
+/* MAIN */
+.main-section{max-width:1200px;margin:0 auto;padding:64px 32px 80px}
+
+/* CONTACT GRID */
+.contact-grid{display:grid;grid-template-columns:1fr 440px;gap:40px;margin-bottom:72px;align-items:start}
+
+/* FORM CARD */
+.form-card{background:#fff;border:1.5px solid var(--border);border-radius:24px;padding:40px;box-shadow:var(--shadow)}
+.form-card h2{font-family:'Bricolage Grotesque',sans-serif;font-size:26px;font-weight:800;color:var(--navy);margin-bottom:8px;letter-spacing:-.02em}
+.form-card .subtitle{font-size:14px;color:rgba(27,58,74,.55);margin-bottom:32px;line-height:1.6}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.form-field{margin-bottom:16px}
+.form-field label{display:block;font-size:13px;font-weight:700;color:var(--navy);margin-bottom:7px}
+.form-field label span{color:#EF4444;margin-left:2px}
+.form-field input,.form-field select,.form-field textarea{width:100%;padding:12px 16px;border:1.5px solid var(--border);border-radius:12px;font-family:inherit;font-size:14px;color:var(--navy);background:#fff;outline:none;transition:border-color .2s,box-shadow .2s;appearance:none;-webkit-appearance:none}
+.form-field input:focus,.form-field select:focus,.form-field textarea:focus{border-color:var(--green);box-shadow:0 0 0 4px rgba(60,184,120,.12)}
+.form-field input.error,.form-field select.error,.form-field textarea.error{border-color:#EF4444;box-shadow:0 0 0 4px rgba(239,68,68,.08)}
+.form-field .err-msg{font-size:12px;color:#EF4444;margin-top:5px;display:none}
+.form-field .err-msg.show{display:block}
+.form-field textarea{resize:vertical;min-height:140px;line-height:1.6}
+.form-field select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%231B3A4A' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;padding-right:44px;cursor:pointer}
+.btn-submit{width:100%;padding:15px;background:linear-gradient(135deg,#3CB878,#8DC63F);border:none;border-radius:12px;font-size:15px;font-weight:700;color:#fff;cursor:pointer;font-family:inherit;transition:transform .2s,box-shadow .2s,opacity .2s;display:flex;align-items:center;justify-content:center;gap:10px}
+.btn-submit:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 12px 32px rgba(60,184,120,.4)}
+.btn-submit:disabled{opacity:.7;cursor:not-allowed}
+.btn-submit .spinner{width:18px;height:18px;border:2.5px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none}
+.btn-submit.loading .btn-text{display:none}
+.btn-submit.loading .spinner{display:block}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* SUCCESS STATE */
+.success-state{display:none;text-align:center;padding:40px 24px}
+.success-state.show{display:block}
+.success-icon{width:72px;height:72px;background:var(--green-l);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px}
+.success-state h3{font-family:'Bricolage Grotesque',sans-serif;font-size:24px;font-weight:800;color:var(--navy);margin-bottom:10px}
+.success-state p{font-size:14px;color:rgba(27,58,74,.6);line-height:1.7;margin-bottom:24px}
+.btn-back{background:var(--green-l);border:none;border-radius:10px;padding:11px 24px;font-size:13px;font-weight:700;color:var(--green);cursor:pointer;font-family:inherit;transition:background .2s}
+.btn-back:hover{background:rgba(60,184,120,.2)}
+
+/* CONTACT CHANNELS PANEL */
+.channels-panel{display:flex;flex-direction:column;gap:16px}
+.channel-item{background:#fff;border:1.5px solid var(--border);border-radius:18px;padding:24px;display:flex;align-items:flex-start;gap:16px;transition:border-color .2s,box-shadow .2s,transform .2s;text-decoration:none;cursor:pointer}
+.channel-item:hover{border-color:var(--green);box-shadow:var(--shadow);transform:translateY(-2px)}
+.channel-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.channel-info h4{font-size:15px;font-weight:800;color:var(--navy);margin-bottom:3px}
+.channel-info p{font-size:13px;color:rgba(27,58,74,.55);line-height:1.55}
+.channel-info .link-val{font-size:13px;font-weight:600;color:var(--green);display:block;margin-top:3px}
+.channel-info .hours{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:rgba(27,58,74,.45);margin-top:6px;background:var(--bg);padding:3px 10px;border-radius:100px}
+
+/* OFFICE CARD */
+.office-card{background:linear-gradient(135deg,rgba(60,184,120,.07),rgba(41,171,226,.05));border:1.5px solid rgba(60,184,120,.2);border-radius:18px;padding:24px}
+.office-card h4{font-size:15px;font-weight:800;color:var(--navy);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.office-detail{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px}
+.office-detail svg{flex-shrink:0;color:var(--green);margin-top:2px}
+.office-detail span{font-size:13px;color:rgba(27,58,74,.7);line-height:1.6}
+
+/* TEAM CARDS */
+.team-section{margin-top:0}
+.team-title{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(22px,3vw,32px);font-weight:800;color:var(--navy);letter-spacing:-.02em;margin-bottom:8px}
+.team-sub{font-size:15px;color:rgba(27,58,74,.55);margin-bottom:32px}
+.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.team-card{background:#fff;border:1.5px solid var(--border);border-radius:18px;padding:28px 24px;text-align:center;transition:border-color .2s,box-shadow .2s,transform .2s}
+.team-card:hover{border-color:var(--green);box-shadow:var(--shadow-md);transform:translateY(-4px)}
+.team-avatar{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:20px;font-weight:800;font-family:'Bricolage Grotesque',sans-serif}
+.team-card h3{font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;color:var(--navy);margin-bottom:6px}
+.team-card .role{font-size:12px;font-weight:700;color:rgba(27,58,74,.45);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px}
+.team-card p{font-size:13px;color:rgba(27,58,74,.6);line-height:1.6;margin-bottom:20px}
+.team-contact-btn{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:10px;font-size:13px;font-weight:700;text-decoration:none;transition:all .2s;font-family:inherit;cursor:pointer;border:none}
+
+/* FOOTER */
+footer{background:var(--navy);padding:64px 32px 32px;margin-top:0}
+.footer-grid{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:40px;margin-bottom:48px}
+.footer-col-label{font-size:11px;font-weight:700;color:rgba(255,255,255,.35);letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px}
+.footer-links{display:flex;flex-direction:column;gap:10px}
+.footer-links a{font-size:13px;color:rgba(255,255,255,.6);text-decoration:none;transition:color .2s}
+.footer-links a:hover{color:#fff}
+.footer-bottom{max-width:1280px;margin:0 auto;padding-top:24px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.footer-bottom span,.footer-bottom a{font-size:12px;color:rgba(255,255,255,.3)}
+.footer-bottom a{text-decoration:none;transition:color .2s}
+.footer-bottom a:hover{color:rgba(255,255,255,.6)}
+.footer-bottom-links{display:flex;gap:20px}
+footer{background:var(--navy);padding:64px 24px 32px;margin-top:0}
+.footer-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:40px;margin-bottom:48px}
+.footer-col-title{font-size:11px;font-weight:700;color:rgba(255,255,255,.35);letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px}
+.footer-links{display:flex;flex-direction:column;gap:10px}
+.footer-links a{font-size:13px;color:rgba(255,255,255,.6);text-decoration:none;transition:.2s}
+.footer-links a:hover{color:#fff}
+.footer-tagline{font-size:12px;color:rgba(255,255,255,.4);margin-top:10px;line-height:1.6}
+.footer-bottom{max-width:1280px;margin:0 auto;padding-top:24px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;align-items:center}
+.footer-copy{font-size:12px;color:rgba(255,255,255,.3)}
+.footer-legal{display:flex;gap:20px}
+.footer-legal a{font-size:12px;color:rgba(255,255,255,.3);text-decoration:none}
+.footer-legal a:hover{color:rgba(255,255,255,.7)}
+@media(max-width:900px){.footer-inner{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.footer-inner{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="/src/pages/home/index.html" class="logo">
+      <svg width="30" height="30" viewBox="0 0 32 32" fill="none"><circle cx="10" cy="10" r="8.5" fill="#8DC63F" opacity=".9"/><circle cx="22" cy="10" r="8.5" fill="#29ABE2" opacity=".9"/><circle cx="10" cy="22" r="8.5" fill="#3CB878" opacity=".9"/><circle cx="22" cy="22" r="8.5" fill="#1B3A4A"/><rect x="9.5" y="9.5" width="13" height="13" rx="1.5" fill="rgba(60,184,120,.45)"/></svg>
+      <span class="logo-text">Oriupe</span>
+    </a>
+    <div class="nav-links">
+      <a href="/src/pages/catalog/index.html">Explorer</a>
+      <a href="/src/pages/offers/index.html">Appels d'offres</a>
+      <a href="/src/pages/academy/index.html">Academy</a>
+      <a href="/src/pages/blog/index.html">Blog</a>
+      <a href="/src/pages/pricing/index.html">Tarifs</a>
+    </div>
+    <div class="nav-cta">
+      <button class="btn-login" onclick="location.href='/src/pages/auth/index.html'">Se connecter</button>
+      <button class="btn-register" onclick="location.href='/src/pages/auth/index.html'">S'inscrire</button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.26 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.17 1h3a2 2 0 0 1 2 1.72"/></svg>
+      Nous contacter
+    </div>
+    <h1>Nous sommes là<br/>pour vous aider</h1>
+    <p>Une question, un projet, un partenariat ? Notre équipe répond rapidement et avec le sourire.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Réponse sous 4h en journée
+      </div>
+      <div class="hero-meta-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Équipe francophone dédiée
+      </div>
+      <div class="hero-meta-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Abidjan, Côte d'Ivoire
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MAIN -->
+<main class="main-section">
+
+  <!-- CONTACT GRID -->
+  <div class="contact-grid">
+
+    <!-- FORM -->
+    <div class="form-card">
+      <!-- Form view -->
+      <div id="form-view">
+        <h2>Envoyez-nous un message</h2>
+        <p class="subtitle">Remplissez le formulaire ci-dessous et nous vous répondrons dans les plus brefs délais.</p>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label>Nom complet <span>*</span></label>
+            <input type="text" id="f-name" placeholder="Ex : Aminata Koné" autocomplete="name"/>
+            <div class="err-msg" id="err-name">Veuillez saisir votre nom complet.</div>
+          </div>
+          <div class="form-field">
+            <label>Adresse email <span>*</span></label>
+            <input type="email" id="f-email" placeholder="vous@exemple.com" autocomplete="email"/>
+            <div class="err-msg" id="err-email">Adresse email invalide.</div>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label>Sujet <span>*</span></label>
+          <select id="f-subject">
+            <option value="">— Choisissez un sujet —</option>
+            <option value="support">Support technique &amp; aide</option>
+            <option value="payment">Problème de paiement ou retrait</option>
+            <option value="order">Litige ou problème de commande</option>
+            <option value="account">Compte suspendu ou bloqué</option>
+            <option value="sales">Demande commerciale (plan Business)</option>
+            <option value="partnership">Partenariat &amp; collaboration</option>
+            <option value="press">Presse &amp; médias</option>
+            <option value="other">Autre</option>
+          </select>
+          <div class="err-msg" id="err-subject">Veuillez sélectionner un sujet.</div>
+        </div>
+
+        <div class="form-field">
+          <label>Numéro de téléphone (optionnel)</label>
+          <input type="tel" id="f-phone" placeholder="Ex : +225 07 00 00 00 00" autocomplete="tel"/>
+        </div>
+
+        <div class="form-field">
+          <label>Votre message <span>*</span></label>
+          <textarea id="f-message" placeholder="Décrivez votre demande en détail pour que nous puissions vous aider au mieux..."></textarea>
+          <div class="err-msg" id="err-message">Veuillez saisir votre message (20 caractères minimum).</div>
+        </div>
+
+        <button class="btn-submit" id="submit-btn" onclick="submitForm()">
+          <span class="btn-text">Envoyer le message</span>
+          <div class="spinner"></div>
+        </button>
+      </div>
+
+      <!-- Success view -->
+      <div class="success-state" id="success-view">
+        <div class="success-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h3>Message envoyé !</h3>
+        <p>Merci de nous avoir contacté. Notre équipe vous répondra sous 4 heures ouvrées à l'adresse email indiquée. Pensez à vérifier vos spams si nécessaire.</p>
+        <button class="btn-back" onclick="resetForm()">Envoyer un autre message</button>
+      </div>
+    </div>
+
+    <!-- CHANNELS -->
+    <div class="channels-panel">
+
+      <a href="https://wa.me/2250101000000" class="channel-item" target="_blank" rel="noopener" style="text-decoration:none">
+        <div class="channel-icon" style="background:#E4F7EE">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="#3CB878"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+        </div>
+        <div class="channel-info">
+          <h4>WhatsApp</h4>
+          <p>Discutez directement avec notre équipe support.</p>
+          <span class="link-val">+225 01 01 00 00 00</span>
+          <span class="hours">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Lun–Sam, 8h–20h GMT
+          </span>
+        </div>
+      </a>
+
+      <a href="mailto:support@oriupe.com" class="channel-item" style="text-decoration:none">
+        <div class="channel-icon" style="background:var(--blue-l)">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#29ABE2" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </div>
+        <div class="channel-info">
+          <h4>Email support</h4>
+          <p>Pour les demandes non urgentes et les dossiers détaillés.</p>
+          <span class="link-val">support@oriupe.com</span>
+          <span class="hours">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Réponse sous 4h ouvrées
+          </span>
+        </div>
+      </a>
+
+      <a href="tel:+2252527000000" class="channel-item" style="text-decoration:none">
+        <div class="channel-icon" style="background:rgba(141,198,63,.1)">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6EA832" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.26 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.17 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        </div>
+        <div class="channel-info">
+          <h4>Téléphone</h4>
+          <p>Pour les urgences et les demandes commerciales.</p>
+          <span class="link-val">+225 25 27 00 00 00</span>
+          <span class="hours">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Lun–Ven, 9h–18h GMT
+          </span>
+        </div>
+      </a>
+
+      <div class="office-card">
+        <h4>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Siège social — Abidjan
+        </h4>
+        <div class="office-detail">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span>Plateau, Immeuble CCIA, 3e étage<br/>01 BP 1234, Abidjan 01, Côte d'Ivoire</span>
+        </div>
+        <div class="office-detail">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span>Visites sur rendez-vous uniquement<br/>Lundi – Vendredi, 9h à 17h</span>
+        </div>
+        <div class="office-detail">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          <span>hello@oriupe.com</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TEAM CARDS -->
+  <div class="team-section">
+    <div class="team-title">Parler à la bonne équipe</div>
+    <p class="team-sub">Chaque département a une équipe dédiée pour vous répondre rapidement.</p>
+    <div class="team-grid">
+
+      <div class="team-card">
+        <div class="team-avatar" style="background:var(--green-l);color:var(--green)">V</div>
+        <h3>Équipe Commerciale</h3>
+        <div class="role">Ventes &amp; Partenariats</div>
+        <p>Pour les plans Business, les partenariats institutionnels, les entreprises et les grands comptes.</p>
+        <a href="mailto:sales@oriupe.com" class="team-contact-btn" style="background:var(--green-l);color:var(--green)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          sales@oriupe.com
+        </a>
+      </div>
+
+      <div class="team-card">
+        <div class="team-avatar" style="background:var(--blue-l);color:var(--blue)">S</div>
+        <h3>Équipe Support</h3>
+        <div class="role">Aide &amp; Assistance</div>
+        <p>Pour tous les problèmes techniques, litiges, questions sur les paiements, comptes et commandes.</p>
+        <a href="mailto:support@oriupe.com" class="team-contact-btn" style="background:var(--blue-l);color:var(--blue)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          support@oriupe.com
+        </a>
+      </div>
+
+      <div class="team-card">
+        <div class="team-avatar" style="background:rgba(141,198,63,.12);color:#6EA832">P</div>
+        <h3>Équipe Presse</h3>
+        <div class="role">Médias &amp; Communication</div>
+        <p>Pour les demandes journalistiques, interviews, données statistiques sur Oriupe et communiqués de presse.</p>
+        <a href="mailto:presse@oriupe.com" class="team-contact-btn" style="background:rgba(141,198,63,.12);color:#6EA832">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          presse@oriupe.com
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div><a href="/src/pages/home/index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;margin-bottom:12px"><svg width="26" height="26" viewBox="0 0 32 32" fill="none"><circle cx="10" cy="10" r="8.5" fill="#8DC63F" opacity=".9"/><circle cx="22" cy="10" r="8.5" fill="#29ABE2" opacity=".9"/><circle cx="10" cy="22" r="8.5" fill="#3CB878" opacity=".9"/><circle cx="22" cy="22" r="8.5" fill="#1B3A4A"/><rect x="9.5" y="9.5" width="13" height="13" rx="1.5" fill="rgba(60,184,120,.45)"/></svg><span style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;color:#fff">Oriupe</span></a><p class="footer-tagline">"Ton talent. Ton continent. Ton avenir."</p></div>
+    <div><div class="footer-col-title">Oriupe</div><div class="footer-links"><a href="/src/pages/about/index.html">À propos</a><a href="/src/pages/careers/index.html">Carrières</a><a href="/src/pages/press/index.html">Presse &amp; Médias</a><a href="/src/pages/blog/index.html">Blog</a><a href="/src/pages/impact/index.html">Impact ESG</a></div></div>
+    <div><div class="footer-col-title">Freelances</div><div class="footer-links"><a href="/src/pages/auth/index.html">S'inscrire</a><a href="/src/pages/how-it-works/index.html">Comment ça marche</a><a href="/src/pages/academy/index.html">Oriupe Academy</a><a href="/src/pages/pricing/index.html">Tarifs Pro</a><a href="/src/pages/faq/index.html">FAQ Freelances</a></div></div>
+    <div><div class="footer-col-title">Support</div><div class="footer-links"><a href="/src/pages/help/index.html">Centre d'aide</a><a href="/src/pages/contact/index.html">Nous contacter</a><a href="/src/pages/disputes/index.html">Gestion des litiges</a><a href="/src/pages/terms/index.html">CGU &amp; CGV</a><a href="/src/pages/privacy/index.html">Confidentialité</a></div></div>
+  </div>
+  <div class="footer-bottom"><span class="footer-copy">© 2025 Oriupe SAS — Abidjan, Côte d'Ivoire. Tous droits réservés.</span><div class="footer-legal"><a href="/src/pages/privacy/index.html">Confidentialité</a><a href="/src/pages/terms/index.html">CGU &amp; CGV</a></div></div>
+</footer>
+
+<script>
+function validate() {
+  let valid = true;
+
+  const name = document.getElementById('f-name');
+  const errName = document.getElementById('err-name');
+  if (!name.value.trim() || name.value.trim().length < 2) {
+    name.classList.add('error');
+    errName.classList.add('show');
+    valid = false;
+  } else {
+    name.classList.remove('error');
+    errName.classList.remove('show');
+  }
+
+  const email = document.getElementById('f-email');
+  const errEmail = document.getElementById('err-email');
+  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRe.test(email.value.trim())) {
+    email.classList.add('error');
+    errEmail.classList.add('show');
+    valid = false;
+  } else {
+    email.classList.remove('error');
+    errEmail.classList.remove('show');
+  }
+
+  const subject = document.getElementById('f-subject');
+  const errSubject = document.getElementById('err-subject');
+  if (!subject.value) {
+    subject.classList.add('error');
+    errSubject.classList.add('show');
+    valid = false;
+  } else {
+    subject.classList.remove('error');
+    errSubject.classList.remove('show');
+  }
+
+  const msg = document.getElementById('f-message');
+  const errMsg = document.getElementById('err-message');
+  if (!msg.value.trim() || msg.value.trim().length < 20) {
+    msg.classList.add('error');
+    errMsg.classList.add('show');
+    valid = false;
+  } else {
+    msg.classList.remove('error');
+    errMsg.classList.remove('show');
+  }
+
+  return valid;
+}
+
+function submitForm() {
+  if (!validate()) return;
+
+  const btn = document.getElementById('submit-btn');
+  btn.classList.add('loading');
+  btn.disabled = true;
+
+  setTimeout(() => {
+    document.getElementById('form-view').style.display = 'none';
+    const succ = document.getElementById('success-view');
+    succ.classList.add('show');
+    btn.classList.remove('loading');
+    btn.disabled = false;
+  }, 1600);
+}
+
+function resetForm() {
+  document.getElementById('f-name').value = '';
+  document.getElementById('f-email').value = '';
+  document.getElementById('f-subject').value = '';
+  document.getElementById('f-phone').value = '';
+  document.getElementById('f-message').value = '';
+  document.querySelectorAll('.error').forEach(el => el.classList.remove('error'));
+  document.querySelectorAll('.err-msg.show').forEach(el => el.classList.remove('show'));
+
+  document.getElementById('form-view').style.display = 'block';
+  document.getElementById('success-view').classList.remove('show');
+}
+
+// Live validation on input
+['f-name','f-email','f-subject','f-message'].forEach(id => {
+  const el = document.getElementById(id);
+  el.addEventListener('input', () => {
+    if (el.classList.contains('error')) validate();
+  });
+});
+</script>
+</body>
+</html>

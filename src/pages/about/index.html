@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>À propos — Oriupe</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#F4F6F9;color:#1B3A4A}
+:root{--navy:#0F2535;--navy2:#1B3A4A;--green:#3CB878;--green-d:#27965D;--green-l:#E4F7EE;--blue:#29ABE2;--blue-l:#E2F4FB;--lime:#8DC63F;--bg:#F4F6F9;--border:rgba(27,58,74,.1);--muted:rgba(27,58,74,.52);--shadow:0 2px 12px rgba(15,37,53,.08);--shadow-md:0 8px 32px rgba(15,37,53,.13)}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 24px;background:rgba(255,255,255,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:24px;height:64px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-text{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:var(--navy)}
+.nav-links{display:flex;gap:4px;margin-left:32px}
+.nav-links a{text-decoration:none;color:var(--navy2);font-size:14px;font-weight:500;padding:8px 14px;border-radius:10px;transition:.2s}
+.nav-links a:hover{background:var(--green-l);color:var(--green-d)}
+.nav-right{display:flex;align-items:center;gap:10px;margin-left:auto}
+.btn-login{background:transparent;border:1.5px solid var(--border);border-radius:10px;padding:8px 18px;font-size:13px;font-weight:600;color:var(--navy2);cursor:pointer;transition:.2s}
+.btn-login:hover{border-color:var(--navy)}
+.btn-cta{background:linear-gradient(135deg,var(--green),var(--lime));border:none;border-radius:10px;padding:9px 20px;font-size:13px;font-weight:700;color:#fff;cursor:pointer}
+.hero{background:var(--navy);padding:140px 24px 100px;position:relative;overflow:hidden}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none}
+.orb1{width:600px;height:600px;background:radial-gradient(circle,rgba(60,184,120,.18) 0%,transparent 70%);top:-150px;right:-100px}
+.orb2{width:400px;height:400px;background:radial-gradient(circle,rgba(41,171,226,.14) 0%,transparent 70%);bottom:-100px;left:-80px}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:44px 44px}
+.hero-inner{max-width:800px;margin:0 auto;text-align:center;position:relative;z-index:1}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(60,184,120,.15);border:1px solid rgba(60,184,120,.3);border-radius:100px;padding:6px 16px;font-size:12px;font-weight:600;color:var(--green);margin-bottom:24px;letter-spacing:.05em}
+.hero-title{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(40px,5.5vw,68px);font-weight:800;color:#fff;letter-spacing:-2px;line-height:1.06;margin-bottom:20px}
+.hero-title span{color:var(--green)}
+.hero-sub{font-size:17px;color:rgba(255,255,255,.55);line-height:1.8;max-width:560px;margin:0 auto 40px}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-primary{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--green),var(--lime));border:none;border-radius:12px;padding:14px 28px;font-size:15px;font-weight:700;color:#fff;cursor:pointer;text-decoration:none;transition:.2s}
+.btn-primary:hover{opacity:.9;transform:translateY(-2px)}
+.btn-ghost{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:14px 28px;font-size:15px;font-weight:600;color:#fff;cursor:pointer;text-decoration:none;transition:.2s}
+.btn-ghost:hover{background:rgba(255,255,255,.14)}
+.container{max-width:1280px;margin:0 auto;padding:0 24px}
+.section{padding:80px 0}
+.section-label{font-size:12px;font-weight:700;color:var(--green-d);letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px}
+.section-title{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,3.5vw,40px);font-weight:800;color:var(--navy);letter-spacing:-.5px;margin-bottom:12px}
+.section-sub{font-size:15px;color:var(--muted);line-height:1.75;max-width:580px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:32px}
+.card{background:#fff;border-radius:20px;padding:32px;border:1px solid var(--border);box-shadow:var(--shadow);transition:.25s}
+.card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md)}
+.icon-box{width:52px;height:52px;border-radius:16px;display:flex;align-items:center;justify-content:center;margin-bottom:18px}
+.ib-green{background:var(--green-l)}
+.ib-blue{background:var(--blue-l)}
+.ib-lime{background:#F0F8E8}
+.ib-purple{background:#F3EEFF}
+.card-title{font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;color:var(--navy);margin-bottom:8px}
+.card-text{font-size:14px;color:var(--muted);line-height:1.7}
+/* Mission */
+.mission-wrap{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+.mission-text h2{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,3.5vw,42px);font-weight:800;color:var(--navy);letter-spacing:-.5px;margin-bottom:20px;line-height:1.2}
+.mission-text p{font-size:15px;color:var(--muted);line-height:1.8;margin-bottom:16px}
+.mission-visual{background:var(--navy);border-radius:24px;padding:40px;position:relative;overflow:hidden}
+.mv-stat{margin-bottom:28px;position:relative;z-index:1}
+.mv-val{font-family:'Bricolage Grotesque',sans-serif;font-size:48px;font-weight:800;background:linear-gradient(135deg,var(--green),var(--lime));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
+.mv-lbl{font-size:13px;color:rgba(255,255,255,.5);margin-top:4px}
+.mv-divider{height:1px;background:rgba(255,255,255,.08);margin:20px 0}
+/* Timeline */
+.timeline{position:relative;padding-left:28px}
+.timeline::before{content:'';position:absolute;left:8px;top:8px;bottom:8px;width:2px;background:linear-gradient(to bottom,var(--green),var(--blue))}
+.tl-item{position:relative;margin-bottom:40px}
+.tl-dot{position:absolute;left:-24px;top:4px;width:16px;height:16px;border-radius:50%;background:var(--green);border:3px solid #fff;box-shadow:0 0 0 3px var(--green-l)}
+.tl-year{font-size:12px;font-weight:700;color:var(--green-d);letter-spacing:.08em;margin-bottom:4px}
+.tl-title{font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;color:var(--navy);margin-bottom:6px}
+.tl-text{font-size:14px;color:var(--muted);line-height:1.6}
+/* Team */
+.team-card{background:#fff;border-radius:20px;border:1px solid var(--border);overflow:hidden;box-shadow:var(--shadow);transition:.25s}
+.team-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md)}
+.team-avatar{height:180px;display:flex;align-items:center;justify-content:center;font-size:48px;font-weight:800;color:#fff;font-family:'Bricolage Grotesque',sans-serif}
+.team-info{padding:20px}
+.team-name{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:800;color:var(--navy);margin-bottom:4px}
+.team-role{font-size:13px;color:var(--green-d);font-weight:600;margin-bottom:8px}
+.team-bio{font-size:13px;color:var(--muted);line-height:1.6}
+/* Presence */
+.presence-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+.presence-card{background:#fff;border-radius:16px;padding:20px;text-align:center;border:1px solid var(--border);box-shadow:var(--shadow);transition:.25s}
+.presence-card:hover{transform:translateY(-3px);border-color:var(--green);box-shadow:0 8px 24px rgba(60,184,120,.12)}
+.presence-flag{font-size:32px;margin-bottom:10px}
+.presence-country{font-size:13px;font-weight:700;color:var(--navy)}
+.presence-city{font-size:12px;color:var(--muted);margin-top:3px}
+/* Values */
+.values-section{background:var(--navy);padding:80px 24px}
+.val-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;max-width:1280px;margin:40px auto 0}
+.val-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:28px;transition:.25s}
+.val-card:hover{background:rgba(255,255,255,.1);border-color:rgba(60,184,120,.3)}
+.val-icon{width:48px;height:48px;border-radius:14px;background:rgba(60,184,120,.15);display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+.val-title{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:800;color:#fff;margin-bottom:8px}
+.val-text{font-size:13px;color:rgba(255,255,255,.5);line-height:1.65}
+/* CTA */
+.cta-banner{background:linear-gradient(135deg,var(--navy),#1A3A5C);border-radius:24px;padding:60px 48px;text-align:center;position:relative;overflow:hidden}
+.cta-banner h2{font-family:'Bricolage Grotesque',sans-serif;font-size:36px;font-weight:800;color:#fff;margin-bottom:12px;position:relative;z-index:1}
+.cta-banner p{font-size:15px;color:rgba(255,255,255,.55);margin-bottom:32px;position:relative;z-index:1}
+.cta-orb{position:absolute;border-radius:50%;filter:blur(60px)}
+footer{background:var(--navy);padding:64px 24px 32px;margin-top:0}
+.footer-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:40px;margin-bottom:48px}
+.footer-col-title{font-size:11px;font-weight:700;color:rgba(255,255,255,.35);letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px}
+.footer-links{display:flex;flex-direction:column;gap:10px}
+.footer-links a{font-size:13px;color:rgba(255,255,255,.6);text-decoration:none;transition:.2s}
+.footer-links a:hover{color:#fff}
+.footer-tagline{font-size:12px;color:rgba(255,255,255,.4);margin-top:10px;line-height:1.6}
+.footer-bottom{max-width:1280px;margin:0 auto;padding-top:24px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;align-items:center}
+.footer-copy{font-size:12px;color:rgba(255,255,255,.3)}
+.footer-legal{display:flex;gap:20px}
+.footer-legal a{font-size:12px;color:rgba(255,255,255,.3);text-decoration:none}
+.footer-legal a:hover{color:rgba(255,255,255,.7)}
+@media(max-width:900px){.footer-inner{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.footer-inner{grid-template-columns:1fr}}
+@media(max-width:900px){.grid-3,.grid-2{grid-template-columns:1fr}.presence-grid{grid-template-columns:repeat(3,1fr)}.val-grid{grid-template-columns:repeat(2,1fr)}.mission-wrap{grid-template-columns:1fr}.footer-inner{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.nav-links,.nav-right{display:none}.presence-grid{grid-template-columns:repeat(2,1fr)}.val-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="/src/pages/home/index.html" class="logo">
+      <svg width="30" height="30" viewBox="0 0 32 32" fill="none"><circle cx="10" cy="10" r="8.5" fill="#8DC63F" opacity=".9"/><circle cx="22" cy="10" r="8.5" fill="#29ABE2" opacity=".9"/><circle cx="10" cy="22" r="8.5" fill="#3CB878" opacity=".9"/><circle cx="22" cy="22" r="8.5" fill="#1B3A4A"/><rect x="9.5" y="9.5" width="13" height="13" rx="1.5" fill="rgba(60,184,120,.45)"/></svg>
+      <span class="logo-text">Oriupe</span>
+    </a>
+    <div class="nav-links">
+      <a href="/src/pages/catalog/index.html">Explorer</a>
+      <a href="/src/pages/offers/index.html">Appels d'offres</a>
+      <a href="/src/pages/academy/index.html">Academy</a>
+      <a href="/src/pages/blog/index.html">Blog</a>
+      <a href="/src/pages/pricing/index.html">Tarifs</a>
+    </div>
+    <div class="nav-right">
+      <button class="btn-login" onclick="location.href='/src/pages/auth/index.html'">Se connecter</button>
+      <button class="btn-cta" onclick="location.href='/src/pages/auth/index.html'">S'inscrire</button>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-inner">
+    <div class="hero-tag">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="#3CB878" stroke-width="1.5"/><path d="M7 4.5V7.5L9 9" stroke="#3CB878" stroke-width="1.3" stroke-linecap="round"/></svg>
+      Fondée en 2023 · Abidjan, Côte d'Ivoire
+    </div>
+    <h1 class="hero-title">Le talent africain<br>mérite une <span>plateforme mondiale</span></h1>
+    <p class="hero-sub">Oriupe est né d'un constat simple : des milliers de professionnels africains talentueux manquent de visibilité. Nous construisons le pont entre leurs compétences et les opportunités mondiales.</p>
+    <div class="hero-btns">
+      <a href="/src/pages/auth/index.html" class="btn-primary">Rejoindre la communauté <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3.5 8H12.5M12.5 8L9 4.5M12.5 8L9 11.5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <a href="/src/pages/contact/index.html" class="btn-ghost">Nous contacter</a>
+    </div>
+  </div>
+</section>
+
+<div class="section" style="background:#fff">
+  <div class="container">
+    <div class="mission-wrap">
+      <div class="mission-text">
+        <div class="section-label">Notre mission</div>
+        <h2>Connecter l'Afrique au monde du <span style="color:var(--green)">travail digital</span></h2>
+        <p>Oriupe est une marketplace de services digitaux et de talents freelance dédiée à l'écosystème africain. Nous créons un espace où les freelances africains peuvent prospérer, les entreprises trouvent les meilleurs talents locaux, et la compétence dépasse les frontières géographiques.</p>
+        <p>Notre mission va au-delà de la mise en relation : nous investissons dans la formation, le mentorat et les outils qui permettent à chaque talent de réaliser son plein potentiel.</p>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:28px">
+          <div style="background:var(--green-l);border-radius:12px;padding:16px 20px;flex:1;min-width:120px">
+            <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:28px;font-weight:800;color:var(--navy)">12+</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px">Pays africains</div>
+          </div>
+          <div style="background:var(--blue-l);border-radius:12px;padding:16px 20px;flex:1;min-width:120px">
+            <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:28px;font-weight:800;color:var(--navy)">8 400+</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px">Freelances actifs</div>
+          </div>
+          <div style="background:#F0F8E8;border-radius:12px;padding:16px 20px;flex:1;min-width:120px">
+            <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:28px;font-weight:800;color:var(--navy)">95%</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px">Satisfaction client</div>
+          </div>
+        </div>
+      </div>
+      <div class="mission-visual">
+        <div class="orb" style="width:300px;height:300px;background:radial-gradient(circle,rgba(60,184,120,.2) 0%,transparent 70%);top:-60px;right:-60px;filter:blur(60px)"></div>
+        <div class="mv-stat">
+          <div class="mv-val">24,000+</div>
+          <div class="mv-lbl">Projets complétés avec succès</div>
+        </div>
+        <div class="mv-divider"></div>
+        <div class="mv-stat">
+          <div class="mv-val">3.2M FCFA</div>
+          <div class="mv-lbl">Revenu moyen annuel généré par freelance</div>
+        </div>
+        <div class="mv-divider"></div>
+        <div class="mv-stat">
+          <div class="mv-val">48h</div>
+          <div class="mv-lbl">Délai moyen pour trouver un freelance qualifié</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div style="margin-bottom:48px">
+      <div class="section-label">Notre histoire</div>
+      <h2 class="section-title">De l'idée à l'impact</h2>
+    </div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2022 — L'idée naît</div>
+        <div class="tl-title">Le constat fondateur</div>
+        <div class="tl-text">Kofi, Aya et Marcus, trois entrepreneurs tech d'Abidjan, constatent que les plateformes existantes ignorent les freelances africains malgré leur excellence. L'idée d'Oriupe est née autour d'un atieké.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--blue)"></div>
+        <div class="tl-year">Mars 2023 — Lancement</div>
+        <div class="tl-title">La première version va en ligne</div>
+        <div class="tl-text">Après 12 mois de développement intense, Oriupe beta est lancé avec 200 freelances pionniers de Côte d'Ivoire, Sénégal et Cameroun. En 48h, 50 premiers projets sont postés.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--lime)"></div>
+        <div class="tl-year">Septembre 2023 — Expansion</div>
+        <div class="tl-title">Oriupe Academy voit le jour</div>
+        <div class="tl-text">Constatant le besoin de formation, nous lançons l'Academy : des cours en ligne adaptés au contexte africain, enseignés par des experts locaux et internationaux.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:#A855F7"></div>
+        <div class="tl-year">2024 — Croissance</div>
+        <div class="tl-title">8 000+ freelances, 12 pays</div>
+        <div class="tl-text">Oriupe dépasse 8 000 freelances actifs dans 12 pays africains. Levée de fonds Series A pour accélérer l'expansion en Afrique de l'Est et du Nord.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--green)"></div>
+        <div class="tl-year">2025 — Aujourd'hui</div>
+        <div class="tl-title">Plateforme panafricaine de référence</div>
+        <div class="tl-text">Oriupe est reconnue comme la référence du freelancing en Afrique subsaharienne francophone. Lancement du programme Oriupe Pro et des nouveaux outils de gestion pour freelances.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="values-section">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:0">
+      <div class="section-label" style="color:rgba(60,184,120,.8)">Ce qui nous anime</div>
+      <h2 class="section-title" style="color:#fff;max-width:500px;margin:0 auto 0">Nos valeurs fondatrices</h2>
+    </div>
+    <div class="val-grid">
+      <div class="val-card">
+        <div class="val-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="#3CB878" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="val-title">Excellence africaine</div>
+        <div class="val-text">Nous croyons que le talent africain est capable des plus hauts niveaux d'excellence. Nous construisons des outils qui le prouvent au monde.</div>
+      </div>
+      <div class="val-card">
+        <div class="val-icon" style="background:rgba(41,171,226,.15)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M17 21V19C17 17.9 16.1 17 15 17H9C7.9 17 7 17.9 7 19V21M12 7C13.66 7 15 8.34 15 10S13.66 13 12 13 9 11.66 9 10 10.34 7 12 7ZM20 8C21.66 8 23 9.34 23 11S21.66 14 20 14M4 8C2.34 8 1 9.34 1 11S2.34 14 4 14" stroke="#29ABE2" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="val-title">Communauté d'abord</div>
+        <div class="val-text">Chaque décision est prise en pensant à notre communauté de freelances. Leur réussite est notre réussite.</div>
+      </div>
+      <div class="val-card">
+        <div class="val-icon" style="background:rgba(141,198,63,.15)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 22C17.52 22 22 17.52 22 12S17.52 2 12 2 2 6.48 2 12s4.48 10 10 10ZM12 6V12L16 14" stroke="#8DC63F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="val-title">Transparence totale</div>
+        <div class="val-text">Pas de frais cachés, pas de surprises. Chaque euro investi ou gagné est clairement visible. La confiance se construit par la transparence.</div>
+      </div>
+      <div class="val-card">
+        <div class="val-icon" style="background:rgba(168,85,247,.15)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" stroke="#A855F7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="val-title">Impact mesurable</div>
+        <div class="val-text">Nous mesurons notre succès à l'impact concret sur la vie des freelances et des familles qu'ils font vivre. Les chiffres racontent une histoire humaine.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div style="margin-bottom:40px">
+      <div class="section-label">L'équipe</div>
+      <h2 class="section-title">Les bâtisseurs d'Oriupe</h2>
+      <p class="section-sub" style="color:var(--muted)">Une équipe de 45 personnes réparties en Afrique et en Europe, passionnées par la même vision : faire rayonner le talent africain.</p>
+    </div>
+    <div class="grid-3" style="margin-bottom:40px">
+      <div class="team-card">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#0F2535,#1A4A6A)">K</div>
+        <div class="team-info">
+          <div class="team-name">Kofi Mensah</div>
+          <div class="team-role">CEO & Co-fondateur</div>
+          <div class="team-bio">10 ans d'expérience en product management. Ex-Jumia, ex-Wave. Diplômé de l'INPHB Yamoussoukro.</div>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#1A0A3A,#3D1A78)">A</div>
+        <div class="team-info">
+          <div class="team-name">Aya Traoré</div>
+          <div class="team-role">CTO & Co-fondatrice</div>
+          <div class="team-bio">Ingénieure fullstack. A construit des systèmes pour 2M+ utilisateurs. Passionnée d'IA appliquée à l'Afrique.</div>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#0A3020,#1A6038)">M</div>
+        <div class="team-info">
+          <div class="team-name">Marcus Diallo</div>
+          <div class="team-role">COO & Co-fondateur</div>
+          <div class="team-bio">Expert en opérations scaling. A structuré la croissance de startups dans 8 pays africains.</div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center">
+      <a href="/src/pages/careers/index.html" class="btn-primary">Rejoindre l'équipe <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3.5 8H12.5M12.5 8L9 4.5M12.5 8L9 11.5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:#fff;padding:60px 0">
+  <div class="container">
+    <div style="margin-bottom:36px">
+      <div class="section-label">Notre présence</div>
+      <h2 class="section-title">Où nous sommes actifs</h2>
+    </div>
+    <div class="presence-grid">
+      <div class="presence-card"><div class="presence-flag">🇨🇮</div><div class="presence-country">Côte d'Ivoire</div><div class="presence-city">Abidjan · Siège</div></div>
+      <div class="presence-card"><div class="presence-flag">🇸🇳</div><div class="presence-country">Sénégal</div><div class="presence-city">Dakar</div></div>
+      <div class="presence-card"><div class="presence-flag">🇨🇲</div><div class="presence-country">Cameroun</div><div class="presence-city">Douala</div></div>
+      <div class="presence-card"><div class="presence-flag">🇧🇯</div><div class="presence-country">Bénin</div><div class="presence-city">Cotonou</div></div>
+      <div class="presence-card"><div class="presence-flag">🇹🇬</div><div class="presence-country">Togo</div><div class="presence-city">Lomé</div></div>
+      <div class="presence-card"><div class="presence-flag">🇬🇳</div><div class="presence-country">Guinée</div><div class="presence-city">Conakry</div></div>
+      <div class="presence-card"><div class="presence-flag">🇲🇱</div><div class="presence-country">Mali</div><div class="presence-city">Bamako</div></div>
+      <div class="presence-card"><div class="presence-flag">🇧🇫</div><div class="presence-country">Burkina Faso</div><div class="presence-city">Ouagadougou</div></div>
+      <div class="presence-card"><div class="presence-flag">🇲🇦</div><div class="presence-country">Maroc</div><div class="presence-city">Casablanca</div></div>
+      <div class="presence-card"><div class="presence-flag">🇳🇬</div><div class="presence-country">Nigeria</div><div class="presence-city">Lagos</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="cta-banner">
+      <div class="cta-orb" style="width:400px;height:400px;background:radial-gradient(circle,rgba(60,184,120,.2) 0%,transparent 70%);top:-100px;right:-100px"></div>
+      <div class="cta-orb" style="width:300px;height:300px;background:radial-gradient(circle,rgba(41,171,226,.15) 0%,transparent 70%);bottom:-80px;left:-80px"></div>
+      <h2>Prêt à rejoindre l'aventure ?</h2>
+      <p>Rejoignez 8 400+ freelances qui ont choisi Oriupe pour développer leur carrière digitale en Afrique.</p>
+      <div class="hero-btns" style="justify-content:center">
+        <a href="/src/pages/auth/index.html" class="btn-primary">Créer mon profil gratuitement</a>
+        <a href="/src/pages/how-it-works/index.html" class="btn-ghost">Comment ça marche ?</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div><a href="/src/pages/home/index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;margin-bottom:12px"><svg width="26" height="26" viewBox="0 0 32 32" fill="none"><circle cx="10" cy="10" r="8.5" fill="#8DC63F" opacity=".9"/><circle cx="22" cy="10" r="8.5" fill="#29ABE2" opacity=".9"/><circle cx="10" cy="22" r="8.5" fill="#3CB878" opacity=".9"/><circle cx="22" cy="22" r="8.5" fill="#1B3A4A"/><rect x="9.5" y="9.5" width="13" height="13" rx="1.5" fill="rgba(60,184,120,.45)"/></svg><span style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;color:#fff">Oriupe</span></a><p class="footer-tagline">"Ton talent. Ton continent. Ton avenir."</p></div>
+    <div><div class="footer-col-title">Oriupe</div><div class="footer-links"><a href="/src/pages/about/index.html">À propos</a><a href="/src/pages/careers/index.html">Carrières</a><a href="/src/pages/press/index.html">Presse &amp; Médias</a><a href="/src/pages/blog/index.html">Blog</a><a href="/src/pages/impact/index.html">Impact ESG</a></div></div>
+    <div><div class="footer-col-title">Freelances</div><div class="footer-links"><a href="/src/pages/auth/index.html">S'inscrire</a><a href="/src/pages/how-it-works/index.html">Comment ça marche</a><a href="/src/pages/academy/index.html">Oriupe Academy</a><a href="/src/pages/pricing/index.html">Tarifs Pro</a><a href="/src/pages/faq/index.html">FAQ Freelances</a></div></div>
+    <div><div class="footer-col-title">Support</div><div class="footer-links"><a href="/src/pages/help/index.html">Centre d'aide</a><a href="/src/pages/contact/index.html">Nous contacter</a><a href="/src/pages/disputes/index.html">Gestion des litiges</a><a href="/src/pages/terms/index.html">CGU &amp; CGV</a><a href="/src/pages/privacy/index.html">Confidentialité</a></div></div>
+  </div>
+  <div class="footer-bottom"><span class="footer-copy">© 2025 Oriupe SAS — Abidjan, Côte d'Ivoire. Tous droits réservés.</span><div class="footer-legal"><a href="/src/pages/privacy/index.html">Confidentialité</a><a href="/src/pages/terms/index.html">CGU &amp; CGV</a></div></div>
+</footer>
+</body>
+</html>

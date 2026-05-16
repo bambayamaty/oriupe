@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Tarifs — Oriupe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#F4F6F9;color:#1B3A4A;overflow-x:hidden}
+:root{
+  --navy:#0F2535;--navy2:#1B3A4A;
+  --green:#3CB878;--green-l:#E4F7EE;
+  --blue:#29ABE2;--blue-l:#E2F4FB;
+  --lime:#8DC63F;--lime-l:#EEF7D6;
+  --bg:#F4F6F9;--border:rgba(27,58,74,.1);
+  --shadow:0 4px 16px rgba(15,37,53,.09);
+  --shadow-md:0 8px 32px rgba(15,37,53,.13);
+}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:24px;height:64px;padding:0 32px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-text{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:var(--navy)}
+.nav-links{display:flex;gap:4px;margin-left:32px}
+.nav-links a{text-decoration:none;color:#1B3A4A;font-size:14px;font-weight:500;padding:8px 14px;border-radius:10px;transition:background .2s,color .2s}
+.nav-links a:hover{background:var(--bg);color:var(--navy)}
+.nav-links a.active{color:var(--green);font-weight:700}
+.nav-cta{display:flex;align-items:center;gap:10px;margin-left:auto}
+.btn-login{background:transparent;border:1.5px solid rgba(27,58,74,.15);border-radius:10px;padding:8px 18px;font-size:13px;font-weight:600;color:#1B3A4A;cursor:pointer;font-family:inherit;transition:border-color .2s,background .2s}
+.btn-login:hover{border-color:var(--green);background:var(--green-l)}
+.btn-register{background:linear-gradient(135deg,#3CB878,#8DC63F);border:none;border-radius:10px;padding:9px 20px;font-size:13px;font-weight:700;color:#fff;cursor:pointer;font-family:inherit;transition:opacity .2s,transform .15s}
+.btn-register:hover{opacity:.9;transform:translateY(-1px)}
+
+/* HERO */
+.hero{min-height:400px;background:var(--navy);padding:120px 32px 80px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;text-align:center}
+.hero-orb{position:absolute;border-radius:50%;pointer-events:none}
+.hero-orb-1{width:600px;height:600px;background:radial-gradient(circle,rgba(60,184,120,.18) 0%,transparent 70%);top:-150px;left:-100px}
+.hero-orb-2{width:500px;height:500px;background:radial-gradient(circle,rgba(41,171,226,.16) 0%,transparent 70%);top:-80px;right:-80px}
+.hero-orb-3{width:400px;height:400px;background:radial-gradient(circle,rgba(141,198,63,.12) 0%,transparent 70%);bottom:-150px;left:50%;transform:translateX(-50%)}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:48px 48px;pointer-events:none}
+.hero-content{position:relative;z-index:2;max-width:720px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(60,184,120,.15);border:1px solid rgba(60,184,120,.3);border-radius:100px;padding:6px 16px;font-size:12px;font-weight:700;color:#3CB878;letter-spacing:.06em;text-transform:uppercase;margin-bottom:24px}
+.hero h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(36px,5vw,60px);font-weight:800;color:#fff;line-height:1.1;letter-spacing:-.03em;margin-bottom:20px}
+.hero p{font-size:17px;color:rgba(255,255,255,.65);line-height:1.7;max-width:540px;margin:0 auto 32px}
+
+/* TOGGLE */
+.toggle-wrap{display:flex;align-items:center;gap:16px;justify-content:center;margin-bottom:56px;position:relative;z-index:2}
+.toggle-label{font-size:14px;font-weight:600;color:rgba(255,255,255,.6);transition:color .2s}
+.toggle-label.active{color:#fff}
+.toggle-switch{width:52px;height:28px;background:rgba(255,255,255,.15);border-radius:100px;cursor:pointer;position:relative;transition:background .3s;border:1.5px solid rgba(255,255,255,.2)}
+.toggle-switch.yearly{background:var(--green)}
+.toggle-knob{position:absolute;top:3px;left:3px;width:20px;height:20px;background:#fff;border-radius:50%;transition:transform .3s cubic-bezier(.34,1.56,.64,1);box-shadow:0 2px 6px rgba(0,0,0,.2)}
+.toggle-switch.yearly .toggle-knob{transform:translateX(24px)}
+.savings-badge{background:linear-gradient(135deg,#3CB878,#8DC63F);color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:100px;letter-spacing:.04em}
+
+/* PLANS SECTION */
+.plans-section{padding:0 32px 64px;margin-top:-48px;position:relative;z-index:10}
+.plans-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;align-items:start}
+.plan-card{background:#fff;border:1.5px solid var(--border);border-radius:20px;padding:36px 32px;box-shadow:var(--shadow);transition:transform .25s,box-shadow .25s;position:relative}
+.plan-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md)}
+.plan-card.featured{border-color:var(--green);box-shadow:0 8px 40px rgba(60,184,120,.2);background:linear-gradient(145deg,#fff 60%,#F0FBF5)}
+.plan-card.featured::before{content:'Recommandé';position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#3CB878,#8DC63F);color:#fff;font-size:11px;font-weight:800;padding:5px 18px;border-radius:100px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.plan-name{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;color:var(--navy);margin-bottom:6px}
+.plan-desc{font-size:13px;color:rgba(27,58,74,.55);line-height:1.6;margin-bottom:24px}
+.plan-price-wrap{margin-bottom:8px;min-height:72px;display:flex;align-items:flex-end;gap:6px}
+.plan-price{font-family:'Bricolage Grotesque',sans-serif;font-size:48px;font-weight:800;color:var(--navy);line-height:1;transition:opacity .2s}
+.plan-price.free{color:var(--green)}
+.plan-period{font-size:13px;color:rgba(27,58,74,.5);font-weight:500;padding-bottom:8px}
+.plan-commission{display:inline-flex;align-items:center;gap:6px;background:var(--green-l);color:var(--green);border-radius:8px;padding:6px 14px;font-size:13px;font-weight:700;margin-bottom:24px}
+.plan-card.featured .plan-commission{background:var(--green);color:#fff}
+.plan-divider{height:1px;background:var(--border);margin-bottom:24px}
+.plan-features{list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:32px}
+.plan-features li{display:flex;align-items:flex-start;gap:10px;font-size:13.5px;color:#1B3A4A;line-height:1.5}
+.plan-features li .icon{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.plan-features li .icon.yes{background:var(--green-l)}
+.plan-features li .icon.yes svg{color:var(--green)}
+.plan-features li .icon.no{background:#F4F6F9}
+.plan-features li .icon.no svg{color:rgba(27,58,74,.25)}
+.plan-features li span{color:rgba(27,58,74,.55)}
+.btn-plan{width:100%;padding:14px;border-radius:12px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;transition:all .2s;border:none}
+.btn-plan-free{background:var(--bg);color:var(--navy);border:1.5px solid var(--border)}
+.btn-plan-free:hover{border-color:var(--green);background:var(--green-l)}
+.btn-plan-pro{background:linear-gradient(135deg,#3CB878,#8DC63F);color:#fff;box-shadow:0 6px 20px rgba(60,184,120,.35)}
+.btn-plan-pro:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(60,184,120,.45)}
+.btn-plan-biz{background:var(--navy);color:#fff}
+.btn-plan-biz:hover{background:#264B5E;transform:translateY(-2px)}
+
+/* COMPARISON TABLE */
+.section{padding:80px 32px}
+.section-header{text-align:center;max-width:640px;margin:0 auto 56px}
+.section-header h2{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,3.5vw,44px);font-weight:800;color:var(--navy);letter-spacing:-.03em;margin-bottom:12px}
+.section-header p{font-size:16px;color:rgba(27,58,74,.6);line-height:1.7}
+.table-wrap{max-width:1100px;margin:0 auto;overflow:hidden;border-radius:20px;box-shadow:var(--shadow-md);border:1.5px solid var(--border)}
+.cmp-table{width:100%;border-collapse:collapse;background:#fff}
+.cmp-table th,.cmp-table td{padding:18px 28px;text-align:left;border-bottom:1px solid var(--border)}
+.cmp-table th{background:#fff;font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:800;color:var(--navy)}
+.cmp-table th.highlight{background:linear-gradient(135deg,rgba(60,184,120,.08),rgba(141,198,63,.06));border-top:3px solid var(--green)}
+.cmp-table td{font-size:13.5px;color:#1B3A4A}
+.cmp-table td.feature-name{font-weight:600;color:var(--navy)}
+.cmp-table td.highlight{background:linear-gradient(135deg,rgba(60,184,120,.04),rgba(141,198,63,.02))}
+.cmp-table tr:last-child td{border-bottom:none}
+.cmp-table tr:hover td{background:rgba(60,184,120,.03)}
+.cmp-table tr:hover td.highlight{background:rgba(60,184,120,.07)}
+.check{color:var(--green);font-size:16px;font-weight:700}
+.cross{color:rgba(27,58,74,.25);font-size:16px}
+.partial{color:var(--blue);font-size:13px;font-weight:600}
+.cmp-table .cat-row td{background:#F4F6F9;font-size:11px;font-weight:800;color:rgba(27,58,74,.45);letter-spacing:.1em;text-transform:uppercase;padding:10px 28px}
+.cmp-table .cat-row td.highlight{background:rgba(60,184,120,.06)}
+
+/* FAQ ACCORDION */
+.faq-section{padding:80px 32px;background:#fff}
+.accordion{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+.acc-item{border:1.5px solid var(--border);border-radius:14px;overflow:hidden;transition:border-color .2s}
+.acc-item.open{border-color:var(--green)}
+.acc-header{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;cursor:pointer;background:#fff;transition:background .2s;gap:16px}
+.acc-header:hover{background:var(--green-l)}
+.acc-question{font-size:15px;font-weight:700;color:var(--navy);line-height:1.4}
+.acc-icon{width:28px;height:28px;border-radius:50%;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .2s,transform .3s}
+.acc-item.open .acc-icon{background:var(--green);transform:rotate(45deg)}
+.acc-icon svg{transition:color .2s}
+.acc-item.open .acc-icon svg{color:#fff}
+.acc-body{max-height:0;overflow:hidden;transition:max-height .35s cubic-bezier(.4,0,.2,1)}
+.acc-body.open{max-height:400px}
+.acc-body-inner{padding:0 24px 20px;font-size:14px;color:rgba(27,58,74,.7);line-height:1.8;border-top:1px solid var(--border)}
+.acc-body-inner p{padding-top:16px}
+
+/* FINAL CTA */
+.cta-section{padding:80px 32px;background:var(--navy);text-align:center;position:relative;overflow:hidden}
+.cta-section .orb{position:absolute;border-radius:50%;pointer-events:none}
+.cta-section .orb1{width:400px;height:400px;background:radial-gradient(circle,rgba(60,184,120,.2) 0%,transparent 70%);top:-100px;left:-50px}
+.cta-section .orb2{width:350px;height:350px;background:radial-gradient(circle,rgba(41,171,226,.15) 0%,transparent 70%);bottom:-100px;right:-50px}
+.cta-inner{position:relative;z-index:2}
+.cta-section h2{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,4vw,48px);font-weight:800;color:#fff;letter-spacing:-.03em;margin-bottom:16px}
+.cta-section p{font-size:16px;color:rgba(255,255,255,.6);margin-bottom:32px}
+.cta-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.btn-cta-primary{background:linear-gradient(135deg,#3CB878,#8DC63F);border:none;border-radius:12px;padding:15px 36px;font-size:15px;font-weight:700;color:#fff;cursor:pointer;font-family:inherit;transition:transform .2s,box-shadow .2s}
+.btn-cta-primary:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(60,184,120,.4)}
+.btn-cta-sec{background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);border-radius:12px;padding:14px 32px;font-size:15px;font-weight:700;color:#fff;cursor:pointer;font-family:inherit;transition:background .2s}
+.btn-cta-sec:hover{background:rgba(255,255,255,.18)}
+
+/* FOOTER */
+footer{background:var(--navy);padding:64px 32px 32px}
+.footer-grid{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:40px;margin-bottom:48px}
+.footer-brand p{font-size:12px;color:rgba(255,255,255,.4);line-height:1.6;margin-top:12px}
+.footer-col-label{font-size:11px;font-weight:700;color:rgba(255,255,255,.35);letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px}
+.footer-links{display:flex;flex-direction:column;gap:10px}
+.footer-links a{font-size:13px;color:rgba(255,255,255,.6);text-decoration:none;transition:color .2s}
+.footer-links a:hover{color:#fff}
+.footer-bottom{max-width:1280px;margin:0 auto;padding-top:24px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.footer-bottom span,.footer-bottom a{font-size:12px;color:rgba(255,255,255,.3)}
+.footer-bottom a{text-decoration:none;transition:color .2s}
+.footer-bottom a:hover{color:rgba(255,255,255,.6)}
+.footer-bottom-links{display:flex;gap:20px}
+footer{background:var(--navy);padding:64px 24px 32px;margin-top:0}
+.footer-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:40px;margin-bottom:48px}
+.footer-col-title{font-size:11px;font-weight:700;color:rgba(255,255,255,.35);letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px}
+.footer-links{display:flex;flex-direction:column;gap:10px}
+.footer-links a{font-size:13px;color:rgba(255,255,255,.6);text-decoration:none;transition:.2s}
+.footer-links a:hover{color:#fff}
+.footer-tagline{font-size:12px;color:rgba(255,255,255,.4);margin-top:10px;line-height:1.6}
+.footer-bottom{max-width:1280px;margin:0 auto;padding-top:24px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;align-items:center}
+.footer-copy{font-size:12px;color:rgba(255,255,255,.3)}
+.footer-legal{display:flex;gap:20px}
+.footer-legal a{font-size:12px;color:rgba(255,255,255,.3);text-decoration:none}
+.footer-legal a:hover{color:rgba(255,255,255,.7)}
+@media(max-width:900px){.footer-inner{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.footer-inner{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="/src/pages/home/index.html" class="logo">
+      <svg width="30" height="30" viewBox="0 0 32 32" fill="none"><circle cx="10" cy="10" r="8.5" fill="#8DC63F" opacity=".9"/><circle cx="22" cy="10" r="8.5" fill="#29ABE2" opacity=".9"/><circle cx="10" cy="22" r="8.5" fill="#3CB878" opacity=".9"/><circle cx="22" cy="22" r="8.5" fill="#1B3A4A"/><rect x="9.5" y="9.5" width="13" height="13" rx="1.5" fill="rgba(60,184,120,.45)"/></svg>
+      <span class="logo-text">Oriupe</span>
+    </a>
+    <div class="nav-links">
+      <a href="/src/pages/catalog/index.html">Explorer</a>
+      <a href="/src/pages/offers/index.html">Appels d'offres</a>
+      <a href="/src/pages/academy/index.html">Academy</a>
+      <a href="/src/pages/blog/index.html">Blog</a>
+      <a href="/src/pages/pricing/index.html" class="active">Tarifs</a>
+    </div>
+    <div class="nav-cta">
+      <button class="btn-login" onclick="location.href='/src/pages/auth/index.html'">Se connecter</button>
+      <button class="btn-register" onclick="location.href='/src/pages/auth/index.html'">S'inscrire</button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+  <div class="hero-orb hero-orb-3"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      Transparence totale
+    </div>
+    <h1>Des tarifs transparents,<br/>sans aucune surprise</h1>
+    <p>Commencez gratuitement, évoluez à votre rythme. Notre modèle de commission décroissante récompense votre croissance sur la plateforme.</p>
+
+    <!-- TOGGLE -->
+    <div class="toggle-wrap">
+      <span class="toggle-label active" id="lbl-monthly">Mensuel</span>
+      <div class="toggle-switch" id="billing-toggle" onclick="toggleBilling()">
+        <div class="toggle-knob"></div>
+      </div>
+      <span class="toggle-label" id="lbl-yearly">Annuel</span>
+      <span class="savings-badge">-20%</span>
+    </div>
+  </div>
+</section>
+
+<!-- PLANS -->
+<section class="plans-section">
+  <div class="plans-grid">
+
+    <!-- GRATUIT -->
+    <div class="plan-card">
+      <div class="plan-name">Gratuit</div>
+      <div class="plan-desc">Pour démarrer votre activité freelance sur Oriupe sans engagement.</div>
+      <div class="plan-price-wrap">
+        <div class="plan-price free">0</div>
+        <div class="plan-period">FCFA / mois</div>
+      </div>
+      <div class="plan-commission">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        Commission : 15%
+      </div>
+      <div class="plan-divider"></div>
+      <ul class="plan-features">
+        <li>
+          <span class="icon yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
+          Profil public basique
+        </li>
+        <li>
+          <span class="icon yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
+          Jusqu'à 3 services actifs
+        </li>
+        <li>
+          <span class="icon yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
+          Accès au catalogue clients
+        </li>
+        <li>
+          <span class="icon yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
+          Messagerie intégrée
+        </li>
+        <li>
+          <span class="icon yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
+          Paiements sécurisés (escrow)
+        </li>
+        <li>
+          <span class="icon no"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(27,58,74,.25)" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+          <span>Badge profil vérifié</span>
+        </li>
+        <li>
+          <span class="icon no"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(27,58,74,.25)" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+          <span>Analytics & statistiques</span>
+        </li>
+        <li>
+          <span class="icon no"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(27,58,74,.25)" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+          <span>Retrait prioritaire 24h</span>
+        </li>
+      </ul>
+      <button class="btn-plan btn-plan-free" onclick="location.href='/src/pages/auth/index.html'">Commencer gratuitement</button>
+    </div>
+
+    <!-- PRO -->
+    <div class="plan-card featured">
+      <div class="plan-name">Pro</div>
+      <div class="plan-desc">Pour les freelances sérieux qui veulent maximiser leur visibilité et leurs revenus.</div>
+      <div class="plan-price-wrap">
+        <div class="plan-price" id="price-pro">9 900</div>
+        <div class="plan-period">FCFA / mois</div>
+      </div>
+      <div class="plan-commission">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        Commission : 10%
+      </div>
+      <div class="plan-divider"></div>
+      <ul class="plan-features">
+        <li>
+          <span class="icon yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
+          <strong>Tout ce qui est inclus dans Gratuit</strong>
+        </li>
+        <li>
+          <span class="icon yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
+          Badge « Profil Vérifié »
+        </li>
+        <li>
+          <span class="icon yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
+          Services illimités
+        </li>
+        <li>
+          <span class="icon yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
+          Analytics & tableau de bord
+        </li>
+        <li>
+          <span class="icon yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
+          Priorité dans les résultats de recherche
+        </li>
+        <li>
+          <span class="icon yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
+          Retrait express sous 24h
+        </li>
+        <li>
+          <span class="icon yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
+          Support prioritaire (chat + email)
+        </li>
+        <li>
+          <span class="icon yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
+          Accès Oriupe Academy (premium)
+        </li>
+      </ul>
+      <button class="btn-plan btn-plan-pro" onclick="location.href='/src/pages/auth/index.html'">Passer en Pro</button>
+    </div>
+
+    <!-- BUSINESS -->
+    <div class="plan-card">
+      <div class="plan-name">Business</div>
+      <div class="plan-desc">Pour les agences et équipes qui opèrent à grande échelle sur Oriupe.</div>
+      <div class="plan-price-wrap">
+        <div class="plan-price" id="price-biz">24 900</div>
+        <div class="plan-period">FCFA / mois</div>
+      </div>
+      <div class="plan-commission">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        Commission : 7%
+      </div>
+      <div class="plan-divider"></div>
+      <ul class="plan-features">
+        <li>
+          <span class="icon yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
+          <strong>Tout ce qui est inclus dans Pro</strong>
+        </li>
+        <li>
+          <span class="icon yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
+          Multi-utilisateurs (jusqu'à 5 comptes)
+        </li>
+        <li>
+          <span class="icon yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
+          Accès API Oriupe
+        </li>
+        <li>
+          <span class="icon yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
+          Account manager dédié
+        </li>
+        <li>
+          <span class="icon yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
+          Facturation entreprise (reçus TVA)
+        </li>
+        <li>
+          <span class="icon yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
+          Retrait instantané (tous canaux)
+        </li>
+        <li>
+          <span class="icon yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
+          Tableau de bord agence avancé
+        </li>
+        <li>
+          <span class="icon yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
+          SLA garantie 99.9% uptime
+        </li>
+      </ul>
+      <button class="btn-plan btn-plan-biz" onclick="location.href='/src/pages/contact/index.html'">Contacter les ventes</button>
+    </div>
+
+  </div>
+</section>
+
+<!-- COMPARISON TABLE -->
+<section class="section" style="background:#fff">
+  <div class="section-header">
+    <h2>Comparaison détaillée</h2>
+    <p>Voyez exactement ce que vous obtenez dans chaque plan pour faire le meilleur choix.</p>
+  </div>
+  <div class="table-wrap">
+    <table class="cmp-table">
+      <thead>
+        <tr>
+          <th style="width:40%">Fonctionnalité</th>
+          <th>Gratuit</th>
+          <th class="highlight">Pro</th>
+          <th>Business</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="cat-row"><td colspan="4">Profil & Visibilité</td></tr>
+        <tr>
+          <td class="feature-name">Commission Oriupe</td>
+          <td>15%</td>
+          <td class="highlight">10%</td>
+          <td>7%</td>
+        </tr>
+        <tr>
+          <td class="feature-name">Services actifs</td>
+          <td>3 max</td>
+          <td class="highlight">Illimités</td>
+          <td>Illimités</td>
+        </tr>
+        <tr>
+          <td class="feature-name">Badge Profil Vérifié</td>
+          <td><span class="cross">—</span></td>
+          <td class="highlight"><span class="check">✓</span></td>
+          <td><span class="check">✓</span></td>
+        </tr>
+        <tr>
+          <td class="feature-name">Priorité dans la recherche</td>
+          <td><span class="cross">—</span></td>
+          <td class="highlight"><span class="check">✓</span></td>
+          <td><span class="check">✓ Boost max</span></td>
+        </tr>
+        <tr>
+          <td class="feature-name">Portfolio média (vidéos, PDF)</td>
+          <td><span class="partial">5 fichiers</span></td>
+          <td class="highlight"><span class="check">Illimité</span></td>
+          <td><span class="check">Illimité</span></td>
+        </tr>
+
+        <tr class="cat-row"><td colspan="4">Paiements & Retraits</td></tr>
+        <tr>
+          <td class="feature-name">Paiements escrow sécurisés</td>
+          <td><span class="check">✓</span></td>
+          <td class="highlight"><span class="check">✓</span></td>
+          <td><span class="check">✓</span></td>
+        </tr>
+        <tr>
+          <td class="feature-name">Délai de retrait</td>
+          <td>5-7 jours</td>
+          <td class="highlight">24h</td>
+          <td>Instantané</td>
+        </tr>
+        <tr>
+          <td class="feature-name">Mobile Money (Wave, OM, Momo)</td>
+          <td><span class="check">✓</span></td>
+          <td class="highlight"><span class="check">✓</span></td>
+          <td><span class="check">✓</span></td>
+        </tr>
+        <tr>
+          <td class="feature-name">Virement bancaire international</td>
+          <td><span class="cross">—</span></td>
+          <td class="highlight"><span class="check">✓</span></td>
+          <td><span class="check">✓</span></td>
+        </tr>
+        <tr>
+          <td class="feature-name">Facturation entreprise (TVA)</td>
+          <td><span class="cross">—</span></td>
+          <td class="highlight"><span class="cross">—</span></td>
+          <td><span class="check">✓</span></td>
+        </tr>
+
+        <tr class="cat-row"><td colspan="4">Outils & Données</td></tr>
+        <tr>
+          <td class="feature-name">Analytics & statistiques</td>
+          <td><span class="cross">—</span></td>
+          <td class="highlight"><span class="check">✓</span></td>
+          <td><span class="check">✓ Avancé</span></td>
+        </tr>
+        <tr>
+          <td class="feature-name">Accès API Oriupe</td>
+          <td><span class="cross">—</span></td>
+          <td class="highlight"><span class="cross">—</span></td>
+          <td><span class="check">✓</span></td>
+        </tr>
+        <tr>
+          <td class="feature-name">Multi-utilisateurs</td>
+          <td>1 compte</td>
+          <td class="highlight">1 compte</td>
+          <td>5 comptes</td>
+        </tr>
+        <tr>
+          <td class="feature-name">Oriupe Academy (formations)</td>
+          <td><span class="partial">Gratuit uniquement</span></td>
+          <td class="highlight"><span class="check">✓ Premium</span></td>
+          <td><span class="check">✓ Premium</span></td>
+        </tr>
+
+        <tr class="cat-row"><td colspan="4">Support</td></tr>
+        <tr>
+          <td class="feature-name">Centre d'aide</td>
+          <td><span class="check">✓</span></td>
+          <td class="highlight"><span class="check">✓</span></td>
+          <td><span class="check">✓</span></td>
+        </tr>
+        <tr>
+          <td class="feature-name">Support email</td>
+          <td><span class="partial">48h</span></td>
+          <td class="highlight"><span class="check">Prioritaire (4h)</span></td>
+          <td><span class="check">1h garanti</span></td>
+        </tr>
+        <tr>
+          <td class="feature-name">Chat en direct</td>
+          <td><span class="cross">—</span></td>
+          <td class="highlight"><span class="check">✓</span></td>
+          <td><span class="check">✓</span></td>
+        </tr>
+        <tr>
+          <td class="feature-name">Account manager dédié</td>
+          <td><span class="cross">—</span></td>
+          <td class="highlight"><span class="cross">—</span></td>
+          <td><span class="check">✓</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section">
+  <div class="section-header">
+    <h2>Questions fréquentes sur les tarifs</h2>
+    <p>Tout ce que vous devez savoir avant de choisir votre plan.</p>
+  </div>
+  <div class="accordion">
+
+    <div class="acc-item" onclick="toggleAcc(this)">
+      <div class="acc-header">
+        <span class="acc-question">Comment fonctionne la commission Oriupe ?</span>
+        <div class="acc-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+      </div>
+      <div class="acc-body">
+        <div class="acc-body-inner"><p>La commission est prélevée uniquement sur les transactions complétées avec succès. Elle est automatiquement déduite lors du versement de vos revenus. Avec le plan Gratuit, la commission est de 15% ; Pro : 10% ; Business : 7%. Par exemple, sur une commande de 100 000 FCFA en plan Pro, vous recevez 90 000 FCFA.</p></div>
+      </div>
+    </div>
+
+    <div class="acc-item" onclick="toggleAcc(this)">
+      <div class="acc-header">
+        <span class="acc-question">Puis-je changer de plan à tout moment ?</span>
+        <div class="acc-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+      </div>
+      <div class="acc-body">
+        <div class="acc-body-inner"><p>Oui, absolument. Vous pouvez upgrader votre plan immédiatement depuis votre tableau de bord — les avantages Pro ou Business sont actifs dès la confirmation du paiement. Pour un downgrade, il prendra effet à la fin de votre période de facturation en cours. Il n'y a aucune pénalité pour changer de plan.</p></div>
+      </div>
+    </div>
+
+    <div class="acc-item" onclick="toggleAcc(this)">
+      <div class="acc-header">
+        <span class="acc-question">Le plan annuel, comment ça marche ?</span>
+        <div class="acc-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+      </div>
+      <div class="acc-body">
+        <div class="acc-body-inner"><p>Avec la facturation annuelle, vous payez 12 mois d'un coup et économisez 20% par rapport au tarif mensuel. Le montant est prélevé en une seule fois et vous bénéficiez de tous les avantages du plan pendant 12 mois sans interruption. En cas d'annulation, le remboursement est calculé au prorata des mois non utilisés.</p></div>
+      </div>
+    </div>
+
+    <div class="acc-item" onclick="toggleAcc(this)">
+      <div class="acc-header">
+        <span class="acc-question">Quels moyens de paiement acceptez-vous pour les abonnements ?</span>
+        <div class="acc-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+      </div>
+      <div class="acc-body">
+        <div class="acc-body-inner"><p>Nous acceptons Wave, Orange Money, MTN Mobile Money, Moov Money, ainsi que les cartes Visa/Mastercard. Pour le plan Business avec facturation entreprise, nous proposons également des paiements par virement bancaire et émission de factures officielles avec TVA.</p></div>
+      </div>
+    </div>
+
+    <div class="acc-item" onclick="toggleAcc(this)">
+      <div class="acc-header">
+        <span class="acc-question">Existe-t-il une période d'essai gratuite pour les plans payants ?</span>
+        <div class="acc-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+      </div>
+      <div class="acc-body">
+        <div class="acc-body-inner"><p>Oui ! Nous offrons 14 jours d'essai gratuit pour le plan Pro. Aucune carte de crédit requise pour démarrer l'essai. À l'issue des 14 jours, vous choisissez de continuer en payant ou de revenir au plan Gratuit sans aucune pénalité ni surprise.</p></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="cta-inner">
+    <h2>Prêt à développer votre activité ?</h2>
+    <p>Rejoignez plus de 12 000 freelances africains qui font confiance à Oriupe.</p>
+    <div class="cta-btns">
+      <button class="btn-cta-primary" onclick="location.href='/src/pages/auth/index.html'">Créer mon compte gratuitement</button>
+      <button class="btn-cta-sec" onclick="location.href='/src/pages/contact/index.html'">Parler à l'équipe commerciale</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div><a href="/src/pages/home/index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;margin-bottom:12px"><svg width="26" height="26" viewBox="0 0 32 32" fill="none"><circle cx="10" cy="10" r="8.5" fill="#8DC63F" opacity=".9"/><circle cx="22" cy="10" r="8.5" fill="#29ABE2" opacity=".9"/><circle cx="10" cy="22" r="8.5" fill="#3CB878" opacity=".9"/><circle cx="22" cy="22" r="8.5" fill="#1B3A4A"/><rect x="9.5" y="9.5" width="13" height="13" rx="1.5" fill="rgba(60,184,120,.45)"/></svg><span style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;color:#fff">Oriupe</span></a><p class="footer-tagline">"Ton talent. Ton continent. Ton avenir."</p></div>
+    <div><div class="footer-col-title">Oriupe</div><div class="footer-links"><a href="/src/pages/about/index.html">À propos</a><a href="/src/pages/careers/index.html">Carrières</a><a href="/src/pages/press/index.html">Presse &amp; Médias</a><a href="/src/pages/blog/index.html">Blog</a><a href="/src/pages/impact/index.html">Impact ESG</a></div></div>
+    <div><div class="footer-col-title">Freelances</div><div class="footer-links"><a href="/src/pages/auth/index.html">S'inscrire</a><a href="/src/pages/how-it-works/index.html">Comment ça marche</a><a href="/src/pages/academy/index.html">Oriupe Academy</a><a href="/src/pages/pricing/index.html">Tarifs Pro</a><a href="/src/pages/faq/index.html">FAQ Freelances</a></div></div>
+    <div><div class="footer-col-title">Support</div><div class="footer-links"><a href="/src/pages/help/index.html">Centre d'aide</a><a href="/src/pages/contact/index.html">Nous contacter</a><a href="/src/pages/disputes/index.html">Gestion des litiges</a><a href="/src/pages/terms/index.html">CGU &amp; CGV</a><a href="/src/pages/privacy/index.html">Confidentialité</a></div></div>
+  </div>
+  <div class="footer-bottom"><span class="footer-copy">© 2025 Oriupe SAS — Abidjan, Côte d'Ivoire. Tous droits réservés.</span><div class="footer-legal"><a href="/src/pages/privacy/index.html">Confidentialité</a><a href="/src/pages/terms/index.html">CGU &amp; CGV</a></div></div>
+</footer>
+
+<script>
+let isYearly = false;
+
+const prices = {
+  pro:  { monthly: '9 900',  yearly: '7 900'  },
+  biz:  { monthly: '24 900', yearly: '19 900' }
+};
+
+function toggleBilling() {
+  isYearly = !isYearly;
+  const toggle = document.getElementById('billing-toggle');
+  const lblM   = document.getElementById('lbl-monthly');
+  const lblY   = document.getElementById('lbl-yearly');
+  const pPro   = document.getElementById('price-pro');
+  const pBiz   = document.getElementById('price-biz');
+
+  toggle.classList.toggle('yearly', isYearly);
+  lblM.classList.toggle('active', !isYearly);
+  lblY.classList.toggle('active', isYearly);
+
+  const key = isYearly ? 'yearly' : 'monthly';
+  pPro.style.opacity = '0';
+  pBiz.style.opacity = '0';
+  setTimeout(() => {
+    pPro.textContent = prices.pro[key];
+    pBiz.textContent = prices.biz[key];
+    pPro.style.opacity = '1';
+    pBiz.style.opacity = '1';
+  }, 160);
+}
+
+function toggleAcc(item) {
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.acc-item').forEach(el => {
+    el.classList.remove('open');
+    el.querySelector('.acc-body').classList.remove('open');
+  });
+  if (!isOpen) {
+    item.classList.add('open');
+    item.querySelector('.acc-body').classList.add('open');
+  }
+}
+</script>
+</body>
+</html>

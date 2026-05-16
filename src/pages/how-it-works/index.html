@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Comment ça marche — Oriupe</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#F4F6F9;color:#1B3A4A}
+:root{--navy:#0F2535;--navy2:#1B3A4A;--green:#3CB878;--green-d:#27965D;--green-l:#E4F7EE;--blue:#29ABE2;--blue-l:#E2F4FB;--lime:#8DC63F;--bg:#F4F6F9;--border:rgba(27,58,74,.1);--muted:rgba(27,58,74,.52);--shadow:0 2px 12px rgba(15,37,53,.08);--shadow-md:0 8px 32px rgba(15,37,53,.13)}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 24px;background:rgba(255,255,255,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:24px;height:64px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-text{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:var(--navy)}
+.nav-links{display:flex;gap:4px;margin-left:32px}
+.nav-links a{text-decoration:none;color:var(--navy2);font-size:14px;font-weight:500;padding:8px 14px;border-radius:10px;transition:.2s}
+.nav-links a:hover,.nav-links a.active{background:var(--green-l);color:var(--green-d)}
+.nav-right{display:flex;align-items:center;gap:10px;margin-left:auto}
+.btn-login{background:transparent;border:1.5px solid var(--border);border-radius:10px;padding:8px 18px;font-size:13px;font-weight:600;color:var(--navy2);cursor:pointer;transition:.2s}
+.btn-login:hover{border-color:var(--navy)}
+.btn-cta{background:linear-gradient(135deg,var(--green),var(--lime));border:none;border-radius:10px;padding:9px 20px;font-size:13px;font-weight:700;color:#fff;cursor:pointer}
+.hero{background:var(--navy);padding:140px 24px 100px;position:relative;overflow:hidden}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:44px 44px}
+.hero-inner{max-width:760px;margin:0 auto;text-align:center;position:relative;z-index:1}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(60,184,120,.15);border:1px solid rgba(60,184,120,.3);border-radius:100px;padding:6px 16px;font-size:12px;font-weight:600;color:var(--green);margin-bottom:24px}
+.hero-title{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(36px,5vw,60px);font-weight:800;color:#fff;letter-spacing:-2px;line-height:1.08;margin-bottom:20px}
+.hero-title span{color:var(--green)}
+.hero-sub{font-size:16px;color:rgba(255,255,255,.55);line-height:1.8;max-width:520px;margin:0 auto 36px}
+.container{max-width:1280px;margin:0 auto;padding:0 24px}
+.section{padding:80px 0}
+.section-label{font-size:12px;font-weight:700;color:var(--green-d);letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px}
+.section-title{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(26px,3.5vw,38px);font-weight:800;color:var(--navy);letter-spacing:-.5px;margin-bottom:10px}
+.section-sub{font-size:15px;color:var(--muted);line-height:1.75;max-width:560px;margin-bottom:36px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:28px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.card{background:#fff;border-radius:20px;padding:28px;border:1px solid var(--border);box-shadow:var(--shadow);transition:.25s}
+.card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md)}
+.btn-primary{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--green),var(--lime));border:none;border-radius:12px;padding:13px 26px;font-size:14px;font-weight:700;color:#fff;cursor:pointer;text-decoration:none;transition:.2s}
+.btn-primary:hover{opacity:.9;transform:translateY(-2px)}
+.btn-outline{display:inline-flex;align-items:center;gap:8px;background:transparent;border:1.5px solid var(--border);border-radius:12px;padding:12px 24px;font-size:14px;font-weight:600;color:var(--navy2);cursor:pointer;text-decoration:none;transition:.2s}
+.btn-outline:hover{border-color:var(--navy)}
+footer{background:var(--navy);padding:64px 24px 32px;margin-top:0}
+.footer-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:40px;margin-bottom:48px}
+.footer-col-title{font-size:11px;font-weight:700;color:rgba(255,255,255,.35);letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px}
+.footer-links{display:flex;flex-direction:column;gap:10px}
+.footer-links a{font-size:13px;color:rgba(255,255,255,.6);text-decoration:none;transition:.2s}
+.footer-links a:hover{color:#fff}
+.footer-tagline{font-size:12px;color:rgba(255,255,255,.4);margin-top:10px;line-height:1.6}
+.footer-bottom{max-width:1280px;margin:0 auto;padding-top:24px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;align-items:center}
+.footer-copy{font-size:12px;color:rgba(255,255,255,.3)}
+.footer-legal{display:flex;gap:20px}
+.footer-legal a{font-size:12px;color:rgba(255,255,255,.3);text-decoration:none}
+.footer-legal a:hover{color:rgba(255,255,255,.7)}
+@media(max-width:900px){.footer-inner{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.footer-inner{grid-template-columns:1fr}}
+@media(max-width:900px){.grid-3,.grid-4{grid-template-columns:repeat(2,1fr)}.footer-inner{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.nav-links,.nav-right{display:none}.grid-3,.grid-4,.grid-2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a href="/src/pages/home/index.html" class="logo">
+      <svg width="30" height="30" viewBox="0 0 32 32" fill="none"><circle cx="10" cy="10" r="8.5" fill="#8DC63F" opacity=".9"/><circle cx="22" cy="10" r="8.5" fill="#29ABE2" opacity=".9"/><circle cx="10" cy="22" r="8.5" fill="#3CB878" opacity=".9"/><circle cx="22" cy="22" r="8.5" fill="#1B3A4A"/><rect x="9.5" y="9.5" width="13" height="13" rx="1.5" fill="rgba(60,184,120,.45)"/></svg>
+      <span class="logo-text">Oriupe</span>
+    </a>
+    <div class="nav-links">
+      <a href="/src/pages/catalog/index.html">Explorer</a>
+      <a href="/src/pages/offers/index.html">Appels d'offres</a>
+      <a href="/src/pages/academy/index.html">Academy</a>
+      <a href="/src/pages/blog/index.html">Blog</a>
+      <a href="/src/pages/pricing/index.html">Tarifs</a>
+    </div>
+    <div class="nav-right">
+      <button class="btn-login" onclick="location.href='/src/pages/auth/index.html'">Se connecter</button>
+      <button class="btn-cta" onclick="location.href='/src/pages/auth/index.html'">S'inscrire</button>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="orb" style="width:500px;height:500px;background:radial-gradient(circle,rgba(60,184,120,.18) 0%,transparent 70%);top:-120px;right:-80px"></div>
+  <div class="orb" style="width:350px;height:350px;background:radial-gradient(circle,rgba(41,171,226,.13) 0%,transparent 70%);bottom:-80px;left:-60px"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-inner">
+    <div class="hero-tag"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="#3CB878" stroke-width="1.5"/><path d="M5 7L6.5 8.5L9 5.5" stroke="#3CB878" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Simple &amp; Rapide</div>
+    <h1 class="hero-title">Comment ça <span>marche</span> ?</h1>
+    <p class="hero-sub">Que vous soyez client cherchant un talent ou freelance cherchant des missions, Oriupe est conçu pour que tout se passe en quelques clics.</p>
+    <div style="display:flex;gap:10px;justify-content:center">
+      <button id="tab-client" class="btn-primary" onclick="switchTab('client')">Je suis client</button>
+      <button id="tab-free" class="btn-outline" style="color:rgba(255,255,255,.7);border-color:rgba(255,255,255,.2)" onclick="switchTab('free')">Je suis freelance</button>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:#fff">
+  <div class="container" id="steps-client">
+    <div style="text-align:center;margin-bottom:48px">
+      <div class="section-label">Pour les clients</div>
+      <h2 class="section-title">Trouvez le talent idéal en 4 étapes</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative">
+      <div style="position:absolute;top:40px;left:calc(12.5% + 28px);right:calc(12.5% + 28px);height:2px;background:linear-gradient(90deg,#3CB878,#8DC63F);z-index:0"></div>
+      <div style="text-align:center;padding:0 16px;position:relative;z-index:1">
+        <div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#3CB878,#8DC63F);color:#fff;font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;box-shadow:0 0 0 6px #E4F7EE">1</div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;color:var(--navy);margin-bottom:8px">Publiez votre besoin</div>
+        <div style="font-size:13px;color:var(--muted);line-height:1.6">Décrivez votre projet, votre budget et vos délais en 5 minutes. C'est gratuit.</div>
+      </div>
+      <div style="text-align:center;padding:0 16px;position:relative;z-index:1">
+        <div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#3CB878,#8DC63F);color:#fff;font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;box-shadow:0 0 0 6px #E4F7EE">2</div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;color:var(--navy);margin-bottom:8px">Recevez des offres</div>
+        <div style="font-size:13px;color:var(--muted);line-height:1.6">Jusqu'à 5 freelances qualifiés vous font une offre dans les 48h. Comparez les profils.</div>
+      </div>
+      <div style="text-align:center;padding:0 16px;position:relative;z-index:1">
+        <div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#3CB878,#8DC63F);color:#fff;font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;box-shadow:0 0 0 6px #E4F7EE">3</div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;color:var(--navy);margin-bottom:8px">Collaborez en sécurité</div>
+        <div style="font-size:13px;color:var(--muted);line-height:1.6">Le paiement est sécurisé par notre escrow. Le freelance est payé à la livraison validée.</div>
+      </div>
+      <div style="text-align:center;padding:0 16px;position:relative;z-index:1">
+        <div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#3CB878,#8DC63F);color:#fff;font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;box-shadow:0 0 0 6px #E4F7EE">4</div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;color:var(--navy);margin-bottom:8px">Évaluez &amp; recommandez</div>
+        <div style="font-size:13px;color:var(--muted);line-height:1.6">Notez le travail reçu et construisez une relation de confiance avec vos freelances préférés.</div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:48px"><a href="/src/pages/catalog/index.html" class="btn-primary">Trouver un freelance maintenant</a></div>
+  </div>
+  <div class="container" id="steps-free" style="display:none">
+    <div style="text-align:center;margin-bottom:48px">
+      <div class="section-label">Pour les freelances</div>
+      <h2 class="section-title">Démarrez votre activité en 4 étapes</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative">
+      <div style="position:absolute;top:40px;left:calc(12.5% + 28px);right:calc(12.5% + 28px);height:2px;background:linear-gradient(90deg,#29ABE2,#3CB878);z-index:0"></div>
+      <div style="text-align:center;padding:0 16px;position:relative;z-index:1">
+        <div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#29ABE2,#3CB878);color:#fff;font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;box-shadow:0 0 0 6px #E2F4FB">1</div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;color:var(--navy);margin-bottom:8px">Créez votre profil</div>
+        <div style="font-size:13px;color:var(--muted);line-height:1.6">Inscription gratuite. Ajoutez vos compétences, portfolio et vos tarifs. Vérification KYC simple.</div>
+      </div>
+      <div style="text-align:center;padding:0 16px;position:relative;z-index:1">
+        <div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#29ABE2,#3CB878);color:#fff;font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;box-shadow:0 0 0 6px #E2F4FB">2</div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;color:var(--navy);margin-bottom:8px">Publiez vos services</div>
+        <div style="font-size:13px;color:var(--muted);line-height:1.6">Créez des offres de services avec prix fixe ou sur devis. Soyez visible dans le catalogue.</div>
+      </div>
+      <div style="text-align:center;padding:0 16px;position:relative;z-index:1">
+        <div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#29ABE2,#3CB878);color:#fff;font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;box-shadow:0 0 0 6px #E2F4FB">3</div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;color:var(--navy);margin-bottom:8px">Recevez des commandes</div>
+        <div style="font-size:13px;color:var(--muted);line-height:1.6">Les clients vous contactent directement ou via les appels d'offres. Négociez en temps réel.</div>
+      </div>
+      <div style="text-align:center;padding:0 16px;position:relative;z-index:1">
+        <div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#29ABE2,#3CB878);color:#fff;font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;box-shadow:0 0 0 6px #E2F4FB">4</div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;color:var(--navy);margin-bottom:8px">Encaissez en local</div>
+        <div style="font-size:13px;color:var(--muted);line-height:1.6">Retirez vos gains sur Orange Money, MTN MoMo, Wave ou virement bancaire. 0 frais cachés.</div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:48px"><a href="/src/pages/auth/index.html" class="btn-primary">Créer mon profil freelance</a></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:40px">
+      <div class="section-label">Paiements sécurisés</div>
+      <h2 class="section-title">Comment fonctionne le paiement ?</h2>
+    </div>
+    <div class="grid-3">
+      <div class="card">
+        <div style="width:52px;height:52px;border-radius:16px;background:var(--green-l);display:flex;align-items:center;justify-content:center;margin-bottom:18px"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="14" rx="3" stroke="#3CB878" stroke-width="1.8"/><path d="M3 10H21" stroke="#3CB878" stroke-width="1.8"/></svg></div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:800;color:var(--navy);margin-bottom:8px">Dépôt sécurisé</div>
+        <div style="font-size:13px;color:var(--muted);line-height:1.65">Le client dépose le paiement en début de mission. Les fonds sont bloqués en escrow par Oriupe et ne sont libérés qu'à la validation.</div>
+      </div>
+      <div class="card">
+        <div style="width:52px;height:52px;border-radius:16px;background:var(--blue-l);display:flex;align-items:center;justify-content:center;margin-bottom:18px"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 22C17.52 22 22 17.52 22 12S17.52 2 12 2 2 6.48 2 12s4.48 10 10 10Z" stroke="#29ABE2" stroke-width="1.8"/><path d="M9 12L11 14L15 10" stroke="#29ABE2" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:800;color:var(--navy);margin-bottom:8px">Validation de livraison</div>
+        <div style="font-size:13px;color:var(--muted);line-height:1.65">Le client dispose de 5 jours pour valider ou demander des modifications. Si pas de réponse, le paiement est libéré automatiquement.</div>
+      </div>
+      <div class="card">
+        <div style="width:52px;height:52px;border-radius:16px;background:#F0F8E8;display:flex;align-items:center;justify-content:center;margin-bottom:18px"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 1V23M17 5H9.5C8.12 5 7 6.12 7 7.5S8.12 10 9.5 10H14.5C15.88 10 17 11.12 17 12.5S15.88 15 14.5 15H7" stroke="#8DC63F" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:800;color:var(--navy);margin-bottom:8px">Retrait mobile money</div>
+        <div style="font-size:13px;color:var(--muted);line-height:1.65">Orange Money, MTN MoMo, Wave, Moov Money. Retrait sous 24h sur votre compte mobile. Frais : seulement 5% sur les transactions.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div><a href="/src/pages/home/index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;margin-bottom:12px"><svg width="26" height="26" viewBox="0 0 32 32" fill="none"><circle cx="10" cy="10" r="8.5" fill="#8DC63F" opacity=".9"/><circle cx="22" cy="10" r="8.5" fill="#29ABE2" opacity=".9"/><circle cx="10" cy="22" r="8.5" fill="#3CB878" opacity=".9"/><circle cx="22" cy="22" r="8.5" fill="#1B3A4A"/><rect x="9.5" y="9.5" width="13" height="13" rx="1.5" fill="rgba(60,184,120,.45)"/></svg><span style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;color:#fff">Oriupe</span></a><p class="footer-tagline">"Ton talent. Ton continent. Ton avenir."</p></div>
+    <div><div class="footer-col-title">Oriupe</div><div class="footer-links"><a href="/src/pages/about/index.html">À propos</a><a href="/src/pages/careers/index.html">Carrières</a><a href="/src/pages/press/index.html">Presse &amp; Médias</a><a href="/src/pages/blog/index.html">Blog</a><a href="/src/pages/impact/index.html">Impact ESG</a></div></div>
+    <div><div class="footer-col-title">Freelances</div><div class="footer-links"><a href="/src/pages/auth/index.html">S'inscrire</a><a href="/src/pages/how-it-works/index.html">Comment ça marche</a><a href="/src/pages/academy/index.html">Oriupe Academy</a><a href="/src/pages/pricing/index.html">Tarifs Pro</a><a href="/src/pages/faq/index.html">FAQ Freelances</a></div></div>
+    <div><div class="footer-col-title">Support</div><div class="footer-links"><a href="/src/pages/help/index.html">Centre d'aide</a><a href="/src/pages/contact/index.html">Nous contacter</a><a href="/src/pages/disputes/index.html">Gestion des litiges</a><a href="/src/pages/terms/index.html">CGU &amp; CGV</a><a href="/src/pages/privacy/index.html">Confidentialité</a></div></div>
+  </div>
+  <div class="footer-bottom"><span class="footer-copy">© 2025 Oriupe SAS — Abidjan, Côte d'Ivoire. Tous droits réservés.</span><div class="footer-legal"><a href="/src/pages/privacy/index.html">Confidentialité</a><a href="/src/pages/terms/index.html">CGU &amp; CGV</a></div></div>
+</footer>
+<script>
+function switchTab(t){
+  const isClient=t==='client';
+  document.getElementById('steps-client').style.display=isClient?'block':'none';
+  document.getElementById('steps-free').style.display=isClient?'none':'block';
+  document.getElementById('tab-client').className=isClient?'btn-primary':'btn-outline';
+  document.getElementById('tab-free').className=isClient?'btn-outline':'btn-primary';
+  if(!isClient){
+    document.getElementById('tab-free').style.cssText='';
+    document.getElementById('tab-client').style.cssText='color:rgba(255,255,255,.7);border-color:rgba(255,255,255,.2)';
+  } else {
+    document.getElementById('tab-client').style.cssText='';
+    document.getElementById('tab-free').style.cssText='color:rgba(255,255,255,.7);border-color:rgba(255,255,255,.2)';
+  }
+}
+</script>
+</body>
+</html>

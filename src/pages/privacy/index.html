@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Politique de Confidentialité — Oriupe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#0F2535;--green:#3CB878;--lime:#8DC63F;--blue:#29ABE2;--green-l:#E4F7EE;--blue-l:#E2F4FB;--bg:#F4F6F9}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:#1B3A4A;line-height:1.6}
+h1,h2,h3,h4{font-family:'Bricolage Grotesque',sans-serif}
+
+/* HERO */
+.hero{background:var(--navy);padding:120px 24px 72px;position:relative;overflow:hidden;text-align:center}
+.hero::before{content:'';position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:800px;height:800px;background:radial-gradient(ellipse at center,rgba(60,184,120,.14) 0%,transparent 60%);pointer-events:none}
+.hero::after{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:48px 48px;pointer-events:none}
+.hero-meta{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:20px;position:relative;z-index:1;flex-wrap:wrap}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(60,184,120,.15);border:1px solid rgba(60,184,120,.3);border-radius:100px;padding:5px 14px;font-size:12px;font-weight:600;color:var(--green)}
+.hero-badge-rgpd{display:inline-flex;align-items:center;gap:6px;background:rgba(41,171,226,.15);border:1px solid rgba(41,171,226,.3);border-radius:100px;padding:5px 14px;font-size:12px;font-weight:600;color:var(--blue)}
+.hero-date{font-size:13px;color:rgba(255,255,255,.4)}
+.hero h1{font-size:clamp(28px,4vw,48px);font-weight:800;color:#fff;line-height:1.15;margin-bottom:16px;position:relative;z-index:1}
+.hero p{font-size:16px;color:rgba(255,255,255,.55);max-width:560px;margin:0 auto;position:relative;z-index:1}
+
+/* LAYOUT */
+.layout{max-width:1280px;margin:0 auto;padding:60px 24px 80px;display:grid;grid-template-columns:260px 1fr;gap:48px;align-items:start}
+@media(max-width:900px){.layout{grid-template-columns:1fr}.sidebar{display:none}}
+
+/* SIDEBAR */
+.sidebar{position:sticky;top:88px}
+.sidebar-header{font-size:11px;font-weight:700;color:#6B8299;letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid rgba(27,58,74,.08)}
+.sidebar-nav{display:flex;flex-direction:column;gap:2px}
+.sidebar-nav a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;font-size:13px;font-weight:500;color:#6B8299;text-decoration:none;transition:background .15s,color .15s}
+.sidebar-nav a:hover{background:rgba(27,58,74,.06);color:var(--navy)}
+.sidebar-nav a.active{background:var(--green-l);color:var(--green);font-weight:600}
+.sidebar-num{width:22px;height:22px;border-radius:6px;background:rgba(27,58,74,.08);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#6B8299;flex-shrink:0}
+.sidebar-nav a.active .sidebar-num{background:rgba(60,184,120,.2);color:var(--green)}
+.print-btn{display:flex;align-items:center;gap:8px;margin-top:24px;padding:10px 16px;background:#fff;border:1.5px solid rgba(27,58,74,.12);border-radius:10px;font-size:13px;font-weight:600;color:#6B8299;cursor:pointer;width:100%;font-family:'Plus Jakarta Sans',sans-serif;transition:border-color .2s,color .2s}
+.print-btn:hover{border-color:var(--green);color:var(--green)}
+.sidebar-dpo{margin-top:20px;background:var(--blue-l);border:1px solid rgba(41,171,226,.2);border-radius:12px;padding:14px}
+.sidebar-dpo p{font-size:12px;color:#0D4F7A;line-height:1.5}
+.sidebar-dpo strong{display:block;margin-bottom:4px;font-size:12px;color:var(--navy)}
+.sidebar-dpo a{color:var(--blue);text-decoration:none;font-size:12px}
+
+/* CONTENT */
+.content{min-width:0}
+.content-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:40px;flex-wrap:wrap;gap:16px}
+.content-top-info h2{font-size:22px;font-weight:800;color:var(--navy);margin-bottom:4px}
+.content-top-info p{font-size:14px;color:#6B8299}
+.print-btn-top{display:flex;align-items:center;gap:8px;padding:10px 20px;background:#fff;border:1.5px solid rgba(27,58,74,.12);border-radius:10px;font-size:13px;font-weight:600;color:#6B8299;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:border-color .2s,color .2s;white-space:nowrap}
+.print-btn-top:hover{border-color:var(--green);color:var(--green)}
+
+/* SECTIONS */
+.legal-section{background:#fff;border:1px solid rgba(27,58,74,.08);border-radius:20px;padding:36px;margin-bottom:24px;scroll-margin-top:96px}
+.legal-section h2{font-size:22px;font-weight:800;color:var(--navy);margin-bottom:20px;display:flex;align-items:center;gap:12px}
+.section-num{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--green),var(--lime));display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;flex-shrink:0}
+.section-num.blue{background:linear-gradient(135deg,var(--blue),#29ABE2)}
+.legal-section p{font-size:14px;color:#3A5570;line-height:1.75;margin-bottom:14px}
+.legal-section p:last-child{margin-bottom:0}
+.legal-section ul,.legal-section ol{margin:12px 0 16px 20px;display:flex;flex-direction:column;gap:8px}
+.legal-section li{font-size:14px;color:#3A5570;line-height:1.6}
+.legal-section h3{font-size:16px;font-weight:700;color:var(--navy);margin:24px 0 10px}
+.highlight-box{background:var(--green-l);border-left:4px solid var(--green);border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;font-size:14px;color:#1B5E3B;line-height:1.6}
+.highlight-box.blue{background:var(--blue-l);border-color:var(--blue);color:#0D4F7A}
+.highlight-box.orange{background:#FFF3E0;border-color:#FF8C00;color:#7A3500}
+.info-table{width:100%;border-collapse:collapse;margin:16px 0}
+.info-table th{font-size:12px;font-weight:700;color:#6B8299;text-transform:uppercase;letter-spacing:.06em;text-align:left;padding:10px 14px;background:rgba(27,58,74,.04);border-bottom:2px solid rgba(27,58,74,.08)}
+.info-table td{font-size:13px;color:#3A5570;padding:12px 14px;border-bottom:1px solid rgba(27,58,74,.06);vertical-align:top}
+.info-table tr:last-child td{border-bottom:none}
+.rights-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-top:20px}
+.right-card{background:var(--bg);border:1px solid rgba(27,58,74,.08);border-radius:14px;padding:20px}
+.right-card .right-icon{font-size:24px;margin-bottom:10px}
+.right-card h4{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:6px}
+.right-card p{font-size:13px;color:#6B8299;line-height:1.5;margin:0}
+
+/* COOKIE BANNER */
+.cookie-banner{position:fixed;bottom:0;left:0;right:0;z-index:200;background:var(--navy);border-top:1px solid rgba(255,255,255,.1);padding:20px 24px;transform:translateY(0);transition:transform .35s ease}
+.cookie-banner.hidden{transform:translateY(110%)}
+.cookie-banner-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+.cookie-banner-text{flex:1;min-width:0}
+.cookie-banner-text p{font-size:13px;color:rgba(255,255,255,.7);line-height:1.5}
+.cookie-banner-text a{color:var(--green)}
+.cookie-banner-actions{display:flex;gap:10px;flex-shrink:0;flex-wrap:wrap}
+.cookie-btn{padding:9px 20px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;border:none;transition:opacity .2s}
+.cookie-btn.accept{background:linear-gradient(135deg,var(--green),var(--lime));color:#fff}
+.cookie-btn.decline{background:rgba(255,255,255,.1);color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.15)}
+.cookie-btn.settings{background:transparent;color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.15)}
+.cookie-btn:hover{opacity:.85}
+
+/* COOKIE MODAL */
+.modal-overlay{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:24px}
+.modal-overlay.open{display:flex}
+.modal{background:#fff;border-radius:20px;padding:36px;max-width:560px;width:100%;max-height:80vh;overflow-y:auto}
+.modal h3{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;color:var(--navy);margin-bottom:8px}
+.modal p{font-size:14px;color:#6B8299;margin-bottom:24px;line-height:1.6}
+.cookie-toggle-item{display:flex;justify-content:space-between;align-items:flex-start;padding:16px 0;border-bottom:1px solid rgba(27,58,74,.08);gap:16px}
+.cookie-toggle-item:last-of-type{border-bottom:none}
+.cookie-toggle-info h4{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:4px}
+.cookie-toggle-info p{font-size:13px;color:#6B8299;line-height:1.5;margin:0}
+.toggle-wrap{flex-shrink:0}
+.toggle{position:relative;display:inline-block;width:44px;height:24px}
+.toggle input{opacity:0;width:0;height:0}
+.toggle-slider{position:absolute;inset:0;background:#D0D8E4;border-radius:12px;cursor:pointer;transition:background .2s}
+.toggle-slider::before{content:'';position:absolute;width:18px;height:18px;left:3px;top:3px;background:#fff;border-radius:50%;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.toggle input:checked+.toggle-slider{background:var(--green)}
+.toggle input:checked+.toggle-slider::before{transform:translateX(20px)}
+.toggle input:disabled+.toggle-slider{opacity:.6;cursor:not-allowed}
+.modal-footer{display:flex;gap:12px;margin-top:24px;justify-content:flex-end}
+.modal-btn{padding:10px 22px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;border:none}
+.modal-btn.primary{background:linear-gradient(135deg,var(--green),var(--lime));color:#fff}
+.modal-btn.secondary{background:var(--bg);border:1.5px solid rgba(27,58,74,.12);color:#6B8299}
+footer{background:var(--navy);padding:64px 24px 32px;margin-top:0}
+.footer-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:40px;margin-bottom:48px}
+.footer-col-title{font-size:11px;font-weight:700;color:rgba(255,255,255,.35);letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px}
+.footer-links{display:flex;flex-direction:column;gap:10px}
+.footer-links a{font-size:13px;color:rgba(255,255,255,.6);text-decoration:none;transition:.2s}
+.footer-links a:hover{color:#fff}
+.footer-tagline{font-size:12px;color:rgba(255,255,255,.4);margin-top:10px;line-height:1.6}
+.footer-bottom{max-width:1280px;margin:0 auto;padding-top:24px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;align-items:center}
+.footer-copy{font-size:12px;color:rgba(255,255,255,.3)}
+.footer-legal{display:flex;gap:20px}
+.footer-legal a{font-size:12px;color:rgba(255,255,255,.3);text-decoration:none}
+.footer-legal a:hover{color:rgba(255,255,255,.7)}
+@media(max-width:900px){.footer-inner{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.footer-inner{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav style="position:fixed;top:0;left:0;right:0;z-index:100;padding:0 24px;background:rgba(255,255,255,.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(27,58,74,.1)">
+  <div style="max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:24px;height:64px">
+    <a href="/src/pages/home/index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none">
+      <svg width="30" height="30" viewBox="0 0 32 32" fill="none"><circle cx="10" cy="10" r="8.5" fill="#8DC63F" opacity=".9"/><circle cx="22" cy="10" r="8.5" fill="#29ABE2" opacity=".9"/><circle cx="10" cy="22" r="8.5" fill="#3CB878" opacity=".9"/><circle cx="22" cy="22" r="8.5" fill="#1B3A4A"/><rect x="9.5" y="9.5" width="13" height="13" rx="1.5" fill="rgba(60,184,120,.45)"/></svg>
+      <span style="font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:#0F2535">Oriupe</span>
+    </a>
+    <div style="display:flex;gap:4px;margin-left:32px">
+      <a href="/src/pages/catalog/index.html" style="text-decoration:none;color:#1B3A4A;font-size:14px;font-weight:500;padding:8px 14px;border-radius:10px">Explorer</a>
+      <a href="/src/pages/offers/index.html" style="text-decoration:none;color:#1B3A4A;font-size:14px;font-weight:500;padding:8px 14px;border-radius:10px">Appels d'offres</a>
+      <a href="/src/pages/academy/index.html" style="text-decoration:none;color:#1B3A4A;font-size:14px;font-weight:500;padding:8px 14px;border-radius:10px">Academy</a>
+      <a href="/src/pages/blog/index.html" style="text-decoration:none;color:#1B3A4A;font-size:14px;font-weight:500;padding:8px 14px;border-radius:10px">Blog</a>
+      <a href="/src/pages/pricing/index.html" style="text-decoration:none;color:#1B3A4A;font-size:14px;font-weight:500;padding:8px 14px;border-radius:10px">Tarifs</a>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;margin-left:auto">
+      <button onclick="location.href='/src/pages/auth/index.html'" style="background:transparent;border:1.5px solid rgba(27,58,74,.15);border-radius:10px;padding:8px 18px;font-size:13px;font-weight:600;color:#1B3A4A;cursor:pointer">Se connecter</button>
+      <button onclick="location.href='/src/pages/auth/index.html'" style="background:linear-gradient(135deg,#3CB878,#8DC63F);border:none;border-radius:10px;padding:9px 20px;font-size:13px;font-weight:700;color:#fff;cursor:pointer">S'inscrire</button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-meta">
+    <span class="hero-badge">🔒 Données protégées</span>
+    <span class="hero-badge-rgpd">✓ RGPD &amp; Loi ivoirienne</span>
+    <span class="hero-date">Dernière mise à jour : 15 janvier 2025</span>
+  </div>
+  <h1>Politique de Confidentialité</h1>
+  <p>Oriupe s'engage à protéger vos données personnelles conformément au RGPD européen et à la loi ivoirienne n°2013-450 relative à la protection des données à caractère personnel.</p>
+</section>
+
+<!-- LAYOUT -->
+<div class="layout">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-header">Sommaire</div>
+    <nav class="sidebar-nav" id="sidebarNav">
+      <a href="#p1" class="active"><span class="sidebar-num">1</span>Responsable du traitement</a>
+      <a href="#p2"><span class="sidebar-num">2</span>Données collectées</a>
+      <a href="#p3"><span class="sidebar-num">3</span>Finalités du traitement</a>
+      <a href="#p4"><span class="sidebar-num">4</span>Base légale</a>
+      <a href="#p5"><span class="sidebar-num">5</span>Conservation des données</a>
+      <a href="#p6"><span class="sidebar-num">6</span>Partage des données</a>
+      <a href="#p7"><span class="sidebar-num">7</span>Transferts internationaux</a>
+      <a href="#p8"><span class="sidebar-num">8</span>Sécurité</a>
+      <a href="#p9"><span class="sidebar-num">9</span>Vos droits</a>
+      <a href="#p10"><span class="sidebar-num">10</span>Cookies</a>
+      <a href="#p11"><span class="sidebar-num">11</span>Contact DPO</a>
+    </nav>
+    <div class="sidebar-dpo">
+      <strong>Délégué à la Protection des Données</strong>
+      <p>Pour toute question relative à vos données personnelles :<br>
+      <a href="mailto:privacy@oriupe.com">privacy@oriupe.com</a></p>
+    </div>
+    <button class="print-btn" onclick="window.print()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      Imprimer / PDF
+    </button>
+  </aside>
+
+  <!-- CONTENT -->
+  <main class="content">
+    <div class="content-top">
+      <div class="content-top-info">
+        <h2>Politique de Confidentialité</h2>
+        <p>Version 2.4 — Entrée en vigueur le 15 janvier 2025</p>
+      </div>
+      <button class="print-btn-top" onclick="window.print()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        Imprimer / PDF
+      </button>
+    </div>
+
+    <!-- P1 -->
+    <div class="legal-section" id="p1">
+      <h2><span class="section-num">1</span>Responsable du traitement</h2>
+      <p>Le responsable du traitement des données personnelles collectées via la Plateforme Oriupe est :</p>
+      <table class="info-table">
+        <tbody>
+          <tr><td style="font-weight:600;color:var(--navy);width:40%">Dénomination sociale</td><td>Oriupe SAS</td></tr>
+          <tr><td style="font-weight:600;color:var(--navy)">Siège social</td><td>Cocody Riviera Palmeraie, Abidjan, Côte d'Ivoire</td></tr>
+          <tr><td style="font-weight:600;color:var(--navy)">RCCM</td><td>CI-ABJ-2023-XXXX</td></tr>
+          <tr><td style="font-weight:600;color:var(--navy)">Email général</td><td>contact@oriupe.com</td></tr>
+          <tr><td style="font-weight:600;color:var(--navy)">DPO (Délégué Protection Données)</td><td><a href="mailto:privacy@oriupe.com" style="color:var(--green)">privacy@oriupe.com</a></td></tr>
+          <tr><td style="font-weight:600;color:var(--navy)">Autorité de contrôle</td><td>ARTCI — Autorité de Régulation des Télécommunications et du numérique de Côte d'Ivoire</td></tr>
+        </tbody>
+      </table>
+      <div class="highlight-box blue">
+        Oriupe est enregistrée auprès de l'ARTCI en qualité de responsable de traitement de données personnelles, conformément à la loi n°2013-450 du 19 juin 2013 relative à la protection des données à caractère personnel en Côte d'Ivoire.
+      </div>
+    </div>
+
+    <!-- P2 -->
+    <div class="legal-section" id="p2">
+      <h2><span class="section-num">2</span>Données collectées</h2>
+      <p>Oriupe collecte différentes catégories de données personnelles selon le contexte d'utilisation :</p>
+      <h3>2.1 Données d'identification</h3>
+      <ul>
+        <li>Nom, prénom(s), date de naissance</li>
+        <li>Adresse email et numéro de téléphone mobile</li>
+        <li>Photo de profil (optionnel)</li>
+        <li>Pièce d'identité (pour la vérification KYC)</li>
+        <li>Adresse de résidence ou siège social</li>
+      </ul>
+      <h3>2.2 Données professionnelles (Freelances)</h3>
+      <ul>
+        <li>Compétences, expériences et certifications déclarées</li>
+        <li>Portfolio et exemples de travaux</li>
+        <li>Langues parlées et spécialisations</li>
+        <li>Informations de facturation et références bancaires / mobile money</li>
+      </ul>
+      <h3>2.3 Données de transaction</h3>
+      <ul>
+        <li>Historique des commandes et des paiements</li>
+        <li>Échanges via la messagerie intégrée</li>
+        <li>Évaluations et avis laissés ou reçus</li>
+        <li>Documents et fichiers échangés dans le cadre des missions</li>
+      </ul>
+      <h3>2.4 Données techniques</h3>
+      <ul>
+        <li>Adresse IP et données de géolocalisation approximative</li>
+        <li>Type de navigateur et système d'exploitation</li>
+        <li>Pages visitées, clics et durée de session</li>
+        <li>Données de cookies et identifiants de suivi (avec consentement)</li>
+      </ul>
+      <div class="highlight-box orange">
+        <strong>Données sensibles :</strong> Oriupe ne collecte intentionnellement aucune donnée sensible au sens de la loi (opinions politiques, données de santé, origines ethniques). Si de telles données sont accidentellement transmises, elles sont immédiatement supprimées.
+      </div>
+    </div>
+
+    <!-- P3 -->
+    <div class="legal-section" id="p3">
+      <h2><span class="section-num">3</span>Finalités du traitement</h2>
+      <p>Le tableau ci-dessous récapitule les finalités de traitement, les données concernées et leur durée de conservation :</p>
+      <table class="info-table">
+        <thead>
+          <tr>
+            <th>Type de donnée</th>
+            <th>Finalité du traitement</th>
+            <th>Durée de conservation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Données d'identification</td>
+            <td>Création et gestion du compte, vérification d'identité KYC, prévention de la fraude</td>
+            <td>Durée du compte + 5 ans</td>
+          </tr>
+          <tr>
+            <td>Données de contact</td>
+            <td>Communication sur les commandes, notifications, support client</td>
+            <td>Durée du compte + 3 ans</td>
+          </tr>
+          <tr>
+            <td>Données de transaction</td>
+            <td>Exécution des contrats, facturation, obligations comptables et fiscales</td>
+            <td>10 ans (obligation légale)</td>
+          </tr>
+          <tr>
+            <td>Historique de messagerie</td>
+            <td>Gestion des litiges, preuve contractuelle</td>
+            <td>5 ans après clôture de la mission</td>
+          </tr>
+          <tr>
+            <td>Données bancaires / mobile money</td>
+            <td>Traitement des paiements et remboursements</td>
+            <td>13 mois (données de carte), durée légale pour autres</td>
+          </tr>
+          <tr>
+            <td>Données techniques &amp; navigation</td>
+            <td>Amélioration de la plateforme, sécurité, détection d'anomalies</td>
+            <td>13 mois</td>
+          </tr>
+          <tr>
+            <td>Cookies analytics (avec consentement)</td>
+            <td>Mesure d'audience, amélioration de l'expérience utilisateur</td>
+            <td>13 mois maximum</td>
+          </tr>
+          <tr>
+            <td>Évaluations et avis</td>
+            <td>Transparence du marché, confiance communautaire</td>
+            <td>Durée du compte + 2 ans</td>
+          </tr>
+          <tr>
+            <td>Photo de profil et portfolio</td>
+            <td>Présentation professionnelle sur la Plateforme</td>
+            <td>Durée du compte (suppression à la demande)</td>
+          </tr>
+          <tr>
+            <td>Données de géolocalisation</td>
+            <td>Personnalisation des résultats de recherche</td>
+            <td>Session uniquement</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- P4 -->
+    <div class="legal-section" id="p4">
+      <h2><span class="section-num">4</span>Base légale du traitement</h2>
+      <p>Chaque traitement de données personnelles effectué par Oriupe repose sur l'une des bases légales suivantes :</p>
+      <table class="info-table">
+        <thead><tr><th>Base légale</th><th>Traitements concernés</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Exécution du contrat</strong></td>
+            <td>Création de compte, traitement des commandes, gestion des paiements escrow, messagerie liée aux missions, émission de factures</td>
+          </tr>
+          <tr>
+            <td><strong>Obligation légale</strong></td>
+            <td>Conservation des données de transaction (obligations comptables et fiscales ivoiriennes), lutte contre le blanchiment d'argent (loi 2016-412), vérification KYC</td>
+          </tr>
+          <tr>
+            <td><strong>Intérêt légitime</strong></td>
+            <td>Prévention de la fraude, sécurité de la plateforme, amélioration des fonctionnalités, analytics anonymisés, gestion des litiges</td>
+          </tr>
+          <tr>
+            <td><strong>Consentement</strong></td>
+            <td>Cookies non essentiels (analytics, marketing), communications promotionnelles par email ou SMS, partage de données à des fins de partenariats</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="highlight-box">
+        Lorsque le traitement est basé sur votre consentement, vous pouvez le retirer à tout moment sans que cela affecte la licéité des traitements effectués avant le retrait.
+      </div>
+    </div>
+
+    <!-- P5 -->
+    <div class="legal-section" id="p5">
+      <h2><span class="section-num">5</span>Conservation des données</h2>
+      <p>Oriupe applique le principe de minimisation des données et ne conserve les données personnelles que pour la durée strictement nécessaire aux finalités pour lesquelles elles ont été collectées, conformément aux dispositions légales applicables.</p>
+      <h3>5.1 Compte actif</h3>
+      <p>Tant que votre compte est actif, vos données sont conservées pour vous permettre d'utiliser la Plateforme et pour honorer nos obligations contractuelles envers vous.</p>
+      <h3>5.2 Compte inactif</h3>
+      <p>Un compte est considéré inactif après 24 mois sans connexion. Oriupe vous notifiera par email 30 jours avant de procéder à l'anonymisation ou à la suppression des données non soumises à obligation légale de conservation.</p>
+      <h3>5.3 Suppression du compte</h3>
+      <p>Lors de la suppression de votre compte, les données sont anonymisées ou supprimées dans un délai de 30 jours, à l'exception des données devant être conservées en vertu d'une obligation légale (données comptables : 10 ans ; données relatives aux litiges : 5 ans).</p>
+    </div>
+
+    <!-- P6 -->
+    <div class="legal-section" id="p6">
+      <h2><span class="section-num">6</span>Partage des données</h2>
+      <p>Oriupe ne vend jamais vos données personnelles à des tiers. Vos données peuvent être partagées uniquement dans les cas suivants :</p>
+      <h3>6.1 Partenaires techniques (sous-traitants)</h3>
+      <ul>
+        <li><strong>Prestataires de paiement :</strong> CinetPay, Uba, Orange Money, MTN MoMo (pour traitement des transactions)</li>
+        <li><strong>Infrastructure cloud :</strong> Hébergement des données sur des serveurs situés en Afrique de l'Ouest ou en Europe</li>
+        <li><strong>Outils analytics :</strong> Uniquement avec votre consentement préalable</li>
+        <li><strong>Service email transactionnel :</strong> Pour l'envoi de notifications liées à votre compte</li>
+      </ul>
+      <h3>6.2 Entre Clients et Freelances</h3>
+      <p>Dans le cadre d'une transaction, certaines données sont partagées entre les parties (nom d'affichage, notation, portfolio, échanges dans la messagerie de commande). Ces données sont limitées au strict nécessaire pour l'exécution de la prestation.</p>
+      <h3>6.3 Autorités légales</h3>
+      <p>Oriupe peut être amenée à communiquer des données personnelles aux autorités compétentes (ARTCI, CENTIF, tribunaux) lorsque la loi l'exige ou dans le cadre d'une procédure judiciaire.</p>
+      <div class="highlight-box orange">
+        <strong>Engagement :</strong> Tous nos sous-traitants sont liés par des contrats de traitement des données conformes à la réglementation en vigueur, leur interdisant de traiter vos données à d'autres fins que celles pour lesquelles ils ont été mandatés.
+      </div>
+    </div>
+
+    <!-- P7 -->
+    <div class="legal-section" id="p7">
+      <h2><span class="section-num">7</span>Transferts internationaux de données</h2>
+      <p>Oriupe s'efforce de maintenir les données personnelles au sein de la Côte d'Ivoire et des pays de l'UEMOA. Certains prestataires techniques peuvent toutefois traiter des données dans des pays tiers (notamment en Europe).</p>
+      <p>Dans ce cas, Oriupe s'assure que ces transferts sont encadrés par des garanties appropriées, notamment :</p>
+      <ul>
+        <li>Des clauses contractuelles types approuvées</li>
+        <li>Des certifications ou codes de conduite reconnus</li>
+        <li>Des décisions d'adéquation lorsqu'elles existent</li>
+      </ul>
+      <div class="highlight-box blue">
+        Les données de paiement via Orange Money CI et MTN MoMo sont traitées exclusivement par des infrastructures domiciliées en Côte d'Ivoire ou au sein de l'espace CEDEAO.
+      </div>
+    </div>
+
+    <!-- P8 -->
+    <div class="legal-section" id="p8">
+      <h2><span class="section-num">8</span>Sécurité des données</h2>
+      <p>Oriupe met en œuvre les mesures techniques et organisationnelles appropriées pour protéger vos données personnelles contre tout accès non autorisé, toute divulgation, altération ou destruction :</p>
+      <h3>8.1 Mesures techniques</h3>
+      <ul>
+        <li>Chiffrement TLS 1.3 de toutes les communications entre votre navigateur et nos serveurs</li>
+        <li>Chiffrement AES-256 des données sensibles (mots de passe, données bancaires) au repos</li>
+        <li>Authentification à deux facteurs (2FA) disponible et recommandée</li>
+        <li>Pare-feux applicatifs (WAF) et surveillance des intrusions 24h/24</li>
+        <li>Sauvegardes quotidiennes avec réplication géographique</li>
+      </ul>
+      <h3>8.2 Mesures organisationnelles</h3>
+      <ul>
+        <li>Accès aux données personnelles limité au personnel strictement habilité</li>
+        <li>Formation régulière de l'équipe aux bonnes pratiques de protection des données</li>
+        <li>Procédure de notification en cas de violation de données (notification à l'ARTCI dans 72h, et aux personnes concernées si risque élevé)</li>
+        <li>Audits de sécurité annuels réalisés par un freelance indépendant</li>
+      </ul>
+    </div>
+
+    <!-- P9 -->
+    <div class="legal-section" id="p9">
+      <h2><span class="section-num">9</span>Vos droits sur vos données</h2>
+      <p>Conformément à la loi ivoirienne n°2013-450 et au RGPD (pour les résidents de l'UE), vous disposez des droits suivants concernant vos données personnelles :</p>
+      <div class="rights-grid">
+        <div class="right-card">
+          <div class="right-icon">👁</div>
+          <h4>Droit d'accès</h4>
+          <p>Obtenir une copie de toutes les données personnelles que nous détenons vous concernant.</p>
+        </div>
+        <div class="right-card">
+          <div class="right-icon">✏️</div>
+          <h4>Droit de rectification</h4>
+          <p>Corriger ou mettre à jour des données inexactes ou incomplètes vous concernant.</p>
+        </div>
+        <div class="right-card">
+          <div class="right-icon">🗑</div>
+          <h4>Droit à l'effacement</h4>
+          <p>Demander la suppression de vos données dans les cas prévus par la loi (« droit à l'oubli »).</p>
+        </div>
+        <div class="right-card">
+          <div class="right-icon">⏸</div>
+          <h4>Droit à la limitation</h4>
+          <p>Demander la restriction du traitement de vos données dans certaines circonstances.</p>
+        </div>
+        <div class="right-card">
+          <div class="right-icon">🚫</div>
+          <h4>Droit d'opposition</h4>
+          <p>Vous opposer à tout moment au traitement de vos données à des fins de marketing ou de profilage.</p>
+        </div>
+        <div class="right-card">
+          <div class="right-icon">📦</div>
+          <h4>Portabilité</h4>
+          <p>Recevoir vos données dans un format structuré, lisible par machine (JSON ou CSV).</p>
+        </div>
+      </div>
+      <h3 style="margin-top:24px">Comment exercer vos droits ?</h3>
+      <p>Pour exercer l'un de ces droits, adressez une demande par email à <a href="mailto:privacy@oriupe.com" style="color:var(--green)">privacy@oriupe.com</a> en précisant votre nom, votre email de compte et la nature de votre demande. Nous disposons d'un délai d'un mois pour répondre à compter de la réception de votre demande.</p>
+      <p>En cas de réponse insatisfaisante, vous pouvez saisir l'<strong>ARTCI</strong> (Autorité de Régulation des Télécommunications et du numérique de Côte d'Ivoire) à l'adresse : www.artci.ci.</p>
+    </div>
+
+    <!-- P10 -->
+    <div class="legal-section" id="p10">
+      <h2><span class="section-num">10</span>Cookies et traceurs</h2>
+      <h3>10.1 Qu'est-ce qu'un cookie ?</h3>
+      <p>Un cookie est un petit fichier texte déposé sur votre terminal (ordinateur, smartphone, tablette) lors de votre visite sur la Plateforme. Les cookies permettent à la Plateforme de vous reconnaître, de mémoriser vos préférences et d'analyser votre navigation.</p>
+      <h3>10.2 Types de cookies utilisés</h3>
+      <table class="info-table">
+        <thead><tr><th>Catégorie</th><th>Finalité</th><th>Durée</th><th>Consentement requis</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Strictement nécessaires</strong></td><td>Session, authentification, panier, sécurité CSRF</td><td>Session ou 30 jours</td><td>Non (base légale : intérêt légitime)</td></tr>
+          <tr><td><strong>Fonctionnels</strong></td><td>Mémorisation des préférences (langue, devise, thème)</td><td>12 mois</td><td>Oui</td></tr>
+          <tr><td><strong>Analytics</strong></td><td>Mesure d'audience, pages vues, taux de conversion (données anonymisées)</td><td>13 mois</td><td>Oui</td></tr>
+          <tr><td><strong>Marketing</strong></td><td>Publicité personnalisée, reciblage</td><td>13 mois</td><td>Oui</td></tr>
+        </tbody>
+      </table>
+      <h3>10.3 Gestion de vos préférences</h3>
+      <p>Vous pouvez à tout moment modifier vos préférences en matière de cookies en cliquant sur le bouton ci-dessous ou en configurant votre navigateur pour refuser les cookies. Le refus des cookies analytics ou marketing n'affectera pas l'accès aux fonctionnalités essentielles de la Plateforme.</p>
+      <button onclick="openCookieModal()" style="background:linear-gradient(135deg,var(--green),var(--lime));border:none;border-radius:10px;padding:11px 24px;font-size:14px;font-weight:700;color:#fff;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;margin-top:8px">
+        ⚙️ Gérer mes préférences de cookies
+      </button>
+    </div>
+
+    <!-- P11 -->
+    <div class="legal-section" id="p11">
+      <h2><span class="section-num blue">11</span>Contact DPO</h2>
+      <p>Notre Délégué à la Protection des Données (DPO) est disponible pour répondre à toutes vos questions relatives au traitement de vos données personnelles :</p>
+      <table class="info-table">
+        <tbody>
+          <tr><td style="font-weight:600;color:var(--navy);width:35%">Nom du DPO</td><td>Département Conformité &amp; Protection des Données</td></tr>
+          <tr><td style="font-weight:600;color:var(--navy)">Email</td><td><a href="mailto:privacy@oriupe.com" style="color:var(--green)">privacy@oriupe.com</a></td></tr>
+          <tr><td style="font-weight:600;color:var(--navy)">Adresse postale</td><td>Oriupe SAS — DPO, Cocody Riviera Palmeraie, BP XXXXX Abidjan 01, Côte d'Ivoire</td></tr>
+          <tr><td style="font-weight:600;color:var(--navy)">Délai de réponse</td><td>Maximum 30 jours calendaires après réception de votre demande</td></tr>
+          <tr><td style="font-weight:600;color:var(--navy)">Autorité de contrôle</td><td><a href="https://www.artci.ci" target="_blank" rel="noopener" style="color:var(--green)">ARTCI — www.artci.ci</a></td></tr>
+        </tbody>
+      </table>
+      <div class="highlight-box">
+        Si vous estimez que le traitement de vos données personnelles constitue une violation de la réglementation applicable, vous avez le droit d'introduire une réclamation auprès de l'ARTCI, sans préjudice de tout autre recours juridictionnel.
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div><a href="/src/pages/home/index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;margin-bottom:12px"><svg width="26" height="26" viewBox="0 0 32 32" fill="none"><circle cx="10" cy="10" r="8.5" fill="#8DC63F" opacity=".9"/><circle cx="22" cy="10" r="8.5" fill="#29ABE2" opacity=".9"/><circle cx="10" cy="22" r="8.5" fill="#3CB878" opacity=".9"/><circle cx="22" cy="22" r="8.5" fill="#1B3A4A"/><rect x="9.5" y="9.5" width="13" height="13" rx="1.5" fill="rgba(60,184,120,.45)"/></svg><span style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;color:#fff">Oriupe</span></a><p class="footer-tagline">"Ton talent. Ton continent. Ton avenir."</p></div>
+    <div><div class="footer-col-title">Oriupe</div><div class="footer-links"><a href="/src/pages/about/index.html">À propos</a><a href="/src/pages/careers/index.html">Carrières</a><a href="/src/pages/press/index.html">Presse &amp; Médias</a><a href="/src/pages/blog/index.html">Blog</a><a href="/src/pages/impact/index.html">Impact ESG</a></div></div>
+    <div><div class="footer-col-title">Freelances</div><div class="footer-links"><a href="/src/pages/auth/index.html">S'inscrire</a><a href="/src/pages/how-it-works/index.html">Comment ça marche</a><a href="/src/pages/academy/index.html">Oriupe Academy</a><a href="/src/pages/pricing/index.html">Tarifs Pro</a><a href="/src/pages/faq/index.html">FAQ Freelances</a></div></div>
+    <div><div class="footer-col-title">Support</div><div class="footer-links"><a href="/src/pages/help/index.html">Centre d'aide</a><a href="/src/pages/contact/index.html">Nous contacter</a><a href="/src/pages/disputes/index.html">Gestion des litiges</a><a href="/src/pages/terms/index.html">CGU &amp; CGV</a><a href="/src/pages/privacy/index.html">Confidentialité</a></div></div>
+  </div>
+  <div class="footer-bottom"><span class="footer-copy">© 2025 Oriupe SAS — Abidjan, Côte d'Ivoire. Tous droits réservés.</span><div class="footer-legal"><a href="/src/pages/privacy/index.html">Confidentialité</a><a href="/src/pages/terms/index.html">CGU &amp; CGV</a></div></div>
+</footer>
+
+<!-- COOKIE BANNER -->
+<div class="cookie-banner" id="cookieBanner">
+  <div class="cookie-banner-inner">
+    <div class="cookie-banner-text">
+      <p>🍪 Oriupe utilise des cookies pour améliorer votre expérience. Les cookies essentiels sont nécessaires au fonctionnement du site. <a href="#p10">En savoir plus sur nos cookies</a>.</p>
+    </div>
+    <div class="cookie-banner-actions">
+      <button class="cookie-btn settings" onclick="openCookieModal()">Paramétrer</button>
+      <button class="cookie-btn decline" onclick="rejectCookies()">Refuser</button>
+      <button class="cookie-btn accept" onclick="acceptAllCookies()">Tout accepter</button>
+    </div>
+  </div>
+</div>
+
+<!-- COOKIE MODAL -->
+<div class="modal-overlay" id="cookieModal">
+  <div class="modal">
+    <h3>Paramètres des cookies</h3>
+    <p>Choisissez les catégories de cookies que vous autorisez. Les cookies essentiels ne peuvent pas être désactivés car ils sont nécessaires au bon fonctionnement du site.</p>
+
+    <div class="cookie-toggle-item">
+      <div class="cookie-toggle-info">
+        <h4>Cookies essentiels</h4>
+        <p>Session, authentification, sécurité. Indispensables au fonctionnement de la Plateforme.</p>
+      </div>
+      <div class="toggle-wrap">
+        <label class="toggle"><input type="checkbox" checked disabled><span class="toggle-slider"></span></label>
+      </div>
+    </div>
+
+    <div class="cookie-toggle-item">
+      <div class="cookie-toggle-info">
+        <h4>Cookies fonctionnels</h4>
+        <p>Mémorisation de vos préférences (langue, devise, thème d'affichage).</p>
+      </div>
+      <div class="toggle-wrap">
+        <label class="toggle"><input type="checkbox" id="cookieFunc"><span class="toggle-slider"></span></label>
+      </div>
+    </div>
+
+    <div class="cookie-toggle-item">
+      <div class="cookie-toggle-info">
+        <h4>Cookies analytics</h4>
+        <p>Mesure d'audience anonymisée pour améliorer la Plateforme. Aucune donnée personnelle identifiable.</p>
+      </div>
+      <div class="toggle-wrap">
+        <label class="toggle"><input type="checkbox" id="cookieAnalytics"><span class="toggle-slider"></span></label>
+      </div>
+    </div>
+
+    <div class="cookie-toggle-item">
+      <div class="cookie-toggle-info">
+        <h4>Cookies marketing</h4>
+        <p>Publicité personnalisée et reciblage sur des sites partenaires.</p>
+      </div>
+      <div class="toggle-wrap">
+        <label class="toggle"><input type="checkbox" id="cookieMarketing"><span class="toggle-slider"></span></label>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="modal-btn secondary" onclick="closeCookieModal()">Annuler</button>
+      <button class="modal-btn primary" onclick="saveCookiePrefs()">Enregistrer mes choix</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Sidebar active on scroll
+var sections=document.querySelectorAll('.legal-section');
+var links=document.querySelectorAll('.sidebar-nav a');
+function onScroll(){
+  var scrollY=window.scrollY+120;
+  var active=null;
+  sections.forEach(function(s){if(s.offsetTop<=scrollY) active=s.id;});
+  links.forEach(function(l){
+    l.classList.remove('active');
+    if(active&&l.getAttribute('href')==='#'+active) l.classList.add('active');
+  });
+}
+window.addEventListener('scroll',onScroll,{passive:true});
+document.querySelectorAll('.sidebar-nav a').forEach(function(a){
+  a.addEventListener('click',function(e){
+    e.preventDefault();
+    var target=document.querySelector(this.getAttribute('href'));
+    if(target) target.scrollIntoView({behavior:'smooth'});
+  });
+});
+
+// Cookie banner
+var banner=document.getElementById('cookieBanner');
+if(!localStorage.getItem('oriupe_cookies_set')){
+  setTimeout(function(){banner.classList.remove('hidden');},800);
+}
+function acceptAllCookies(){
+  localStorage.setItem('oriupe_cookies_set','all');
+  banner.classList.add('hidden');
+}
+function rejectCookies(){
+  localStorage.setItem('oriupe_cookies_set','essential');
+  banner.classList.add('hidden');
+}
+function openCookieModal(){
+  document.getElementById('cookieModal').classList.add('open');
+  var saved=localStorage.getItem('oriupe_cookies_prefs');
+  if(saved){
+    var p=JSON.parse(saved);
+    document.getElementById('cookieFunc').checked=!!p.functional;
+    document.getElementById('cookieAnalytics').checked=!!p.analytics;
+    document.getElementById('cookieMarketing').checked=!!p.marketing;
+  }
+}
+function closeCookieModal(){
+  document.getElementById('cookieModal').classList.remove('open');
+}
+function saveCookiePrefs(){
+  var prefs={
+    functional:document.getElementById('cookieFunc').checked,
+    analytics:document.getElementById('cookieAnalytics').checked,
+    marketing:document.getElementById('cookieMarketing').checked
+  };
+  localStorage.setItem('oriupe_cookies_prefs',JSON.stringify(prefs));
+  localStorage.setItem('oriupe_cookies_set','custom');
+  closeCookieModal();
+  banner.classList.add('hidden');
+}
+// Close modal on overlay click
+document.getElementById('cookieModal').addEventListener('click',function(e){
+  if(e.target===this) closeCookieModal();
+});
+</script>
+</body>
+</html>

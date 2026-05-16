@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>FAQ — Oriupe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#F4F6F9;color:#1B3A4A;overflow-x:hidden}
+:root{
+  --navy:#0F2535;--navy2:#1B3A4A;
+  --green:#3CB878;--green-l:#E4F7EE;
+  --blue:#29ABE2;--blue-l:#E2F4FB;
+  --lime:#8DC63F;
+  --bg:#F4F6F9;--border:rgba(27,58,74,.1);
+  --shadow:0 4px 16px rgba(15,37,53,.09);
+  --shadow-md:0 8px 32px rgba(15,37,53,.13);
+}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:24px;height:64px;padding:0 32px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-text{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:var(--navy)}
+.nav-links{display:flex;gap:4px;margin-left:32px}
+.nav-links a{text-decoration:none;color:#1B3A4A;font-size:14px;font-weight:500;padding:8px 14px;border-radius:10px;transition:background .2s,color .2s}
+.nav-links a:hover{background:var(--bg);color:var(--navy)}
+.nav-cta{display:flex;align-items:center;gap:10px;margin-left:auto}
+.btn-login{background:transparent;border:1.5px solid rgba(27,58,74,.15);border-radius:10px;padding:8px 18px;font-size:13px;font-weight:600;color:#1B3A4A;cursor:pointer;font-family:inherit;transition:border-color .2s,background .2s}
+.btn-login:hover{border-color:var(--green);background:var(--green-l)}
+.btn-register{background:linear-gradient(135deg,#3CB878,#8DC63F);border:none;border-radius:10px;padding:9px 20px;font-size:13px;font-weight:700;color:#fff;cursor:pointer;font-family:inherit;transition:opacity .2s,transform .15s}
+.btn-register:hover{opacity:.9;transform:translateY(-1px)}
+
+/* HERO */
+.hero{min-height:380px;background:var(--navy);padding:110px 32px 72px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;text-align:center}
+.hero-orb{position:absolute;border-radius:50%;pointer-events:none}
+.hero-orb-1{width:600px;height:600px;background:radial-gradient(circle,rgba(41,171,226,.18) 0%,transparent 70%);top:-200px;right:-100px}
+.hero-orb-2{width:500px;height:500px;background:radial-gradient(circle,rgba(60,184,120,.14) 0%,transparent 70%);bottom:-150px;left:-100px}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:48px 48px;pointer-events:none}
+.hero-content{position:relative;z-index:2;max-width:720px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(41,171,226,.15);border:1px solid rgba(41,171,226,.3);border-radius:100px;padding:6px 16px;font-size:12px;font-weight:700;color:#29ABE2;letter-spacing:.06em;text-transform:uppercase;margin-bottom:24px}
+.hero h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(32px,5vw,56px);font-weight:800;color:#fff;line-height:1.1;letter-spacing:-.03em;margin-bottom:20px}
+.hero p{font-size:17px;color:rgba(255,255,255,.6);line-height:1.7;max-width:500px;margin:0 auto 36px}
+
+/* SEARCH */
+.search-wrap{position:relative;max-width:560px;margin:0 auto}
+.search-wrap input{width:100%;padding:16px 24px 16px 52px;border-radius:14px;border:1.5px solid rgba(255,255,255,.15);background:rgba(255,255,255,.1);font-family:inherit;font-size:15px;color:#fff;outline:none;backdrop-filter:blur(10px);transition:border-color .2s,background .2s}
+.search-wrap input::placeholder{color:rgba(255,255,255,.4)}
+.search-wrap input:focus{border-color:rgba(60,184,120,.6);background:rgba(255,255,255,.15)}
+.search-wrap .search-icon{position:absolute;left:18px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.4);pointer-events:none}
+
+/* MAIN CONTENT */
+.main{max-width:900px;margin:0 auto;padding:64px 32px 80px}
+
+/* TABS */
+.tabs{display:flex;gap:8px;margin-bottom:48px;flex-wrap:wrap}
+.tab{padding:9px 20px;border-radius:100px;font-size:13px;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:#fff;color:rgba(27,58,74,.6);transition:all .2s;font-family:inherit}
+.tab:hover{border-color:var(--green);color:var(--green)}
+.tab.active{background:var(--green);border-color:var(--green);color:#fff;box-shadow:0 4px 16px rgba(60,184,120,.3)}
+
+/* ACCORDION */
+.faq-group{margin-bottom:40px}
+.faq-group-label{font-size:11px;font-weight:800;color:rgba(27,58,74,.4);letter-spacing:.12em;text-transform:uppercase;margin-bottom:16px;padding-left:4px}
+.accordion{display:flex;flex-direction:column;gap:10px}
+.acc-item{background:#fff;border:1.5px solid var(--border);border-radius:16px;overflow:hidden;transition:border-color .25s,box-shadow .25s}
+.acc-item.open{border-color:var(--green);box-shadow:0 4px 20px rgba(60,184,120,.12)}
+.acc-item.hidden{display:none}
+.acc-header{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;cursor:pointer;background:#fff;transition:background .2s;gap:16px;user-select:none}
+.acc-header:hover{background:var(--green-l)}
+.acc-question{font-size:15px;font-weight:700;color:var(--navy);line-height:1.4;flex:1}
+.acc-tag{padding:3px 10px;border-radius:100px;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;flex-shrink:0}
+.tag-inscription{background:rgba(141,198,63,.12);color:#6EA832}
+.tag-paiements{background:rgba(60,184,120,.12);color:#2E9A61}
+.tag-freelances{background:var(--blue-l);color:#1A8BC0}
+.tag-clients{background:rgba(141,198,63,.1);color:#6EA832}
+.tag-litiges{background:rgba(239,68,68,.08);color:#DC2626}
+.acc-icon{width:28px;height:28px;border-radius:50%;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .25s,transform .3s cubic-bezier(.34,1.56,.64,1)}
+.acc-item.open .acc-icon{background:var(--green);transform:rotate(45deg)}
+.acc-item.open .acc-icon svg{stroke:#fff}
+.acc-body{max-height:0;overflow:hidden;transition:max-height .38s cubic-bezier(.4,0,.2,1)}
+.acc-body.open{max-height:600px}
+.acc-body-inner{padding:0 24px 22px;border-top:1px solid var(--border)}
+.acc-body-inner p{padding-top:16px;font-size:14px;color:rgba(27,58,74,.72);line-height:1.85}
+.acc-body-inner ul{padding-top:12px;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+.acc-body-inner ul li{font-size:14px;color:rgba(27,58,74,.72);line-height:1.7}
+
+/* NO RESULTS */
+.no-results{text-align:center;padding:60px 20px;display:none}
+.no-results h3{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;color:var(--navy);margin-bottom:8px}
+.no-results p{font-size:14px;color:rgba(27,58,74,.55)}
+
+/* CTA BOTTOM */
+.cta-card{background:var(--navy);border-radius:24px;padding:56px 48px;text-align:center;position:relative;overflow:hidden;margin-top:64px}
+.cta-card .orb{position:absolute;border-radius:50%}
+.cta-card .orb1{width:300px;height:300px;background:radial-gradient(circle,rgba(60,184,120,.2) 0%,transparent 70%);top:-80px;left:-60px}
+.cta-card .orb2{width:280px;height:280px;background:radial-gradient(circle,rgba(41,171,226,.15) 0%,transparent 70%);bottom:-80px;right:-60px}
+.cta-inner{position:relative;z-index:2}
+.cta-card h2{font-family:'Bricolage Grotesque',sans-serif;font-size:32px;font-weight:800;color:#fff;margin-bottom:12px;letter-spacing:-.02em}
+.cta-card p{font-size:15px;color:rgba(255,255,255,.6);margin-bottom:28px;line-height:1.7}
+.cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.btn-cta-primary{background:linear-gradient(135deg,#3CB878,#8DC63F);border:none;border-radius:12px;padding:14px 32px;font-size:14px;font-weight:700;color:#fff;cursor:pointer;font-family:inherit;transition:transform .2s,box-shadow .2s}
+.btn-cta-primary:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(60,184,120,.4)}
+.btn-cta-sec{background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);border-radius:12px;padding:13px 28px;font-size:14px;font-weight:700;color:#fff;cursor:pointer;font-family:inherit;transition:background .2s}
+.btn-cta-sec:hover{background:rgba(255,255,255,.18)}
+
+/* FOOTER */
+footer{background:var(--navy);padding:64px 32px 32px;margin-top:0}
+.footer-grid{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:40px;margin-bottom:48px}
+.footer-col-label{font-size:11px;font-weight:700;color:rgba(255,255,255,.35);letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px}
+.footer-links{display:flex;flex-direction:column;gap:10px}
+.footer-links a{font-size:13px;color:rgba(255,255,255,.6);text-decoration:none;transition:color .2s}
+.footer-links a:hover{color:#fff}
+.footer-bottom{max-width:1280px;margin:0 auto;padding-top:24px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.footer-bottom span,.footer-bottom a{font-size:12px;color:rgba(255,255,255,.3)}
+.footer-bottom a{text-decoration:none;transition:color .2s}
+.footer-bottom a:hover{color:rgba(255,255,255,.6)}
+.footer-bottom-links{display:flex;gap:20px}
+footer{background:var(--navy);padding:64px 24px 32px;margin-top:0}
+.footer-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:40px;margin-bottom:48px}
+.footer-col-title{font-size:11px;font-weight:700;color:rgba(255,255,255,.35);letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px}
+.footer-links{display:flex;flex-direction:column;gap:10px}
+.footer-links a{font-size:13px;color:rgba(255,255,255,.6);text-decoration:none;transition:.2s}
+.footer-links a:hover{color:#fff}
+.footer-tagline{font-size:12px;color:rgba(255,255,255,.4);margin-top:10px;line-height:1.6}
+.footer-bottom{max-width:1280px;margin:0 auto;padding-top:24px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;align-items:center}
+.footer-copy{font-size:12px;color:rgba(255,255,255,.3)}
+.footer-legal{display:flex;gap:20px}
+.footer-legal a{font-size:12px;color:rgba(255,255,255,.3);text-decoration:none}
+.footer-legal a:hover{color:rgba(255,255,255,.7)}
+@media(max-width:900px){.footer-inner{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.footer-inner{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="/src/pages/home/index.html" class="logo">
+      <svg width="30" height="30" viewBox="0 0 32 32" fill="none"><circle cx="10" cy="10" r="8.5" fill="#8DC63F" opacity=".9"/><circle cx="22" cy="10" r="8.5" fill="#29ABE2" opacity=".9"/><circle cx="10" cy="22" r="8.5" fill="#3CB878" opacity=".9"/><circle cx="22" cy="22" r="8.5" fill="#1B3A4A"/><rect x="9.5" y="9.5" width="13" height="13" rx="1.5" fill="rgba(60,184,120,.45)"/></svg>
+      <span class="logo-text">Oriupe</span>
+    </a>
+    <div class="nav-links">
+      <a href="/src/pages/catalog/index.html">Explorer</a>
+      <a href="/src/pages/offers/index.html">Appels d'offres</a>
+      <a href="/src/pages/academy/index.html">Academy</a>
+      <a href="/src/pages/blog/index.html">Blog</a>
+      <a href="/src/pages/pricing/index.html">Tarifs</a>
+    </div>
+    <div class="nav-cta">
+      <button class="btn-login" onclick="location.href='/src/pages/auth/index.html'">Se connecter</button>
+      <button class="btn-register" onclick="location.href='/src/pages/auth/index.html'">S'inscrire</button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+      Centre d'aide
+    </div>
+    <h1>Toutes vos questions,<br/>répondues ici</h1>
+    <p>Trouvez rapidement les réponses à vos questions sur Oriupe, les paiements, les commandes et bien plus encore.</p>
+    <div class="search-wrap">
+      <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="faq-search" placeholder="Rechercher une question..." oninput="filterFaq(this.value)" autocomplete="off"/>
+    </div>
+  </div>
+</section>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- TABS -->
+  <div class="tabs" role="tablist">
+    <button class="tab active" onclick="filterCat('tous', this)">Tous</button>
+    <button class="tab" onclick="filterCat('inscription', this)">Inscription</button>
+    <button class="tab" onclick="filterCat('paiements', this)">Paiements</button>
+    <button class="tab" onclick="filterCat('freelances', this)">Freelances</button>
+    <button class="tab" onclick="filterCat('clients', this)">Clients</button>
+    <button class="tab" onclick="filterCat('litiges', this)">Litiges</button>
+  </div>
+
+  <!-- FAQ ITEMS -->
+  <div class="accordion" id="faq-list">
+
+    <!-- INSCRIPTION -->
+    <div class="acc-item" data-cat="inscription" onclick="toggleAcc(this)">
+      <div class="acc-header">
+        <span class="acc-question">Comment créer un compte sur Oriupe ?</span>
+        <span class="acc-tag tag-inscription">Inscription</span>
+        <div class="acc-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1B3A4A" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+      </div>
+      <div class="acc-body">
+        <div class="acc-body-inner">
+          <p>Créer un compte Oriupe est simple et gratuit. Rendez-vous sur la page d'inscription et choisissez votre profil (Freelance ou Client). Renseignez votre nom, email et mot de passe, puis confirmez votre adresse email via le lien envoyé. Vous pouvez également vous inscrire avec votre compte Google ou LinkedIn.</p>
+          <ul>
+            <li>L'inscription est 100% gratuite, sans carte de crédit requise.</li>
+            <li>Votre profil peut être complété progressivement.</li>
+            <li>La vérification d'identité (KYC) est requise pour les retraits supérieurs à 50 000 FCFA.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="acc-item" data-cat="inscription" onclick="toggleAcc(this)">
+      <div class="acc-header">
+        <span class="acc-question">Puis-je m'inscrire depuis n'importe quel pays africain ?</span>
+        <span class="acc-tag tag-inscription">Inscription</span>
+        <div class="acc-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1B3A4A" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+      </div>
+      <div class="acc-body">
+        <div class="acc-body-inner">
+          <p>Oriupe est ouvert à tous les freelances et clients d'Afrique subsaharienne et du Maghreb. Nous couvrons actuellement 32 pays africains, avec une expansion continue. Les pays pleinement pris en charge incluent la Côte d'Ivoire, le Sénégal, le Mali, le Burkina Faso, la Guinée, le Cameroun, le Ghana, le Nigeria, le Kenya, et plus encore.</p>
+          <p>Si votre pays n'est pas encore pleinement couvert pour les paiements, vous pouvez quand même créer un profil et commencer à travailler — les options de retrait seront étendues progressivement.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="acc-item" data-cat="inscription" onclick="toggleAcc(this)">
+      <div class="acc-header">
+        <span class="acc-question">Comment obtenir le badge « Profil Vérifié » ?</span>
+        <span class="acc-tag tag-inscription">Inscription</span>
+        <div class="acc-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1B3A4A" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+      </div>
+      <div class="acc-body">
+        <div class="acc-body-inner">
+          <p>Le badge Profil Vérifié est disponible avec le plan Pro ou Business. Pour l'obtenir, vous devez :</p>
+          <ul>
+            <li>Passer à l'abonnement Pro ou Business.</li>
+            <li>Fournir une pièce d'identité valide (carte nationale, passeport ou permis de conduire).</li>
+            <li>Vérifier votre numéro de téléphone par SMS.</li>
+            <li>Compléter votre profil à au moins 80% (photo, bio, compétences, portfolio).</li>
+          </ul>
+          <p>Le processus de vérification prend en général 24 à 48h ouvrées après soumission des documents.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAIEMENTS -->
+    <div class="acc-item" data-cat="paiements" onclick="toggleAcc(this)">
+      <div class="acc-header">
+        <span class="acc-question">Quels moyens de paiement acceptez-vous ?</span>
+        <span class="acc-tag tag-paiements">Paiements</span>
+        <div class="acc-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1B3A4A" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+      </div>
+      <div class="acc-body">
+        <div class="acc-body-inner">
+          <p>Oriupe accepte une large gamme de moyens de paiement adaptés au contexte africain :</p>
+          <ul>
+            <li><strong>Mobile Money :</strong> Wave, Orange Money, MTN Mobile Money, Moov Money, Airtel Money, M-Pesa</li>
+            <li><strong>Cartes bancaires :</strong> Visa et Mastercard (débit et crédit)</li>
+            <li><strong>Virement bancaire :</strong> disponible pour les plans Pro et Business</li>
+            <li><strong>Crypto (bêta) :</strong> USDT et USDC sur certains pays</li>
+          </ul>
+          <p>Tous les paiements sont sécurisés via notre système d'escrow — les fonds sont retenus jusqu'à la validation de la livraison par le client.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="acc-item" data-cat="paiements" onclick="toggleAcc(this)">
+      <div class="acc-header">
+        <span class="acc-question">Comment fonctionne le système d'escrow Oriupe ?</span>
+        <span class="acc-tag tag-paiements">Paiements</span>
+        <div class="acc-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1B3A4A" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+      </div>
+      <div class="acc-body">
+        <div class="acc-body-inner">
+          <p>L'escrow (Escrow) est notre système de protection des paiements. Voici comment il fonctionne :</p>
+          <ul>
+            <li><strong>Étape 1 :</strong> Le client passe commande et paie — les fonds sont bloqués sur le compte escrow Oriupe.</li>
+            <li><strong>Étape 2 :</strong> Le freelance réalise le travail et livre le fichier/résultat sur la plateforme.</li>
+            <li><strong>Étape 3 :</strong> Le client valide la livraison. Les fonds (moins la commission Oriupe) sont libérés vers le compte du freelance.</li>
+            <li><strong>Refus :</strong> Si le client refuse la livraison, une procédure de révision ou de litige est ouverte.</li>
+          </ul>
+          <p>Si le client ne répond pas dans les 5 jours suivant la livraison, la commande est automatiquement validée et les fonds libérés.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="acc-item" data-cat="paiements" onclick="toggleAcc(this)">
+      <div class="acc-header">
+        <span class="acc-question">Quels sont les délais de retrait de mes gains ?</span>
+        <span class="acc-tag tag-paiements">Paiements</span>
+        <div class="acc-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1B3A4A" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+      </div>
+      <div class="acc-body">
+        <div class="acc-body-inner">
+          <p>Les délais de retrait varient selon votre plan d'abonnement :</p>
+          <ul>
+            <li><strong>Plan Gratuit :</strong> 5 à 7 jours ouvrés après validation de la commande.</li>
+            <li><strong>Plan Pro :</strong> Retrait express en 24 heures ouvrées.</li>
+            <li><strong>Plan Business :</strong> Retrait instantané (généralement moins de 2 heures).</li>
+          </ul>
+          <p>Pour les retraits via Mobile Money, le virement est instantané une fois le retrait approuvé. Pour les virements bancaires internationaux, comptez 2 à 3 jours ouvrés supplémentaires selon votre banque.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- FREELANCES -->
+    <div class="acc-item" data-cat="freelances" onclick="toggleAcc(this)">
+      <div class="acc-header">
+        <span class="acc-question">Comment fixer le prix de mes services ?</span>
+        <span class="acc-tag tag-freelances">Freelances</span>
+        <div class="acc-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1B3A4A" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+      </div>
+      <div class="acc-body">
+        <div class="acc-body-inner">
+          <p>Vous êtes entièrement libre de fixer vos propres tarifs sur Oriupe. Voici quelques conseils pour bien se positionner :</p>
+          <ul>
+            <li>Consultez les services similaires dans votre catégorie pour connaître les fourchettes de prix du marché.</li>
+            <li>Proposez plusieurs forfaits (Basic, Standard, Premium) pour toucher différents budgets.</li>
+            <li>N'oubliez pas d'inclure la commission Oriupe dans votre calcul de prix (15%, 10% ou 7% selon votre plan).</li>
+            <li>Le prix minimum par commande est de 2 500 FCFA.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="acc-item" data-cat="freelances" onclick="toggleAcc(this)">
+      <div class="acc-header">
+        <span class="acc-question">Comment améliorer ma visibilité dans les résultats de recherche ?</span>
+        <span class="acc-tag tag-freelances">Freelances</span>
+        <div class="acc-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1B3A4A" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+      </div>
+      <div class="acc-body">
+        <div class="acc-body-inner">
+          <p>Plusieurs facteurs influencent votre positionnement dans la recherche Oriupe :</p>
+          <ul>
+            <li><strong>Taux de complétion du profil :</strong> profil à 100% = meilleur classement.</li>
+            <li><strong>Note et avis clients :</strong> maintenez une note élevée en livrant un travail de qualité.</li>
+            <li><strong>Temps de réponse :</strong> répondez rapidement aux messages des clients.</li>
+            <li><strong>Taux de complétion des commandes :</strong> évitez les annulations.</li>
+            <li><strong>Plan Pro :</strong> boost de visibilité automatique dans les résultats.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- CLIENTS -->
+    <div class="acc-item" data-cat="clients" onclick="toggleAcc(this)">
+      <div class="acc-header">
+        <span class="acc-question">Comment publier un appel d'offres sur Oriupe ?</span>
+        <span class="acc-tag tag-clients">Clients</span>
+        <div class="acc-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1B3A4A" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+      </div>
+      <div class="acc-body">
+        <div class="acc-body-inner">
+          <p>Publier un appel d'offres (projet) est gratuit pour les clients. Voici les étapes :</p>
+          <ul>
+            <li>Depuis votre tableau de bord, cliquez sur "Publier un projet".</li>
+            <li>Décrivez votre besoin en détail : catégorie, budget, délai, fichiers de référence.</li>
+            <li>Choisissez si le projet est public (visible à tous les freelances) ou privé (sur invitation).</li>
+            <li>Recevez des propositions en 24 à 72h et sélectionnez le freelance idéal.</li>
+          </ul>
+          <p>Vous ne payez que lorsque vous acceptez une proposition et que le freelance commence à travailler.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- LITIGES -->
+    <div class="acc-item" data-cat="litiges" onclick="toggleAcc(this)">
+      <div class="acc-header">
+        <span class="acc-question">Comment signaler un litige ou un problème avec une commande ?</span>
+        <span class="acc-tag tag-litiges">Litiges</span>
+        <div class="acc-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1B3A4A" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+      </div>
+      <div class="acc-body">
+        <div class="acc-body-inner">
+          <p>En cas de problème avec une commande, voici la procédure à suivre :</p>
+          <ul>
+            <li><strong>1. Communication directe :</strong> Essayez d'abord de résoudre le problème via la messagerie de la commande.</li>
+            <li><strong>2. Demande de révision :</strong> Si la livraison ne correspond pas, demandez une révision en expliquant les points à corriger.</li>
+            <li><strong>3. Ouverture d'un litige :</strong> Si aucun accord n'est trouvé sous 48h, cliquez sur "Ouvrir un litige" depuis la commande.</li>
+            <li><strong>4. Médiation Oriupe :</strong> Notre équipe de médiation intervient sous 24 heures et prend une décision sous 5 jours ouvrés.</li>
+          </ul>
+          <p>En cas de litige en faveur du client, le remboursement est traité dans les 48h. Notre taux de résolution amiable est de 87%.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="acc-item" data-cat="litiges" onclick="toggleAcc(this)">
+      <div class="acc-header">
+        <span class="acc-question">Que se passe-t-il si un freelance disparaît après le paiement ?</span>
+        <span class="acc-tag tag-litiges">Litiges</span>
+        <div class="acc-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1B3A4A" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+      </div>
+      <div class="acc-body">
+        <div class="acc-body-inner">
+          <p>Grâce au système d'escrow, vos fonds sont en sécurité et ne sont jamais directement entre les mains du freelance. Si un freelance ne répond plus ou ne livre pas dans les délais convenus :</p>
+          <ul>
+            <li>Une relance automatique est envoyée au freelance après 24h de silence.</li>
+            <li>Après 72h sans réponse, vous pouvez ouvrir un litige immédiatement.</li>
+            <li>Oriupe peut annuler la commande et vous rembourser intégralement dans les 48h.</li>
+            <li>Le compte du freelance est suspendu en attente d'investigation.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- NO RESULTS -->
+  <div class="no-results" id="no-results">
+    <h3>Aucun résultat trouvé</h3>
+    <p>Essayez avec d'autres mots-clés ou parcourez toutes les questions.</p>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-card">
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="cta-inner">
+      <h2>Vous n'avez pas trouvé votre réponse ?</h2>
+      <p>Notre équipe est là pour vous aider. Contactez-nous via le chat ou envoyez-nous un message.</p>
+      <div class="cta-btns">
+        <button class="btn-cta-primary" onclick="location.href='/src/pages/contact/index.html'">Nous contacter</button>
+        <button class="btn-cta-sec" onclick="location.href='/src/pages/help/index.html'">Centre d'aide</button>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div><a href="/src/pages/home/index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;margin-bottom:12px"><svg width="26" height="26" viewBox="0 0 32 32" fill="none"><circle cx="10" cy="10" r="8.5" fill="#8DC63F" opacity=".9"/><circle cx="22" cy="10" r="8.5" fill="#29ABE2" opacity=".9"/><circle cx="10" cy="22" r="8.5" fill="#3CB878" opacity=".9"/><circle cx="22" cy="22" r="8.5" fill="#1B3A4A"/><rect x="9.5" y="9.5" width="13" height="13" rx="1.5" fill="rgba(60,184,120,.45)"/></svg><span style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;color:#fff">Oriupe</span></a><p class="footer-tagline">"Ton talent. Ton continent. Ton avenir."</p></div>
+    <div><div class="footer-col-title">Oriupe</div><div class="footer-links"><a href="/src/pages/about/index.html">À propos</a><a href="/src/pages/careers/index.html">Carrières</a><a href="/src/pages/press/index.html">Presse &amp; Médias</a><a href="/src/pages/blog/index.html">Blog</a><a href="/src/pages/impact/index.html">Impact ESG</a></div></div>
+    <div><div class="footer-col-title">Freelances</div><div class="footer-links"><a href="/src/pages/auth/index.html">S'inscrire</a><a href="/src/pages/how-it-works/index.html">Comment ça marche</a><a href="/src/pages/academy/index.html">Oriupe Academy</a><a href="/src/pages/pricing/index.html">Tarifs Pro</a><a href="/src/pages/faq/index.html">FAQ Freelances</a></div></div>
+    <div><div class="footer-col-title">Support</div><div class="footer-links"><a href="/src/pages/help/index.html">Centre d'aide</a><a href="/src/pages/contact/index.html">Nous contacter</a><a href="/src/pages/disputes/index.html">Gestion des litiges</a><a href="/src/pages/terms/index.html">CGU &amp; CGV</a><a href="/src/pages/privacy/index.html">Confidentialité</a></div></div>
+  </div>
+  <div class="footer-bottom"><span class="footer-copy">© 2025 Oriupe SAS — Abidjan, Côte d'Ivoire. Tous droits réservés.</span><div class="footer-legal"><a href="/src/pages/privacy/index.html">Confidentialité</a><a href="/src/pages/terms/index.html">CGU &amp; CGV</a></div></div>
+</footer>
+
+<script>
+function toggleAcc(item) {
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.acc-item').forEach(el => {
+    el.classList.remove('open');
+    el.querySelector('.acc-body').classList.remove('open');
+  });
+  if (!isOpen) {
+    item.classList.add('open');
+    item.querySelector('.acc-body').classList.add('open');
+  }
+}
+
+function filterCat(cat, btn) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('faq-search').value = '';
+
+  const items = document.querySelectorAll('.acc-item');
+  let count = 0;
+  items.forEach(item => {
+    if (cat === 'tous' || item.dataset.cat === cat) {
+      item.classList.remove('hidden');
+      count++;
+    } else {
+      item.classList.add('hidden');
+      item.classList.remove('open');
+      item.querySelector('.acc-body').classList.remove('open');
+    }
+  });
+  document.getElementById('no-results').style.display = count === 0 ? 'block' : 'none';
+}
+
+function filterFaq(query) {
+  const q = query.toLowerCase().trim();
+  const items = document.querySelectorAll('.acc-item');
+  let count = 0;
+
+  // Reset tab selection
+  if (q) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelector('.tab[onclick*="tous"]').classList.add('active');
+  }
+
+  items.forEach(item => {
+    const text = item.querySelector('.acc-question').textContent.toLowerCase()
+      + ' ' + item.querySelector('.acc-body-inner').textContent.toLowerCase();
+    if (!q || text.includes(q)) {
+      item.classList.remove('hidden');
+      count++;
+    } else {
+      item.classList.add('hidden');
+      item.classList.remove('open');
+      item.querySelector('.acc-body').classList.remove('open');
+    }
+  });
+  document.getElementById('no-results').style.display = count === 0 ? 'block' : 'none';
+}
+</script>
+</body>
+</html>

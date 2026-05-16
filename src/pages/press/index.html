@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Presse & Médias — Oriupe</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#F4F6F9;color:#1B3A4A}
+:root{--navy:#0F2535;--navy2:#1B3A4A;--green:#3CB878;--green-d:#27965D;--green-l:#E4F7EE;--blue:#29ABE2;--blue-l:#E2F4FB;--lime:#8DC63F;--bg:#F4F6F9;--border:rgba(27,58,74,.1);--muted:rgba(27,58,74,.52);--shadow:0 2px 12px rgba(15,37,53,.08);--shadow-md:0 8px 32px rgba(15,37,53,.13)}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 24px;background:rgba(255,255,255,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:24px;height:64px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-text{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:var(--navy)}
+.nav-links{display:flex;gap:4px;margin-left:32px}
+.nav-links a{text-decoration:none;color:var(--navy2);font-size:14px;font-weight:500;padding:8px 14px;border-radius:10px;transition:.2s}
+.nav-links a:hover,.nav-links a.active{background:var(--green-l);color:var(--green-d)}
+.nav-right{display:flex;align-items:center;gap:10px;margin-left:auto}
+.btn-login{background:transparent;border:1.5px solid var(--border);border-radius:10px;padding:8px 18px;font-size:13px;font-weight:600;color:var(--navy2);cursor:pointer;transition:.2s}
+.btn-login:hover{border-color:var(--navy)}
+.btn-cta{background:linear-gradient(135deg,var(--green),var(--lime));border:none;border-radius:10px;padding:9px 20px;font-size:13px;font-weight:700;color:#fff;cursor:pointer}
+.hero{background:var(--navy);padding:140px 24px 100px;position:relative;overflow:hidden}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:44px 44px}
+.hero-inner{max-width:760px;margin:0 auto;text-align:center;position:relative;z-index:1}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(60,184,120,.15);border:1px solid rgba(60,184,120,.3);border-radius:100px;padding:6px 16px;font-size:12px;font-weight:600;color:var(--green);margin-bottom:24px}
+.hero-title{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(36px,5vw,60px);font-weight:800;color:#fff;letter-spacing:-2px;line-height:1.08;margin-bottom:20px}
+.hero-title span{color:var(--green)}
+.hero-sub{font-size:16px;color:rgba(255,255,255,.55);line-height:1.8;max-width:520px;margin:0 auto 36px}
+.container{max-width:1280px;margin:0 auto;padding:0 24px}
+.section{padding:80px 0}
+.section-label{font-size:12px;font-weight:700;color:var(--green-d);letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px}
+.section-title{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(26px,3.5vw,38px);font-weight:800;color:var(--navy);letter-spacing:-.5px;margin-bottom:10px}
+.section-sub{font-size:15px;color:var(--muted);line-height:1.75;max-width:560px;margin-bottom:36px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:28px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.card{background:#fff;border-radius:20px;padding:28px;border:1px solid var(--border);box-shadow:var(--shadow);transition:.25s}
+.card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md)}
+.btn-primary{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--green),var(--lime));border:none;border-radius:12px;padding:13px 26px;font-size:14px;font-weight:700;color:#fff;cursor:pointer;text-decoration:none;transition:.2s}
+.btn-primary:hover{opacity:.9;transform:translateY(-2px)}
+.btn-outline{display:inline-flex;align-items:center;gap:8px;background:transparent;border:1.5px solid var(--border);border-radius:12px;padding:12px 24px;font-size:14px;font-weight:600;color:var(--navy2);cursor:pointer;text-decoration:none;transition:.2s}
+.btn-outline:hover{border-color:var(--navy)}
+footer{background:var(--navy);padding:64px 24px 32px;margin-top:0}
+.footer-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:40px;margin-bottom:48px}
+.footer-col-title{font-size:11px;font-weight:700;color:rgba(255,255,255,.35);letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px}
+.footer-links{display:flex;flex-direction:column;gap:10px}
+.footer-links a{font-size:13px;color:rgba(255,255,255,.6);text-decoration:none;transition:.2s}
+.footer-links a:hover{color:#fff}
+.footer-tagline{font-size:12px;color:rgba(255,255,255,.4);margin-top:10px;line-height:1.6}
+.footer-bottom{max-width:1280px;margin:0 auto;padding-top:24px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;align-items:center}
+.footer-copy{font-size:12px;color:rgba(255,255,255,.3)}
+.footer-legal{display:flex;gap:20px}
+.footer-legal a{font-size:12px;color:rgba(255,255,255,.3);text-decoration:none}
+.footer-legal a:hover{color:rgba(255,255,255,.7)}
+@media(max-width:900px){.grid-3,.grid-4{grid-template-columns:repeat(2,1fr)}.footer-inner{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.nav-links,.nav-right{display:none}.grid-3,.grid-4,.grid-2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a href="/src/pages/home/index.html" class="logo">
+      <svg width="30" height="30" viewBox="0 0 32 32" fill="none"><circle cx="10" cy="10" r="8.5" fill="#8DC63F" opacity=".9"/><circle cx="22" cy="10" r="8.5" fill="#29ABE2" opacity=".9"/><circle cx="10" cy="22" r="8.5" fill="#3CB878" opacity=".9"/><circle cx="22" cy="22" r="8.5" fill="#1B3A4A"/><rect x="9.5" y="9.5" width="13" height="13" rx="1.5" fill="rgba(60,184,120,.45)"/></svg>
+      <span class="logo-text">Oriupe</span>
+    </a>
+    <div class="nav-links">
+      <a href="/src/pages/catalog/index.html">Explorer</a>
+      <a href="/src/pages/offers/index.html">Appels d'offres</a>
+      <a href="/src/pages/academy/index.html">Academy</a>
+      <a href="/src/pages/blog/index.html">Blog</a>
+      <a href="/src/pages/pricing/index.html">Tarifs</a>
+    </div>
+    <div class="nav-right">
+      <button class="btn-login" onclick="location.href='/src/pages/auth/index.html'">Se connecter</button>
+      <button class="btn-cta" onclick="location.href='/src/pages/auth/index.html'">S'inscrire</button>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="orb" style="width:500px;height:500px;background:radial-gradient(circle,rgba(60,184,120,.18) 0%,transparent 70%);top:-120px;right:-80px"></div>
+  <div class="orb" style="width:350px;height:350px;background:radial-gradient(circle,rgba(41,171,226,.13) 0%,transparent 70%);bottom:-80px;left:-60px"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-inner">
+    <div class="hero-tag"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="3" width="10" height="8" rx="1.5" stroke="#3CB878" stroke-width="1.4"/><path d="M5 6H9M5 8.5H7.5" stroke="#3CB878" stroke-width="1.2" stroke-linecap="round"/></svg> Salle de presse</div>
+    <h1 class="hero-title">Oriupe dans les <span>médias</span></h1>
+    <p class="hero-sub">Retrouvez nos communiqués de presse, couvertures médiatiques, et ressources pour les journalistes. Contact presse : press@oriupe.com</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <a href="#kit" class="btn-primary">Télécharger le press kit <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3V11M8 11L5 8M8 11L11 8M3 13H13" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <a href="mailto:press@oriupe.com" class="btn-outline" style="color:rgba(255,255,255,.7);border-color:rgba(255,255,255,.2)">Contacter la presse</a>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:#fff">
+  <div class="container">
+    <div class="section-label">Couvertures récentes</div>
+    <h2 class="section-title">Oriupe dans les médias</h2>
+    <div class="grid-3" style="margin-top:32px">
+      <div class="card" style="cursor:pointer" onclick="window.open('#')">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+          <div style="width:40px;height:40px;border-radius:10px;background:#F0F8E8;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;color:#27965D">JA</div>
+          <div>
+            <div style="font-size:12px;font-weight:700;color:var(--navy)">Jeune Afrique</div>
+            <div style="font-size:11px;color:var(--muted)">15 Avril 2025</div>
+          </div>
+        </div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;color:var(--navy);margin-bottom:8px;line-height:1.3">Oriupe, la startup qui veut démocratiser le freelancing en Afrique francophone</div>
+        <div style="font-size:13px;color:var(--muted);line-height:1.6">La plateforme ivoirienne affiche une croissance de 340% en 2024 et ambitionne de dépasser les 50 000 freelances d'ici 2026.</div>
+      </div>
+      <div class="card" style="cursor:pointer" onclick="window.open('#')">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+          <div style="width:40px;height:40px;border-radius:10px;background:var(--blue-l);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;color:#1565C0">TW</div>
+          <div>
+            <div style="font-size:12px;font-weight:700;color:var(--navy)">TechCabal</div>
+            <div style="font-size:11px;color:var(--muted)">3 Mars 2025</div>
+          </div>
+        </div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;color:var(--navy);margin-bottom:8px;line-height:1.3">How Oriupe is building Africa's freelance economy from Abidjan</div>
+        <div style="font-size:13px;color:var(--muted);line-height:1.6">With mobile money integrations across 12 countries, Oriupe is solving the payment challenge that has held back Africa's gig economy.</div>
+      </div>
+      <div class="card" style="cursor:pointer" onclick="window.open('#')">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+          <div style="width:40px;height:40px;border-radius:10px;background:#F3EEFF;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;color:#A855F7">CB</div>
+          <div>
+            <div style="font-size:12px;font-weight:700;color:var(--navy)">Contxto</div>
+            <div style="font-size:11px;color:var(--muted)">18 Janvier 2025</div>
+          </div>
+        </div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;color:var(--navy);margin-bottom:8px;line-height:1.3">Oriupe lève 2,5M$ pour accélérer sa conquête de l'Afrique de l'Ouest</div>
+        <div style="font-size:13px;color:var(--muted);line-height:1.6">Le tour de table Series A piloté par Partech Africa valide le modèle de la marketplace de talents africains.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="kit">
+  <div class="container">
+    <div class="section-label">Ressources médias</div>
+    <h2 class="section-title">Kit presse & Assets</h2>
+    <div class="grid-4" style="margin-top:28px">
+      <div class="card" style="text-align:center;cursor:pointer" onclick="alert('Téléchargement du logo pack...')">
+        <div style="width:52px;height:52px;border-radius:16px;background:var(--green-l);display:flex;align-items:center;justify-content:center;margin:0 auto 14px"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="4" stroke="#3CB878" stroke-width="1.8"/><circle cx="12" cy="12" r="4" stroke="#3CB878" stroke-width="1.5"/></svg></div>
+        <div style="font-weight:700;color:var(--navy);margin-bottom:4px;font-size:14px">Logos Oriupe</div>
+        <div style="font-size:12px;color:var(--muted)">SVG, PNG, variations dark/light</div>
+        <div style="margin-top:12px;font-size:12px;color:var(--green-d);font-weight:600">Télécharger →</div>
+      </div>
+      <div class="card" style="text-align:center;cursor:pointer" onclick="alert('Téléchargement charte graphique...')">
+        <div style="width:52px;height:52px;border-radius:16px;background:var(--blue-l);display:flex;align-items:center;justify-content:center;margin:0 auto 14px"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="8" cy="8" r="3" fill="#29ABE2" opacity=".5"/><circle cx="16" cy="8" r="3" fill="#3CB878" opacity=".5"/><circle cx="8" cy="16" r="3" fill="#8DC63F" opacity=".5"/><circle cx="16" cy="16" r="3" fill="#1B3A4A" opacity=".5"/></svg></div>
+        <div style="font-weight:700;color:var(--navy);margin-bottom:4px;font-size:14px">Charte graphique</div>
+        <div style="font-size:12px;color:var(--muted)">Couleurs, typographies, règles</div>
+        <div style="margin-top:12px;font-size:12px;color:var(--green-d);font-weight:600">Télécharger →</div>
+      </div>
+      <div class="card" style="text-align:center;cursor:pointer" onclick="alert('Téléchargement photos...')">
+        <div style="width:52px;height:52px;border-radius:16px;background:#F0F8E8;display:flex;align-items:center;justify-content:center;margin:0 auto 14px"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="3" stroke="#8DC63F" stroke-width="1.8"/><circle cx="8.5" cy="10.5" r="1.5" fill="#8DC63F"/><path d="M3 16L8 12L11 15L15 11L21 16" stroke="#8DC63F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div style="font-weight:700;color:var(--navy);margin-bottom:4px;font-size:14px">Photos & Screenshots</div>
+        <div style="font-size:12px;color:var(--muted)">Équipe, plateforme, événements</div>
+        <div style="margin-top:12px;font-size:12px;color:var(--green-d);font-weight:600">Télécharger →</div>
+      </div>
+      <div class="card" style="text-align:center;cursor:pointer" onclick="alert('Téléchargement communiqués...')">
+        <div style="width:52px;height:52px;border-radius:16px;background:#F3EEFF;display:flex;align-items:center;justify-content:center;margin:0 auto 14px"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14 2H6C4.9 2 4 2.9 4 4V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V8L14 2Z" stroke="#A855F7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="14,2 14,8 20,8" stroke="#A855F7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><line x1="16" y1="13" x2="8" y2="13" stroke="#A855F7" stroke-width="1.5" stroke-linecap="round"/><line x1="16" y1="17" x2="8" y2="17" stroke="#A855F7" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <div style="font-weight:700;color:var(--navy);margin-bottom:4px;font-size:14px">Communiqués de presse</div>
+        <div style="font-size:12px;color:var(--muted)">Historique complet depuis 2023</div>
+        <div style="margin-top:12px;font-size:12px;color:var(--green-d);font-weight:600">Télécharger →</div>
+      </div>
+    </div>
+    <div style="margin-top:40px;background:var(--navy);border-radius:20px;padding:36px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px">
+      <div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;color:#fff;margin-bottom:6px">Contact presse</div>
+        <div style="font-size:14px;color:rgba(255,255,255,.5)">Pour toute demande d'interview, information ou couverture médiatique :</div>
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <a href="mailto:press@oriupe.com" class="btn-primary">press@oriupe.com</a>
+        <a href="tel:+2250700000000" class="btn-outline" style="color:rgba(255,255,255,.7);border-color:rgba(255,255,255,.2)">+225 07 00 00 00 00</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div><a href="/src/pages/home/index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;margin-bottom:12px"><svg width="26" height="26" viewBox="0 0 32 32" fill="none"><circle cx="10" cy="10" r="8.5" fill="#8DC63F" opacity=".9"/><circle cx="22" cy="10" r="8.5" fill="#29ABE2" opacity=".9"/><circle cx="10" cy="22" r="8.5" fill="#3CB878" opacity=".9"/><circle cx="22" cy="22" r="8.5" fill="#1B3A4A"/><rect x="9.5" y="9.5" width="13" height="13" rx="1.5" fill="rgba(60,184,120,.45)"/></svg><span style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;color:#fff">Oriupe</span></a><p class="footer-tagline">"Ton talent. Ton continent. Ton avenir."</p></div>
+    <div><div class="footer-col-title">Oriupe</div><div class="footer-links"><a href="/src/pages/about/index.html">À propos</a><a href="/src/pages/careers/index.html">Carrières</a><a href="/src/pages/press/index.html">Presse &amp; Médias</a><a href="/src/pages/blog/index.html">Blog</a><a href="/src/pages/impact/index.html">Impact ESG</a></div></div>
+    <div><div class="footer-col-title">Freelances</div><div class="footer-links"><a href="/src/pages/auth/index.html">S'inscrire</a><a href="/src/pages/how-it-works/index.html">Comment ça marche</a><a href="/src/pages/academy/index.html">Oriupe Academy</a><a href="/src/pages/pricing/index.html">Tarifs Pro</a><a href="/src/pages/faq/index.html">FAQ Freelances</a></div></div>
+    <div><div class="footer-col-title">Support</div><div class="footer-links"><a href="/src/pages/help/index.html">Centre d'aide</a><a href="/src/pages/contact/index.html">Nous contacter</a><a href="/src/pages/disputes/index.html">Gestion des litiges</a><a href="/src/pages/terms/index.html">CGU &amp; CGV</a><a href="/src/pages/privacy/index.html">Confidentialité</a></div></div>
+  </div>
+  <div class="footer-bottom"><span class="footer-copy">© 2025 Oriupe SAS — Abidjan, Côte d'Ivoire. Tous droits réservés.</span><div class="footer-legal"><a href="/src/pages/privacy/index.html">Confidentialité</a><a href="/src/pages/terms/index.html">CGU &amp; CGV</a></div></div>
+</footer>
+
+</body>
+</html>

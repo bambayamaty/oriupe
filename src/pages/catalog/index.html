@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Oriupe — Catalogue des services</title>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-font-smoothing:antialiased}
@@ -18,24 +18,12 @@ button,input,select{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer}
   --shadow:0 2px 12px rgba(27,58,74,.08);--shadow-lg:0 12px 40px rgba(27,58,74,.16);
   --r:8px;--r-md:12px;--r-lg:16px;--ease:cubic-bezier(.25,.46,.45,.94);--spring:cubic-bezier(.34,1.56,.64,1);
 }
-#progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--green),var(--blue));width:0;z-index:9999;border-radius:0 2px 2px 0}
-/* NAV */
-nav{background:rgba(255,255,255,.95);backdrop-filter:blur(16px);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 56px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:999}
-.logo{display:flex;align-items:center;gap:9px;text-decoration:none}
-.logo-t{font-size:20px;font-weight:800;color:var(--navy);letter-spacing:-.3px}
-.nav-links{display:flex;gap:24px}.nav-links a{font-size:13px;color:var(--muted);font-weight:500;transition:color .2s}.nav-links a:hover,.nav-links a.active{color:var(--green)}
-.nav-links a.active{font-weight:700}
-.nav-right{display:flex;align-items:center;gap:10px}
-.pill{font-size:12px;color:var(--muted);background:var(--bg);border:1px solid var(--border);padding:5px 12px;border-radius:6px;font-weight:600}
-.btn-ghost{font-size:13px;font-weight:600;color:var(--navy);padding:8px 14px;border:none;background:transparent;border-radius:7px}
-.btn-cta{background:var(--green);color:#fff;font-size:13px;font-weight:700;padding:10px 22px;border-radius:8px;border:none;box-shadow:0 2px 10px rgba(60,184,120,.28);transition:background .2s,transform .15s}
-.btn-cta:hover{background:var(--green-d);transform:translateY(-1px)}
+#progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--green),var(--blue));width:0;z-index:9999;border-radius:0 2px 2px 0;transition:width .1s}
 
 /* BREADCRUMB */
-.breadcrumb{padding:18px 56px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
+.breadcrumb{padding:14px 56px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
 .breadcrumb a{color:var(--muted);transition:color .2s}.breadcrumb a:hover{color:var(--green)}
-.bc-sep{color:var(--muted2)}
-.bc-cur{color:var(--navy);font-weight:600}
+.bc-sep{color:var(--muted2)}.bc-cur{color:var(--navy);font-weight:600}
 
 /* LAYOUT */
 .page-wrap{display:flex;max-width:1400px;margin:0 auto;padding:28px 56px 56px;gap:28px;align-items:flex-start}
@@ -45,41 +33,44 @@ nav{background:rgba(255,255,255,.95);backdrop-filter:blur(16px);height:64px;disp
 .sidebar::-webkit-scrollbar{width:4px}.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
 .filter-header{padding:18px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
 .filter-title{font-size:15px;font-weight:700;color:var(--navy)}
-.filter-reset{font-size:12px;color:var(--green);font-weight:600;cursor:pointer}
-.filter-section{padding:16px 20px;border-bottom:1px solid var(--border)}
+.filter-reset{font-size:12px;color:var(--green);font-weight:600;cursor:pointer;padding:4px 8px;border-radius:5px;transition:background .15s}
+.filter-reset:hover{background:var(--green-l)}
+.filter-section{padding:14px 20px;border-bottom:1px solid var(--border)}
 .filter-section:last-child{border-bottom:none}
-.fs-title{font-size:12px;font-weight:700;color:var(--navy);letter-spacing:.5px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none}
-.fs-arrow{transition:transform .2s;font-size:10px;color:var(--muted)}
-.fs-arrow.open{transform:rotate(180deg)}
-.fs-content{display:flex;flex-direction:column;gap:8px}
-.filter-opt{display:flex;align-items:center;gap:9px;cursor:pointer;padding:5px 0;transition:background .15s;border-radius:5px}
-.filter-opt input[type=checkbox]{width:16px;height:16px;accent-color:var(--green);flex-shrink:0;cursor:pointer}
-.filter-opt label{font-size:13px;color:var(--navy);cursor:pointer;flex:1}
-.filter-opt .count{font-size:11px;color:var(--muted);background:var(--bg);padding:2px 7px;border-radius:10px}
+.fs-title{font-size:11px;font-weight:700;color:var(--navy);letter-spacing:.8px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none}
+.fs-arrow{transition:transform .2s;font-size:9px;color:var(--muted);margin-top:1px}
+.fs-content{display:flex;flex-direction:column;gap:6px;overflow:hidden;transition:max-height .3s var(--ease)}
+.filter-opt{display:flex;align-items:center;gap:9px;cursor:pointer;padding:4px 6px;transition:background .15s;border-radius:6px}
+.filter-opt:hover{background:var(--bg)}
+.filter-opt input[type=checkbox]{width:15px;height:15px;accent-color:var(--green);flex-shrink:0;cursor:pointer}
+.filter-opt input[type=radio]{width:15px;height:15px;accent-color:var(--green);flex-shrink:0;cursor:pointer}
+.filter-opt .fo-label{font-size:13px;color:var(--navy);cursor:pointer;flex:1}
+.filter-opt .count{font-size:10px;color:var(--muted);background:var(--bg);padding:2px 6px;border-radius:8px;font-weight:600}
 /* Price range */
-.range-wrap{padding:4px 0}
-.range-inputs{display:flex;gap:8px;margin-top:10px}
-.range-inp{width:100%;border:1.5px solid var(--border);border-radius:6px;padding:8px 10px;font-size:12px;color:var(--navy);outline:none;background:#fff;font-family:'Plus Jakarta Sans',sans-serif}
+.range-wrap{padding:2px 0}
+.range-inputs{display:flex;gap:8px;margin-top:8px}
+.range-inp{width:100%;border:1.5px solid var(--border);border-radius:6px;padding:7px 10px;font-size:12px;color:var(--navy);outline:none;background:#fff;font-family:'Plus Jakarta Sans',sans-serif}
 .range-inp:focus{border-color:var(--green)}
-input[type=range]{width:100%;accent-color:var(--green);height:4px;margin:8px 0}
-/* Rating stars filter */
-.star-opt{display:flex;align-items:center;gap:6px;padding:5px 0;cursor:pointer}
-.star-opt input[type=radio]{accent-color:var(--green);cursor:pointer}
+input[type=range]{width:100%;accent-color:var(--green);height:4px;margin:8px 0 2px;cursor:pointer}
+/* Star row */
+.star-row{display:flex;gap:2px;align-items:center}
 
 /* MAIN CONTENT */
 .main-content{flex:1;min-width:0}
 /* Search bar */
-.search-bar-page{background:#fff;border:1.5px solid var(--border);border-radius:10px;padding:10px 10px 10px 18px;display:flex;align-items:center;gap:10px;margin-bottom:20px;transition:border-color .2s,box-shadow .2s}
+.search-bar-page{background:#fff;border:1.5px solid var(--border);border-radius:10px;padding:8px 8px 8px 16px;display:flex;align-items:center;gap:10px;margin-bottom:16px;transition:border-color .2s,box-shadow .2s}
 .search-bar-page:focus-within{border-color:var(--green);box-shadow:0 0 0 3px rgba(60,184,120,.1)}
-.search-bar-page input{border:none;background:transparent;font-size:14px;color:var(--navy);flex:1;outline:none;font-family:'Plus Jakarta Sans',sans-serif}
+.search-bar-page input{border:none;background:transparent;font-size:14px;color:var(--navy);flex:1;outline:none}
 .search-bar-page input::placeholder{color:var(--muted2)}
+.btn-cta{background:var(--green);color:#fff;font-size:13px;font-weight:700;padding:10px 22px;border-radius:8px;border:none;box-shadow:0 2px 10px rgba(60,184,120,.28);transition:background .2s,transform .15s}
+.btn-cta:hover{background:var(--green-d);transform:translateY(-1px)}
 /* Results header */
-.results-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:10px}
+.results-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px}
 .results-count{font-size:14px;color:var(--muted);font-weight:500}
 .results-count strong{color:var(--navy)}
 .sort-wrap{display:flex;align-items:center;gap:10px}
 .sort-lbl{font-size:13px;color:var(--muted);font-weight:500}
-.sort-sel{border:1.5px solid var(--border);border-radius:7px;padding:8px 12px;font-size:13px;color:var(--navy);background:#fff;outline:none;font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;cursor:pointer}
+.sort-sel{border:1.5px solid var(--border);border-radius:7px;padding:7px 12px;font-size:13px;color:var(--navy);background:#fff;outline:none;font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;cursor:pointer}
 .sort-sel:focus{border-color:var(--green)}
 /* View toggle */
 .view-toggle{display:flex;gap:4px;background:var(--bg);padding:4px;border-radius:7px}
@@ -88,127 +79,137 @@ input[type=range]{width:100%;accent-color:var(--green);height:4px;margin:8px 0}
 
 /* SERVICE CARDS GRID */
 .svc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px}
+.svc-grid.list-view{grid-template-columns:1fr}
 .svc-card{background:#fff;border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;cursor:pointer;transition:transform .25s var(--spring),box-shadow .25s,border-color .2s;position:relative}
-.svc-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg);border-color:rgba(60,184,120,.3)}
-.svc-img{height:148px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.svc-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:rgba(60,184,120,.3)}
+.svc-grid.list-view .svc-card{display:flex;flex-direction:row}
+.svc-grid.list-view .svc-card:hover{transform:translateX(4px) translateY(0)}
+/* Quick View */
+.qv-hover-btn{position:absolute;bottom:10px;left:50%;transform:translateX(-50%) translateY(10px);background:rgba(255,255,255,.96);border:none;border-radius:7px;padding:7px 14px;font-size:11px;font-weight:700;color:#1B3A4A;cursor:pointer;white-space:nowrap;opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;font-family:'Plus Jakarta Sans',sans-serif;z-index:3;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.svc-card:hover .qv-hover-btn{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:all}
+/* QV Modal */
+#qv-overlay{position:fixed;inset:0;z-index:99998;background:rgba(10,20,30,.6);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;padding:20px}
+#qv-overlay.qv-open{opacity:1;pointer-events:all}
+#qv-modal{background:#fff;border-radius:20px;max-width:680px;width:100%;max-height:90vh;overflow-y:auto;transform:scale(.93) translateY(18px);transition:transform .35s cubic-bezier(.34,1.56,.64,1);position:relative}
+#qv-overlay.qv-open #qv-modal{transform:scale(1) translateY(0)}
+#qv-modal::-webkit-scrollbar{width:4px}#qv-modal::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+html.dark #qv-modal{background:#1A2B38;color:#E2EBF0}
+.qv-offer-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
+.qv-offer{border:1.5px solid var(--border);border-radius:10px;padding:12px;text-align:center;transition:border-color .2s}
+.qv-offer.selected{border-color:var(--green);background:var(--green-l)}
+.qv-share{flex:1;min-width:72px;padding:8px;border:1.5px solid var(--border);border-radius:8px;background:#fff;font-size:11px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;color:#1B3A4A;font-family:'Plus Jakarta Sans',sans-serif;transition:border-color .2s}
+.qv-share:hover{border-color:var(--green)}
+html.dark .qv-share,html.dark .qv-offer{background:#243447!important;color:#E2EBF0!important;border-color:rgba(255,255,255,.1)!important}
+@media(max-width:600px){#qv-modal{border-radius:16px}.qv-inner{flex-direction:column!important}.qv-thumb{width:100%!important;height:140px!important}}
+.svc-img{height:148px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;flex-shrink:0}
+.svc-grid.list-view .svc-img{width:160px;height:auto;min-height:100px}
 .svc-img svg{transition:transform .3s var(--spring)}
 .svc-card:hover .svc-img svg{transform:scale(1.08)}
-.svc-fav{position:absolute;top:10px;right:10px;width:30px;height:30px;background:rgba(255,255,255,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;transition:background .2s,transform .15s var(--spring)}
+.svc-fav{position:absolute;top:10px;right:10px;width:30px;height:30px;background:rgba(255,255,255,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;transition:background .2s,transform .15s var(--spring);z-index:2}
 .svc-fav:hover{background:#fff;transform:scale(1.15)}
-.svc-fav.active svg{fill:#E53935}
-.svc-body{padding:14px}
+.svc-fav.active svg path{fill:#E53935;stroke:#E53935}
+.svc-body{padding:14px;flex:1;min-width:0}
 .svc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
 .svc-author{display:flex;align-items:center;gap:7px}
-.svc-av{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800}
+.svc-av{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;flex-shrink:0}
 .svc-name{font-size:12px;font-weight:600;color:var(--navy)}
 .svc-country{font-size:10px;color:var(--muted)}
 .svc-title{font-size:13px;font-weight:600;color:var(--navy);line-height:1.48;margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.svc-grid.list-view .svc-title{-webkit-line-clamp:1}
 .svc-bot{display:flex;justify-content:space-between;align-items:center}
 .svc-stars{display:flex;align-items:center;gap:3px;font-size:12px;color:var(--navy);font-weight:700}
 .svc-reviews{font-size:11px;color:var(--muted);font-weight:400;margin-left:2px}
 .svc-price{font-size:13px;font-weight:700;color:var(--navy)}
 .svc-price-from{font-size:10px;font-weight:400;color:var(--muted)}
-/* Badges on cards */
-.card-badge{position:absolute;top:10px;left:10px;font-size:10px;font-weight:700;padding:4px 9px;border-radius:20px}
+/* Badges */
+.card-badge{position:absolute;top:10px;left:10px;font-size:10px;font-weight:700;padding:4px 9px;border-radius:20px;z-index:2}
 .cb-top{background:var(--green);color:#fff}
 .cb-hot{background:#FFF3CD;color:#B45309}
 .cb-new{background:var(--blue-l);color:#0A6A90}
 .cb-exp{background:var(--lime-l);color:#3A6010}
-
-/* ONLINE INDICATOR */
+/* Online dot */
 .online-dot{width:8px;height:8px;background:#22C55E;border-radius:50%;border:1.5px solid #fff;flex-shrink:0}
+
+/* ACTIVE FILTERS CHIPS */
+.active-filters{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px;min-height:0}
+.active-filters:empty{margin-bottom:0}
+.af-chip{display:flex;align-items:center;gap:5px;background:#fff;border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:600;color:var(--navy);animation:chipIn .2s var(--spring)}
+@keyframes chipIn{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
+.af-remove{color:var(--muted);font-size:14px;cursor:pointer;line-height:1;margin-left:2px;transition:color .15s;width:16px;height:16px;display:flex;align-items:center;justify-content:center;border-radius:50%}
+.af-remove:hover{color:#E53935;background:#FEE2E2}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:64px 20px;grid-column:1/-1}
+.empty-state svg{opacity:.2;margin-bottom:16px}
+.empty-state h3{font-size:18px;font-weight:700;color:var(--navy);margin-bottom:8px}
+.empty-state p{font-size:14px;color:var(--muted)}
+.empty-state button{margin-top:20px;background:var(--green);color:#fff;border:none;padding:10px 24px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer}
 
 /* PAGINATION */
 .pagination{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:40px}
-.pg-btn{width:38px;height:38px;border:1.5px solid var(--border);border-radius:7px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:var(--navy);cursor:pointer;transition:border-color .2s,background .2s}
-.pg-btn:hover{border-color:var(--green);color:var(--green)}
+.pg-btn{min-width:38px;height:38px;padding:0 8px;border:1.5px solid var(--border);border-radius:7px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:var(--navy);cursor:pointer;transition:border-color .2s,background .2s,color .2s}
+.pg-btn:hover:not(:disabled){border-color:var(--green);color:var(--green)}
 .pg-btn.active{background:var(--green);border-color:var(--green);color:#fff}
-.pg-btn:disabled{opacity:.4;cursor:not-allowed}
+.pg-btn:disabled{opacity:.35;cursor:not-allowed}
 .pg-dots{color:var(--muted);font-size:14px;padding:0 4px}
 
-/* ACTIVE FILTERS CHIPS */
-.active-filters{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:16px}
-.af-chip{display:flex;align-items:center;gap:5px;background:#fff;border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:600;color:var(--navy);transition:border-color .2s}
-.af-chip:hover{border-color:var(--green)}
-.af-remove{color:var(--muted);font-size:14px;cursor:pointer;line-height:1;margin-left:2px;transition:color .2s}
-.af-remove:hover{color:#E53935}
+/* REVEAL ANIMATIONS */
+.svc-card{opacity:0;transform:translateY(16px);animation:cardIn .45s var(--ease) forwards}
+@keyframes cardIn{to{opacity:1;transform:translateY(0)}}
+.svc-card:nth-child(1){animation-delay:.02s}
+.svc-card:nth-child(2){animation-delay:.06s}
+.svc-card:nth-child(3){animation-delay:.10s}
+.svc-card:nth-child(4){animation-delay:.14s}
+.svc-card:nth-child(5){animation-delay:.18s}
+.svc-card:nth-child(6){animation-delay:.22s}
+.svc-card:nth-child(7){animation-delay:.26s}
+.svc-card:nth-child(8){animation-delay:.30s}
 
-/* REVEAL */
-.reveal{opacity:0;transform:translateY(20px);transition:opacity .55s var(--ease),transform .55s var(--ease)}
-.reveal.visible{opacity:1;transform:none}
-.stagger .reveal:nth-child(1){transition-delay:.04s}
-.stagger .reveal:nth-child(2){transition-delay:.09s}
-.stagger .reveal:nth-child(3){transition-delay:.14s}
-.stagger .reveal:nth-child(4){transition-delay:.19s}
-.stagger .reveal:nth-child(5){transition-delay:.24s}
-.stagger .reveal:nth-child(6){transition-delay:.29s}
-.stagger .reveal:nth-child(7){transition-delay:.34s}
-.stagger .reveal:nth-child(8){transition-delay:.39s}
-.stagger .reveal:nth-child(9){transition-delay:.44s}
-.stagger .reveal:nth-child(10){transition-delay:.49s}
-.stagger .reveal:nth-child(11){transition-delay:.54s}
-.stagger .reveal:nth-child(12){transition-delay:.59s}
-
-/* SKELETON LOADING */
-@keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
-.skeleton{background:linear-gradient(90deg,#f0f0f0 25%,#e8e8e8 50%,#f0f0f0 75%);background-size:800px 100%;animation:shimmer 1.5s infinite;border-radius:6px}
+/* SKELETON */
+@keyframes shimmer{0%{background-position:-600px 0}100%{background-position:600px 0}}
+.skel{background:linear-gradient(90deg,#f0f0f0 25%,#e6e6e6 50%,#f0f0f0 75%);background-size:1200px 100%;animation:shimmer 1.4s infinite;border-radius:6px}
 
 /* RESPONSIVE */
-@media(max-width:1024px){
-  .page-wrap{padding:20px 28px 40px}
-  .sidebar{width:220px}
-  nav{padding:0 28px}
-  .breadcrumb{padding:14px 28px}
-}
+@media(max-width:1024px){.page-wrap{padding:20px 28px 40px}.sidebar{width:220px}.breadcrumb{padding:14px 28px}}
 @media(max-width:768px){
-  nav{padding:0 16px}
-  .nav-links,.nav-right .pill,.nav-right .btn-ghost{display:none}
-  .breadcrumb{padding:12px 16px;display:none}
+  .breadcrumb{padding:12px 16px}
   .page-wrap{flex-direction:column;padding:16px 16px 40px;gap:16px}
   .sidebar{width:100%;position:static;max-height:none}
   .svc-grid{grid-template-columns:repeat(2,1fr);gap:12px}
+  .svc-grid.list-view{grid-template-columns:1fr}
 }
-@media(max-width:480px){.svc-grid{grid-template-columns:1fr}}
+@media(max-width:480px){.svc-grid:not(.list-view){grid-template-columns:1fr}}
+footer{background:var(--navy);padding:64px 24px 32px;margin-top:0}
+.footer-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:40px;margin-bottom:48px}
+.footer-col-title{font-size:11px;font-weight:700;color:rgba(255,255,255,.35);letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px}
+.footer-links{display:flex;flex-direction:column;gap:10px}
+.footer-links a{font-size:13px;color:rgba(255,255,255,.6);text-decoration:none;transition:.2s}
+.footer-links a:hover{color:#fff}
+.footer-tagline{font-size:12px;color:rgba(255,255,255,.4);margin-top:10px;line-height:1.6}
+.footer-bottom{max-width:1280px;margin:0 auto;padding-top:24px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;align-items:center}
+.footer-copy{font-size:12px;color:rgba(255,255,255,.3)}
+.footer-legal{display:flex;gap:20px}
+.footer-legal a{font-size:12px;color:rgba(255,255,255,.3);text-decoration:none}
+.footer-legal a:hover{color:rgba(255,255,255,.7)}
+@media(max-width:900px){.footer-inner{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.footer-inner{grid-template-columns:1fr}}
 </style>
-  <script type="module" src="/src/components/nav.js"></script>
+<script type="module" src="/src/components/nav.js"></script>
 </head>
 <body>
 <div id="progress"></div>
 
-<!-- NAV -->
-<nav id="nav">
-  <div style="display:flex;align-items:center;gap:40px">
-    <a href="oriupe_v5_jakarta.html" class="logo">
-      <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="8.5" cy="8.5" r="7" fill="#8DC63F" opacity=".9"/><circle cx="19.5" cy="8.5" r="7" fill="#29ABE2" opacity=".9"/><circle cx="8.5" cy="19.5" r="7" fill="#3CB878" opacity=".9"/><circle cx="19.5" cy="19.5" r="7" fill="#1B3A4A"/><rect x="8" y="8" width="12" height="12" rx="1" fill="rgba(60,184,120,.4)"/></svg>
-      <span class="logo-t">Oriupe</span>
-    </a>
-    <div class="nav-links">
-      <a href="#" class="active">Explorer</a>
-      <a href="#">Appels d'offres</a>
-      <a href="#">Academy</a>
-      <a href="#">Blog</a>
-      <a href="#">Tarifs</a>
-    </div>
-  </div>
-  <div class="nav-right">
-    <div class="pill">🌍 FR ▾</div>
-    <div class="pill">FCFA ▾</div>
-    <button class="btn-ghost">Se connecter</button>
-    <button class="btn-cta">S'inscrire</button>
-  </div>
-</nav>
-
 <!-- BREADCRUMB -->
 <div class="breadcrumb">
-  <a href="#">Accueil</a>
+  <a href="/src/pages/home/index.html">Accueil</a>
   <span class="bc-sep">›</span>
-  <span class="bc-cur">Explorer les services</span>
+  <span class="bc-cur" id="bc-cur">Explorer les services</span>
 </div>
 
 <!-- MAIN LAYOUT -->
 <div class="page-wrap">
 
-  <!-- ═══ SIDEBAR FILTERS ═══ -->
+  <!-- SIDEBAR FILTERS -->
   <aside class="sidebar">
     <div class="filter-header">
       <span class="filter-title">Filtres</span>
@@ -217,315 +218,605 @@ input[type=range]{width:100%;accent-color:var(--green);height:4px;margin:8px 0}
 
     <!-- Catégorie -->
     <div class="filter-section">
-      <div class="fs-title" onclick="toggleSection(this)">CATÉGORIE <span class="fs-arrow open">▼</span></div>
-      <div class="fs-content">
-        <label class="filter-opt"><input type="checkbox" checked/><label>Développement Web & Mobile</label><span class="count">892</span></label>
-        <label class="filter-opt"><input type="checkbox"/><label>Design & Créatif</label><span class="count">734</span></label>
-        <label class="filter-opt"><input type="checkbox"/><label>Marketing Digital</label><span class="count">561</span></label>
-        <label class="filter-opt"><input type="checkbox"/><label>Rédaction & Traduction</label><span class="count">423</span></label>
-        <label class="filter-opt"><input type="checkbox"/><label>Finance & Comptabilité</label><span class="count">287</span></label>
-        <label class="filter-opt"><input type="checkbox"/><label>Vidéo & Animation</label><span class="count">318</span></label>
-        <label class="filter-opt"><input type="checkbox"/><label>Musique & Audio</label><span class="count">145</span></label>
-        <label class="filter-opt"><input type="checkbox"/><label>Formation & Coaching</label><span class="count">203</span></label>
+      <div class="fs-title" data-section="cat">CATÉGORIE <span class="fs-arrow" data-arrow="cat">▼</span></div>
+      <div class="fs-content" id="sec-cat">
+        <label class="filter-opt"><input type="checkbox" data-filter="cat" data-value="dev"/><span class="fo-label">Développement Web & Mobile</span><span class="count">8</span></label>
+        <label class="filter-opt"><input type="checkbox" data-filter="cat" data-value="design"/><span class="fo-label">Design & Créatif</span><span class="count">3</span></label>
+        <label class="filter-opt"><input type="checkbox" data-filter="cat" data-value="marketing"/><span class="fo-label">Marketing Digital</span><span class="count">2</span></label>
+        <label class="filter-opt"><input type="checkbox" data-filter="cat" data-value="writing"/><span class="fo-label">Rédaction & Traduction</span><span class="count">2</span></label>
+        <label class="filter-opt"><input type="checkbox" data-filter="cat" data-value="finance"/><span class="fo-label">Finance & Comptabilité</span><span class="count">1</span></label>
+        <label class="filter-opt"><input type="checkbox" data-filter="cat" data-value="video"/><span class="fo-label">Vidéo & Animation</span><span class="count">2</span></label>
+        <label class="filter-opt"><input type="checkbox" data-filter="cat" data-value="coaching"/><span class="fo-label">Formation & Coaching</span><span class="count">2</span></label>
       </div>
     </div>
 
     <!-- Budget -->
     <div class="filter-section">
-      <div class="fs-title" onclick="toggleSection(this)">BUDGET (FCFA) <span class="fs-arrow open">▼</span></div>
-      <div class="fs-content">
+      <div class="fs-title" data-section="budget">BUDGET (FCFA) <span class="fs-arrow" data-arrow="budget">▼</span></div>
+      <div class="fs-content" id="sec-budget">
         <div class="range-wrap">
-          <input type="range" min="0" max="500000" value="200000" id="rangeSlider" oninput="document.getElementById('rangeVal').textContent=parseInt(this.value).toLocaleString('fr-FR')"/>
-          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:2px"><span>0 FCFA</span><span id="rangeVal">200 000</span> FCFA</div>
+          <input type="range" min="0" max="500000" value="500000" id="rangeSlider" step="5000"/>
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:4px">
+            <span>0 FCFA</span>
+            <span id="rangeVal" style="font-weight:700;color:var(--navy)">Tous</span>
+          </div>
         </div>
         <div class="range-inputs">
-          <input class="range-inp" placeholder="Min" type="number"/>
-          <input class="range-inp" placeholder="Max" type="number"/>
+          <input class="range-inp" placeholder="Min" type="number" id="priceMin" min="0"/>
+          <input class="range-inp" placeholder="Max" type="number" id="priceMax" min="0"/>
         </div>
       </div>
     </div>
 
     <!-- Délai -->
     <div class="filter-section">
-      <div class="fs-title" onclick="toggleSection(this)">DÉLAI DE LIVRAISON <span class="fs-arrow open">▼</span></div>
-      <div class="fs-content">
-        <label class="filter-opt"><input type="checkbox"/><label>Express 24h</label><span class="count">198</span></label>
-        <label class="filter-opt"><input type="checkbox" checked/><label>Jusqu'à 3 jours</label><span class="count">456</span></label>
-        <label class="filter-opt"><input type="checkbox"/><label>Jusqu'à 7 jours</label><span class="count">712</span></label>
-        <label class="filter-opt"><input type="checkbox"/><label>Plus de 7 jours</label><span class="count">301</span></label>
+      <div class="fs-title" data-section="delay">DÉLAI DE LIVRAISON <span class="fs-arrow" data-arrow="delay">▼</span></div>
+      <div class="fs-content" id="sec-delay">
+        <label class="filter-opt"><input type="checkbox" data-filter="delay" data-value="1"/><span class="fo-label">Express 24h</span><span class="count">3</span></label>
+        <label class="filter-opt"><input type="checkbox" data-filter="delay" data-value="3"/><span class="fo-label">Jusqu'à 3 jours</span><span class="count">5</span></label>
+        <label class="filter-opt"><input type="checkbox" data-filter="delay" data-value="7"/><span class="fo-label">Jusqu'à 7 jours</span><span class="count">8</span></label>
+        <label class="filter-opt"><input type="checkbox" data-filter="delay" data-value="99"/><span class="fo-label">Plus de 7 jours</span><span class="count">7</span></label>
       </div>
     </div>
 
     <!-- Niveau -->
     <div class="filter-section">
-      <div class="fs-title" onclick="toggleSection(this)">NIVEAU FREELANCE <span class="fs-arrow open">▼</span></div>
-      <div class="fs-content">
-        <label class="filter-opt"><input type="checkbox"/><label>Nouveau venu</label><span class="count">234</span></label>
-        <label class="filter-opt"><input type="checkbox"/><label>Niveau 1</label><span class="count">489</span></label>
-        <label class="filter-opt"><input type="checkbox" checked/><label>Niveau 2</label><span class="count">367</span></label>
-        <label class="filter-opt"><input type="checkbox"/><label>Top Oriupe</label><span class="count">89</span></label>
-        <label class="filter-opt"><input type="checkbox"/><label>Identité vérifiée</label><span class="count">701</span></label>
+      <div class="fs-title" data-section="level">NIVEAU FREELANCE <span class="fs-arrow" data-arrow="level">▼</span></div>
+      <div class="fs-content" id="sec-level">
+        <label class="filter-opt"><input type="checkbox" data-filter="level" data-value="new"/><span class="fo-label">Nouveau venu</span><span class="count">0</span></label>
+        <label class="filter-opt"><input type="checkbox" data-filter="level" data-value="level1"/><span class="fo-label">Niveau 1</span><span class="count">4</span></label>
+        <label class="filter-opt"><input type="checkbox" data-filter="level" data-value="level2"/><span class="fo-label">Niveau 2</span><span class="count">7</span></label>
+        <label class="filter-opt"><input type="checkbox" data-filter="level" data-value="top"/><span class="fo-label">Top Oriupe</span><span class="count">9</span></label>
       </div>
     </div>
 
     <!-- Note -->
     <div class="filter-section">
-      <div class="fs-title" onclick="toggleSection(this)">NOTE MINIMALE <span class="fs-arrow open">▼</span></div>
-      <div class="fs-content">
-        <label class="star-opt"><input type="radio" name="rating"/><span style="font-size:12px;color:var(--navy)">Toutes les notes</span></label>
-        <label class="star-opt"><input type="radio" name="rating" checked/><span style="display:flex;gap:2px;align-items:center">
-          <svg width="11" height="11" viewBox="0 0 11 11" fill="#3CB878"><path d="M5.5 1L6.8 4H10L7.5 6.2L8.5 9.5L5.5 7.5L2.5 9.5L3.5 6.2L1 4H4.2Z"/></svg>
-          <svg width="11" height="11" viewBox="0 0 11 11" fill="#3CB878"><path d="M5.5 1L6.8 4H10L7.5 6.2L8.5 9.5L5.5 7.5L2.5 9.5L3.5 6.2L1 4H4.2Z"/></svg>
-          <svg width="11" height="11" viewBox="0 0 11 11" fill="#3CB878"><path d="M5.5 1L6.8 4H10L7.5 6.2L8.5 9.5L5.5 7.5L2.5 9.5L3.5 6.2L1 4H4.2Z"/></svg>
-          <svg width="11" height="11" viewBox="0 0 11 11" fill="#3CB878"><path d="M5.5 1L6.8 4H10L7.5 6.2L8.5 9.5L5.5 7.5L2.5 9.5L3.5 6.2L1 4H4.2Z"/></svg>
-          <span style="font-size:12px;color:var(--muted);margin-left:4px">4+ étoiles</span>
-        </span></label>
-        <label class="star-opt"><input type="radio" name="rating"/><span style="display:flex;gap:2px;align-items:center">
-          <svg width="11" height="11" viewBox="0 0 11 11" fill="#3CB878"><path d="M5.5 1L6.8 4H10L7.5 6.2L8.5 9.5L5.5 7.5L2.5 9.5L3.5 6.2L1 4H4.2Z"/></svg>
-          <svg width="11" height="11" viewBox="0 0 11 11" fill="#3CB878"><path d="M5.5 1L6.8 4H10L7.5 6.2L8.5 9.5L5.5 7.5L2.5 9.5L3.5 6.2L1 4H4.2Z"/></svg>
-          <svg width="11" height="11" viewBox="0 0 11 11" fill="#3CB878"><path d="M5.5 1L6.8 4H10L7.5 6.2L8.5 9.5L5.5 7.5L2.5 9.5L3.5 6.2L1 4H4.2Z"/></svg>
-          <svg width="11" height="11" viewBox="0 0 11 11" fill="#3CB878"><path d="M5.5 1L6.8 4H10L7.5 6.2L8.5 9.5L5.5 7.5L2.5 9.5L3.5 6.2L1 4H4.2Z"/></svg>
-          <svg width="11" height="11" viewBox="0 0 11 11" fill="#3CB878"><path d="M5.5 1L6.8 4H10L7.5 6.2L8.5 9.5L5.5 7.5L2.5 9.5L3.5 6.2L1 4H4.2Z"/></svg>
-          <span style="font-size:12px;color:var(--muted);margin-left:4px">4,5+ étoiles</span>
-        </span></label>
+      <div class="fs-title" data-section="rating">NOTE MINIMALE <span class="fs-arrow" data-arrow="rating">▼</span></div>
+      <div class="fs-content" id="sec-rating">
+        <label class="filter-opt"><input type="radio" name="rating" data-filter="rating" data-value="0" checked/><span class="fo-label">Toutes les notes</span></label>
+        <label class="filter-opt">
+          <input type="radio" name="rating" data-filter="rating" data-value="4"/>
+          <span class="fo-label"><span class="star-row">${starsSVG(4,'#3CB878')}<span style="font-size:12px;color:var(--muted);margin-left:5px">4+ étoiles</span></span></span>
+        </label>
+        <label class="filter-opt">
+          <input type="radio" name="rating" data-filter="rating" data-value="4.5"/>
+          <span class="fo-label"><span class="star-row">${starsSVG(5,'#3CB878')}<span style="font-size:12px;color:var(--muted);margin-left:5px">4,5+ étoiles</span></span></span>
+        </label>
+        <label class="filter-opt">
+          <input type="radio" name="rating" data-filter="rating" data-value="5"/>
+          <span class="fo-label"><span class="star-row">${starsSVG(5,'#F59E0B')}<span style="font-size:12px;color:var(--muted);margin-left:5px">Parfaites (5,0)</span></span></span>
+        </label>
       </div>
     </div>
 
     <!-- Options -->
     <div class="filter-section">
-      <div class="fs-title" onclick="toggleSection(this)">OPTIONS <span class="fs-arrow open">▼</span></div>
-      <div class="fs-content">
-        <label class="filter-opt"><input type="checkbox"/><label>Révisions illimitées</label></label>
-        <label class="filter-opt"><input type="checkbox"/><label>Disponible maintenant</label></label>
-        <label class="filter-opt"><input type="checkbox"/><label>En ligne maintenant</label></label>
+      <div class="fs-title" data-section="opts">OPTIONS <span class="fs-arrow" data-arrow="opts">▼</span></div>
+      <div class="fs-content" id="sec-opts">
+        <label class="filter-opt"><input type="checkbox" data-filter="opt" data-value="unlimited"/><span class="fo-label">Révisions illimitées</span></label>
+        <label class="filter-opt"><input type="checkbox" data-filter="opt" data-value="available"/><span class="fo-label">Disponible maintenant</span></label>
+        <label class="filter-opt"><input type="checkbox" data-filter="opt" data-value="online"/><span class="fo-label">En ligne maintenant</span></label>
       </div>
     </div>
 
     <!-- Langue -->
     <div class="filter-section">
-      <div class="fs-title" onclick="toggleSection(this)">LANGUE DU SERVICE <span class="fs-arrow open">▼</span></div>
-      <div class="fs-content">
-        <label class="filter-opt"><input type="checkbox" checked/><label>Français</label><span class="count">1 247</span></label>
-        <label class="filter-opt"><input type="checkbox"/><label>Anglais</label><span class="count">834</span></label>
-        <label class="filter-opt"><input type="checkbox"/><label>Arabe</label><span class="count">312</span></label>
-        <label class="filter-opt"><input type="checkbox"/><label>Swahili</label><span class="count">201</span></label>
-        <label class="filter-opt"><input type="checkbox"/><label>Portugais</label><span class="count">178</span></label>
-        <label class="filter-opt"><input type="checkbox"/><label>Haoussa</label><span class="count">89</span></label>
+      <div class="fs-title" data-section="lang">LANGUE DU SERVICE <span class="fs-arrow" data-arrow="lang">▼</span></div>
+      <div class="fs-content" id="sec-lang">
+        <label class="filter-opt"><input type="checkbox" data-filter="lang" data-value="fr"/><span class="fo-label">Français</span><span class="count">16</span></label>
+        <label class="filter-opt"><input type="checkbox" data-filter="lang" data-value="en"/><span class="fo-label">Anglais</span><span class="count">11</span></label>
+        <label class="filter-opt"><input type="checkbox" data-filter="lang" data-value="ar"/><span class="fo-label">Arabe</span><span class="count">1</span></label>
+        <label class="filter-opt"><input type="checkbox" data-filter="lang" data-value="sw"/><span class="fo-label">Swahili</span><span class="count">0</span></label>
+        <label class="filter-opt"><input type="checkbox" data-filter="lang" data-value="pt"/><span class="fo-label">Portugais</span><span class="count">0</span></label>
       </div>
     </div>
 
-    <div style="padding:16px 20px">
-      <button class="btn-cta" style="width:100%;padding:12px">Appliquer les filtres</button>
+    <div style="padding:14px 20px">
+      <button class="btn-cta" id="applyBtn" style="width:100%;padding:11px">Appliquer les filtres</button>
     </div>
   </aside>
 
-  <!-- ═══ MAIN RESULTS ═══ -->
+  <!-- MAIN RESULTS -->
   <main class="main-content">
     <!-- Search bar -->
     <div class="search-bar-page">
       <svg width="17" height="17" viewBox="0 0 17 17" fill="none" style="flex-shrink:0;opacity:.35"><circle cx="7.5" cy="7.5" r="5.5" stroke="#1B3A4A" stroke-width="1.7"/><path d="M11 11L16 16" stroke="#1B3A4A" stroke-width="1.7" stroke-linecap="round"/></svg>
-      <input placeholder="Rechercher un service, une compétence, un freelance..." value="Développement web"/>
-      <button class="btn-cta" style="padding:9px 22px;border-radius:7px;font-size:13px">Rechercher</button>
+      <input id="searchInput" placeholder="Rechercher un service, une compétence, un freelance..." aria-label="Rechercher un service"/>
+      <button class="btn-cta" id="searchBtn" style="padding:9px 22px;border-radius:7px;font-size:13px">Rechercher</button>
     </div>
 
-    <!-- Active filters chips -->
-    <div class="active-filters">
-      <div class="af-chip">Développement Web <span class="af-remove">×</span></div>
-      <div class="af-chip">Niveau 2 <span class="af-remove">×</span></div>
-      <div class="af-chip">Budget max 200 000 FCFA <span class="af-remove">×</span></div>
-      <div class="af-chip">4+ étoiles <span class="af-remove">×</span></div>
-    </div>
+    <!-- Active filter chips -->
+    <div class="active-filters" id="active-filters"></div>
 
     <!-- Results header -->
     <div class="results-hdr">
-      <div class="results-count"><strong>892</strong> services trouvés</div>
+      <div class="results-count" id="results-count"><strong>—</strong> services</div>
       <div class="sort-wrap">
         <span class="sort-lbl">Trier par</span>
-        <select class="sort-sel">
-          <option>Pertinence</option>
-          <option>Mieux notés</option>
-          <option>Plus récents</option>
-          <option>Prix croissant</option>
-          <option>Prix décroissant</option>
-          <option>Plus populaires</option>
+        <select class="sort-sel" id="sortSel" title="Trier les résultats" aria-label="Trier par">
+          <option value="relevance">Pertinence</option>
+          <option value="rating">Mieux notés</option>
+          <option value="newest">Plus récents</option>
+          <option value="price_asc">Prix croissant</option>
+          <option value="price_desc">Prix décroissant</option>
+          <option value="popular">Plus populaires</option>
         </select>
         <div class="view-toggle">
-          <button class="vt-btn active">
+          <button class="vt-btn active" id="gridBtn" title="Grille">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="5" height="5" rx="1" stroke="#1B3A4A" stroke-width="1.3"/><rect x="8" y="1" width="5" height="5" rx="1" stroke="#1B3A4A" stroke-width="1.3"/><rect x="1" y="8" width="5" height="5" rx="1" stroke="#1B3A4A" stroke-width="1.3"/><rect x="8" y="8" width="5" height="5" rx="1" stroke="#1B3A4A" stroke-width="1.3"/></svg>
           </button>
-          <button class="vt-btn">
+          <button class="vt-btn" id="listBtn" title="Liste">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 3H13M1 7H13M1 11H13" stroke="#1B3A4A" stroke-width="1.4" stroke-linecap="round"/></svg>
           </button>
         </div>
       </div>
     </div>
 
-    <!-- Service cards -->
-    <div class="svc-grid stagger">
-
-      <!-- Card 1 -->
-      <div class="svc-card reveal">
-        <div class="svc-img" style="background:#1B3A4A">
-          <svg width="52" height="52" viewBox="0 0 52 52" fill="none"><path d="M14 20L6 26L14 32M38 20L46 26L38 32M29 14L23 38" stroke="#3CB878" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span class="card-badge cb-top">Top Oriupe</span>
-          <button class="svc-fav"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#1B3A4A" stroke-width="1.4"><path d="M7 12.5L1.5 7C1 6.5.5 5.5.5 4.5A3 3 0 016 2.5c.4.3.7.6 1 1 .3-.4.6-.7 1-1A3 3 0 0113.5 4.5C13.5 5.5 13 6.5 12.5 7L7 12.5Z"/></svg></button>
-        </div>
-        <div class="svc-body">
-          <div class="svc-top">
-            <div class="svc-author">
-              <div class="svc-av" style="background:#3CB878;color:#fff">KA</div>
-              <div><div class="svc-name">Kofi Asante</div><div class="svc-country">🇬🇭 Ghana</div></div>
-            </div>
-            <div style="width:8px;height:8px;background:#22C55E;border-radius:50%;border:1.5px solid #fff;flex-shrink:0"></div>
-          </div>
-          <div class="svc-title">Création de site web React professionnel et 100% responsive</div>
-          <div class="svc-bot">
-            <div class="svc-stars">
-              <svg width="11" height="11" viewBox="0 0 11 11" fill="#3CB878"><path d="M5.5 1L6.8 4H10L7.5 6.2L8.5 9.5L5.5 7.5L2.5 9.5L3.5 6.2L1 4H4.2Z"/></svg>
-              4,9 <span class="svc-reviews">(124)</span>
-            </div>
-            <div class="svc-price"><span class="svc-price-from">À partir de </span>35 000 FCFA</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Card 2 -->
-      <div class="svc-card reveal">
-        <div class="svc-img" style="background:#E8F8F1">
-          <svg width="52" height="52" viewBox="0 0 52 52" fill="none"><path d="M14 20L6 26L14 32M38 20L46 26L38 32M29 14L23 38" stroke="#3CB878" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span class="card-badge cb-hot">Populaire</span>
-          <button class="svc-fav"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#1B3A4A" stroke-width="1.4"><path d="M7 12.5L1.5 7C1 6.5.5 5.5.5 4.5A3 3 0 016 2.5c.4.3.7.6 1 1 .3-.4.6-.7 1-1A3 3 0 0113.5 4.5C13.5 5.5 13 6.5 12.5 7L7 12.5Z"/></svg></button>
-        </div>
-        <div class="svc-body">
-          <div class="svc-top">
-            <div class="svc-author">
-              <div class="svc-av" style="background:#29ABE2;color:#fff">YK</div>
-              <div><div class="svc-name">Yaw Kojo</div><div class="svc-country">🇳🇬 Nigeria</div></div>
-            </div>
-          </div>
-          <div class="svc-title">Application mobile Flutter cross-platform iOS & Android</div>
-          <div class="svc-bot">
-            <div class="svc-stars">
-              <svg width="11" height="11" viewBox="0 0 11 11" fill="#3CB878"><path d="M5.5 1L6.8 4H10L7.5 6.2L8.5 9.5L5.5 7.5L2.5 9.5L3.5 6.2L1 4H4.2Z"/></svg>
-              4,8 <span class="svc-reviews">(87)</span>
-            </div>
-            <div class="svc-price"><span class="svc-price-from">À partir de </span>80 000 FCFA</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Card 3 -->
-      <div class="svc-card reveal">
-        <div class="svc-img" style="background:#1B3A4A">
-          <svg width="52" height="52" viewBox="0 0 52 52" fill="none"><rect x="8" y="8" width="36" height="36" rx="6" stroke="#8DC63F" stroke-width="3"/><path d="M16 26H36M16 18H28M16 34H22" stroke="#8DC63F" stroke-width="3" stroke-linecap="round"/></svg>
-          <span class="card-badge cb-exp">Express 24h</span>
-          <button class="svc-fav"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#1B3A4A" stroke-width="1.4"><path d="M7 12.5L1.5 7C1 6.5.5 5.5.5 4.5A3 3 0 016 2.5c.4.3.7.6 1 1 .3-.4.6-.7 1-1A3 3 0 0113.5 4.5C13.5 5.5 13 6.5 12.5 7L7 12.5Z"/></svg></button>
-        </div>
-        <div class="svc-body">
-          <div class="svc-top">
-            <div class="svc-author">
-              <div class="svc-av" style="background:#8DC63F;color:#fff">CB</div>
-              <div><div class="svc-name">Chidi Bello</div><div class="svc-country">🇸🇳 Sénégal</div></div>
-            </div>
-            <div style="width:8px;height:8px;background:#22C55E;border-radius:50%;border:1.5px solid #fff"></div>
-          </div>
-          <div class="svc-title">API REST Node.js sécurisée avec documentation complète</div>
-          <div class="svc-bot">
-            <div class="svc-stars">
-              <svg width="11" height="11" viewBox="0 0 11 11" fill="#3CB878"><path d="M5.5 1L6.8 4H10L7.5 6.2L8.5 9.5L5.5 7.5L2.5 9.5L3.5 6.2L1 4H4.2Z"/></svg>
-              5,0 <span class="svc-reviews">(203)</span>
-            </div>
-            <div class="svc-price"><span class="svc-price-from">À partir de </span>45 000 FCFA</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Card 4 -->
-      <div class="svc-card reveal">
-        <div class="svc-img" style="background:#E3F5FC">
-          <svg width="52" height="52" viewBox="0 0 52 52" fill="none"><rect x="8" y="10" width="36" height="28" rx="4" stroke="#29ABE2" stroke-width="3"/><path d="M16 20H36M16 26H28" stroke="#29ABE2" stroke-width="3" stroke-linecap="round"/><circle cx="38" cy="38" r="7" fill="#29ABE2"/><path d="M35 38H41M38 35V41" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
-          <button class="svc-fav active"><svg width="14" height="14" viewBox="0 0 14 14" fill="#E53935" stroke="#E53935" stroke-width="1.4"><path d="M7 12.5L1.5 7C1 6.5.5 5.5.5 4.5A3 3 0 016 2.5c.4.3.7.6 1 1 .3-.4.6-.7 1-1A3 3 0 0113.5 4.5C13.5 5.5 13 6.5 12.5 7L7 12.5Z"/></svg></button>
-        </div>
-        <div class="svc-body">
-          <div class="svc-top">
-            <div class="svc-author">
-              <div class="svc-av" style="background:#29ABE2;color:#fff">AM</div>
-              <div><div class="svc-name">Ama Mensah</div><div class="svc-country">🇨🇮 Côte d'Ivoire</div></div>
-            </div>
-          </div>
-          <div class="svc-title">WordPress professionnel + plugins premium + SEO on-page</div>
-          <div class="svc-bot">
-            <div class="svc-stars">
-              <svg width="11" height="11" viewBox="0 0 11 11" fill="#3CB878"><path d="M5.5 1L6.8 4H10L7.5 6.2L8.5 9.5L5.5 7.5L2.5 9.5L3.5 6.2L1 4H4.2Z"/></svg>
-              4,7 <span class="svc-reviews">(56)</span>
-            </div>
-            <div class="svc-price"><span class="svc-price-from">À partir de </span>25 000 FCFA</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Cards 5-12 (simplified) -->
-      <div class="svc-card reveal">
-        <div class="svc-img" style="background:#F0F8E3"><svg width="52" height="52" viewBox="0 0 52 52" fill="none"><path d="M12 38L26 14L40 38" stroke="#8DC63F" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 30H35" stroke="#8DC63F" stroke-width="3" stroke-linecap="round"/></svg><button class="svc-fav"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#1B3A4A" stroke-width="1.4"><path d="M7 12.5L1.5 7C1 6.5.5 5.5.5 4.5A3 3 0 016 2.5c.4.3.7.6 1 1 .3-.4.6-.7 1-1A3 3 0 0113.5 4.5C13.5 5.5 13 6.5 12.5 7L7 12.5Z"/></svg></button></div>
-        <div class="svc-body"><div class="svc-top"><div class="svc-author"><div class="svc-av" style="background:#8DC63F;color:#fff">FK</div><div><div class="svc-name">Fatima Kamara</div><div class="svc-country">🇲🇱 Mali</div></div></div></div><div class="svc-title">E-commerce Shopify complet avec intégration paiement Mobile Money</div><div class="svc-bot"><div class="svc-stars"><svg width="11" height="11" viewBox="0 0 11 11" fill="#3CB878"><path d="M5.5 1L6.8 4H10L7.5 6.2L8.5 9.5L5.5 7.5L2.5 9.5L3.5 6.2L1 4H4.2Z"/></svg>4,6 <span class="svc-reviews">(34)</span></div><div class="svc-price"><span class="svc-price-from">À partir de </span>60 000 FCFA</div></div></div>
-      </div>
-
-      <div class="svc-card reveal">
-        <div class="svc-img" style="background:#1B3A4A"><svg width="52" height="52" viewBox="0 0 52 52" fill="none"><circle cx="26" cy="26" r="16" stroke="#29ABE2" stroke-width="3"/><path d="M26 10C26 10 19 17 19 26S26 42 26 42M26 10C26 10 33 17 33 26S26 42 26 42M10 26H42" stroke="#29ABE2" stroke-width="2.5"/></svg><span class="card-badge cb-new">Nouveau</span><button class="svc-fav"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#1B3A4A" stroke-width="1.4"><path d="M7 12.5L1.5 7C1 6.5.5 5.5.5 4.5A3 3 0 016 2.5c.4.3.7.6 1 1 .3-.4.6-.7 1-1A3 3 0 0113.5 4.5C13.5 5.5 13 6.5 12.5 7L7 12.5Z"/></svg></button></div>
-        <div class="svc-body"><div class="svc-top"><div class="svc-author"><div class="svc-av" style="background:#29ABE2;color:#fff">SO</div><div><div class="svc-name">Seun Okafor</div><div class="svc-country">🇰🇪 Kenya</div></div></div><div style="width:8px;height:8px;background:#22C55E;border-radius:50%;border:1.5px solid #fff"></div></div><div class="svc-title">Intégration API tiers et webhooks (Stripe, PayPal, Mobile Money)</div><div class="svc-bot"><div class="svc-stars"><svg width="11" height="11" viewBox="0 0 11 11" fill="#3CB878"><path d="M5.5 1L6.8 4H10L7.5 6.2L8.5 9.5L5.5 7.5L2.5 9.5L3.5 6.2L1 4H4.2Z"/></svg>4,9 <span class="svc-reviews">(18)</span></div><div class="svc-price"><span class="svc-price-from">À partir de </span>50 000 FCFA</div></div></div>
-      </div>
-
-      <div class="svc-card reveal">
-        <div class="svc-img" style="background:#E8F8F1"><svg width="52" height="52" viewBox="0 0 52 52" fill="none"><rect x="8" y="8" width="36" height="36" rx="4" stroke="#3CB878" stroke-width="3"/><path d="M16 26H36M26 16V36" stroke="#3CB878" stroke-width="3" stroke-linecap="round"/></svg><button class="svc-fav"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#1B3A4A" stroke-width="1.4"><path d="M7 12.5L1.5 7C1 6.5.5 5.5.5 4.5A3 3 0 016 2.5c.4.3.7.6 1 1 .3-.4.6-.7 1-1A3 3 0 0113.5 4.5C13.5 5.5 13 6.5 12.5 7L7 12.5Z"/></svg></button></div>
-        <div class="svc-body"><div class="svc-top"><div class="svc-author"><div class="svc-av" style="background:#1B3A4A;color:#fff">BN</div><div><div class="svc-name">Bienvenu Nkosi</div><div class="svc-country">🇿🇦 Afrique du Sud</div></div></div></div><div class="svc-title">Audit et optimisation de performance web (Core Web Vitals, SEO technique)</div><div class="svc-bot"><div class="svc-stars"><svg width="11" height="11" viewBox="0 0 11 11" fill="#3CB878"><path d="M5.5 1L6.8 4H10L7.5 6.2L8.5 9.5L5.5 7.5L2.5 9.5L3.5 6.2L1 4H4.2Z"/></svg>4,8 <span class="svc-reviews">(71)</span></div><div class="svc-price"><span class="svc-price-from">À partir de </span>30 000 FCFA</div></div></div>
-      </div>
-
-      <div class="svc-card reveal">
-        <div class="svc-img" style="background:#1B3A4A"><svg width="52" height="52" viewBox="0 0 52 52" fill="none"><path d="M10 42L26 10L42 42" stroke="#F39C12" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 33H36" stroke="#F39C12" stroke-width="3" stroke-linecap="round"/></svg><span class="card-badge cb-top">Top Oriupe</span><button class="svc-fav"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#1B3A4A" stroke-width="1.4"><path d="M7 12.5L1.5 7C1 6.5.5 5.5.5 4.5A3 3 0 016 2.5c.4.3.7.6 1 1 .3-.4.6-.7 1-1A3 3 0 0113.5 4.5C13.5 5.5 13 6.5 12.5 7L7 12.5Z"/></svg></button></div>
-        <div class="svc-body"><div class="svc-top"><div class="svc-author"><div class="svc-av" style="background:#3CB878;color:#fff">MT</div><div><div class="svc-name">Moussa Touré</div><div class="svc-country">🇧🇫 Burkina Faso</div></div></div><div style="width:8px;height:8px;background:#22C55E;border-radius:50%;border:1.5px solid #fff"></div></div><div class="svc-title">Dashboard analytique React avec charts et exports CSV/PDF</div><div class="svc-bot"><div class="svc-stars"><svg width="11" height="11" viewBox="0 0 11 11" fill="#3CB878"><path d="M5.5 1L6.8 4H10L7.5 6.2L8.5 9.5L5.5 7.5L2.5 9.5L3.5 6.2L1 4H4.2Z"/></svg>5,0 <span class="svc-reviews">(41)</span></div><div class="svc-price"><span class="svc-price-from">À partir de </span>70 000 FCFA</div></div></div>
-      </div>
-
-    </div><!-- /svc-grid -->
+    <!-- Cards container -->
+    <div class="svc-grid" id="svc-grid"></div>
 
     <!-- Pagination -->
-    <div class="pagination">
-      <button class="pg-btn" disabled><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3L5 7L9 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-      <button class="pg-btn active">1</button>
-      <button class="pg-btn">2</button>
-      <button class="pg-btn">3</button>
-      <span class="pg-dots">…</span>
-      <button class="pg-btn">48</button>
-      <button class="pg-btn"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3L9 7L5 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-    </div>
-
+    <div class="pagination" id="pagination"></div>
   </main>
-</div><!-- /page-wrap -->
+</div>
 
-<!-- FOOTER minimal -->
-<footer style="background:#1B3A4A;padding:32px 56px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
-  <div style="display:flex;align-items:center;gap:8px">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="7" cy="7" r="5.5" fill="#8DC63F" opacity=".85"/><circle cx="17" cy="7" r="5.5" fill="#29ABE2" opacity=".85"/><circle cx="7" cy="17" r="5.5" fill="#3CB878" opacity=".85"/><circle cx="17" cy="17" r="5.5" fill="rgba(255,255,255,.1)"/><rect x="6.5" y="6.5" width="11" height="11" rx="1" fill="rgba(60,184,120,.4)"/></svg>
-    <span style="font-size:15px;font-weight:800;color:#fff">Oriupe</span>
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div><a href="/src/pages/home/index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;margin-bottom:12px"><svg width="26" height="26" viewBox="0 0 32 32" fill="none"><circle cx="10" cy="10" r="8.5" fill="#8DC63F" opacity=".9"/><circle cx="22" cy="10" r="8.5" fill="#29ABE2" opacity=".9"/><circle cx="10" cy="22" r="8.5" fill="#3CB878" opacity=".9"/><circle cx="22" cy="22" r="8.5" fill="#1B3A4A"/><rect x="9.5" y="9.5" width="13" height="13" rx="1.5" fill="rgba(60,184,120,.45)"/></svg><span style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;color:#fff">Oriupe</span></a><p class="footer-tagline">"Ton talent. Ton continent. Ton avenir."</p></div>
+    <div><div class="footer-col-title">Oriupe</div><div class="footer-links"><a href="/src/pages/about/index.html">À propos</a><a href="/src/pages/careers/index.html">Carrières</a><a href="/src/pages/press/index.html">Presse &amp; Médias</a><a href="/src/pages/blog/index.html">Blog</a><a href="/src/pages/impact/index.html">Impact ESG</a></div></div>
+    <div><div class="footer-col-title">Freelances</div><div class="footer-links"><a href="/src/pages/auth/index.html">S'inscrire</a><a href="/src/pages/how-it-works/index.html">Comment ça marche</a><a href="/src/pages/academy/index.html">Oriupe Academy</a><a href="/src/pages/pricing/index.html">Tarifs Pro</a><a href="/src/pages/faq/index.html">FAQ Freelances</a></div></div>
+    <div><div class="footer-col-title">Support</div><div class="footer-links"><a href="/src/pages/help/index.html">Centre d'aide</a><a href="/src/pages/contact/index.html">Nous contacter</a><a href="/src/pages/disputes/index.html">Gestion des litiges</a><a href="/src/pages/terms/index.html">CGU &amp; CGV</a><a href="/src/pages/privacy/index.html">Confidentialité</a></div></div>
   </div>
-  <span style="font-size:12px;color:rgba(255,255,255,.3)">© 2025 Oriupe — Tous droits réservés — Abidjan, Côte d'Ivoire</span>
+  <div class="footer-bottom"><span class="footer-copy">© 2025 Oriupe SAS — Abidjan, Côte d'Ivoire. Tous droits réservés.</span><div class="footer-legal"><a href="/src/pages/privacy/index.html">Confidentialité</a><a href="/src/pages/terms/index.html">CGU &amp; CGV</a></div></div>
 </footer>
 
 <script>
-const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible')})},{threshold:.1,rootMargin:'0px 0px -30px 0px'});
-document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
-window.addEventListener('scroll',()=>{
-  const t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;
-  document.getElementById('progress').style.width=(t/h*100)+'%';
-  document.getElementById('nav').style.boxShadow=t>30?'0 2px 16px rgba(27,58,74,.1)':'none';
-},{passive:true});
-function toggleSection(el){const c=el.parentElement.querySelector('.fs-content');const a=el.querySelector('.fs-arrow');if(c.style.display==='none'){c.style.display='flex';a.classList.add('open')}else{c.style.display='none';a.classList.remove('open')}}
-// Fav toggle
-document.querySelectorAll('.svc-fav').forEach(btn=>{btn.addEventListener('click',e=>{e.stopPropagation();btn.classList.toggle('active');const svg=btn.querySelector('svg');if(btn.classList.contains('active')){svg.setAttribute('fill','#E53935');svg.setAttribute('stroke','#E53935')}else{svg.setAttribute('fill','none');svg.setAttribute('stroke','#1B3A4A')}})});
-// Reset filters
-document.getElementById('resetBtn').addEventListener('click',()=>{document.querySelectorAll('.sidebar input[type=checkbox]').forEach(c=>c.checked=false);document.querySelectorAll('.sidebar input[type=radio]').forEach(r=>r.checked=false)});
-// View toggle
-document.querySelectorAll('.vt-btn').forEach(btn=>{btn.addEventListener('click',()=>{document.querySelectorAll('.vt-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active')})});
+/* ─── DATA ──────────────────────────────────────────────── */
+const SERVICES = [
+  {id:1,title:"Création de site web React professionnel et 100% responsive",cat:'dev',f:{n:"Kofi Asante",i:"KA",c:"🇬🇭 Ghana",col:"#3CB878"},online:true,badge:'top',rating:4.9,reviews:124,price:35000,delivery:7,level:'top',langs:['fr','en'],unlimited:false,available:true,bg:'#1B3A4A',icon:'code'},
+  {id:2,title:"Application mobile Flutter cross-platform iOS & Android",cat:'dev',f:{n:"Yaw Kojo",i:"YK",c:"🇳🇬 Nigeria",col:"#29ABE2"},online:false,badge:'hot',rating:4.8,reviews:87,price:80000,delivery:21,level:'level2',langs:['en','fr'],unlimited:false,available:false,bg:'#E8F8F1',icon:'mobile'},
+  {id:3,title:"API REST Node.js sécurisée avec documentation Swagger complète",cat:'dev',f:{n:"Chidi Bello",i:"CB",c:"🇸🇳 Sénégal",col:"#8DC63F"},online:true,badge:'express',rating:5.0,reviews:203,price:45000,delivery:3,level:'top',langs:['fr'],unlimited:true,available:true,bg:'#1B3A4A',icon:'doc'},
+  {id:4,title:"WordPress professionnel + plugins premium + SEO on-page",cat:'dev',f:{n:"Ama Mensah",i:"AM",c:"🇨🇮 Côte d'Ivoire",col:"#29ABE2"},online:false,badge:null,rating:4.7,reviews:56,price:25000,delivery:5,level:'level2',langs:['fr','en'],unlimited:false,available:true,bg:'#E3F5FC',icon:'doc'},
+  {id:5,title:"E-commerce Shopify complet avec intégration paiement Mobile Money",cat:'dev',f:{n:"Fatima Kamara",i:"FK",c:"🇲🇱 Mali",col:"#8DC63F"},online:false,badge:null,rating:4.6,reviews:34,price:60000,delivery:14,level:'level2',langs:['fr'],unlimited:false,available:false,bg:'#F0F8E3',icon:'code'},
+  {id:6,title:"Intégration API tiers et webhooks Stripe, PayPal, Mobile Money",cat:'dev',f:{n:"Seun Okafor",i:"SO",c:"🇰🇪 Kenya",col:"#29ABE2"},online:true,badge:'new',rating:4.9,reviews:18,price:50000,delivery:7,level:'level1',langs:['en','fr'],unlimited:true,available:true,bg:'#1B3A4A',icon:'globe'},
+  {id:7,title:"Audit et optimisation de performance web (Core Web Vitals, SEO technique)",cat:'dev',f:{n:"Bienvenu Nkosi",i:"BN",c:"🇿🇦 Afrique du Sud",col:"#1B3A4A"},online:false,badge:null,rating:4.8,reviews:71,price:30000,delivery:3,level:'level2',langs:['en'],unlimited:false,available:true,bg:'#E8F8F1',icon:'chart'},
+  {id:8,title:"Dashboard analytique React avec charts interactifs et exports CSV/PDF",cat:'dev',f:{n:"Moussa Touré",i:"MT",c:"🇧🇫 Burkina Faso",col:"#3CB878"},online:true,badge:'top',rating:5.0,reviews:41,price:70000,delivery:10,level:'top',langs:['fr'],unlimited:false,available:true,bg:'#1B3A4A',icon:'chart'},
+  {id:9,title:"Logo & identité visuelle complète avec charte graphique PDF",cat:'design',f:{n:"Aïcha Diallo",i:"AD",c:"🇸🇳 Sénégal",col:"#E74C3C"},online:true,badge:'hot',rating:4.9,reviews:156,price:40000,delivery:5,level:'top',langs:['fr'],unlimited:true,available:true,bg:'#1B3A4A',icon:'design'},
+  {id:10,title:"UI/UX Design Figma — Application mobile moderne et intuitive",cat:'design',f:{n:"Kwame Boateng",i:"KB",c:"🇬🇭 Ghana",col:"#9B59B6"},online:false,badge:null,rating:4.8,reviews:92,price:55000,delivery:7,level:'level2',langs:['en','fr'],unlimited:false,available:true,bg:'#E8F8F1',icon:'design'},
+  {id:11,title:"Motion design et animation After Effects pour réseaux sociaux",cat:'design',f:{n:"Ngozi Adeyemi",i:"NA",c:"🇳🇬 Nigeria",col:"#E67E22"},online:true,badge:'express',rating:4.7,reviews:48,price:20000,delivery:2,level:'level1',langs:['en'],unlimited:false,available:true,bg:'#1B3A4A',icon:'video'},
+  {id:12,title:"Stratégie marketing digital et campagnes Meta + Google Ads",cat:'marketing',f:{n:"Ismaël Traoré",i:"IT",c:"🇨🇮 Côte d'Ivoire",col:"#F39C12"},online:true,badge:'top',rating:5.0,reviews:89,price:85000,delivery:14,level:'top',langs:['fr'],unlimited:false,available:true,bg:'#1B3A4A',icon:'marketing'},
+  {id:13,title:"Gestion réseaux sociaux + création de contenu mensuel (4 semaines)",cat:'marketing',f:{n:"Mariama Bah",i:"MB",c:"🇬🇳 Guinée",col:"#2ECC71"},online:false,badge:'new',rating:4.6,reviews:23,price:35000,delivery:30,level:'level2',langs:['fr'],unlimited:true,available:false,bg:'#F0F8E3',icon:'marketing'},
+  {id:14,title:"Rédaction web SEO — Articles de blog optimisés Google (2 000 mots)",cat:'writing',f:{n:"Amara Kouyaté",i:"AK",c:"🇲🇱 Mali",col:"#3498DB"},online:false,badge:null,rating:4.8,reviews:67,price:15000,delivery:3,level:'level1',langs:['fr'],unlimited:false,available:true,bg:'#E3F5FC',icon:'doc'},
+  {id:15,title:"Traduction professionnelle français-anglais-arabe pour entreprises",cat:'writing',f:{n:"Hamidou Coulibaly",i:"HC",c:"🇧🇫 Burkina Faso",col:"#1ABC9C"},online:true,badge:'express',rating:4.9,reviews:112,price:12000,delivery:1,level:'top',langs:['fr','en','ar'],unlimited:false,available:true,bg:'#1B3A4A',icon:'doc'},
+  {id:16,title:"Comptabilité & déclarations fiscales PME — Accompagnement mensuel",cat:'finance',f:{n:"Clémentine Ouédraogo",i:"CO",c:"🇧🇫 Burkina Faso",col:"#9B59B6"},online:false,badge:null,rating:4.7,reviews:38,price:45000,delivery:5,level:'level2',langs:['fr'],unlimited:false,available:false,bg:'#E8F8F1',icon:'finance'},
+  {id:17,title:"Montage vidéo professionnel + sous-titres + habillage graphique",cat:'video',f:{n:"Tchaly Kaboré",i:"TK",c:"🇨🇮 Côte d'Ivoire",col:"#E74C3C"},online:true,badge:'hot',rating:4.8,reviews:74,price:30000,delivery:5,level:'level2',langs:['fr'],unlimited:false,available:true,bg:'#1B3A4A',icon:'video'},
+  {id:18,title:"Intro & outro animée YouTube — Habillage complet de chaîne",cat:'video',f:{n:"Divine Amara",i:"DA",c:"🇬🇭 Ghana",col:"#F39C12"},online:false,badge:'new',rating:4.5,reviews:15,price:18000,delivery:2,level:'level1',langs:['en','fr'],unlimited:true,available:true,bg:'#FFF3CD',icon:'video'},
+  {id:19,title:"Formation React.js complète — 10h de cours personnalisés en ligne",cat:'coaching',f:{n:"Idriss Sow",i:"IS",c:"🇸🇳 Sénégal",col:"#29ABE2"},online:true,badge:'top',rating:5.0,reviews:56,price:90000,delivery:30,level:'top',langs:['fr','en'],unlimited:false,available:true,bg:'#1B3A4A',icon:'code'},
+  {id:20,title:"Coaching entrepreneuriat digital pour fondateurs de startups africaines",cat:'coaching',f:{n:"Olivia Mensah",i:"OM",c:"🇨🇮 Côte d'Ivoire",col:"#3CB878"},online:false,badge:null,rating:4.9,reviews:32,price:120000,delivery:60,level:'top',langs:['fr'],unlimited:false,available:false,bg:'#E8F8F1',icon:'coaching'},
+];
+
+/* ─── SVG ICONS ─────────────────────────────────────────── */
+const ICONS = {
+  code:   (bg)=>`<svg width="52" height="52" viewBox="0 0 52 52" fill="none"><path d="M14 20L6 26L14 32M38 20L46 26L38 32M29 14L23 38" stroke="${bg==='#1B3A4A'?'#3CB878':'#1B3A4A'}" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  mobile: (bg)=>`<svg width="52" height="52" viewBox="0 0 52 52" fill="none"><rect x="16" y="6" width="20" height="40" rx="4" stroke="${bg==='#1B3A4A'?'#8DC63F':'#29ABE2'}" stroke-width="3"/><circle cx="26" cy="40" r="2" fill="${bg==='#1B3A4A'?'#8DC63F':'#29ABE2'}"/><path d="M20 12H32" stroke="${bg==='#1B3A4A'?'#8DC63F':'#29ABE2'}" stroke-width="2.5" stroke-linecap="round"/></svg>`,
+  doc:    (bg)=>`<svg width="52" height="52" viewBox="0 0 52 52" fill="none"><rect x="10" y="6" width="32" height="40" rx="4" stroke="${bg==='#1B3A4A'?'#8DC63F':'#1B3A4A'}" stroke-width="3"/><path d="M18 20H34M18 28H28M18 36H24" stroke="${bg==='#1B3A4A'?'#8DC63F':'#1B3A4A'}" stroke-width="2.5" stroke-linecap="round"/></svg>`,
+  globe:  (bg)=>`<svg width="52" height="52" viewBox="0 0 52 52" fill="none"><circle cx="26" cy="26" r="16" stroke="${bg==='#1B3A4A'?'#29ABE2':'#1B3A4A'}" stroke-width="3"/><path d="M26 10C26 10 20 18 20 26s6 16 6 16M26 10c0 0 6 8 6 16s-6 16-6 16M10 26H42" stroke="${bg==='#1B3A4A'?'#29ABE2':'#1B3A4A'}" stroke-width="2.5"/></svg>`,
+  chart:  (bg)=>`<svg width="52" height="52" viewBox="0 0 52 52" fill="none"><path d="M8 40L18 28L26 34L36 18L44 24" stroke="${bg==='#1B3A4A'?'#F59E0B':'#F59E0B'}" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 44H44" stroke="${bg==='#1B3A4A'?'rgba(255,255,255,.3)':'rgba(27,58,74,.2)'}" stroke-width="2"/></svg>`,
+  design: (bg)=>`<svg width="52" height="52" viewBox="0 0 52 52" fill="none"><circle cx="26" cy="26" r="12" stroke="${bg==='#1B3A4A'?'#8DC63F':'#8DC63F'}" stroke-width="3"/><circle cx="26" cy="26" r="4" fill="${bg==='#1B3A4A'?'#8DC63F':'#8DC63F'}"/><path d="M26 8V14M26 38V44M8 26H14M38 26H44" stroke="${bg==='#1B3A4A'?'rgba(255,255,255,.3)':'rgba(141,198,63,.4)'}" stroke-width="2.5" stroke-linecap="round"/></svg>`,
+  video:  (bg)=>`<svg width="52" height="52" viewBox="0 0 52 52" fill="none"><rect x="6" y="14" width="28" height="24" rx="4" stroke="${bg==='#1B3A4A'?'#29ABE2':'#E74C3C'}" stroke-width="3"/><path d="M34 21L46 14V38L34 31V21Z" stroke="${bg==='#1B3A4A'?'#29ABE2':'#E74C3C'}" stroke-width="3" stroke-linejoin="round"/></svg>`,
+  marketing:(bg)=>`<svg width="52" height="52" viewBox="0 0 52 52" fill="none"><path d="M10 34V18L38 10V42L10 34Z" stroke="${bg==='#1B3A4A'?'#F59E0B':'#F39C12'}" stroke-width="3" stroke-linejoin="round"/><path d="M10 26H20M10 18L10 34" stroke="${bg==='#1B3A4A'?'#F59E0B':'#F39C12'}" stroke-width="2.5" stroke-linecap="round"/><path d="M20 30L24 44" stroke="${bg==='#1B3A4A'?'#F59E0B':'#F39C12'}" stroke-width="2.5" stroke-linecap="round"/></svg>`,
+  finance:(bg)=>`<svg width="52" height="52" viewBox="0 0 52 52" fill="none"><rect x="6" y="16" width="40" height="28" rx="4" stroke="${bg==='#1B3A4A'?'#8DC63F':'#8DC63F'}" stroke-width="3"/><path d="M6 24H46" stroke="${bg==='#1B3A4A'?'rgba(255,255,255,.3)':'rgba(141,198,63,.4)'}" stroke-width="2"/><circle cx="26" cy="34" r="4" fill="${bg==='#1B3A4A'?'#8DC63F':'#8DC63F'}"/><path d="M18 12V16M34 12V16" stroke="${bg==='#1B3A4A'?'rgba(255,255,255,.4)':'rgba(141,198,63,.5)'}" stroke-width="2.5" stroke-linecap="round"/></svg>`,
+  coaching:(bg)=>`<svg width="52" height="52" viewBox="0 0 52 52" fill="none"><circle cx="26" cy="18" r="8" stroke="${bg==='#1B3A4A'?'#3CB878':'#3CB878'}" stroke-width="3"/><path d="M10 44c0-8.8 7.2-16 16-16s16 7.2 16 16" stroke="${bg==='#1B3A4A'?'#3CB878':'#3CB878'}" stroke-width="3" stroke-linecap="round"/></svg>`,
+};
+
+function starSVG(filled='#3CB878'){return`<svg width="11" height="11" viewBox="0 0 11 11" fill="${filled}"><path d="M5.5 1L6.8 4H10L7.5 6.2L8.5 9.5L5.5 7.5L2.5 9.5L3.5 6.2L1 4H4.2Z"/></svg>`}
+function starsRow(n,col='#3CB878'){return Array(n).fill(0).map(()=>starSVG(col)).join('')}
+
+const CAT_LABELS={dev:'Développement',design:'Design',marketing:'Marketing',writing:'Rédaction',finance:'Finance',video:'Vidéo',coaching:'Formation'};
+const BADGE_HTML={top:'<span class="card-badge cb-top">Top Oriupe</span>',hot:'<span class="card-badge cb-hot">Populaire</span>',new:'<span class="card-badge cb-new">Nouveau</span>',express:'<span class="card-badge cb-exp">Express 24h</span>'};
+const LEVEL_LABELS={new:'Nouveau',level1:'Niveau 1',level2:'Niveau 2',top:'Top Oriupe'};
+const DELAY_LABELS={1:'Express 24h',3:'Jusqu\'à 3 jours',7:'Jusqu\'à 7 jours',99:'Plus de 7 jours'};
+
+/* ─── STATE ──────────────────────────────────────────────── */
+let state = {
+  q:'', cats:[], delays:[], levels:[], rating:0, opts:[], langs:[],
+  priceMin:0, priceMax:Infinity, sort:'relevance', page:1, perPage:8, view:'grid'
+};
+
+/* ─── ENGINE ──────────────────────────────────────────────── */
+function applyFilters(){
+  let res=[...SERVICES];
+  if(state.q){const q=state.q.toLowerCase();res=res.filter(s=>s.title.toLowerCase().includes(q)||s.f.n.toLowerCase().includes(q)||CAT_LABELS[s.cat]?.toLowerCase().includes(q))}
+  if(state.cats.length)res=res.filter(s=>state.cats.includes(s.cat));
+  if(state.delays.length)res=res.filter(s=>{
+    return state.delays.some(d=>{
+      if(d===1)return s.delivery<=1;
+      if(d===3)return s.delivery<=3;
+      if(d===7)return s.delivery<=7;
+      if(d===99)return s.delivery>7;
+      return false;
+    });
+  });
+  if(state.levels.length)res=res.filter(s=>state.levels.includes(s.level));
+  if(state.rating>0)res=res.filter(s=>s.rating>=state.rating);
+  if(state.opts.includes('unlimited'))res=res.filter(s=>s.unlimited);
+  if(state.opts.includes('available'))res=res.filter(s=>s.available);
+  if(state.opts.includes('online'))res=res.filter(s=>s.online);
+  if(state.langs.length)res=res.filter(s=>state.langs.some(l=>s.langs.includes(l)));
+  if(state.priceMin>0)res=res.filter(s=>s.price>=state.priceMin);
+  if(state.priceMax<Infinity)res=res.filter(s=>s.price<=state.priceMax);
+  // sort
+  const sorts={
+    relevance:(a,b)=>b.reviews-a.reviews,
+    rating:(a,b)=>b.rating-a.rating||b.reviews-a.reviews,
+    newest:(a,b)=>b.id-a.id,
+    price_asc:(a,b)=>a.price-b.price,
+    price_desc:(a,b)=>b.price-a.price,
+    popular:(a,b)=>b.reviews-a.reviews,
+  };
+  res.sort(sorts[state.sort]||sorts.relevance);
+  return res;
+}
+
+/* ─── RENDER CARDS ──────────────────────────────────────── */
+function renderCards(){
+  const all=applyFilters();
+  const total=all.length;
+  const pages=Math.max(1,Math.ceil(total/state.perPage));
+  if(state.page>pages)state.page=1;
+  const slice=all.slice((state.page-1)*state.perPage,state.page*state.perPage);
+
+  // count
+  document.getElementById('results-count').innerHTML=`<strong>${total.toLocaleString('fr-FR')}</strong> service${total!==1?'s':''} trouvé${total!==1?'s':''}`;
+
+  // grid
+  const grid=document.getElementById('svc-grid');
+  if(!slice.length){
+    grid.innerHTML=`<div class="empty-state"><svg width="64" height="64" viewBox="0 0 64 64" fill="none"><circle cx="28" cy="28" r="20" stroke="#1B3A4A" stroke-width="3"/><path d="M42 42L58 58" stroke="#1B3A4A" stroke-width="3" stroke-linecap="round"/><path d="M20 28H36M28 20V36" stroke="#3CB878" stroke-width="3" stroke-linecap="round"/></svg><h3>Aucun service trouvé</h3><p>Essayez d'élargir vos filtres ou de modifier votre recherche.</p><button onclick="resetAll()">Réinitialiser les filtres</button></div>`;
+    document.getElementById('pagination').innerHTML='';
+    return;
+  }
+
+  grid.innerHTML=slice.map(s=>{
+    const isLiked=likedSet.has(s.id);
+    const heartFill=isLiked?'#E53935':'none';
+    const heartStroke=isLiked?'#E53935':'#1B3A4A';
+    return `<div class="svc-card" onclick="goDetail(${s.id})">
+      <div class="svc-img" style="background:${s.bg}">
+        ${ICONS[s.icon]?.(s.bg)||''}
+        ${s.badge?BADGE_HTML[s.badge]:''}
+        <button type="button" class="qv-hover-btn" onclick="event.stopPropagation();openQuickView(${s.id})">Aperçu rapide</button>
+        <button class="svc-fav${isLiked?' active':''}" onclick="toggleLike(event,${s.id})" title="Sauvegarder">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="${heartFill}" stroke="${heartStroke}" stroke-width="1.4"><path d="M7 12.5L1.5 7C1 6.5.5 5.5.5 4.5A3 3 0 016 2.5c.4.3.7.6 1 1 .3-.4.6-.7 1-1A3 3 0 0113.5 4.5C13.5 5.5 13 6.5 12.5 7L7 12.5Z"/></svg>
+        </button>
+      </div>
+      <div class="svc-body">
+        <div class="svc-top">
+          <div class="svc-author">
+            <div class="svc-av" style="background:${s.f.col};color:#fff">${s.f.i}</div>
+            <div><div class="svc-name">${s.f.n}</div><div class="svc-country">${s.f.c}</div></div>
+          </div>
+          ${s.online?'<div class="online-dot" title="En ligne"></div>':''}
+        </div>
+        <div class="svc-title">${s.title}</div>
+        <div class="svc-bot">
+          <div class="svc-stars">
+            ${starSVG()}
+            ${s.rating.toFixed(1)} <span class="svc-reviews">(${s.reviews})</span>
+          </div>
+          <div class="svc-price"><span class="svc-price-from">À partir de </span>${s.price.toLocaleString('fr-FR')} FCFA</div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  renderPagination(pages);
+  renderChips();
+}
+
+/* ─── PAGINATION ────────────────────────────────────────── */
+function renderPagination(pages){
+  const el=document.getElementById('pagination');
+  if(pages<=1){el.innerHTML='';return;}
+  const p=state.page;
+  let btns=[];
+  btns.push(`<button class="pg-btn"${p===1?' disabled':''} onclick="goPage(${p-1})"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3L5 7L9 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>`);
+  const range=new Set([1,2,p-1,p,p+1,pages-1,pages].filter(n=>n>=1&&n<=pages));
+  let prev=0;
+  for(const n of [...range].sort((a,b)=>a-b)){
+    if(prev&&n-prev>1)btns.push('<span class="pg-dots">…</span>');
+    btns.push(`<button class="pg-btn${n===p?' active':''}" onclick="goPage(${n})">${n}</button>`);
+    prev=n;
+  }
+  btns.push(`<button class="pg-btn"${p===pages?' disabled':''} onclick="goPage(${p+1})"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3L9 7L5 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>`);
+  el.innerHTML=btns.join('');
+}
+function goPage(n){state.page=n;renderCards();window.scrollTo({top:0,behavior:'smooth'})}
+
+/* ─── ACTIVE CHIPS ───────────────────────────────────────── */
+function renderChips(){
+  const chips=[];
+  if(state.q)chips.push({label:`"${state.q}"`,remove:()=>{state.q='';document.getElementById('searchInput').value='';update()}});
+  state.cats.forEach(v=>chips.push({label:CAT_LABELS[v],remove:()=>{state.cats=state.cats.filter(x=>x!==v);syncCheckbox('cat',v,false);update()}}));
+  state.delays.forEach(v=>chips.push({label:DELAY_LABELS[v],remove:()=>{state.delays=state.delays.filter(x=>x!==v);syncCheckbox('delay',v,false);update()}}));
+  state.levels.forEach(v=>chips.push({label:LEVEL_LABELS[v],remove:()=>{state.levels=state.levels.filter(x=>x!==v);syncCheckbox('level',v,false);update()}}));
+  if(state.rating>0)chips.push({label:`${state.rating}+ étoiles`,remove:()=>{state.rating=0;document.querySelector('input[data-filter=rating][data-value="0"]').checked=true;update()}});
+  state.opts.forEach(v=>chips.push({label:v==='unlimited'?'Révisions illimitées':v==='available'?'Disponible':'En ligne',remove:()=>{state.opts=state.opts.filter(x=>x!==v);syncCheckbox('opt',v,false);update()}}));
+  state.langs.forEach(v=>chips.push({label:v.toUpperCase(),remove:()=>{state.langs=state.langs.filter(x=>x!==v);syncCheckbox('lang',v,false);update()}}));
+  if(state.priceMax<Infinity)chips.push({label:`Max ${state.priceMax.toLocaleString('fr-FR')} FCFA`,remove:()=>{state.priceMax=Infinity;document.getElementById('priceMax').value='';document.getElementById('rangeSlider').value=500000;document.getElementById('rangeVal').textContent='Tous';update()}});
+  if(state.priceMin>0)chips.push({label:`Min ${state.priceMin.toLocaleString('fr-FR')} FCFA`,remove:()=>{state.priceMin=0;document.getElementById('priceMin').value='';update()}});
+
+  const el=document.getElementById('active-filters');
+  el.innerHTML=chips.map((c,i)=>`<div class="af-chip">${c.label}<span class="af-remove" onclick="removeChip(${i})">×</span></div>`).join('');
+  _chipRemovers=chips.map(c=>c.remove);
+}
+let _chipRemovers=[];
+function removeChip(i){_chipRemovers[i]?.();update()}
+
+function syncCheckbox(filter,value,checked){
+  const el=document.querySelector(`input[data-filter="${filter}"][data-value="${value}"]`);
+  if(el)el.checked=checked;
+}
+
+/* ─── LIKES ─────────────────────────────────────────────── */
+const likedSet=new Set(JSON.parse(localStorage.getItem('oriupe_liked')||'[]'));
+function toggleLike(e,id){
+  e.stopPropagation();
+  if(likedSet.has(id))likedSet.delete(id);else likedSet.add(id);
+  localStorage.setItem('oriupe_liked',JSON.stringify([...likedSet]));
+  renderCards();
+}
+
+/* ─── NAVIGATION ──────────────────────────────────────────── */
+function goDetail(id){window.location.href=`/src/pages/detail/index.html?id=${id}`}
+
+/* ─── UPDATE ──────────────────────────────────────────────── */
+function update(){state.page=1;renderCards();}
+
+/* ─── RESET ──────────────────────────────────────────────── */
+function resetAll(){
+  state={...state,q:'',cats:[],delays:[],levels:[],rating:0,opts:[],langs:[],priceMin:0,priceMax:Infinity,page:1};
+  document.getElementById('searchInput').value='';
+  document.querySelectorAll('.sidebar input[type=checkbox]').forEach(c=>c.checked=false);
+  document.querySelectorAll('.sidebar input[type=radio]').forEach(r=>{r.checked=r.dataset.value==='0'});
+  document.getElementById('rangeSlider').value=500000;
+  document.getElementById('rangeVal').textContent='Tous';
+  document.getElementById('priceMin').value='';
+  document.getElementById('priceMax').value='';
+  update();
+}
+
+/* ─── SECTION TOGGLE ──────────────────────────────────────── */
+function initSectionToggles(){
+  document.querySelectorAll('.fs-title[data-section]').forEach(title=>{
+    const key=title.dataset.section;
+    const content=document.getElementById(`sec-${key}`);
+    const arrow=title.querySelector('.fs-arrow');
+    title.addEventListener('click',()=>{
+      const isOpen=content.style.maxHeight!=='0px'&&content.style.maxHeight!=='';
+      content.style.maxHeight=isOpen?'0px':`${content.scrollHeight}px`;
+      arrow.style.transform=isOpen?'rotate(-90deg)':'rotate(0deg)';
+    });
+    content.style.maxHeight=`${content.scrollHeight}px`;
+  });
+}
+
+/* ─── INIT EVENTS ──────────────────────────────────────────── */
+document.addEventListener('DOMContentLoaded',()=>{
+  initSectionToggles();
+
+  // read URL params
+  const params=new URLSearchParams(location.search);
+  const qParam=params.get('q');
+  const catParam=params.get('category');
+  if(qParam){state.q=qParam;document.getElementById('searchInput').value=qParam;}
+  if(catParam&&CAT_LABELS[catParam]){
+    state.cats=[catParam];
+    const el=document.querySelector(`input[data-filter="cat"][data-value="${catParam}"]`);
+    if(el)el.checked=true;
+  }
+
+  // search
+  let debounce;
+  document.getElementById('searchInput').addEventListener('input',e=>{
+    clearTimeout(debounce);
+    debounce=setTimeout(()=>{state.q=e.target.value.trim();update();},300);
+  });
+  document.getElementById('searchInput').addEventListener('keydown',e=>{
+    if(e.key==='Enter'){clearTimeout(debounce);state.q=e.target.value.trim();update();}
+  });
+  document.getElementById('searchBtn').addEventListener('click',()=>{state.q=document.getElementById('searchInput').value.trim();update();});
+
+  // category
+  document.querySelectorAll('input[data-filter="cat"]').forEach(cb=>{
+    cb.addEventListener('change',()=>{
+      const v=cb.dataset.value;
+      if(cb.checked)state.cats=[...new Set([...state.cats,v])];
+      else state.cats=state.cats.filter(x=>x!==v);
+      update();
+    });
+  });
+
+  // delay
+  document.querySelectorAll('input[data-filter="delay"]').forEach(cb=>{
+    cb.addEventListener('change',()=>{
+      const v=+cb.dataset.value;
+      if(cb.checked)state.delays=[...new Set([...state.delays,v])];
+      else state.delays=state.delays.filter(x=>x!==v);
+      update();
+    });
+  });
+
+  // level
+  document.querySelectorAll('input[data-filter="level"]').forEach(cb=>{
+    cb.addEventListener('change',()=>{
+      const v=cb.dataset.value;
+      if(cb.checked)state.levels=[...new Set([...state.levels,v])];
+      else state.levels=state.levels.filter(x=>x!==v);
+      update();
+    });
+  });
+
+  // rating
+  document.querySelectorAll('input[data-filter="rating"]').forEach(r=>{
+    r.addEventListener('change',()=>{state.rating=+r.dataset.value;update();});
+  });
+
+  // options
+  document.querySelectorAll('input[data-filter="opt"]').forEach(cb=>{
+    cb.addEventListener('change',()=>{
+      const v=cb.dataset.value;
+      if(cb.checked)state.opts=[...new Set([...state.opts,v])];
+      else state.opts=state.opts.filter(x=>x!==v);
+      update();
+    });
+  });
+
+  // lang
+  document.querySelectorAll('input[data-filter="lang"]').forEach(cb=>{
+    cb.addEventListener('change',()=>{
+      const v=cb.dataset.value;
+      if(cb.checked)state.langs=[...new Set([...state.langs,v])];
+      else state.langs=state.langs.filter(x=>x!==v);
+      update();
+    });
+  });
+
+  // price range
+  const slider=document.getElementById('rangeSlider');
+  const rangeVal=document.getElementById('rangeVal');
+  slider.addEventListener('input',()=>{
+    const v=+slider.value;
+    rangeVal.textContent=v>=500000?'Tous':v.toLocaleString('fr-FR')+' FCFA';
+    state.priceMax=v>=500000?Infinity:v;
+    update();
+  });
+  document.getElementById('priceMin').addEventListener('change',e=>{
+    state.priceMin=+e.target.value||0;update();
+  });
+  document.getElementById('priceMax').addEventListener('change',e=>{
+    state.priceMax=+e.target.value||Infinity;
+    if(state.priceMax<500000){slider.value=state.priceMax;rangeVal.textContent=state.priceMax.toLocaleString('fr-FR')+' FCFA';}
+    update();
+  });
+
+  // sort
+  document.getElementById('sortSel').addEventListener('change',e=>{state.sort=e.target.value;update();});
+
+  // view toggle
+  document.getElementById('gridBtn').addEventListener('click',()=>{
+    state.view='grid';
+    document.getElementById('svc-grid').classList.remove('list-view');
+    document.getElementById('gridBtn').classList.add('active');
+    document.getElementById('listBtn').classList.remove('active');
+  });
+  document.getElementById('listBtn').addEventListener('click',()=>{
+    state.view='list';
+    document.getElementById('svc-grid').classList.add('list-view');
+    document.getElementById('listBtn').classList.add('active');
+    document.getElementById('gridBtn').classList.remove('active');
+  });
+
+  // reset
+  document.getElementById('resetBtn').addEventListener('click',resetAll);
+  document.getElementById('applyBtn').addEventListener('click',()=>{update();window.scrollTo({top:document.querySelector('.main-content').offsetTop-80,behavior:'smooth'});});
+
+  // fav toggle
+  document.querySelectorAll('.svc-fav').forEach(btn=>{btn.addEventListener('click',e=>{e.stopPropagation();btn.classList.toggle('active');const svg=btn.querySelector('svg');if(btn.classList.contains('active')){svg.setAttribute('fill','#E53935');svg.setAttribute('stroke','#E53935')}else{svg.setAttribute('fill','none');svg.setAttribute('stroke','#1B3A4A')}})});
+
+  // breadcrumb update
+  if(catParam&&CAT_LABELS[catParam]){document.getElementById('bc-cur').textContent=CAT_LABELS[catParam];}
+  if(qParam){document.getElementById('bc-cur').textContent=`Résultats pour "${qParam}"`;}
+
+  renderCards();
+
+  // scroll progress
+  window.addEventListener('scroll',()=>{
+    const t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;
+    document.getElementById('progress').style.width=h>0?(t/h*100)+'%':'0%';
+  },{passive:true});
+});
 </script>
-  <script type="module" src="/src/scripts/main.js"></script>
+<!-- Quick View Modal -->
+<div id="qv-overlay" role="dialog" aria-modal="true" aria-label="Aperçu du service">
+  <div id="qv-modal"><div id="qv-content"></div></div>
+</div>
+
+<script>
+/* ─── QUICK VIEW ───────────────────────────────── */
+function openQuickView(id) {
+  const s = SERVICES.find(x => x.id === id);
+  if (!s) return;
+  const liked = likedSet.has(id);
+  document.getElementById('qv-content').innerHTML = `
+    <div class="qv-inner" style="display:flex;border-radius:20px;overflow:hidden">
+      <div class="qv-thumb" style="width:190px;flex-shrink:0;background:${s.bg};display:flex;align-items:center;justify-content:center;min-height:190px;position:relative">
+        ${ICONS[s.icon]?.(s.bg)||''}
+        ${s.badge ? BADGE_HTML[s.badge] : ''}
+      </div>
+      <div style="flex:1;padding:24px;min-width:0">
+        <button type="button" onclick="closeQV()" style="position:absolute;top:14px;right:14px;width:30px;height:30px;background:#F4F6F9;border:none;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center" aria-label="Fermer">
+          <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M1 1L8 8M8 1L1 8" stroke="#1B3A4A" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+        <div style="display:flex;align-items:center;gap:7px;margin-bottom:10px">
+          <div style="width:26px;height:26px;border-radius:50%;background:${s.f.col};color:#fff;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">${s.f.i}</div>
+          <div><div style="font-size:12px;font-weight:700;color:var(--navy2)">${s.f.n}</div><div style="font-size:10px;color:var(--muted)">${s.f.c} · ${LEVEL_LABELS[s.level]}</div></div>
+          ${s.online ? '<span style="width:8px;height:8px;background:#22C55E;border-radius:50%;border:2px solid #fff;margin-left:auto;flex-shrink:0"></span>' : ''}
+        </div>
+        <div style="font-size:14px;font-weight:700;color:var(--navy2);line-height:1.45;margin-bottom:12px">${s.title}</div>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:16px">
+          <span style="display:flex;align-items:center;gap:3px;font-size:12px;font-weight:700;color:var(--navy2)">${starSVG()} ${s.rating.toFixed(1)}<span style="font-size:11px;color:var(--muted);font-weight:400;margin-left:1px">(${s.reviews})</span></span>
+          <span style="color:var(--muted2)">·</span>
+          <span style="font-size:11px;color:var(--muted)">${s.delivery <= 1 ? 'Express 24h' : s.delivery + ' j'}</span>
+          ${s.unlimited ? '<span style="font-size:10px;background:var(--green-l);color:var(--green-d);padding:3px 8px;border-radius:20px;font-weight:600">Révisions illimitées</span>' : ''}
+        </div>
+        <div class="qv-offer-grid">
+          ${[['Basique', Math.round(s.price*.65),''], ['Standard', s.price,'selected'], ['Premium', Math.round(s.price*1.75),'']].map(([lbl,price,sel]) =>
+            `<div class="qv-offer ${sel}"><div style="font-size:10px;font-weight:700;color:${sel?'var(--green)':'var(--muted)'};margin-bottom:4px">${lbl}</div><div style="font-size:15px;font-weight:800;color:var(--navy2)">${price.toLocaleString('fr-FR')}</div><div style="font-size:9px;color:var(--muted)">FCFA</div></div>`
+          ).join('')}
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:10px">
+          <button type="button" onclick="goDetail(${s.id})" style="flex:1;padding:11px;background:var(--green);color:#fff;border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif">Commander maintenant</button>
+          <button type="button" onclick="toggleLike(event,${s.id})" style="width:42px;height:42px;border:1.5px solid var(--border);border-radius:9px;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0" aria-label="Favoris">
+            <svg width="15" height="15" viewBox="0 0 14 14" fill="${liked ? '#E53935' : 'none'}" stroke="${liked ? '#E53935' : 'var(--navy2)'}" stroke-width="1.4"><path d="M7 12.5L1.5 7C1 6.5.5 5.5.5 4.5A3 3 0 016 2.5c.4.3.7.6 1 1 .3-.4.6-.7 1-1A3 3 0 0113.5 4.5C13.5 5.5 13 6.5 12.5 7L7 12.5Z"/></svg>
+          </button>
+        </div>
+        <div style="display:flex;gap:7px;flex-wrap:wrap">
+          <button type="button" class="qv-share" onclick="shareService(${s.id},'whatsapp')">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="#25D366"><path d="M6 .5A5.5 5.5 0 00.99 8.13L.5 11.5l3.45-.48A5.5 5.5 0 106 .5zm0 1A4.5 4.5 0 114.3 9.12l-.18-.3-1.4.2.19-1.42-.2-.3A4.5 4.5 0 016 1.5z"/></svg>
+            WhatsApp
+          </button>
+          <button type="button" class="qv-share" onclick="shareService(${s.id},'copy')">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="1.5" y="3.5" width="6.5" height="7.5" rx="1.5" stroke="var(--navy2)" stroke-width="1.2"/><path d="M4 3.5V2A1 1 0 015 1h5a1 1 0 011 1v6.5A1 1 0 0110 9.5H9" stroke="var(--navy2)" stroke-width="1.2"/></svg>
+            Copier le lien
+          </button>
+        </div>
+      </div>
+    </div>`;
+  document.getElementById('qv-overlay').classList.add('qv-open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeQV() {
+  document.getElementById('qv-overlay').classList.remove('qv-open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('qv-overlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('qv-overlay')) closeQV();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeQV(); });
+
+function shareService(id, method) {
+  const s = SERVICES.find(x => x.id === id);
+  const url = window.location.origin + '/src/pages/detail/index.html?id=' + id;
+  const text = `Découvrez ce service sur Oriupe : "${s?.title}" — À partir de ${s?.price?.toLocaleString('fr-FR')} FCFA`;
+  if (method === 'whatsapp') { window.open('https://wa.me/?text=' + encodeURIComponent(text + '\n' + url), '_blank'); }
+  else if (method === 'copy') { navigator.clipboard?.writeText(url).then(() => { if (window.showToast) showToast('Lien copié !', 'success', 2000); }); }
+}
+</script>
+<script type="module" src="/src/scripts/main.js"></script>
 </body>
 </html>

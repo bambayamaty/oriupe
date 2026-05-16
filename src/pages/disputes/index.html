@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Gestion des litiges — Oriupe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#0F2535;--green:#3CB878;--lime:#8DC63F;--blue:#29ABE2;--green-l:#E4F7EE;--blue-l:#E2F4FB;--bg:#F4F6F9}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:#1B3A4A;line-height:1.6}
+h1,h2,h3,h4{font-family:'Bricolage Grotesque',sans-serif}
+
+/* NAV */
+nav a:hover{background:rgba(15,37,53,.06)!important;border-radius:10px}
+
+/* HERO */
+.hero{background:var(--navy);padding:120px 24px 80px;position:relative;overflow:hidden;text-align:center}
+.hero::before{content:'';position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:900px;height:900px;background:radial-gradient(ellipse at center,rgba(41,171,226,.18) 0%,transparent 65%);pointer-events:none}
+.hero::after{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:48px 48px;pointer-events:none}
+.hero-orb{position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(60,184,120,.15),transparent 70%);bottom:-200px;right:-100px;pointer-events:none}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(60,184,120,.15);border:1px solid rgba(60,184,120,.3);border-radius:100px;padding:6px 16px;font-size:13px;font-weight:600;color:var(--green);margin-bottom:24px;position:relative;z-index:1}
+.hero h1{font-size:clamp(36px,5vw,58px);font-weight:800;color:#fff;line-height:1.1;margin-bottom:20px;position:relative;z-index:1}
+.hero h1 span{background:linear-gradient(135deg,var(--green),var(--lime));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{font-size:18px;color:rgba(255,255,255,.65);max-width:600px;margin:0 auto;position:relative;z-index:1}
+
+/* STATS */
+.stats-bar{background:#fff;border-bottom:1px solid rgba(27,58,74,.08);padding:28px 24px}
+.stats-bar-inner{max-width:1280px;margin:0 auto;display:flex;justify-content:center;gap:64px;flex-wrap:wrap}
+.stat-item{text-align:center}
+.stat-num{font-family:'Bricolage Grotesque',sans-serif;font-size:32px;font-weight:800;color:var(--navy)}
+.stat-num.green{color:var(--green)}
+.stat-num.blue{color:var(--blue)}
+.stat-label{font-size:13px;color:#6B8299;margin-top:2px}
+
+/* SECTIONS */
+.section{padding:80px 24px}
+.container{max-width:1280px;margin:0 auto}
+.section-label{font-size:11px;font-weight:700;color:var(--green);letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px}
+.section-title{font-size:clamp(28px,3vw,40px);font-weight:800;color:var(--navy);margin-bottom:16px}
+.section-sub{font-size:16px;color:#6B8299;max-width:560px}
+
+/* STEPPER */
+.stepper{position:relative;display:flex;gap:0;margin-top:56px;align-items:flex-start}
+.step{flex:1;position:relative;text-align:center;padding:0 12px}
+.step-connector{position:absolute;top:28px;left:calc(50% + 28px);right:calc(-50% + 28px);height:2px;background:linear-gradient(90deg,var(--green),var(--blue));z-index:0}
+.step:last-child .step-connector{display:none}
+.step-circle{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--lime));display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;color:#fff;margin:0 auto 20px;position:relative;z-index:1;box-shadow:0 8px 24px rgba(60,184,120,.3)}
+.step-card{background:#fff;border:1px solid rgba(27,58,74,.1);border-radius:16px;padding:24px;text-align:left}
+.step-icon{font-size:28px;margin-bottom:12px}
+.step-card h3{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:8px}
+.step-card p{font-size:13px;color:#6B8299;line-height:1.6}
+.step-tag{display:inline-flex;align-items:center;gap:4px;background:var(--green-l);border-radius:100px;padding:4px 10px;font-size:11px;font-weight:600;color:var(--green);margin-top:12px}
+
+/* TWO-COL */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:48px}
+@media(max-width:768px){.two-col{grid-template-columns:1fr}.stepper{flex-direction:column;align-items:center}.step{width:100%;max-width:340px}.step-connector{display:none}}
+.card{background:#fff;border:1px solid rgba(27,58,74,.1);border-radius:20px;padding:32px}
+.card h3{font-size:20px;font-weight:700;color:var(--navy);margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.card h3 .icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.card h3 .icon.green{background:var(--green-l)}
+.card h3 .icon.blue{background:var(--blue-l)}
+.refund-item{display:flex;align-items:flex-start;gap:12px;padding:14px 0;border-bottom:1px solid rgba(27,58,74,.06)}
+.refund-item:last-child{border-bottom:none}
+.refund-dot{width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0;margin-top:6px}
+.refund-item p{font-size:14px;color:#3A5570;line-height:1.5}
+.refund-item strong{color:var(--navy);display:block;margin-bottom:2px}
+.delay-table{width:100%;border-collapse:collapse}
+.delay-table th{font-size:12px;font-weight:700;color:#6B8299;text-transform:uppercase;letter-spacing:.06em;text-align:left;padding:10px 0;border-bottom:2px solid rgba(27,58,74,.08)}
+.delay-table td{font-size:13px;color:#3A5570;padding:12px 0;border-bottom:1px solid rgba(27,58,74,.06);vertical-align:top}
+.delay-table td:last-child{font-weight:600;color:var(--green)}
+.badge-tag{display:inline-flex;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:600}
+.badge-tag.orange{background:#FFF3E0;color:#E65100}
+.badge-tag.green{background:var(--green-l);color:var(--green)}
+.badge-tag.blue{background:var(--blue-l);color:#0D7CB5}
+
+/* FORM SECTION */
+.form-section{background:var(--navy);padding:80px 24px;position:relative;overflow:hidden}
+.form-section::before{content:'';position:absolute;top:-200px;right:-100px;width:600px;height:600px;background:radial-gradient(circle,rgba(41,171,226,.12),transparent 70%);pointer-events:none}
+.form-section::after{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:48px 48px;pointer-events:none}
+.form-wrap{max-width:680px;margin:0 auto;position:relative;z-index:1}
+.form-title{font-family:'Bricolage Grotesque',sans-serif;font-size:32px;font-weight:800;color:#fff;margin-bottom:8px;text-align:center}
+.form-sub{font-size:16px;color:rgba(255,255,255,.55);text-align:center;margin-bottom:40px}
+.form-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:36px;backdrop-filter:blur(10px)}
+.form-group{margin-bottom:20px}
+.form-label{font-size:13px;font-weight:600;color:rgba(255,255,255,.8);margin-bottom:8px;display:block}
+.form-control{width:100%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:12px 16px;font-size:14px;color:#fff;font-family:'Plus Jakarta Sans',sans-serif;outline:none;transition:border .2s}
+.form-control::placeholder{color:rgba(255,255,255,.3)}
+.form-control:focus{border-color:rgba(60,184,120,.5);background:rgba(255,255,255,.1)}
+select.form-control option{background:#1B3A4A;color:#fff}
+textarea.form-control{resize:vertical;min-height:120px}
+.upload-area{border:2px dashed rgba(255,255,255,.2);border-radius:10px;padding:28px;text-align:center;cursor:pointer;transition:border .2s}
+.upload-area:hover{border-color:rgba(60,184,120,.5)}
+.upload-icon{font-size:32px;margin-bottom:8px}
+.upload-area p{font-size:13px;color:rgba(255,255,255,.45)}
+.upload-area strong{color:rgba(255,255,255,.7);font-size:13px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:640px){.form-row{grid-template-columns:1fr}}
+.btn-submit{width:100%;background:linear-gradient(135deg,var(--green),var(--lime));border:none;border-radius:12px;padding:15px;font-size:15px;font-weight:700;color:#fff;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;margin-top:8px;transition:opacity .2s,transform .2s}
+.btn-submit:hover{opacity:.9;transform:translateY(-1px)}
+.success-state{display:none;text-align:center;padding:40px 20px}
+.success-state .success-icon{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--lime));display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 20px}
+.success-state h3{font-family:'Bricolage Grotesque',sans-serif;font-size:24px;font-weight:800;color:#fff;margin-bottom:10px}
+.success-state p{font-size:15px;color:rgba(255,255,255,.6);max-width:380px;margin:0 auto}
+.ticket-id{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:10px 20px;display:inline-block;margin-top:16px;font-size:14px;font-weight:600;color:var(--green);font-family:'Bricolage Grotesque',sans-serif}
+
+/* SUPPORT CTA */
+.support-cta{padding:48px 24px;text-align:center}
+.support-cta-inner{max-width:560px;margin:0 auto}
+.support-cta p{font-size:15px;color:#6B8299;margin-bottom:16px}
+.btn-outline{display:inline-flex;align-items:center;gap:8px;background:transparent;border:2px solid var(--green);border-radius:12px;padding:12px 28px;font-size:14px;font-weight:700;color:var(--green);text-decoration:none;transition:background .2s,color .2s}
+.btn-outline:hover{background:var(--green);color:#fff}
+footer{background:var(--navy);padding:64px 24px 32px;margin-top:0}
+.footer-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:40px;margin-bottom:48px}
+.footer-col-title{font-size:11px;font-weight:700;color:rgba(255,255,255,.35);letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px}
+.footer-links{display:flex;flex-direction:column;gap:10px}
+.footer-links a{font-size:13px;color:rgba(255,255,255,.6);text-decoration:none;transition:.2s}
+.footer-links a:hover{color:#fff}
+.footer-tagline{font-size:12px;color:rgba(255,255,255,.4);margin-top:10px;line-height:1.6}
+.footer-bottom{max-width:1280px;margin:0 auto;padding-top:24px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;align-items:center}
+.footer-copy{font-size:12px;color:rgba(255,255,255,.3)}
+.footer-legal{display:flex;gap:20px}
+.footer-legal a{font-size:12px;color:rgba(255,255,255,.3);text-decoration:none}
+.footer-legal a:hover{color:rgba(255,255,255,.7)}
+@media(max-width:900px){.footer-inner{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.footer-inner{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav style="position:fixed;top:0;left:0;right:0;z-index:100;padding:0 24px;background:rgba(255,255,255,.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(27,58,74,.1)">
+  <div style="max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:24px;height:64px">
+    <a href="/src/pages/home/index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none">
+      <svg width="30" height="30" viewBox="0 0 32 32" fill="none"><circle cx="10" cy="10" r="8.5" fill="#8DC63F" opacity=".9"/><circle cx="22" cy="10" r="8.5" fill="#29ABE2" opacity=".9"/><circle cx="10" cy="22" r="8.5" fill="#3CB878" opacity=".9"/><circle cx="22" cy="22" r="8.5" fill="#1B3A4A"/><rect x="9.5" y="9.5" width="13" height="13" rx="1.5" fill="rgba(60,184,120,.45)"/></svg>
+      <span style="font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:#0F2535">Oriupe</span>
+    </a>
+    <div style="display:flex;gap:4px;margin-left:32px">
+      <a href="/src/pages/catalog/index.html" style="text-decoration:none;color:#1B3A4A;font-size:14px;font-weight:500;padding:8px 14px;border-radius:10px">Explorer</a>
+      <a href="/src/pages/offers/index.html" style="text-decoration:none;color:#1B3A4A;font-size:14px;font-weight:500;padding:8px 14px;border-radius:10px">Appels d'offres</a>
+      <a href="/src/pages/academy/index.html" style="text-decoration:none;color:#1B3A4A;font-size:14px;font-weight:500;padding:8px 14px;border-radius:10px">Academy</a>
+      <a href="/src/pages/blog/index.html" style="text-decoration:none;color:#1B3A4A;font-size:14px;font-weight:500;padding:8px 14px;border-radius:10px">Blog</a>
+      <a href="/src/pages/pricing/index.html" style="text-decoration:none;color:#1B3A4A;font-size:14px;font-weight:500;padding:8px 14px;border-radius:10px">Tarifs</a>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;margin-left:auto">
+      <button onclick="location.href='/src/pages/auth/index.html'" style="background:transparent;border:1.5px solid rgba(27,58,74,.15);border-radius:10px;padding:8px 18px;font-size:13px;font-weight:600;color:#1B3A4A;cursor:pointer">Se connecter</button>
+      <button onclick="location.href='/src/pages/auth/index.html'" style="background:linear-gradient(135deg,#3CB878,#8DC63F);border:none;border-radius:10px;padding:9px 20px;font-size:13px;font-weight:700;color:#fff;cursor:pointer">S'inscrire</button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-orb"></div>
+  <div class="hero-badge">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    Système d'escrow sécurisé
+  </div>
+  <h1>Gestion des litiges —<br><span>On vous protège</span></h1>
+  <p>Tous les paiements sur Oriupe sont sécurisés par notre système d'escrow. En cas de problème, notre équipe de médiation intervient dans les 48h pour protéger acheteurs et freelances.</p>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stats-bar-inner">
+    <div class="stat-item">
+      <div class="stat-num green">94%</div>
+      <div class="stat-label">des litiges résolus en moins de 5 jours</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num blue">3.2 jours</div>
+      <div class="stat-label">Temps moyen de résolution</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">100%</div>
+      <div class="stat-label">des fonds sécurisés par escrow</div>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="section" style="background:#fff">
+  <div class="container">
+    <div class="section-label">Processus de résolution</div>
+    <div class="section-title">Comment ça marche</div>
+    <p class="section-sub">Un processus transparent en 4 étapes pour résoudre tout différend rapidement et équitablement.</p>
+
+    <div class="stepper">
+      <!-- Step 1 -->
+      <div class="step">
+        <div class="step-connector"></div>
+        <div class="step-circle">1</div>
+        <div class="step-card">
+          <div class="step-icon">🚩</div>
+          <h3>Signaler le litige</h3>
+          <p>Soumettez votre litige via le formulaire ci-dessous avec toutes les preuves nécessaires (captures, fichiers, échanges).</p>
+          <div class="step-tag">⏱ Immédiat</div>
+        </div>
+      </div>
+      <!-- Step 2 -->
+      <div class="step">
+        <div class="step-connector"></div>
+        <div class="step-circle">2</div>
+        <div class="step-card">
+          <div class="step-icon">🔍</div>
+          <h3>Enquête Oriupe</h3>
+          <p>Notre équipe analyse toutes les preuves soumises par les deux parties et examine l'historique complet de la commande.</p>
+          <div class="step-tag">⏱ Sous 48h</div>
+        </div>
+      </div>
+      <!-- Step 3 -->
+      <div class="step">
+        <div class="step-connector"></div>
+        <div class="step-circle">3</div>
+        <div class="step-card">
+          <div class="step-icon">🤝</div>
+          <h3>Médiation</h3>
+          <p>Un médiateur Oriupe facilitera un accord amiable entre les parties. Les deux parties sont entendues équitablement.</p>
+          <div class="step-tag">⏱ 2–5 jours ouvrés</div>
+        </div>
+      </div>
+      <!-- Step 4 -->
+      <div class="step">
+        <div class="step-circle">4</div>
+        <div class="step-card">
+          <div class="step-icon">✅</div>
+          <h3>Résolution & remboursement</h3>
+          <p>Décision finale émise. Les fonds escrow sont libérés au freelance ou remboursés au client selon le verdict.</p>
+          <div class="step-tag">⏱ Sous 3 jours ouvrés</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- POLICY + DELAYS -->
+<section class="section">
+  <div class="container">
+    <div class="two-col">
+      <!-- Refund Policy -->
+      <div class="card">
+        <h3>
+          <span class="icon green">💰</span>
+          Politique de remboursement
+        </h3>
+
+        <div class="refund-item">
+          <div class="refund-dot"></div>
+          <div>
+            <strong>Non-livraison confirmée</strong>
+            <p>Remboursement intégral de 100% dans un délai de 5 jours ouvrés suivant la décision de médiation.</p>
+          </div>
+        </div>
+        <div class="refund-item">
+          <div class="refund-dot"></div>
+          <div>
+            <strong>Livraison non conforme au cahier des charges</strong>
+            <p>Remboursement partiel ou total selon le degré de non-conformité évalué par le médiateur (20% à 100%).</p>
+          </div>
+        </div>
+        <div class="refund-item">
+          <div class="refund-dot"></div>
+          <div>
+            <strong>Problème de qualité majeur</strong>
+            <p>Demande de révision obligatoire en premier recours. Si refus du freelance : remboursement de 50% à 80%.</p>
+          </div>
+        </div>
+        <div class="refund-item">
+          <div class="refund-dot"></div>
+          <div>
+            <strong>Accord amiable entre parties</strong>
+            <p>Remboursement selon les termes négociés, exécuté dans 48h après accord signé électroniquement.</p>
+          </div>
+        </div>
+        <div class="refund-item">
+          <div class="refund-dot" style="background:#E65100"></div>
+          <div>
+            <strong>Cas non remboursables</strong>
+            <p>Changement d'avis du client sans motif valable, livraison conforme aux specs d'origine, ou délai de contestation dépassé (14 jours après livraison).</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Delays -->
+      <div class="card">
+        <h3>
+          <span class="icon blue">⏱</span>
+          Délais légaux & engagements
+        </h3>
+        <table class="delay-table">
+          <thead>
+            <tr>
+              <th>Étape</th>
+              <th>Délai garanti</th>
+              <th>Statut</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Accusé de réception du litige</td>
+              <td>2 heures</td>
+              <td><span class="badge-tag green">Automatique</span></td>
+            </tr>
+            <tr>
+              <td>Assignation d'un médiateur</td>
+              <td>24 heures</td>
+              <td><span class="badge-tag green">Garanti</span></td>
+            </tr>
+            <tr>
+              <td>Enquête initiale</td>
+              <td>48 heures</td>
+              <td><span class="badge-tag green">Garanti</span></td>
+            </tr>
+            <tr>
+              <td>Phase de médiation</td>
+              <td>5 jours ouvrés</td>
+              <td><span class="badge-tag blue">Standard</span></td>
+            </tr>
+            <tr>
+              <td>Décision finale</td>
+              <td>10 jours ouvrés</td>
+              <td><span class="badge-tag orange">Maximum</span></td>
+            </tr>
+            <tr>
+              <td>Exécution du remboursement</td>
+              <td>3–5 jours ouvrés</td>
+              <td><span class="badge-tag green">Garanti</span></td>
+            </tr>
+            <tr>
+              <td>Délai de contestation post-livraison</td>
+              <td>14 jours calendaires</td>
+              <td><span class="badge-tag orange">Limite légale</span></td>
+            </tr>
+            <tr>
+              <td>Appel de la décision</td>
+              <td>7 jours après décision</td>
+              <td><span class="badge-tag blue">Disponible</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="margin-top:20px;padding:14px;background:var(--green-l);border-radius:10px;font-size:13px;color:#1B5E3B;line-height:1.5">
+          <strong>Note :</strong> Tous les fonds restent bloqués en escrow pendant toute la durée du litige. Aucun paiement n'est effectué au freelance tant que le litige n'est pas résolu.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DISPUTE FORM -->
+<section class="form-section">
+  <div class="form-wrap">
+    <div class="form-title">Déclarer un litige</div>
+    <p class="form-sub">Remplissez ce formulaire pour ouvrir un dossier. Notre équipe vous répond dans les 2 heures.</p>
+
+    <div class="form-card">
+      <div id="formContent">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Votre rôle *</label>
+            <select class="form-control">
+              <option value="">Sélectionner...</option>
+              <option>Client (client)</option>
+              <option>Freelance (freelance)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Numéro de commande *</label>
+            <input type="text" class="form-control" placeholder="ex: ORD-2025-00842">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Type de litige *</label>
+          <select class="form-control">
+            <option value="">Sélectionner le type de litige...</option>
+            <option>Livraison non conforme au cahier des charges</option>
+            <option>Non-livraison dans les délais convenus</option>
+            <option>Problème de qualité majeur</option>
+            <option>Comportement inapproprié / communication</option>
+            <option>Problème de paiement / remboursement</option>
+            <option>Violation de la propriété intellectuelle</option>
+            <option>Autre (préciser dans la description)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Description détaillée du problème *</label>
+          <textarea class="form-control" placeholder="Décrivez le problème avec précision : ce qui était attendu, ce qui a été livré, dates importantes, échanges pertinents..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Montant contesté (FCFA)</label>
+          <input type="number" class="form-control" placeholder="ex: 75000">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Pièces justificatives</label>
+          <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+            <div class="upload-icon">📎</div>
+            <strong>Cliquez pour joindre des fichiers</strong>
+            <p>Captures d'écran, fichiers livrés, échanges de messages<br>PNG, JPG, PDF, ZIP — max 20 Mo</p>
+            <input type="file" id="fileInput" multiple style="display:none" accept=".png,.jpg,.jpeg,.pdf,.zip">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Email de contact *</label>
+          <input type="email" class="form-control" placeholder="votre@email.com">
+        </div>
+
+        <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:20px">
+          <input type="checkbox" id="consent" style="margin-top:3px;accent-color:var(--green);width:16px;height:16px;flex-shrink:0">
+          <label for="consent" style="font-size:13px;color:rgba(255,255,255,.55);line-height:1.5;cursor:pointer">J'atteste que les informations fournies sont exactes et je consens au traitement de ce dossier par l'équipe Oriupe conformément à la <a href="/src/pages/privacy/index.html" style="color:var(--green)">politique de confidentialité</a>.</label>
+        </div>
+
+        <button class="btn-submit" onclick="submitDispute()">
+          🚩 Soumettre le litige
+        </button>
+      </div>
+
+      <!-- SUCCESS STATE -->
+      <div class="success-state" id="successState">
+        <div class="success-icon">✅</div>
+        <h3>Litige enregistré avec succès</h3>
+        <p>Votre dossier a bien été ouvert. Notre équipe vous contactera dans les 2 heures ouvrées.</p>
+        <div class="ticket-id">🎫 Ticket #LIT-2025-04891</div>
+        <p style="margin-top:20px;font-size:13px;color:rgba(255,255,255,.4)">Conservez ce numéro de ticket pour suivre l'évolution de votre dossier.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SUPPORT CTA -->
+<section class="support-cta">
+  <div class="support-cta-inner">
+    <p>Besoin d'aide urgente ou d'une assistance personnalisée ?<br>Notre équipe support est disponible du lundi au vendredi, 8h–18h (GMT).</p>
+    <a href="/src/pages/contact/index.html" class="btn-outline">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+      Contacter le support
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div><a href="/src/pages/home/index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;margin-bottom:12px"><svg width="26" height="26" viewBox="0 0 32 32" fill="none"><circle cx="10" cy="10" r="8.5" fill="#8DC63F" opacity=".9"/><circle cx="22" cy="10" r="8.5" fill="#29ABE2" opacity=".9"/><circle cx="10" cy="22" r="8.5" fill="#3CB878" opacity=".9"/><circle cx="22" cy="22" r="8.5" fill="#1B3A4A"/><rect x="9.5" y="9.5" width="13" height="13" rx="1.5" fill="rgba(60,184,120,.45)"/></svg><span style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;color:#fff">Oriupe</span></a><p class="footer-tagline">"Ton talent. Ton continent. Ton avenir."</p></div>
+    <div><div class="footer-col-title">Oriupe</div><div class="footer-links"><a href="/src/pages/about/index.html">À propos</a><a href="/src/pages/careers/index.html">Carrières</a><a href="/src/pages/press/index.html">Presse &amp; Médias</a><a href="/src/pages/blog/index.html">Blog</a><a href="/src/pages/impact/index.html">Impact ESG</a></div></div>
+    <div><div class="footer-col-title">Freelances</div><div class="footer-links"><a href="/src/pages/auth/index.html">S'inscrire</a><a href="/src/pages/how-it-works/index.html">Comment ça marche</a><a href="/src/pages/academy/index.html">Oriupe Academy</a><a href="/src/pages/pricing/index.html">Tarifs Pro</a><a href="/src/pages/faq/index.html">FAQ Freelances</a></div></div>
+    <div><div class="footer-col-title">Support</div><div class="footer-links"><a href="/src/pages/help/index.html">Centre d'aide</a><a href="/src/pages/contact/index.html">Nous contacter</a><a href="/src/pages/disputes/index.html">Gestion des litiges</a><a href="/src/pages/terms/index.html">CGU &amp; CGV</a><a href="/src/pages/privacy/index.html">Confidentialité</a></div></div>
+  </div>
+  <div class="footer-bottom"><span class="footer-copy">© 2025 Oriupe SAS — Abidjan, Côte d'Ivoire. Tous droits réservés.</span><div class="footer-legal"><a href="/src/pages/privacy/index.html">Confidentialité</a><a href="/src/pages/terms/index.html">CGU &amp; CGV</a></div></div>
+</footer>
+
+<script>
+function submitDispute(){
+  var consent=document.getElementById('consent');
+  if(!consent.checked){alert('Veuillez cocher la case de consentement.');return;}
+  document.getElementById('formContent').style.display='none';
+  document.getElementById('successState').style.display='block';
+}
+// File upload label update
+document.getElementById('fileInput').addEventListener('change',function(){
+  var area=this.closest('.upload-area');
+  if(this.files.length>0){
+    area.querySelector('strong').textContent=this.files.length+' fichier(s) sélectionné(s)';
+  }
+});
+</script>
+</body>
+</html>

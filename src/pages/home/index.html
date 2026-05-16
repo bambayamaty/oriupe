@@ -454,6 +454,20 @@ footer{background:var(--navy);padding:72px 48px 36px}
   .svc-grid{grid-template-columns:1fr}
   .hero-h1{font-size:clamp(32px,8vw,44px);letter-spacing:-1.5px}
 }
+footer{background:var(--navy);padding:64px 24px 32px;margin-top:0}
+.footer-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:40px;margin-bottom:48px}
+.footer-col-title{font-size:11px;font-weight:700;color:rgba(255,255,255,.35);letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px}
+.footer-links{display:flex;flex-direction:column;gap:10px}
+.footer-links a{font-size:13px;color:rgba(255,255,255,.6);text-decoration:none;transition:.2s}
+.footer-links a:hover{color:#fff}
+.footer-tagline{font-size:12px;color:rgba(255,255,255,.4);margin-top:10px;line-height:1.6}
+.footer-bottom{max-width:1280px;margin:0 auto;padding-top:24px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;align-items:center}
+.footer-copy{font-size:12px;color:rgba(255,255,255,.3)}
+.footer-legal{display:flex;gap:20px}
+.footer-legal a{font-size:12px;color:rgba(255,255,255,.3);text-decoration:none}
+.footer-legal a:hover{color:rgba(255,255,255,.7)}
+@media(max-width:900px){.footer-inner{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.footer-inner{grid-template-columns:1fr}}
 </style>
   <script type="module" src="/src/components/nav.js"></script>
 </head>
@@ -536,8 +550,8 @@ footer{background:var(--navy);padding:72px 48px 36px}
 
       <div class="search-hero">
         <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style="flex-shrink:0;opacity:.4"><circle cx="7.5" cy="7.5" r="5.5" stroke="#fff" stroke-width="1.8"/><path d="M11.5 11.5L17 17" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
-        <input placeholder="Développeur, designer, marketer, rédacteur..."/>
-        <button class="search-btn">
+        <input id="heroSearch" placeholder="Développeur, designer, marketer, rédacteur..."/>
+        <button class="search-btn" id="heroSearchBtn">
           <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="6.5" cy="6.5" r="4.5" stroke="#fff" stroke-width="1.7"/><path d="M10 10L14 14" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/></svg>
           Rechercher
         </button>
@@ -545,12 +559,12 @@ footer{background:var(--navy);padding:72px 48px 36px}
 
       <div class="hero-tags">
         <span class="htag lbl">Populaire :</span>
-        <span class="htag">Logo & Design</span>
-        <span class="htag">Site web</span>
-        <span class="htag">Marketing</span>
-        <span class="htag">Dev mobile</span>
-        <span class="htag">Vidéo</span>
-        <span class="htag">SEO</span>
+        <span class="htag" data-cat="design">Logo & Design</span>
+        <span class="htag" data-q="site web">Site web</span>
+        <span class="htag" data-cat="marketing">Marketing</span>
+        <span class="htag" data-q="mobile">Dev mobile</span>
+        <span class="htag" data-cat="video">Vidéo</span>
+        <span class="htag" data-q="SEO">SEO</span>
       </div>
     </div>
 
@@ -602,7 +616,7 @@ footer{background:var(--navy);padding:72px 48px 36px}
             <div style="font-size:9px;color:rgba(255,255,255,.3)">FCFA</div>
           </div>
         </div>
-        <button style="width:100%;background:linear-gradient(135deg,var(--green),var(--lime));color:#fff;border:none;border-radius:12px;padding:14px;font-size:14px;font-weight:800;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;letter-spacing:-.2px">Commander maintenant</button>
+        <button onclick="location.href='/src/pages/detail/index.html?id=4'" style="width:100%;background:linear-gradient(135deg,var(--green),var(--lime));color:#fff;border:none;border-radius:12px;padding:14px;font-size:14px;font-weight:800;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;letter-spacing:-.2px">Commander maintenant</button>
       </div>
 
       <!-- Floating cards -->
@@ -723,14 +737,14 @@ footer{background:var(--navy);padding:72px 48px 36px}
         <div class="sec-eyebrow">SERVICES NUMÉRIQUES</div>
         <div class="sec-title">Explorez nos catégories</div>
       </div>
-      <span class="see-all r">
+      <span class="see-all r" onclick="location.href='/src/pages/catalog/index.html'">
         Voir toutes
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M9 4L13 8L9 12" stroke="var(--green)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </span>
     </div>
     <div class="cat-grid sg">
       <!-- Développement -->
-      <div class="cat-card r">
+      <div class="cat-card r" data-cat="dev">
         <div class="cat-ill" style="background:linear-gradient(135deg,#0F2535,#1B3A4A)">
           <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M9 10L5 14L9 18M19 10L23 14L19 18M15.5 8L12.5 20" stroke="#3CB878" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
@@ -739,7 +753,7 @@ footer{background:var(--navy);padding:72px 48px 36px}
         <div class="cat-count">892 services</div>
       </div>
       <!-- Design -->
-      <div class="cat-card r">
+      <div class="cat-card r" data-cat="design">
         <div class="cat-ill" style="background:linear-gradient(135deg,#3CB878,#8DC63F)">
           <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M6 22L11 17M11 17L20.5 7C21.5 6 22.5 7 21.5 8L12 17.5L11 17Z" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 17L5.5 22.5L11 22" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
@@ -748,7 +762,7 @@ footer{background:var(--navy);padding:72px 48px 36px}
         <div class="cat-count">734 services</div>
       </div>
       <!-- Marketing -->
-      <div class="cat-card r">
+      <div class="cat-card r" data-cat="marketing">
         <div class="cat-ill" style="background:linear-gradient(135deg,#29ABE2,#7DD6F0)">
           <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M5 21V23M9 17V23M13 13V23M17 9V23M21 5V23" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg>
         </div>
@@ -757,7 +771,7 @@ footer{background:var(--navy);padding:72px 48px 36px}
         <div class="cat-count">561 services</div>
       </div>
       <!-- Rédaction -->
-      <div class="cat-card r">
+      <div class="cat-card r" data-cat="writing">
         <div class="cat-ill" style="background:linear-gradient(135deg,#7B4FBA,#A67CE8)">
           <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="5" y="4" width="18" height="20" rx="3" stroke="#fff" stroke-width="2"/><path d="M9 10H19M9 14H19M9 18H15" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
         </div>
@@ -766,7 +780,7 @@ footer{background:var(--navy);padding:72px 48px 36px}
         <div class="cat-count">423 services</div>
       </div>
       <!-- Finance -->
-      <div class="cat-card r">
+      <div class="cat-card r" data-cat="finance">
         <div class="cat-ill" style="background:linear-gradient(135deg,#F59E0B,#FCD34D)">
           <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="4" y="4" width="20" height="20" rx="3" stroke="#78350F" stroke-width="2"/><path d="M9 9H11M17 9H19M9 14H11M17 14H19M9 19H11M17 19H19" stroke="#78350F" stroke-width="1.7" stroke-linecap="round"/></svg>
         </div>
@@ -775,7 +789,7 @@ footer{background:var(--navy);padding:72px 48px 36px}
         <div class="cat-count">287 services</div>
       </div>
       <!-- Vidéo -->
-      <div class="cat-card r">
+      <div class="cat-card r" data-cat="video">
         <div class="cat-ill" style="background:linear-gradient(135deg,#E53935,#FF8A80)">
           <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="3" y="7" width="16" height="14" rx="3" stroke="#fff" stroke-width="2"/><path d="M19 12L25 8V20L19 16" stroke="#fff" stroke-width="2" stroke-linejoin="round"/></svg>
         </div>
@@ -784,7 +798,7 @@ footer{background:var(--navy);padding:72px 48px 36px}
         <div class="cat-count">318 services</div>
       </div>
       <!-- Musique -->
-      <div class="cat-card r">
+      <div class="cat-card r" onclick="location.href='/src/pages/catalog/index.html'">
         <div class="cat-ill" style="background:linear-gradient(135deg,#06B6D4,#67E8F9)">
           <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="8.5" cy="19.5" r="3" stroke="#164E63" stroke-width="1.8"/><circle cx="19.5" cy="17" r="3" stroke="#164E63" stroke-width="1.8"/><path d="M11.5 19.5V9.5L22.5 7V17" stroke="#164E63" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
@@ -793,7 +807,7 @@ footer{background:var(--navy);padding:72px 48px 36px}
         <div class="cat-count">145 services</div>
       </div>
       <!-- Formation -->
-      <div class="cat-card r">
+      <div class="cat-card r" data-cat="coaching">
         <div class="cat-ill" style="background:linear-gradient(135deg,#8B5CF6,#C4B5FD)">
           <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M3 10.5L14 5.5L25 10.5L14 15.5L3 10.5Z" stroke="#fff" stroke-width="2" stroke-linejoin="round"/><path d="M7 12.5V18C7 18 9.8 21 14 21C18.2 21 21 18 21 18V12.5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M25 10.5V16" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
         </div>
@@ -813,12 +827,12 @@ footer{background:var(--navy);padding:72px 48px 36px}
         <div class="sec-eyebrow">TENDANCE CETTE SEMAINE</div>
         <div class="sec-title">Services populaires</div>
       </div>
-      <span class="see-all r">Voir tous les services <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M9 4L13 8L9 12" stroke="var(--green)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span class="see-all r" onclick="location.href='/src/pages/catalog/index.html'">Voir tous les services <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M9 4L13 8L9 12" stroke="var(--green)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     </div>
     <div class="svc-grid sg">
 
       <!-- Card 1 -->
-      <div class="svc-card r">
+      <div class="svc-card r" onclick="location.href='/src/pages/detail/index.html?id=1'">
         <div class="svc-img" style="background:linear-gradient(135deg,#0F2535 0%,#1E4D6B 100%)">
           <div class="svc-badge-wrap"><span class="badge badge-top">Top Oriupe</span></div>
           <button class="svc-fav"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#1B3A4A" stroke-width="1.4"><path d="M7 12.5L1.5 7A3 3 0 116 2.5c.3.3.6.6 1 1 .4-.4.7-.7 1-1A3 3 0 1112.5 7L7 12.5Z"/></svg></button>
@@ -846,7 +860,7 @@ footer{background:var(--navy);padding:72px 48px 36px}
       </div>
 
       <!-- Card 2 -->
-      <div class="svc-card r">
+      <div class="svc-card r" onclick="location.href='/src/pages/detail/index.html?id=9'">
         <div class="svc-img" style="background:linear-gradient(135deg,#1A4726 0%,#2D7A3E 100%)">
           <div class="svc-badge-wrap"><span class="badge badge-hot">Populaire</span></div>
           <button class="svc-fav" style="background:rgba(255,255,255,.85)"><svg width="14" height="14" viewBox="0 0 14 14" fill="#E53935" stroke="#E53935" stroke-width="1.4"><path d="M7 12.5L1.5 7A3 3 0 116 2.5c.3.3.6.6 1 1 .4-.4.7-.7 1-1A3 3 0 1112.5 7L7 12.5Z"/></svg></button>
@@ -874,7 +888,7 @@ footer{background:var(--navy);padding:72px 48px 36px}
       </div>
 
       <!-- Card 3 -->
-      <div class="svc-card r">
+      <div class="svc-card r" onclick="location.href='/src/pages/catalog/index.html?q=SEO'">
         <div class="svc-img" style="background:linear-gradient(135deg,#0C3547 0%,#1B6F8A 100%)">
           <div class="svc-badge-wrap"><span class="badge badge-exp">Express 24h</span></div>
           <button class="svc-fav"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#1B3A4A" stroke-width="1.4"><path d="M7 12.5L1.5 7A3 3 0 116 2.5c.3.3.6.6 1 1 .4-.4.7-.7 1-1A3 3 0 1112.5 7L7 12.5Z"/></svg></button>
@@ -902,7 +916,7 @@ footer{background:var(--navy);padding:72px 48px 36px}
       </div>
 
       <!-- Card 4 -->
-      <div class="svc-card r">
+      <div class="svc-card r" onclick="location.href='/src/pages/catalog/index.html?q=r%C3%A9daction'">
         <div class="svc-img" style="background:linear-gradient(135deg,#3D1A78 0%,#6B36D1 100%)">
           <div class="svc-badge-wrap"><span class="badge badge-new">Nouveau</span></div>
           <button class="svc-fav"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#1B3A4A" stroke-width="1.4"><path d="M7 12.5L1.5 7A3 3 0 116 2.5c.3.3.6.6 1 1 .4-.4.7-.7 1-1A3 3 0 1112.5 7L7 12.5Z"/></svg></button>
@@ -1111,7 +1125,7 @@ footer{background:var(--navy);padding:72px 48px 36px}
       <div class="ao-desc">Pour les projets +500 000 FCFA. Notre équipe vérifie votre besoin et le publie aux meilleurs freelances africains. Recevez des offres qualifiées en 48h.</div>
     </div>
     <div class="r ri" style="text-align:center;flex-shrink:0">
-      <button class="btn-ao">
+      <button class="btn-ao" onclick="location.href='/src/pages/offers/index.html'">
         <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 3V15M3 9H15" stroke="var(--green-d)" stroke-width="2" stroke-linecap="round"/></svg>
         Soumettre un projet
       </button>
@@ -1188,7 +1202,7 @@ footer{background:var(--navy);padding:72px 48px 36px}
         <div class="sec-eyebrow">RESSOURCES & CONSEILS</div>
         <div class="sec-title">Le Blog Oriupe</div>
       </div>
-      <span class="see-all r">Tous les articles <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M9 4L13 8L9 12" stroke="var(--green)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span class="see-all r" onclick="location.href='/src/pages/blog/index.html'">Tous les articles <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M9 4L13 8L9 12" stroke="var(--green)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     </div>
     <div class="blog-grid sg">
 
@@ -1268,7 +1282,7 @@ footer{background:var(--navy);padding:72px 48px 36px}
         </div>
         <div class="cta-title">Vous avez un projet ?</div>
         <p class="cta-desc">Accédez à des milliers de freelances numériques vérifiés partout en Afrique. Concentrez-vous sur votre cœur de métier — on s'occupe du reste.</p>
-        <button class="btn-cta-green">
+        <button class="btn-cta-green" onclick="location.href='/src/pages/catalog/index.html'">
           Trouver un freelance
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7H11M8 4L11 7L8 10" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
@@ -1280,7 +1294,7 @@ footer{background:var(--navy);padding:72px 48px 36px}
         </div>
         <div class="cta-title">Vous avez un talent ?</div>
         <p class="cta-desc">Monétisez vos compétences numériques. Rejoignez 50 000 jeunes africains qui réussissent sur Oriupe. Inscrivez-vous gratuitement.</p>
-        <button class="btn-cta-green">
+        <button class="btn-cta-green" onclick="location.href='/src/pages/auth/index.html'">
           Vendre mes services
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7H11M8 4L11 7L8 10" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
@@ -1291,49 +1305,13 @@ footer{background:var(--navy);padding:72px 48px 36px}
 
 <!-- ████ FOOTER ████ -->
 <footer>
-  <div class="footer-top">
-    <div class="footer-brand">
-      <div class="footer-logo-wrap">
-        <svg width="30" height="30" viewBox="0 0 30 30" fill="none"><circle cx="9" cy="9" r="7" fill="#8DC63F" opacity=".85"/><circle cx="21" cy="9" r="7" fill="#29ABE2" opacity=".85"/><circle cx="9" cy="21" r="7" fill="#3CB878" opacity=".85"/><circle cx="21" cy="21" r="7" fill="rgba(255,255,255,.12)"/><rect x="8.5" y="8.5" width="13" height="13" rx="1.5" fill="rgba(60,184,120,.4)"/></svg>
-        <span class="footer-logo-text">Oriupe</span>
-      </div>
-      <p class="footer-tagline">"Ton talent. Ton continent. Ton avenir."</p>
-      <div class="footer-socials">
-        <div class="soc"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="12" height="12" rx="3" stroke="rgba(255,255,255,.4)" stroke-width="1.2"/><circle cx="7" cy="7" r="2.5" stroke="rgba(255,255,255,.4)" stroke-width="1.2"/><circle cx="10.5" cy="3.5" r=".7" fill="rgba(255,255,255,.4)"/></svg></div>
-        <div class="soc"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1.5 3H12.5L8 8V12.5L6 11V8L1.5 3Z" stroke="rgba(255,255,255,.4)" stroke-width="1.2" stroke-linejoin="round"/></svg></div>
-        <div class="soc"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="12" height="12" rx="2.5" stroke="rgba(255,255,255,.4)" stroke-width="1.1"/><path d="M6 12.5V7H4.5M6 7V5.5C6 4.1 7.1 3 8.5 3H10V5H8.5C8.2 5 7.5 5.3 7.5 6V7H10L9.5 9H7.5V12.5" stroke="rgba(255,255,255,.4)" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <div class="soc"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1.5 10.5L5.5 6.5M5.5 6.5L7.5 9.5L12 1.5M5.5 6.5L2.5 2H11L7.5 9.5" stroke="rgba(255,255,255,.4)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <div class="soc"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="3" width="12" height="8" rx="1.5" stroke="rgba(255,255,255,.4)" stroke-width="1.2"/><path d="M5.5 5.5L9 7L5.5 8.5V5.5Z" stroke="rgba(255,255,255,.4)" stroke-width="1.1" stroke-linejoin="round"/></svg></div>
-        <div class="soc"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1C3.7 1 1 3.7 1 7s2.7 6 6 6 6-2.7 6-6-2.7-6-6-6ZM9.5 4.5L8 7.5 5 7.5 3.5 4.5H9.5Z" stroke="rgba(255,255,255,.4)" stroke-width="1.1" stroke-linejoin="round"/></svg></div>
-      </div>
-    </div>
-    <div class="footer-col">
-      <div class="footer-col-title">Oriupe</div>
-      <div class="footer-links">
-        <a>À propos</a><a>Carrières</a><a>Presse & Médias</a><a>Blog</a><a>Impact ESG</a>
-      </div>
-    </div>
-    <div class="footer-col">
-      <div class="footer-col-title">Freelances</div>
-      <div class="footer-links">
-        <a>S'inscrire</a><a>Comment ça marche</a><a>Oriupe Academy</a><a>Tarifs Pro</a><a>FAQ Freelances</a>
-      </div>
-    </div>
-    <div class="footer-col">
-      <div class="footer-col-title">Support</div>
-      <div class="footer-links">
-        <a>Centre d'aide</a><a>Nous contacter</a><a>Gestion des litiges</a><a>CGU & CGV</a><a>Confidentialité</a>
-      </div>
-    </div>
+  <div class="footer-inner">
+    <div><a href="/src/pages/home/index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;margin-bottom:12px"><svg width="26" height="26" viewBox="0 0 32 32" fill="none"><circle cx="10" cy="10" r="8.5" fill="#8DC63F" opacity=".9"/><circle cx="22" cy="10" r="8.5" fill="#29ABE2" opacity=".9"/><circle cx="10" cy="22" r="8.5" fill="#3CB878" opacity=".9"/><circle cx="22" cy="22" r="8.5" fill="#1B3A4A"/><rect x="9.5" y="9.5" width="13" height="13" rx="1.5" fill="rgba(60,184,120,.45)"/></svg><span style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;color:#fff">Oriupe</span></a><p class="footer-tagline">"Ton talent. Ton continent. Ton avenir."</p></div>
+    <div><div class="footer-col-title">Oriupe</div><div class="footer-links"><a href="/src/pages/about/index.html">À propos</a><a href="/src/pages/careers/index.html">Carrières</a><a href="/src/pages/press/index.html">Presse &amp; Médias</a><a href="/src/pages/blog/index.html">Blog</a><a href="/src/pages/impact/index.html">Impact ESG</a></div></div>
+    <div><div class="footer-col-title">Freelances</div><div class="footer-links"><a href="/src/pages/auth/index.html">S'inscrire</a><a href="/src/pages/how-it-works/index.html">Comment ça marche</a><a href="/src/pages/academy/index.html">Oriupe Academy</a><a href="/src/pages/pricing/index.html">Tarifs Pro</a><a href="/src/pages/faq/index.html">FAQ Freelances</a></div></div>
+    <div><div class="footer-col-title">Support</div><div class="footer-links"><a href="/src/pages/help/index.html">Centre d'aide</a><a href="/src/pages/contact/index.html">Nous contacter</a><a href="/src/pages/disputes/index.html">Gestion des litiges</a><a href="/src/pages/terms/index.html">CGU &amp; CGV</a><a href="/src/pages/privacy/index.html">Confidentialité</a></div></div>
   </div>
-  <div class="footer-bottom">
-    <span class="footer-copy">© 2025 Oriupe SAS — Abidjan, Côte d'Ivoire. Tous droits réservés.</span>
-    <div class="footer-legal">
-      <a>Confidentialité</a>
-      <a>CGV</a>
-      <a>Cookies</a>
-    </div>
-  </div>
+  <div class="footer-bottom"><span class="footer-copy">© 2025 Oriupe SAS — Abidjan, Côte d'Ivoire. Tous droits réservés.</span><div class="footer-legal"><a href="/src/pages/privacy/index.html">Confidentialité</a><a href="/src/pages/terms/index.html">CGU &amp; CGV</a></div></div>
 </footer>
 
 <!-- ════════════════════════════════════════
@@ -1420,13 +1398,67 @@ document.querySelectorAll('.svc-fav').forEach(btn=>{
   });
 });
 
-/* HERO SEARCH INPUT ANIMATION */
-document.querySelector('.search-hero input')?.addEventListener('focus',function(){
-  this.closest('.search-hero').style.transform='scale(1.01)';
+/* HERO SEARCH */
+const heroSearch=document.getElementById('heroSearch');
+const heroSearchBtn=document.getElementById('heroSearchBtn');
+function goSearch(){
+  const q=(heroSearch?.value||'').trim();
+  const dest=q?`/src/pages/catalog/index.html?q=${encodeURIComponent(q)}`:'/src/pages/catalog/index.html';
+  location.href=dest;
+}
+heroSearchBtn?.addEventListener('click',goSearch);
+heroSearch?.addEventListener('keydown',e=>{if(e.key==='Enter')goSearch();});
+heroSearch?.addEventListener('focus',function(){this.closest('.search-hero').style.transform='scale(1.01)';});
+heroSearch?.addEventListener('blur',function(){this.closest('.search-hero').style.transform='scale(1)';});
+
+/* POPULAR TAGS */
+document.querySelectorAll('.htag[data-q]').forEach(t=>t.addEventListener('click',()=>{location.href=`/src/pages/catalog/index.html?q=${encodeURIComponent(t.dataset.q)}`;}));
+document.querySelectorAll('.htag[data-cat]').forEach(t=>t.addEventListener('click',()=>{location.href=`/src/pages/catalog/index.html?category=${t.dataset.cat}`;}));
+
+/* CATEGORY SECTION CARDS */
+document.querySelectorAll('.cat-card[data-cat]').forEach(c=>c.addEventListener('click',()=>{location.href=`/src/pages/catalog/index.html?category=${c.dataset.cat}`;}));
+
+/* NAV LINKS */
+const NAV_MAP={
+  'Explorer':'/src/pages/catalog/index.html',
+  'Appels d\'offres':'/src/pages/offers/index.html',
+  'Academy':'/src/pages/academy/index.html',
+  'Blog':'/src/pages/blog/index.html',
+  'Tarifs':'/src/pages/pricing/index.html',
+  'Explorer les services':'/src/pages/catalog/index.html',
+  'Appels d\'offres':'/src/pages/offers/index.html',
+  'Oriupe Academy':'/src/pages/academy/index.html',
+  'Tarifs & Abonnements':'/src/pages/pricing/index.html',
+};
+document.querySelectorAll('.nav-links a, .mob-menu a').forEach(a=>{
+  const label=(a.textContent||'').trim();
+  if(NAV_MAP[label])a.href=NAV_MAP[label];
 });
-document.querySelector('.search-hero input')?.addEventListener('blur',function(){
-  this.closest('.search-hero').style.transform='scale(1)';
+/* FOOTER LINKS */
+const FOOTER_MAP={
+  'À propos':'/src/pages/about/index.html',
+  'Carrières':'/src/pages/careers/index.html',
+  'Presse & Médias':'/src/pages/press/index.html',
+  'Blog':'/src/pages/blog/index.html',
+  'Impact ESG':'/src/pages/impact/index.html',
+  'S\'inscrire':'/src/pages/auth/index.html',
+  'Comment ça marche':'/src/pages/how-it-works/index.html',
+  'Oriupe Academy':'/src/pages/academy/index.html',
+  'Tarifs Pro':'/src/pages/pricing/index.html',
+  'FAQ Freelances':'/src/pages/faq/index.html',
+  'Centre d\'aide':'/src/pages/help/index.html',
+  'Nous contacter':'/src/pages/contact/index.html',
+  'Gestion des litiges':'/src/pages/disputes/index.html',
+  'CGU & CGV':'/src/pages/terms/index.html',
+  'Confidentialité':'/src/pages/privacy/index.html',
+  'CGV':'/src/pages/terms/index.html',
+};
+document.querySelectorAll('.footer-links a, .footer-legal a').forEach(a=>{
+  const label=(a.textContent||'').trim();
+  if(FOOTER_MAP[label])a.href=FOOTER_MAP[label];
 });
+document.querySelector('.btn-login')?.addEventListener('click',()=>location.href='/src/pages/auth/index.html');
+document.querySelector('.btn-cta-nav')?.addEventListener('click',()=>location.href='/src/pages/auth/index.html');
 </script>
   <script type="module" src="/src/scripts/main.js"></script>
 </body>

@@ -8,6 +8,32 @@
 
 import { initCurrency, buildCurrencyWidget } from './currency.js';
 
+/* ─── DARK MODE CSS ──────────────────────────────── */
+const DARK_CSS = `
+html.dark body{background:#0F1923!important;color:#E2EBF0!important}
+html.dark #oriupe-nav{background:rgba(15,25,35,.97)!important;border-bottom-color:rgba(255,255,255,.07)!important}
+html.dark #oriupe-nav[data-theme="light"] .on-logo-t{color:#fff!important}
+html.dark #oriupe-nav[data-theme="light"] .on-links a{color:rgba(255,255,255,.65)!important}
+html.dark #oriupe-nav[data-theme="light"] .on-links a.on-active{color:#3CB878!important}
+html.dark #oriupe-nav[data-theme="light"] .on-ghost{color:rgba(255,255,255,.8)!important}
+html.dark .svc-card,html.dark .kpi,html.dark .blog-card,html.dark .ao-card,html.dark .course-card,html.dark .inst-card,html.dark .testi-card,html.dark .how-card,html.dark .cat-card{background:#1A2B38!important;border-color:rgba(255,255,255,.07)!important}
+html.dark .sidebar,html.dark .breadcrumb,html.dark .filter-section,html.dark .filter-header,html.dark .search-bar-page,html.dark .topbar{background:#1A2B38!important;border-color:rgba(255,255,255,.07)!important}
+html.dark body,html.dark .page-wrap,html.dark .main-content,html.dark main{background:#0F1923!important}
+html.dark nav:not(#oriupe-nav){background:rgba(15,25,35,.97)!important;border-color:rgba(255,255,255,.07)!important}
+html.dark .breadcrumb{background:#1A2B38!important}
+html.dark input,html.dark select,html.dark textarea{background:#243447!important;color:#E2EBF0!important;border-color:rgba(255,255,255,.1)!important}
+html.dark input::placeholder,html.dark textarea::placeholder{color:rgba(255,255,255,.22)!important}
+html.dark .filter-title,html.dark .fs-title,html.dark .fo-label,html.dark .svc-name,html.dark .svc-title,html.dark .svc-price,html.dark .results-count strong,html.dark .sort-lbl,html.dark .bc-cur,html.dark .tb-title{color:#E2EBF0!important}
+html.dark .svc-country,html.dark .svc-reviews,html.dark .results-count,html.dark .count,html.dark .tb-sub,html.dark .muted{color:rgba(255,255,255,.42)!important}
+html.dark .af-chip{background:#1A2B38!important;color:#E2EBF0!important;border-color:rgba(255,255,255,.1)!important}
+html.dark .pg-btn{background:#1A2B38!important;color:#E2EBF0!important;border-color:rgba(255,255,255,.1)!important}
+html.dark .pg-btn.active{background:#3CB878!important;color:#fff!important;border-color:#3CB878!important}
+html.dark .sort-sel,html.dark .vt-btn{background:#1A2B38!important;color:#E2EBF0!important;border-color:rgba(255,255,255,.1)!important}
+html.dark .vt-btn.active{background:#243447!important}
+html.dark footer{background:#080F18!important}
+html.dark *{transition:background .22s,color .22s,border-color .22s}
+`;
+
 /* ─── CSS ─────────────────────────────────────────── */
 const CSS = `
 #oriupe-nav {
@@ -62,6 +88,8 @@ const CSS = `
 
 #oriupe-nav .on-cta { font-family:'Plus Jakarta Sans',sans-serif; background:#3CB878; color:#fff; font-size:13px; font-weight:700; padding:10px 22px; border-radius:9px; border:none; box-shadow:0 2px 10px rgba(60,184,120,.3); transition:background .2s, transform .18s, box-shadow .18s; cursor:pointer; }
 #oriupe-nav .on-cta:hover { background:#27965D; transform:translateY(-1px); box-shadow:0 4px 16px rgba(60,184,120,.42); }
+#oriupe-nav .on-dark-btn { padding:8px 10px; display:flex; align-items:center; justify-content:center; border-radius:8px; }
+#oriupe-nav .on-dark-btn:hover { background:rgba(255,255,255,.1); }
 
 @media(max-width:1100px){ #oriupe-nav{padding:0 28px;} }
 @media(max-width:768px){
@@ -164,6 +192,10 @@ function buildNavHTML() {
       <div class="on-links">${links}</div>
     </div>
     <div class="on-right" id="on-right-slot">
+      <button class="on-ghost on-dark-btn" id="on-dark-toggle" aria-label="Mode sombre" title="Basculer mode sombre">
+        <svg class="on-dark-moon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.5 10.5A6 6 0 017 4c0-.7.1-1.4.3-2.1A6.5 6.5 0 1014.1 10c-.2.2-.4.3-.6.5z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <svg class="on-dark-sun" width="16" height="16" viewBox="0 0 16 16" fill="none" style="display:none"><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.4"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.41 1.41M11.54 11.54l1.41 1.41M3.05 12.95l1.41-1.41M11.54 4.46l1.41-1.41" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      </button>
       <button class="on-ghost" id="on-btn-login">Se connecter</button>
       <button class="on-cta"   id="on-btn-signup">S'inscrire</button>
     </div>`;
@@ -219,6 +251,27 @@ async function init() {
   requestAnimationFrame(()=>{
     nav.setAttribute('data-theme', detectTheme(nav));
     nav.classList.toggle('on-top', window.scrollY<8);
+  });
+
+  /* ── Dark mode ── */
+  function applyDark(on) {
+    document.documentElement.classList.toggle('dark', on);
+    const moon = nav.querySelector('.on-dark-moon');
+    const sun  = nav.querySelector('.on-dark-sun');
+    if (moon) moon.style.display = on ? 'none' : '';
+    if (sun)  sun.style.display  = on ? '' : 'none';
+    if (on && !document.getElementById('oriupe-dark-css')) {
+      const ds = document.createElement('style');
+      ds.id = 'oriupe-dark-css';
+      ds.textContent = DARK_CSS;
+      document.head.appendChild(ds);
+    }
+  }
+  applyDark(localStorage.getItem('oriupe_dark') === '1');
+  nav.querySelector('#on-dark-toggle')?.addEventListener('click', () => {
+    const isDark = document.documentElement.classList.contains('dark');
+    applyDark(!isDark);
+    localStorage.setItem('oriupe_dark', isDark ? '0' : '1');
   });
 }
 

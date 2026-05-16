@@ -223,6 +223,20 @@ nav{background:rgba(255,255,255,.95);backdrop-filter:blur(16px);height:64px;disp
   .svc-h1{font-size:20px}
   .similar-grid{grid-template-columns:1fr}
 }
+footer{background:var(--navy);padding:64px 24px 32px;margin-top:0}
+.footer-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:40px;margin-bottom:48px}
+.footer-col-title{font-size:11px;font-weight:700;color:rgba(255,255,255,.35);letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px}
+.footer-links{display:flex;flex-direction:column;gap:10px}
+.footer-links a{font-size:13px;color:rgba(255,255,255,.6);text-decoration:none;transition:.2s}
+.footer-links a:hover{color:#fff}
+.footer-tagline{font-size:12px;color:rgba(255,255,255,.4);margin-top:10px;line-height:1.6}
+.footer-bottom{max-width:1280px;margin:0 auto;padding-top:24px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;align-items:center}
+.footer-copy{font-size:12px;color:rgba(255,255,255,.3)}
+.footer-legal{display:flex;gap:20px}
+.footer-legal a{font-size:12px;color:rgba(255,255,255,.3);text-decoration:none}
+.footer-legal a:hover{color:rgba(255,255,255,.7)}
+@media(max-width:900px){.footer-inner{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.footer-inner{grid-template-columns:1fr}}
 </style>
   <script type="module" src="/src/components/nav.js"></script>
 </head>
@@ -630,10 +644,10 @@ nav{background:rgba(255,255,255,.95);backdrop-filter:blur(16px);height:64px;disp
           <div class="oi-row"><div class="oi-x"><svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1.5 1.5L6.5 6.5M6.5 1.5L1.5 6.5" stroke="var(--muted2)" stroke-width="1.2" stroke-linecap="round"/></svg></div>Dashboard admin</div>
         </div>
 
-        <button class="btn-order">Commander maintenant</button>
-        <button class="btn-contact">
+        <button class="btn-order" id="btn-order-main">Commander maintenant</button>
+        <button class="btn-contact" id="btn-contact-main">
           <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2 3H13V10H8L5 13V10H2V3Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
-          Contacter le vendeur
+          Contacter le freelance
         </button>
 
         <div class="escrow-notice">
@@ -713,12 +727,14 @@ nav{background:rgba(255,255,255,.95);backdrop-filter:blur(16px);height:64px;disp
 </div><!-- /page -->
 
 <!-- FOOTER MINI -->
-<footer style="background:var(--navy2);padding:28px 52px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
-  <div style="display:flex;align-items:center;gap:9px">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="7" cy="7" r="5.5" fill="#8DC63F" opacity=".85"/><circle cx="17" cy="7" r="5.5" fill="#29ABE2" opacity=".85"/><circle cx="7" cy="17" r="5.5" fill="#3CB878" opacity=".85"/><circle cx="17" cy="17" r="5.5" fill="rgba(255,255,255,.1)"/><rect x="6.5" y="6.5" width="11" height="11" rx="1" fill="rgba(60,184,120,.4)"/></svg>
-    <span style="font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;color:#fff">Oriupe</span>
+<footer>
+  <div class="footer-inner">
+    <div><a href="/src/pages/home/index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;margin-bottom:12px"><svg width="26" height="26" viewBox="0 0 32 32" fill="none"><circle cx="10" cy="10" r="8.5" fill="#8DC63F" opacity=".9"/><circle cx="22" cy="10" r="8.5" fill="#29ABE2" opacity=".9"/><circle cx="10" cy="22" r="8.5" fill="#3CB878" opacity=".9"/><circle cx="22" cy="22" r="8.5" fill="#1B3A4A"/><rect x="9.5" y="9.5" width="13" height="13" rx="1.5" fill="rgba(60,184,120,.45)"/></svg><span style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;color:#fff">Oriupe</span></a><p class="footer-tagline">"Ton talent. Ton continent. Ton avenir."</p></div>
+    <div><div class="footer-col-title">Oriupe</div><div class="footer-links"><a href="/src/pages/about/index.html">À propos</a><a href="/src/pages/careers/index.html">Carrières</a><a href="/src/pages/press/index.html">Presse &amp; Médias</a><a href="/src/pages/blog/index.html">Blog</a><a href="/src/pages/impact/index.html">Impact ESG</a></div></div>
+    <div><div class="footer-col-title">Freelances</div><div class="footer-links"><a href="/src/pages/auth/index.html">S'inscrire</a><a href="/src/pages/how-it-works/index.html">Comment ça marche</a><a href="/src/pages/academy/index.html">Oriupe Academy</a><a href="/src/pages/pricing/index.html">Tarifs Pro</a><a href="/src/pages/faq/index.html">FAQ Freelances</a></div></div>
+    <div><div class="footer-col-title">Support</div><div class="footer-links"><a href="/src/pages/help/index.html">Centre d'aide</a><a href="/src/pages/contact/index.html">Nous contacter</a><a href="/src/pages/disputes/index.html">Gestion des litiges</a><a href="/src/pages/terms/index.html">CGU &amp; CGV</a><a href="/src/pages/privacy/index.html">Confidentialité</a></div></div>
   </div>
-  <span style="font-size:12px;color:rgba(255,255,255,.3)">© 2025 Oriupe — Abidjan, Côte d'Ivoire</span>
+  <div class="footer-bottom"><span class="footer-copy">© 2025 Oriupe SAS — Abidjan, Côte d'Ivoire. Tous droits réservés.</span><div class="footer-legal"><a href="/src/pages/privacy/index.html">Confidentialité</a><a href="/src/pages/terms/index.html">CGU &amp; CGV</a></div></div>
 </footer>
 
 <script>
@@ -776,6 +792,211 @@ function toggleExtra(el){
     el.innerHTML='';
   }
 }
+
+/* ── ORDER MODAL ── */
+function calcTotal(){
+  const base=parseInt((document.getElementById('offer-price')?.textContent||'35000').replace(/\D/g,''))||35000;
+  let extras=0;
+  document.querySelectorAll('.extra-item').forEach(item=>{
+    if(item.querySelector('.extra-check.checked')){
+      const p=parseInt((item.querySelector('.extra-price')?.textContent||'0').replace(/\D/g,''))||0;
+      extras+=p;
+    }
+  });
+  return base+extras;
+}
+
+function openOrderModal(){
+  const price=document.getElementById('offer-price')?.textContent||'35 000 FCFA';
+  const plan=document.querySelector('.offer-tab.active')?.textContent||'Basique';
+  const total=calcTotal();
+  const fmt=n=>n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,' ');
+  const modal=document.createElement('div');
+  modal.id='order-modal';
+  modal.style.cssText='position:fixed;inset:0;z-index:9000;display:flex;align-items:center;justify-content:center;padding:16px;animation:fadeIn .2s ease';
+  modal.innerHTML=`
+<style>
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+#order-modal .om-backdrop{position:absolute;inset:0;background:rgba(15,37,53,.65);backdrop-filter:blur(8px)}
+#order-modal .om-box{position:relative;background:#fff;border-radius:24px;width:100%;max-width:460px;padding:32px;box-shadow:0 32px 80px rgba(15,37,53,.25);animation:slideUp .3s ease}
+#order-modal .om-close{position:absolute;top:18px;right:18px;width:32px;height:32px;border:none;background:var(--bg,#F4F6F9);border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--muted,rgba(27,58,74,.52))}
+#order-modal .om-title{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;color:#1B3A4A;margin-bottom:4px}
+#order-modal .om-sub{font-size:13px;color:rgba(27,58,74,.52);margin-bottom:24px}
+#order-modal .om-plan{background:#F4F6F9;border-radius:14px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+#order-modal .om-plan-name{font-size:13px;font-weight:700;color:#1B3A4A}
+#order-modal .om-plan-price{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:#3CB878}
+#order-modal .om-label{font-size:11px;font-weight:700;color:#1B3A4A;letter-spacing:.5px;margin-bottom:10px}
+#order-modal .pm-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px}
+#order-modal .pm-opt{border:1.5px solid rgba(27,58,74,.12);border-radius:12px;padding:12px 10px;display:flex;align-items:center;gap:9px;cursor:pointer;transition:all .18s;font-size:13px;font-weight:600;color:#1B3A4A}
+#order-modal .pm-opt:hover{border-color:#3CB878}
+#order-modal .pm-opt.sel{border-color:#3CB878;background:#F0FBF5}
+#order-modal .pm-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+#order-modal .om-phone{width:100%;border:1.5px solid rgba(27,58,74,.12);border-radius:10px;padding:12px 14px;font-size:14px;font-family:'Plus Jakarta Sans',sans-serif;outline:none;transition:border-color .2s;margin-bottom:20px}
+#order-modal .om-phone:focus{border-color:#3CB878}
+#order-modal .om-total{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-top:1px solid rgba(27,58,74,.08);margin-bottom:16px}
+#order-modal .om-total-lbl{font-size:13px;color:rgba(27,58,74,.52)}
+#order-modal .om-total-val{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;color:#1B3A4A}
+#order-modal .btn-confirm{width:100%;background:linear-gradient(135deg,#3CB878,#4FD090);color:#fff;border:none;border-radius:12px;padding:16px;font-size:15px;font-weight:800;cursor:pointer;transition:all .2s;box-shadow:0 4px 20px rgba(60,184,120,.35);font-family:'Plus Jakarta Sans',sans-serif}
+#order-modal .btn-confirm:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(60,184,120,.45)}
+#order-modal .om-escrow{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:11px;color:rgba(27,58,74,.45)}
+#order-modal .om-success{text-align:center;padding:20px 0}
+#order-modal .om-success-icon{width:72px;height:72px;background:linear-gradient(135deg,#3CB878,#4FD090);border-radius:50%;margin:0 auto 20px;display:flex;align-items:center;justify-content:center}
+</style>
+<div class="om-backdrop" onclick="closeOrderModal()"></div>
+<div class="om-box">
+  <button class="om-close" onclick="closeOrderModal()">✕</button>
+  <div class="om-title">Finaliser la commande</div>
+  <div class="om-sub">Paiement sécurisé via Escrow Oriupe — libéré à la livraison</div>
+  <div class="om-plan">
+    <div>
+      <div class="om-plan-name">Plan ${plan}</div>
+      <div style="font-size:11px;color:rgba(27,58,74,.45);margin-top:2px">Kofi Asante · Développeur Full-Stack</div>
+    </div>
+    <div class="om-plan-price">${price}</div>
+  </div>
+  <div class="om-label">MODE DE PAIEMENT</div>
+  <div class="pm-grid">
+    <div class="pm-opt sel" onclick="selectPM(this)">
+      <div class="pm-icon" style="background:#FF6B00">🟠</div>Orange Money
+    </div>
+    <div class="pm-opt" onclick="selectPM(this)">
+      <div class="pm-icon" style="background:#FFCC00">🟡</div>MTN MoMo
+    </div>
+    <div class="pm-opt" onclick="selectPM(this)">
+      <div class="pm-icon" style="background:#1877F2">💙</div>Wave
+    </div>
+    <div class="pm-opt" onclick="selectPM(this)">
+      <div class="pm-icon" style="background:#F4F6F9">💳</div>Carte bancaire
+    </div>
+  </div>
+  <div class="om-label">NUMÉRO DE TÉLÉPHONE / CARTE</div>
+  <input class="om-phone" id="om-phone" type="tel" placeholder="+225 07 XX XX XX XX"/>
+  <div class="om-total">
+    <span class="om-total-lbl">Total à payer</span>
+    <span class="om-total-val">${fmt(total)} FCFA</span>
+  </div>
+  <button class="btn-confirm" onclick="confirmOrder()">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="vertical-align:-2px;margin-right:6px"><path d="M10 2L14 4V9C14 13 10 15 10 15C10 15 6 13 6 9V4L10 2Z" stroke="#fff" stroke-width="1.5" fill="rgba(255,255,255,.15)"/><path d="M7.5 8.5L9 10L12.5 6.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Confirmer et payer
+  </button>
+  <div class="om-escrow">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1.5L11 3.5V7C11 10 7 12.5 7 12.5C7 12.5 3 10 3 7V3.5L7 1.5Z" stroke="#3CB878" stroke-width="1.3" fill="rgba(60,184,120,.1)"/></svg>
+    Votre argent est protégé par Escrow Oriupe. Il sera libéré uniquement à votre validation.
+  </div>
+</div>`;
+  document.body.appendChild(modal);
+}
+
+function selectPM(el){document.querySelectorAll('#order-modal .pm-opt').forEach(o=>o.classList.remove('sel'));el.classList.add('sel');}
+
+function closeOrderModal(){const m=document.getElementById('order-modal');if(m)m.remove();}
+
+function confirmOrder(){
+  const phone=document.getElementById('om-phone')?.value?.trim();
+  if(!phone||phone.replace(/\D/g,'').length<8){
+    document.getElementById('om-phone').style.borderColor='#EF4444';
+    document.getElementById('om-phone').placeholder='Numéro requis';
+    return;
+  }
+  const pm=document.querySelector('#order-modal .pm-opt.sel')?.textContent?.trim()||'Mobile Money';
+  const box=document.querySelector('#order-modal .om-box');
+  const total=calcTotal();
+  const fmt=n=>n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,' ');
+  box.innerHTML=`
+  <div class="om-success">
+    <div class="om-success-icon"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M8 16L13 21L24 10" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;color:#1B3A4A;margin-bottom:8px">Commande confirmée !</div>
+    <div style="font-size:14px;color:rgba(27,58,74,.52);line-height:1.7;margin-bottom:24px">Votre paiement de <strong>${fmt(total)} FCFA</strong> via ${pm} est sécurisé.<br>Kofi Asante commencera dans les <strong>2 heures</strong>.<br>Vous recevrez une notification dès le début.</div>
+    <div style="background:#F0FBF5;border:1px solid rgba(60,184,120,.2);border-radius:14px;padding:16px;text-align:left;margin-bottom:24px">
+      <div style="font-size:12px;font-weight:700;color:#27965D;margin-bottom:8px">📋 RÉCAPITULATIF DE COMMANDE</div>
+      <div style="font-size:13px;color:#1B3A4A;display:flex;justify-content:space-between;margin-bottom:4px"><span>Plan sélectionné</span><strong>${document.querySelector('.offer-tab.active')?.textContent||'Basique'}</strong></div>
+      <div style="font-size:13px;color:#1B3A4A;display:flex;justify-content:space-between"><span>Montant escrow</span><strong style="color:#3CB878">${fmt(total)} FCFA</strong></div>
+    </div>
+    <button onclick="closeOrderModal();location.href='/src/pages/dashboard/index.html'" style="width:100%;background:var(--navy,#1B3A4A);color:#fff;border:none;border-radius:12px;padding:14px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif">Voir mes commandes →</button>
+    <button onclick="closeOrderModal()" style="width:100%;background:transparent;color:rgba(27,58,74,.52);border:none;padding:12px;font-size:13px;cursor:pointer;margin-top:8px;font-family:'Plus Jakarta Sans',sans-serif">Fermer</button>
+  </div>`;
+}
+
+/* ── CONTACT MODAL ── */
+function openContactModal(){
+  const modal=document.createElement('div');
+  modal.id='contact-modal';
+  modal.style.cssText='position:fixed;inset:0;z-index:9000;display:flex;align-items:center;justify-content:center;padding:16px;animation:fadeIn .2s ease';
+  modal.innerHTML=`
+<style>
+#contact-modal .cm-backdrop{position:absolute;inset:0;background:rgba(15,37,53,.65);backdrop-filter:blur(8px)}
+#contact-modal .cm-box{position:relative;background:#fff;border-radius:24px;width:100%;max-width:480px;padding:32px;box-shadow:0 32px 80px rgba(15,37,53,.25);animation:slideUp .3s ease}
+#contact-modal .cm-close{position:absolute;top:18px;right:18px;width:32px;height:32px;border:none;background:#F4F6F9;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;color:rgba(27,58,74,.52)}
+#contact-modal .cm-seller{display:flex;align-items:center;gap:12px;background:#F4F6F9;border-radius:14px;padding:14px;margin-bottom:20px}
+#contact-modal .cm-av{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#3CB878,#8DC63F);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;flex-shrink:0}
+#contact-modal .cm-field{width:100%;border:1.5px solid rgba(27,58,74,.12);border-radius:10px;padding:12px 14px;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;outline:none;transition:border-color .2s;margin-bottom:12px;resize:vertical}
+#contact-modal .cm-field:focus{border-color:#3CB878}
+#contact-modal .cm-templates{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px}
+#contact-modal .cm-tpl{font-size:11px;font-weight:600;padding:5px 11px;border-radius:20px;border:1.5px solid rgba(27,58,74,.12);background:#fff;color:rgba(27,58,74,.52);cursor:pointer;transition:all .2s}
+#contact-modal .cm-tpl:hover{border-color:#3CB878;color:#3CB878}
+#contact-modal .btn-send{width:100%;background:linear-gradient(135deg,#1B3A4A,#264B5E);color:#fff;border:none;border-radius:12px;padding:14px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+#contact-modal .btn-send:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(15,37,53,.25)}
+</style>
+<div class="cm-backdrop" onclick="closeContactModal()"></div>
+<div class="cm-box">
+  <button class="cm-close" onclick="closeContactModal()">✕</button>
+  <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;color:#1B3A4A;margin-bottom:4px">Contacter le freelance</div>
+  <div style="font-size:13px;color:rgba(27,58,74,.52);margin-bottom:20px">Répond en moyenne en <strong>moins d'1h</strong></div>
+  <div class="cm-seller">
+    <div class="cm-av">KA</div>
+    <div>
+      <div style="font-size:14px;font-weight:700;color:#1B3A4A">Kofi Asante</div>
+      <div style="font-size:11px;color:rgba(27,58,74,.45)">Développeur Full-Stack · Top Oriupe · 🇬🇭 Ghana</div>
+      <div style="display:flex;align-items:center;gap:4px;margin-top:4px"><div style="width:7px;height:7px;background:#3CB878;border-radius:50%"></div><span style="font-size:11px;color:#3CB878;font-weight:600">En ligne maintenant</span></div>
+    </div>
+  </div>
+  <div style="font-size:11px;font-weight:700;color:#1B3A4A;letter-spacing:.5px;margin-bottom:8px">MESSAGES RAPIDES</div>
+  <div class="cm-templates">
+    <span class="cm-tpl" onclick="useTemplate(this)">Bonjour, est-ce que ce service correspond à mon projet ?</span>
+    <span class="cm-tpl" onclick="useTemplate(this)">Quels sont vos délais de livraison réels ?</span>
+    <span class="cm-tpl" onclick="useTemplate(this)">Avez-vous des exemples de sites similaires ?</span>
+    <span class="cm-tpl" onclick="useTemplate(this)">Travaillez-vous le week-end ?</span>
+  </div>
+  <textarea class="cm-field" id="cm-msg" rows="4" placeholder="Bonjour Kofi, j'aimerais discuter de mon projet..."></textarea>
+  <input class="cm-field" id="cm-email" type="email" placeholder="Votre email pour recevoir la réponse"/>
+  <button class="btn-send" onclick="sendMessage()">
+    <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1.5 7.5L13.5 2L8.5 13.5L7 8.5L1.5 7.5Z" stroke="#fff" stroke-width="1.4" stroke-linejoin="round" fill="rgba(255,255,255,.15)"/></svg>
+    Envoyer le message
+  </button>
+  <div style="text-align:center;margin-top:12px;font-size:11px;color:rgba(27,58,74,.35)">
+    Ou accédez au <a onclick="closeContactModal();location.href='/src/pages/chat/index.html'" style="color:#3CB878;font-weight:700;cursor:pointer">chat en direct →</a>
+  </div>
+</div>`;
+  document.body.appendChild(modal);
+}
+
+function useTemplate(el){
+  const ta=document.getElementById('cm-msg');
+  if(ta)ta.value=el.textContent.trim();
+  ta.focus();
+}
+
+function closeContactModal(){const m=document.getElementById('contact-modal');if(m)m.remove();}
+
+function sendMessage(){
+  const msg=document.getElementById('cm-msg')?.value?.trim();
+  const email=document.getElementById('cm-email')?.value?.trim();
+  if(!msg){document.getElementById('cm-msg').style.borderColor='#EF4444';return;}
+  const box=document.querySelector('#contact-modal .cm-box');
+  box.innerHTML=`
+  <div style="text-align:center;padding:20px 0">
+    <div style="width:72px;height:72px;background:linear-gradient(135deg,#1B3A4A,#264B5E);border-radius:50%;margin:0 auto 20px;display:flex;align-items:center;justify-content:center"><svg width="30" height="30" viewBox="0 0 30 30" fill="none"><path d="M4 6H26V20H17L12 26V20H4V6Z" stroke="#fff" stroke-width="2" stroke-linejoin="round" fill="rgba(255,255,255,.1)"/></svg></div>
+    <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;color:#1B3A4A;margin-bottom:8px">Message envoyé !</div>
+    <div style="font-size:14px;color:rgba(27,58,74,.52);line-height:1.7;margin-bottom:24px">Kofi Asante a été notifié.<br>Réponse attendue en <strong>moins d'1 heure</strong>.</div>
+    <button onclick="closeContactModal();location.href='/src/pages/chat/index.html'" style="background:#1B3A4A;color:#fff;border:none;border-radius:12px;padding:13px 28px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif">Voir la conversation →</button>
+    <button onclick="closeContactModal()" style="display:block;width:100%;background:transparent;color:rgba(27,58,74,.45);border:none;padding:10px;font-size:13px;cursor:pointer;margin-top:8px;font-family:'Plus Jakarta Sans',sans-serif">Fermer</button>
+  </div>`;
+}
+
+/* Hook buttons */
+document.getElementById('btn-order-main')?.addEventListener('click',openOrderModal);
+document.getElementById('btn-contact-main')?.addEventListener('click',openContactModal);
 </script>
   <script type="module" src="/src/scripts/main.js"></script>
 </body>

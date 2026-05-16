@@ -19,6 +19,38 @@ export function goWithAuth(dest) {
     : '/src/pages/auth/index.html?next=' + encodeURIComponent(dest);
 }
 
+/* ─── TOAST ──────────────────────────────────────── */
+export function showToast(message, type = 'success', duration = 3000) {
+  if (!document.getElementById('on-toast-container')) {
+    const s = document.createElement('style');
+    s.textContent = `#on-toast-container{position:fixed;bottom:24px;right:24px;z-index:99999;display:flex;flex-direction:column;gap:10px;pointer-events:none}
+.on-toast{background:#fff;border:1px solid rgba(27,58,74,.12);border-radius:12px;padding:13px 16px 13px 13px;display:flex;align-items:center;gap:10px;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:600;color:#1B3A4A;box-shadow:0 8px 32px rgba(15,37,53,.16);pointer-events:all;max-width:340px;transform:translateX(120%);transition:transform .35s cubic-bezier(.34,1.56,.64,1),opacity .3s;opacity:0}
+.on-toast.on-show{transform:translateX(0);opacity:1}.on-toast.on-hide{transform:translateX(120%);opacity:0}
+.on-ti{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.on-toast.success .on-ti{background:#E4F7EE}.on-toast.error .on-ti{background:#FEE2E2}.on-toast.info .on-ti{background:#E2F4FB}.on-toast.warning .on-ti{background:#FEF3C7}
+.on-tm{flex:1;line-height:1.4}
+.on-tc{width:18px;height:18px;background:none;border:none;cursor:pointer;opacity:.38;display:flex;align-items:center;justify-content:center;border-radius:4px;transition:opacity .15s;flex-shrink:0;padding:0}
+.on-tc:hover{opacity:.75}
+html.dark .on-toast{background:#1A2B38;color:#E2EBF0;border-color:rgba(255,255,255,.08)}
+@media(max-width:480px){#on-toast-container{bottom:16px;right:16px;left:16px}.on-toast{max-width:100%}}`;
+    document.head.appendChild(s);
+    const c = document.createElement('div'); c.id = 'on-toast-container'; document.body.appendChild(c);
+  }
+  const ICONS = {
+    success:`<svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 6.5L5 9.5L11 3.5" stroke="#3CB878" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    error:  `<svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2.5 2.5L10.5 10.5M10.5 2.5L2.5 10.5" stroke="#EF4444" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+    info:   `<svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="#29ABE2" stroke-width="1.5"/><path d="M6.5 6V9M6.5 4.5V5" stroke="#29ABE2" stroke-width="1.6" stroke-linecap="round"/></svg>`,
+    warning:`<svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 2L12 11H1L6.5 2Z" stroke="#F59E0B" stroke-width="1.5" stroke-linejoin="round"/><path d="M6.5 5.5V7.5M6.5 9V9.2" stroke="#F59E0B" stroke-width="1.6" stroke-linecap="round"/></svg>`,
+  };
+  const t = document.createElement('div');
+  t.className = `on-toast ${type}`;
+  t.innerHTML = `<div class="on-ti">${ICONS[type]||ICONS.success}</div><span class="on-tm">${message}</span><button class="on-tc" onclick="this.closest('.on-toast').classList.add('on-hide');setTimeout(()=>this.closest('.on-toast')?.remove(),350)"><svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M1 1L8 8M8 1L1 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>`;
+  document.getElementById('on-toast-container').appendChild(t);
+  requestAnimationFrame(()=>requestAnimationFrame(()=>t.classList.add('on-show')));
+  setTimeout(()=>{t.classList.remove('on-show');t.classList.add('on-hide');setTimeout(()=>t.remove(),350);}, duration);
+}
+window.showToast = (m,t,d)=>showToast(m,t,d);
+
 /* ─── SUPPORT MODALS ──────────────────────────────── */
 function initSupportModals() {
   if (document.getElementById('on-support-overlay')) return;
@@ -218,4 +250,43 @@ function initSupportModals() {
 /* ─── INIT ───────────────────────────────────────── */
 window.addEventListener('DOMContentLoaded', () => {
   initSupportModals();
+
+  /* Back to top */
+  if (!document.getElementById('on-btt')) {
+    const bs = document.createElement('style');
+    bs.textContent = `#on-btt{position:fixed;bottom:88px;left:24px;width:42px;height:42px;background:#3CB878;border:none;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 16px rgba(60,184,120,.35);opacity:0;transform:translateY(14px) scale(.85);transition:opacity .3s,transform .3s;pointer-events:none;z-index:8999}#on-btt.on-show{opacity:1;transform:translateY(0) scale(1);pointer-events:all}#on-btt:hover{transform:translateY(-3px) scale(1);box-shadow:0 8px 24px rgba(60,184,120,.45)}@media(max-width:768px){#on-btt{bottom:100px;left:16px}}`;
+    document.head.appendChild(bs);
+    const btt = document.createElement('button');
+    btt.id = 'on-btt'; btt.setAttribute('aria-label','Retour en haut');
+    btt.innerHTML = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 10L8 5L13 10" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+    document.body.appendChild(btt);
+    btt.addEventListener('click', ()=>window.scrollTo({top:0,behavior:'smooth'}));
+    window.addEventListener('scroll', ()=>btt.classList.toggle('on-show', window.scrollY>400), {passive:true});
+  }
+
+  /* Newsletter toast */
+  document.querySelectorAll('.btn-nl, .nl-btn, [class*="newsletter"] button').forEach(btn => {
+    if (btn.dataset.toastWired) return;
+    btn.dataset.toastWired = '1';
+    btn.addEventListener('click', () => {
+      const inp = btn.closest('section,div,form')?.querySelector('input[type=email],.nl-inp');
+      if (inp?.value?.includes('@')) {
+        showToast('Inscription confirmée ! Bienvenue dans la communauté Oriupe.', 'success');
+        inp.value = '';
+      } else {
+        showToast('Veuillez entrer une adresse email valide.', 'error', 2500);
+      }
+    });
+  });
+
+  /* Fav toast */
+  document.querySelectorAll('.svc-fav, .fav-btn').forEach(btn => {
+    if (btn.dataset.toastWired) return;
+    btn.dataset.toastWired = '1';
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const willAdd = !btn.classList.contains('active') && !btn.classList.contains('faved');
+      if (willAdd) showToast('Ajouté aux favoris', 'success', 2000);
+    });
+  });
 });

@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Admin — Oriupe</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;-webkit-font-smoothing:antialiased}
+body{font-family:'Plus Jakarta Sans',sans-serif;display:flex;min-height:100vh}
+:root{--navy:#0F2535;--green:#3CB878;--lime:#8DC63F;--blue:#29ABE2;--red:#EF4444;--border:rgba(27,58,74,.12);--muted:rgba(27,58,74,.5)}
+.al{width:420px;flex-shrink:0;background:var(--navy);display:flex;flex-direction:column;padding:48px;position:relative;overflow:hidden}
+.al-orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none}
+.al-orb1{width:400px;height:400px;background:radial-gradient(circle,rgba(60,184,120,.2) 0%,transparent 70%);top:-80px;left:-80px}
+.al-orb2{width:350px;height:350px;background:radial-gradient(circle,rgba(41,171,226,.15) 0%,transparent 70%);bottom:-60px;right:-60px}
+.al-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:40px 40px}
+.al-logo{display:flex;align-items:center;gap:10px;position:relative;z-index:1;margin-bottom:auto}
+.al-logo-t{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;color:#fff}
+.al-admin-tag{font-size:10px;font-weight:700;background:rgba(60,184,120,.2);border:1px solid rgba(60,184,120,.3);color:#3CB878;border-radius:6px;padding:2px 7px;letter-spacing:.08em;margin-left:4px}
+.al-body{position:relative;z-index:1;margin-top:auto}
+.al-icon{width:72px;height:72px;border-radius:20px;background:rgba(60,184,120,.1);border:1px solid rgba(60,184,120,.2);display:flex;align-items:center;justify-content:center;margin-bottom:24px}
+.al-title{font-family:'Bricolage Grotesque',sans-serif;font-size:26px;font-weight:800;color:#fff;margin-bottom:10px;line-height:1.2}
+.al-sub{font-size:13px;color:rgba(255,255,255,.42);line-height:1.75;margin-bottom:28px}
+.al-badges{display:flex;flex-direction:column;gap:8px}
+.al-badge{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:11px 14px}
+.al-badge-dot{width:7px;height:7px;border-radius:50%;background:var(--green);flex-shrink:0}
+.al-badge span{font-size:11.5px;color:rgba(255,255,255,.5);font-weight:500}
+.al-copy{font-size:11px;color:rgba(255,255,255,.18);margin-top:24px;position:relative;z-index:1}
+.ar{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 40px;background:#fff;position:relative}
+.ar-top{position:absolute;top:0;left:0;right:0;padding:20px 40px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #F0F2F5}
+.ar-steps{display:flex;gap:8px;align-items:center}
+.step-dot{width:8px;height:8px;border-radius:50%;background:#E5E7EB;transition:.35s}
+.step-dot.active{width:24px;border-radius:100px;background:var(--green)}
+.step-dot.done{background:var(--green);opacity:.35}
+.ar-ip{font-size:11px;color:var(--muted);background:#F4F6F9;border-radius:8px;padding:5px 10px;display:flex;align-items:center;gap:5px}
+.form-wrap{width:100%;max-width:400px}
+.step{display:none;animation:fadeUp .35s ease}
+.step.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.step-label{font-size:11px;font-weight:700;color:var(--green);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}
+.step-title{font-family:'Bricolage Grotesque',sans-serif;font-size:26px;font-weight:800;color:#0F2535;margin-bottom:6px;letter-spacing:-.5px}
+.step-sub{font-size:13px;color:var(--muted);line-height:1.65;margin-bottom:24px}
+.inp-wrap{margin-bottom:16px}
+.inp-label{font-size:12px;font-weight:600;color:#1B3A4A;margin-bottom:6px;display:block}
+.inp-inner{position:relative}
+.inp-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);pointer-events:none}
+.inp{width:100%;padding:13px 14px 13px 42px;border:1.5px solid var(--border);border-radius:12px;font-size:14px;font-family:'Plus Jakarta Sans',sans-serif;color:#1B3A4A;background:#fff;transition:.2s;outline:none}
+.inp:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(60,184,120,.1)}
+.inp.err{border-color:var(--red)!important;box-shadow:0 0 0 3px rgba(239,68,68,.08)!important}
+.inp-eye{position:absolute;right:14px;top:50%;transform:translateY(-50%);cursor:pointer;background:none;border:none;color:var(--muted);padding:4px}
+.err-toast{display:none;background:#FEE2E2;border:1px solid rgba(239,68,68,.2);border-radius:10px;padding:11px 14px;font-size:13px;color:var(--red);margin-bottom:14px;gap:8px}
+.err-toast.show{display:flex;align-items:center}
+.btn{width:100%;padding:14px;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;border:none;transition:.2s;font-family:'Plus Jakarta Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-green{background:linear-gradient(135deg,var(--green),var(--lime));color:#fff}
+.btn-green:hover{opacity:.92;transform:translateY(-1px)}
+.btn-green:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.btn-back{background:transparent;border:none;color:var(--muted);font-size:13px;padding:0;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:.2s;width:auto;display:inline-flex;align-items:center;gap:6px;margin-bottom:18px}
+.btn-back:hover{color:#1B3A4A}
+.link{color:var(--green);text-decoration:none;font-size:12px;font-weight:600;cursor:pointer}
+.link:hover{text-decoration:underline}
+.totp-row{display:flex;gap:8px;margin-bottom:16px;justify-content:center}
+.totp-inp{width:52px;height:60px;border:1.5px solid var(--border);border-radius:12px;text-align:center;font-size:22px;font-weight:800;color:#0F2535;font-family:'Bricolage Grotesque',sans-serif;outline:none;transition:.2s;background:#fff}
+.totp-inp:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(60,184,120,.1)}
+.totp-inp.filled{border-color:var(--green);background:#F0FBF5}
+.totp-timer{text-align:center;font-size:12px;color:var(--muted);margin-bottom:18px}
+.totp-timer strong{color:#1B3A4A}
+.success-wrap{text-align:center;animation:fadeUp .5s ease}
+.success-icon{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--lime));display:flex;align-items:center;justify-content:center;margin:0 auto 24px;box-shadow:0 12px 32px rgba(60,184,120,.3)}
+.success-title{font-family:'Bricolage Grotesque',sans-serif;font-size:26px;font-weight:800;color:#0F2535;margin-bottom:8px}
+.success-sub{font-size:14px;color:var(--muted);margin-bottom:28px;line-height:1.6}
+.progress-bar{height:4px;background:#E5E7EB;border-radius:100px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--lime));border-radius:100px;width:0;transition:width 1.8s linear}
+.lockout-box{text-align:center;padding:28px 24px;background:#FFF3E0;border:1px solid rgba(180,83,9,.15);border-radius:16px;font-size:13px;color:#B45309}
+.lockout-box .lock-count{font-family:'Bricolage Grotesque',sans-serif;font-size:28px;font-weight:800;display:block;margin:10px 0 4px}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes drawCheck{to{stroke-dashoffset:0}}
+</style>
+</head>
+<body>
+
+<div class="al">
+  <div class="al-orb al-orb1"></div>
+  <div class="al-orb al-orb2"></div>
+  <div class="al-grid"></div>
+  <div class="al-logo">
+    <svg width="30" height="30" viewBox="0 0 32 32" fill="none"><circle cx="10" cy="10" r="8.5" fill="#8DC63F" opacity=".9"/><circle cx="22" cy="10" r="8.5" fill="#29ABE2" opacity=".9"/><circle cx="10" cy="22" r="8.5" fill="#3CB878" opacity=".9"/><circle cx="22" cy="22" r="8.5" fill="#1B3A4A"/><rect x="9.5" y="9.5" width="13" height="13" rx="1.5" fill="rgba(60,184,120,.45)"/></svg>
+    <span class="al-logo-t">Oriupe</span>
+    <span class="al-admin-tag">ADMIN</span>
+  </div>
+  <div class="al-body">
+    <div class="al-icon">
+      <svg width="34" height="34" viewBox="0 0 34 34" fill="none"><path d="M17 3L5 9V18C5 24.63 10.24 30.84 17 32C23.76 30.84 29 24.63 29 18V9L17 3Z" stroke="#3CB878" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 17L15.5 20.5L22 14" stroke="#3CB878" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <h1 class="al-title">Espace Administrateur</h1>
+    <p class="al-sub">Accès réservé à l'équipe interne Oriupe. Toutes les connexions et actions sont enregistrées, horodatées et tracées en permanence.</p>
+    <div class="al-badges">
+      <div class="al-badge"><div class="al-badge-dot"></div><span>Chiffrement TLS 256-bit</span></div>
+      <div class="al-badge"><div class="al-badge-dot"></div><span>Authentification TOTP obligatoire</span></div>
+      <div class="al-badge"><div class="al-badge-dot"></div><span>Session expirée après 2h d'inactivité</span></div>
+      <div class="al-badge"><div class="al-badge-dot"></div><span>Whitelist IP — Alertes connexion suspecte</span></div>
+    </div>
+    <p class="al-copy">© 2025 Oriupe SAS — Confidentiel — Usage interne uniquement</p>
+  </div>
+</div>
+
+<div class="ar">
+  <div class="ar-top">
+    <div class="ar-steps">
+      <div class="step-dot active" id="dot1"></div>
+      <div class="step-dot" id="dot2"></div>
+      <div class="step-dot" id="dot3"></div>
+    </div>
+    <div class="ar-ip">
+      <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4" stroke="rgba(27,58,74,.4)" stroke-width="1"/><circle cx="5" cy="5" r="1.5" fill="rgba(27,58,74,.4)"/></svg>
+      41.189.XXX.XXX — Abidjan, CI
+    </div>
+  </div>
+
+  <div class="form-wrap">
+
+    <!-- STEP 1 -->
+    <div class="step active" id="step1">
+      <div class="step-label">Étape 1 / 2</div>
+      <h2 class="step-title">Connexion Admin</h2>
+      <p class="step-sub">Vérifiez être sur <strong>admin.oriupe.com</strong> avant de saisir vos identifiants.</p>
+      <div class="err-toast" id="err1">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none" style="flex-shrink:0"><circle cx="7.5" cy="7.5" r="6.5" stroke="#EF4444" stroke-width="1.4"/><path d="M7.5 4.5V7.5M7.5 9.5V10" stroke="#EF4444" stroke-width="1.4" stroke-linecap="round"/></svg>
+        <span id="err1-text"></span>
+      </div>
+      <div class="inp-wrap">
+        <label class="inp-label">Adresse email admin</label>
+        <div class="inp-inner">
+          <svg class="inp-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="3.5" width="12" height="9" rx="2" stroke="rgba(27,58,74,.35)" stroke-width="1.3"/><path d="M2 6L8 9.5L14 6" stroke="rgba(27,58,74,.35)" stroke-width="1.3" stroke-linecap="round"/></svg>
+          <input class="inp" id="email" type="email" placeholder="admin@oriupe.com" autocomplete="email"/>
+        </div>
+      </div>
+      <div class="inp-wrap">
+        <label class="inp-label">Mot de passe</label>
+        <div class="inp-inner">
+          <svg class="inp-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="7" rx="2" stroke="rgba(27,58,74,.35)" stroke-width="1.3"/><path d="M5 7V5C5 3.34 6.34 2 8 2S11 3.34 11 5V7" stroke="rgba(27,58,74,.35)" stroke-width="1.3" stroke-linecap="round"/></svg>
+          <input class="inp" id="pwd" type="password" placeholder="••••••••" autocomplete="current-password"/>
+          <button class="inp-eye" onclick="togglePwd()" type="button">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" id="eye-svg"><path d="M1 8C1 8 3.5 3 8 3S15 8 15 8 12.5 13 8 13 1 8 1 8Z" stroke="rgba(27,58,74,.4)" stroke-width="1.3"/><circle cx="8" cy="8" r="2" stroke="rgba(27,58,74,.4)" stroke-width="1.3"/></svg>
+          </button>
+        </div>
+        <div style="text-align:right;margin-top:6px"><span class="link" onclick="alert('Contactez security@oriupe.com pour réinitialiser votre mot de passe.')">Mot de passe oublié ?</span></div>
+      </div>
+      <button class="btn btn-green" id="btn1" onclick="step1Submit()">
+        Continuer
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M3 7.5H12M12 7.5L8.5 4M12 7.5L8.5 11" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <p style="font-size:11px;color:var(--muted);text-align:center;margin-top:16px">Demo : admin@oriupe.com / Admin2025!</p>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="step" id="step2">
+      <button class="btn-back" onclick="goStep(1)">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7L9 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Retour
+      </button>
+      <div class="step-label">Étape 2 / 2 — Double authentification</div>
+      <h2 class="step-title">Code de vérification</h2>
+      <p class="step-sub">Entrez le code à 6 chiffres depuis <strong>Google Authenticator</strong> ou <strong>Authy</strong>.</p>
+      <div class="err-toast" id="err2">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none" style="flex-shrink:0"><circle cx="7.5" cy="7.5" r="6.5" stroke="#EF4444" stroke-width="1.4"/><path d="M7.5 4.5V7.5M7.5 9.5V10" stroke="#EF4444" stroke-width="1.4" stroke-linecap="round"/></svg>
+        <span id="err2-text"></span>
+      </div>
+      <div class="totp-row" id="totp-row">
+        <input class="totp-inp" maxlength="1" data-idx="0" type="text" inputmode="numeric"/>
+        <input class="totp-inp" maxlength="1" data-idx="1" type="text" inputmode="numeric"/>
+        <input class="totp-inp" maxlength="1" data-idx="2" type="text" inputmode="numeric"/>
+        <input class="totp-inp" maxlength="1" data-idx="3" type="text" inputmode="numeric"/>
+        <input class="totp-inp" maxlength="1" data-idx="4" type="text" inputmode="numeric"/>
+        <input class="totp-inp" maxlength="1" data-idx="5" type="text" inputmode="numeric"/>
+      </div>
+      <div class="totp-timer">Code valide encore <strong id="timer-val">30</strong>s</div>
+      <button class="btn btn-green" id="btn2" onclick="step2Submit()" disabled>Vérifier</button>
+      <div style="text-align:center;margin-top:14px">
+        <span class="link" onclick="toggleRecovery()">Utiliser un code de secours →</span>
+      </div>
+      <div id="recovery-wrap" style="display:none;margin-top:14px;padding:16px;background:#F4F6F9;border-radius:12px;border:1px solid var(--border)">
+        <label class="inp-label">Code de secours</label>
+        <input class="inp" id="rec-inp" type="text" placeholder="A1B2-C3D4" style="padding-left:14px"/>
+        <button class="btn btn-green" onclick="useRecovery()" style="margin-top:10px">Utiliser</button>
+      </div>
+      <p style="font-size:11px;color:var(--muted);text-align:center;margin-top:14px">Demo : tapez 123456</p>
+    </div>
+
+    <!-- STEP 3: SUCCESS -->
+    <div class="step" id="step3">
+      <div class="success-wrap">
+        <div class="success-icon">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+            <path d="M8 20L16 28L32 12" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"
+              style="stroke-dasharray:45;stroke-dashoffset:45;animation:drawCheck .55s .15s ease forwards"/>
+          </svg>
+        </div>
+        <h2 class="success-title">Accès autorisé ✓</h2>
+        <p class="success-sub">Bienvenue, <strong>Super Admin Oriupe</strong>.<br>Redirection vers le tableau de bord...</p>
+        <div class="progress-bar"><div class="progress-fill" id="pfill"></div></div>
+        <p style="font-size:11px;color:var(--muted);margin-top:12px">Session ouverte · 15 Jan 2025 09:42 · 41.189.XXX.XXX · Abidjan, CI</p>
+      </div>
+    </div>
+
+    <!-- LOCKOUT -->
+    <div class="step" id="step-lock">
+      <div class="lockout-box">
+        <svg width="44" height="44" viewBox="0 0 44 44" fill="none" style="margin:0 auto 12px;display:block"><path d="M22 5L5 13V23C5 32.5 12.5 41.4 22 43C31.5 41.4 39 32.5 39 23V13L22 5Z" stroke="#B45309" stroke-width="2.2" stroke-linejoin="round"/><path d="M22 17V23M22 27V29" stroke="#B45309" stroke-width="2.2" stroke-linecap="round"/></svg>
+        Compte verrouillé après trop de tentatives échouées.
+        <span class="lock-count" id="lock-timer">05:00</span>
+        <p style="font-size:11px;margin-top:6px;color:rgba(180,83,9,.7)">Alerte envoyée à security@oriupe.com</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+let attempts=0,totpTries=0,timerIv,lockIv,timerSec=30;
+const totpInputs=document.querySelectorAll('.totp-inp');
+
+function goStep(n){
+  document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
+  const el=document.getElementById('step'+n);
+  if(el)el.classList.add('active');
+  [1,2,3].forEach(i=>{
+    const d=document.getElementById('dot'+i);
+    if(!d)return;
+    d.className='step-dot'+(i<n?' done':i===n?' active':'');
+  });
+}
+
+function step1Submit(){
+  const email=document.getElementById('email').value.trim();
+  const pwd=document.getElementById('pwd').value;
+  const btn=document.getElementById('btn1');
+  hideErr('err1');
+  if(!email||!pwd){showErr('err1','Veuillez remplir tous les champs.');return;}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){showErr('err1','Email invalide.');return;}
+  btn.disabled=true;
+  btn.innerHTML='<svg width="18" height="18" viewBox="0 0 18 18" fill="none" style="animation:spin .7s linear infinite"><path d="M9 2C5.13 2 2 5.13 2 9" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg> Vérification...';
+  setTimeout(()=>{
+    btn.disabled=false;
+    btn.innerHTML='Continuer <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M3 7.5H12M12 7.5L8.5 4M12 7.5L8.5 11" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    if(email==='admin@oriupe.com'&&pwd==='Admin2025!'){
+      goStep(2);startTotpTimer();
+    } else {
+      attempts++;
+      if(attempts>=5){lockAccount();return;}
+      showErr('err1',`Identifiants incorrects. Tentative ${attempts}/5.`);
+      ['email','pwd'].forEach(id=>{
+        document.getElementById(id).classList.add('err');
+        setTimeout(()=>document.getElementById(id).classList.remove('err'),1500);
+      });
+    }
+  },1500);
+}
+
+totpInputs.forEach((inp,i)=>{
+  inp.addEventListener('input',e=>{
+    const v=e.target.value.replace(/\D/g,'');
+    e.target.value=v;
+    e.target.classList.toggle('filled',!!v);
+    if(v&&i<5)totpInputs[i+1].focus();
+    checkTotp();
+  });
+  inp.addEventListener('keydown',e=>{
+    if(e.key==='Backspace'&&!e.target.value&&i>0){
+      totpInputs[i-1].focus();totpInputs[i-1].value='';totpInputs[i-1].classList.remove('filled');
+    }
+  });
+  inp.addEventListener('paste',e=>{
+    e.preventDefault();
+    const p=(e.clipboardData||window.clipboardData).getData('text').replace(/\D/g,'');
+    if(p.length===6){
+      totpInputs.forEach((x,j)=>{x.value=p[j]||'';x.classList.toggle('filled',!!p[j]);});
+      checkTotp();totpInputs[5].focus();
+    }
+  });
+});
+
+function getCode(){return Array.from(totpInputs).map(i=>i.value).join('');}
+function checkTotp(){document.getElementById('btn2').disabled=getCode().length<6;}
+
+function step2Submit(){
+  const code=getCode();
+  const btn=document.getElementById('btn2');
+  hideErr('err2');
+  btn.disabled=true;
+  btn.innerHTML='<svg width="18" height="18" viewBox="0 0 18 18" fill="none" style="animation:spin .7s linear infinite"><path d="M9 2C5.13 2 2 5.13 2 9" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>';
+  setTimeout(()=>{
+    if(code==='123456'){
+      clearInterval(timerIv);goStep(3);
+      setTimeout(()=>{document.getElementById('pfill').style.width='100%';},80);
+      setTimeout(()=>location.href='/src/pages/admin/index.html',2200);
+    } else {
+      totpTries++;
+      btn.disabled=false;btn.innerHTML='Vérifier';
+      if(totpTries>=3){lockAccount();return;}
+      showErr('err2',`Code incorrect. ${3-totpTries} tentative(s) restante(s).`);
+      totpInputs.forEach(x=>{x.value='';x.classList.remove('filled');});
+      totpInputs[0].focus();checkTotp();
+    }
+  },1200);
+}
+
+function startTotpTimer(){
+  timerSec=30;clearInterval(timerIv);
+  document.getElementById('timer-val').textContent=timerSec;
+  timerIv=setInterval(()=>{
+    timerSec--;
+    document.getElementById('timer-val').textContent=timerSec;
+    if(timerSec<=0)timerSec=30;
+  },1000);
+}
+
+function toggleRecovery(){
+  const w=document.getElementById('recovery-wrap');
+  w.style.display=w.style.display==='none'?'block':'none';
+}
+function useRecovery(){
+  const v=document.getElementById('rec-inp').value.trim();
+  if(v==='A1B2-C3D4'){
+    clearInterval(timerIv);goStep(3);
+    setTimeout(()=>document.getElementById('pfill').style.width='100%',80);
+    setTimeout(()=>location.href='/src/pages/admin/index.html',2200);
+  } else { alert('Code de secours invalide.'); }
+}
+
+function lockAccount(){
+  document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
+  document.getElementById('step-lock').classList.add('active');
+  let secs=300;clearInterval(lockIv);
+  lockIv=setInterval(()=>{
+    secs--;
+    const m=String(Math.floor(secs/60)).padStart(2,'0');
+    const s=String(secs%60).padStart(2,'0');
+    document.getElementById('lock-timer').textContent=`${m}:${s}`;
+    if(secs<=0){clearInterval(lockIv);attempts=0;totpTries=0;goStep(1);}
+  },1000);
+}
+
+function showErr(id,msg){const e=document.getElementById(id);e.querySelector('span').textContent=msg;e.classList.add('show');}
+function hideErr(id){document.getElementById(id).classList.remove('show');}
+function togglePwd(){
+  const i=document.getElementById('pwd');
+  i.type=i.type==='password'?'text':'password';
+}
+
+document.getElementById('pwd').addEventListener('keydown',e=>{if(e.key==='Enter')step1Submit();});
+const s=document.createElement('style');
+s.textContent='@keyframes spin{to{transform:rotate(360deg)}}@keyframes drawCheck{to{stroke-dashoffset:0}}';
+document.head.appendChild(s);
+</script>
+</body>
+</html>

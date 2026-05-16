@@ -312,9 +312,6 @@ nav{background:rgba(255,255,255,.96);backdrop-filter:blur(18px);height:64px;
 .btn-cta-trans:hover{background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.4)}
 
 /* ── FOOTER ── */
-footer{background:var(--navy2);padding:28px 52px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
-.foot-logo{display:flex;align-items:center;gap:9px}
-.foot-t{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:800;color:#fff}
 .foot-copy{font-size:12px;color:rgba(255,255,255,.28)}
 
 /* ── REVEAL ── */
@@ -351,6 +348,20 @@ footer{background:var(--navy2);padding:28px 52px;display:flex;justify-content:sp
   .filter-inner{flex-direction:column;align-items:flex-start}
   .filter-cats{gap:5px}
 }
+footer{background:var(--navy);padding:64px 24px 32px;margin-top:0;display:block}
+.footer-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:40px;margin-bottom:48px}
+.footer-col-title{font-size:11px;font-weight:700;color:rgba(255,255,255,.35);letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px}
+.footer-links{display:flex;flex-direction:column;gap:10px}
+.footer-links a{font-size:13px;color:rgba(255,255,255,.6);text-decoration:none;transition:.2s}
+.footer-links a:hover{color:#fff}
+.footer-tagline{font-size:12px;color:rgba(255,255,255,.4);margin-top:10px;line-height:1.6}
+.footer-bottom{max-width:1280px;margin:0 auto;padding-top:24px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;align-items:center}
+.footer-copy{font-size:12px;color:rgba(255,255,255,.3)}
+.footer-legal{display:flex;gap:20px}
+.footer-legal a{font-size:12px;color:rgba(255,255,255,.3);text-decoration:none}
+.footer-legal a:hover{color:rgba(255,255,255,.7)}
+@media(max-width:900px){.footer-inner{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.footer-inner{grid-template-columns:1fr}}
 </style>
   <script type="module" src="/src/components/nav.js"></script>
 </head>
@@ -371,18 +382,18 @@ footer{background:var(--navy2);padding:28px 52px;display:flex;justify-content:sp
       <span class="logo-t">Oriupe</span>
     </div>
     <div class="nav-links">
-      <a href="oriupe_ULTIMATE.html">Accueil</a>
-      <a href="oriupe_catalogue.html">Explorer</a>
-      <a href="oriupe_appels_offres.html">Appels d'offres</a>
-      <a class="active" href="#">Academy</a>
-      <a href="#">Blog</a>
+      <a href="/src/pages/home/index.html">Accueil</a>
+      <a href="/src/pages/catalog/index.html">Explorer</a>
+      <a href="/src/pages/offers/index.html">Appels d'offres</a>
+      <a class="active" href="/src/pages/academy/index.html">Academy</a>
+      <a href="/src/pages/blog/index.html">Blog</a>
     </div>
   </div>
   <div class="nav-right">
     <div class="pill">🌍 FR ▾</div>
     <div class="pill">FCFA ▾</div>
-    <button class="btn-ghost">Se connecter</button>
-    <button class="btn-g">S'inscrire</button>
+    <button class="btn-ghost" onclick="location.href='/src/pages/auth/index.html'">Se connecter</button>
+    <button class="btn-g" onclick="location.href='/src/pages/auth/index.html'">S'inscrire</button>
   </div>
 </nav>
 
@@ -665,7 +676,7 @@ footer{background:var(--navy2);padding:28px 52px;display:flex;justify-content:sp
     <div class="courses-grid sg">
 
       <!-- Cours 1 — Enrolled -->
-      <div class="course-card r">
+      <div class="course-card r" data-cat="dev" data-price="0" data-date="20250115" data-level="inter">
         <div class="cc-thumb" style="background:linear-gradient(135deg,#0F2535,#1A4A6A)">
           <div class="cc-badges"><span class="cc-badge cb-pop">🔥 Populaire</span></div>
           <button class="cc-fav"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="#1B3A4A" stroke-width="1.4"><path d="M6.5 11.5L1.5 7A2.8 2.8 0 116 2.5c.2.3.4.5.5.7.2-.2.4-.4.5-.7A2.8 2.8 0 1111.5 7L6.5 11.5Z"/></svg></button>
@@ -706,7 +717,7 @@ footer{background:var(--navy2);padding:28px 52px;display:flex;justify-content:sp
       </div>
 
       <!-- Cours 2 — Free -->
-      <div class="course-card r">
+      <div class="course-card r" data-cat="design" data-free="true" data-price="0" data-date="20250110" data-level="debut">
         <div class="cc-thumb" style="background:linear-gradient(135deg,#1A0A3A,#3D1A78)">
           <div class="cc-badges"><span class="cc-badge cb-free">🆓 Gratuit</span></div>
           <button class="cc-fav"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="#1B3A4A" stroke-width="1.4"><path d="M6.5 11.5L1.5 7A2.8 2.8 0 116 2.5c.2.3.4.5.5.7.2-.2.4-.4.5-.7A2.8 2.8 0 1111.5 7L6.5 11.5Z"/></svg></button>
@@ -744,7 +755,7 @@ footer{background:var(--navy2);padding:28px 52px;display:flex;justify-content:sp
       </div>
 
       <!-- Cours 3 — Certified -->
-      <div class="course-card r">
+      <div class="course-card r" data-cat="marketing" data-price="30000" data-date="20250108" data-level="inter">
         <div class="cc-thumb" style="background:linear-gradient(135deg,#0C304A,#1A5A7A)">
           <div class="cc-badges"><span class="cc-badge cb-cert">🎓 Certifiant</span></div>
           <button class="cc-fav"><svg width="13" height="13" viewBox="0 0 13 13" fill="var(--red)" stroke="var(--red)" stroke-width="1.4"><path d="M6.5 11.5L1.5 7A2.8 2.8 0 116 2.5c.2.3.4.5.5.7.2-.2.4-.4.5-.7A2.8 2.8 0 1111.5 7L6.5 11.5Z"/></svg></button>
@@ -783,7 +794,7 @@ footer{background:var(--navy2);padding:28px 52px;display:flex;justify-content:sp
       </div>
 
       <!-- Cours 4 -->
-      <div class="course-card r">
+      <div class="course-card r" data-cat="business" data-price="25000" data-date="20250105" data-level="debut">
         <div class="cc-thumb" style="background:linear-gradient(135deg,#2A1A08,#5A3010)">
           <div class="cc-badges"><span class="cc-badge cb-new">✨ Nouveau</span></div>
           <button class="cc-fav"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="#1B3A4A" stroke-width="1.4"><path d="M6.5 11.5L1.5 7A2.8 2.8 0 116 2.5c.2.3.4.5.5.7.2-.2.4-.4.5-.7A2.8 2.8 0 1111.5 7L6.5 11.5Z"/></svg></button>
@@ -823,7 +834,7 @@ footer{background:var(--navy2);padding:28px 52px;display:flex;justify-content:sp
       </div>
 
       <!-- Cours 5 -->
-      <div class="course-card r">
+      <div class="course-card r" data-cat="dev" data-price="45000" data-date="20250103" data-level="avance">
         <div class="cc-thumb" style="background:linear-gradient(135deg,#0A3020,#1A6038)">
           <div class="cc-badges"><span class="cc-badge cb-pop">🔥 Populaire</span><span class="cc-badge cb-cert">🎓 Certifiant</span></div>
           <button class="cc-fav"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="#1B3A4A" stroke-width="1.4"><path d="M6.5 11.5L1.5 7A2.8 2.8 0 116 2.5c.2.3.4.5.5.7.2-.2.4-.4.5-.7A2.8 2.8 0 1111.5 7L6.5 11.5Z"/></svg></button>
@@ -864,7 +875,7 @@ footer{background:var(--navy2);padding:28px 52px;display:flex;justify-content:sp
       </div>
 
       <!-- Cours 6 — Free -->
-      <div class="course-card r">
+      <div class="course-card r" data-cat="marketing" data-free="true" data-price="0" data-date="20241228" data-level="debut">
         <div class="cc-thumb" style="background:linear-gradient(135deg,#3D1A78,#6B36D1)">
           <div class="cc-badges"><span class="cc-badge cb-free">🆓 Gratuit</span></div>
           <button class="cc-fav"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="#1B3A4A" stroke-width="1.4"><path d="M6.5 11.5L1.5 7A2.8 2.8 0 116 2.5c.2.3.4.5.5.7.2-.2.4-.4.5-.7A2.8 2.8 0 1111.5 7L6.5 11.5Z"/></svg></button>
@@ -1133,12 +1144,13 @@ footer{background:var(--navy2);padding:28px 52px;display:flex;justify-content:sp
 
 <!-- ████ FOOTER ████ -->
 <footer>
-  <div class="foot-logo">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="7" cy="7" r="5.5" fill="#8DC63F" opacity=".85"/><circle cx="17" cy="7" r="5.5" fill="#29ABE2" opacity=".85"/><circle cx="7" cy="17" r="5.5" fill="#3CB878" opacity=".85"/><circle cx="17" cy="17" r="5.5" fill="rgba(255,255,255,.1)"/><rect x="6.5" y="6.5" width="11" height="11" rx="1" fill="rgba(60,184,120,.4)"/></svg>
-    <span class="foot-t">Oriupe</span>
-    <span style="font-size:12px;color:rgba(255,255,255,.35);margin-left:8px">Academy</span>
+  <div class="footer-inner">
+    <div><a href="/src/pages/home/index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;margin-bottom:12px"><svg width="26" height="26" viewBox="0 0 32 32" fill="none"><circle cx="10" cy="10" r="8.5" fill="#8DC63F" opacity=".9"/><circle cx="22" cy="10" r="8.5" fill="#29ABE2" opacity=".9"/><circle cx="10" cy="22" r="8.5" fill="#3CB878" opacity=".9"/><circle cx="22" cy="22" r="8.5" fill="#1B3A4A"/><rect x="9.5" y="9.5" width="13" height="13" rx="1.5" fill="rgba(60,184,120,.45)"/></svg><span style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;color:#fff">Oriupe</span></a><p class="footer-tagline">"Ton talent. Ton continent. Ton avenir."</p></div>
+    <div><div class="footer-col-title">Oriupe</div><div class="footer-links"><a href="/src/pages/about/index.html">À propos</a><a href="/src/pages/careers/index.html">Carrières</a><a href="/src/pages/press/index.html">Presse &amp; Médias</a><a href="/src/pages/blog/index.html">Blog</a><a href="/src/pages/impact/index.html">Impact ESG</a></div></div>
+    <div><div class="footer-col-title">Freelances</div><div class="footer-links"><a href="/src/pages/auth/index.html">S'inscrire</a><a href="/src/pages/how-it-works/index.html">Comment ça marche</a><a href="/src/pages/academy/index.html">Oriupe Academy</a><a href="/src/pages/pricing/index.html">Tarifs Pro</a><a href="/src/pages/faq/index.html">FAQ Freelances</a></div></div>
+    <div><div class="footer-col-title">Support</div><div class="footer-links"><a href="/src/pages/help/index.html">Centre d'aide</a><a href="/src/pages/contact/index.html">Nous contacter</a><a href="/src/pages/disputes/index.html">Gestion des litiges</a><a href="/src/pages/terms/index.html">CGU &amp; CGV</a><a href="/src/pages/privacy/index.html">Confidentialité</a></div></div>
   </div>
-  <span class="foot-copy">© 2025 Oriupe Academy — Abidjan, Côte d'Ivoire</span>
+  <div class="footer-bottom"><span class="footer-copy">© 2025 Oriupe SAS — Abidjan, Côte d'Ivoire. Tous droits réservés.</span><div class="footer-legal"><a href="/src/pages/privacy/index.html">Confidentialité</a><a href="/src/pages/terms/index.html">CGU &amp; CGV</a></div></div>
 </footer>
 
 <script>
@@ -1148,24 +1160,104 @@ window.addEventListener('scroll',()=>{
   document.getElementById('progress').style.width=(t/h*100)+'%';
 },{passive:true});
 
-/* Reveal on scroll */
+/* Reveal */
 const obs=new IntersectionObserver(e=>{
   e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('vis')})
 },{threshold:.08,rootMargin:'0px 0px -24px 0px'});
 document.querySelectorAll('.r').forEach(el=>obs.observe(el));
 
-/* Filter categories */
+/* ── Course engine ── */
+const coursesGrid=document.querySelector('.courses-grid');
+const allCards=[...document.querySelectorAll('.course-card')];
+
+function getVisibleCards(){return allCards.filter(c=>c.style.display!=='none');}
+
+function updateCount(){
+  const n=getVisibleCards().length;
+  const chCount=document.querySelector('.ch-count');
+  if(chCount)chCount.innerHTML='<strong>'+n+' cours</strong> disponibles';
+  const applyBtn=document.querySelector('.btn-apply');
+  if(applyBtn)applyBtn.textContent='Appliquer ('+n+' cours)';
+}
+
+/* Category filter (called by onclick) */
+const CAT_MAP_AC={
+  'Tous les cours':null,'Développement':'dev','Design':'design',
+  'Marketing':'marketing','Business':'business','Finance':'finance',
+  'Vidéo':'video'
+};
 function filterCat(btn){
   document.querySelectorAll('.fcat').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
+  const label=btn.textContent.replace(/\s+/g,' ').trim();
+  const isFreeFilter=label.includes('Gratuit');
+  const cat=CAT_MAP_AC[label]||null;
+  allCards.forEach(card=>{
+    if(isFreeFilter) card.style.display=card.dataset.free==='true'?'':'none';
+    else if(!cat) card.style.display='';
+    else card.style.display=card.dataset.cat===cat?'':'none';
+  });
+  updateCount();
+}
+
+/* Sort */
+const sortSels=document.querySelectorAll('.filter-sel');
+if(sortSels[0]){
+  sortSels[0].addEventListener('change',()=>{
+    const v=sortSels[0].value;
+    const visible=getVisibleCards();
+    if(v.includes('populaires'))visible.sort((a,b)=>+(b.querySelector('.cc-reviews')?.textContent.replace(/[()]/g,'')||0)-(+(a.querySelector('.cc-reviews')?.textContent.replace(/[()]/g,'')||0)));
+    else if(v.includes('notés'))visible.sort((a,b)=>parseFloat(b.querySelector('.cc-rating')?.childNodes[1]?.nodeValue||'0')-parseFloat(a.querySelector('.cc-rating')?.childNodes[1]?.nodeValue||'0'));
+    else if(v.includes('récents'))visible.sort((a,b)=>+(b.dataset.date||0)-+(a.dataset.date||0));
+    else if(v.includes('croissant'))visible.sort((a,b)=>+(a.dataset.price||0)-+(b.dataset.price||0));
+    else if(v.includes('décroissant'))visible.sort((a,b)=>+(b.dataset.price||0)-+(a.dataset.price||0));
+    visible.forEach(c=>coursesGrid.appendChild(c));
+  });
+}
+if(sortSels[1]){
+  sortSels[1].addEventListener('change',()=>{
+    const v=sortSels[1].value;
+    allCards.forEach(card=>{
+      if(v==='Tous niveaux'){card.style.display='';}
+      else{
+        const lvl=card.dataset.level||'';
+        let show=false;
+        if(v==='Débutant'&&lvl==='debut')show=true;
+        else if(v==='Intermédiaire'&&lvl==='inter')show=true;
+        else if(v==='Avancé'&&lvl==='avance')show=true;
+        card.style.display=show?'':'none';
+      }
+    });
+    // reset category filter active state
+    document.querySelectorAll('.fcat').forEach(b=>b.classList.remove('active'));
+    document.querySelector('.fcat')?.classList.add('active');
+    updateCount();
+  });
 }
 
 /* View toggle */
-document.querySelectorAll('.vbtn').forEach(btn=>{
+document.querySelectorAll('.vbtn').forEach((btn,idx)=>{
   btn.addEventListener('click',()=>{
     document.querySelectorAll('.vbtn').forEach(b=>b.classList.remove('active'));
     btn.classList.add('active');
+    if(coursesGrid)coursesGrid.style.gridTemplateColumns=idx===1?'1fr':'repeat(auto-fill,minmax(280px,1fr))';
   });
+});
+
+/* Path cards navigation */
+const pathDests={'path-dev':'/src/pages/catalog/index.html?cat=dev','path-design':'/src/pages/catalog/index.html?cat=design','path-marketing':'/src/pages/catalog/index.html?cat=marketing','path-business':'/src/pages/catalog/index.html?cat=business'};
+document.querySelectorAll('.path-card').forEach(card=>{
+  const key=Array.from(card.classList).find(c=>pathDests[c]);
+  if(key)card.addEventListener('click',()=>location.href=pathDests[key]);
+});
+
+/* Sidebar reset */
+document.querySelector('.sb-reset')?.addEventListener('click',()=>{
+  document.querySelectorAll('.sidebar input').forEach(i=>i.checked=false);
+  allCards.forEach(c=>c.style.display='');
+  document.querySelectorAll('.fcat').forEach(b=>b.classList.remove('active'));
+  document.querySelector('.fcat')?.classList.add('active');
+  updateCount();
 });
 
 /* Fav toggle */
@@ -1174,10 +1266,34 @@ document.querySelectorAll('.cc-fav').forEach(btn=>{
     e.stopPropagation();
     btn.classList.toggle('faved');
     const svg=btn.querySelector('svg');
-    if(btn.classList.contains('faved')){svg.setAttribute('fill','#EF4444');svg.setAttribute('stroke','#EF4444')}
-    else{svg.setAttribute('fill','none');svg.setAttribute('stroke','#1B3A4A')}
+    if(btn.classList.contains('faved')){svg.setAttribute('fill','#EF4444');svg.setAttribute('stroke','#EF4444');}
+    else{svg.setAttribute('fill','none');svg.setAttribute('stroke','#1B3A4A');}
   });
 });
+
+/* Enroll buttons */
+document.querySelectorAll('.btn-enroll').forEach(btn=>{
+  btn.addEventListener('click',e=>{
+    if(btn.textContent.trim().startsWith('Continuer'))return;
+    if(!localStorage.getItem('oriupe_user')){
+      e.stopPropagation();
+      if(window.showToast)showToast('Connectez-vous pour vous inscrire à ce cours.','info');
+      setTimeout(()=>location.href='/src/pages/auth/index.html',1400);
+    }
+  });
+});
+
+/* Pricing buttons */
+document.querySelectorAll('.btn-price').forEach(btn=>{
+  btn.addEventListener('click',()=>location.href='/src/pages/auth/index.html');
+});
+document.querySelectorAll('.btn-cta-white,.btn-cta-trans').forEach(btn=>{
+  btn.addEventListener('click',()=>location.href='/src/pages/auth/index.html');
+});
+document.querySelectorAll('.btn-hero-primary').forEach(btn=>{
+  btn.addEventListener('click',()=>location.href='/src/pages/auth/index.html');
+});
+document.querySelector('.btn-pc-enroll')?.addEventListener('click',()=>location.href='/src/pages/auth/index.html');
 
 /* Pagination */
 document.querySelectorAll('.pg:not(:disabled)').forEach(btn=>{
@@ -1187,6 +1303,22 @@ document.querySelectorAll('.pg:not(:disabled)').forEach(btn=>{
     this.classList.add('active');
   });
 });
+
+/* Auto-fix pagination */
+(function(){
+  const pg=document.querySelector('.pagination');
+  if(!pg)return;
+  const pages=Math.ceil(allCards.length/6);
+  if(pages<=1){pg.style.display='none';return;}
+  pg.querySelectorAll('.pg:not(:disabled)').forEach(btn=>{
+    const n=parseInt(btn.textContent);
+    if(!isNaN(n)&&n>pages)btn.style.display='none';
+  });
+  pg.querySelectorAll('span').forEach(s=>{if(pages<=3)s.style.display='none';});
+})();
+
+/* Init */
+updateCount();
 </script>
   <script type="module" src="/src/scripts/main.js"></script>
 </body>
