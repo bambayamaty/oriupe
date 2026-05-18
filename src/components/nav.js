@@ -261,18 +261,20 @@ async function init() {
     ticking = true;
     requestAnimationFrame(()=>{
       const sy = window.scrollY;
-      nav.classList.toggle('on-top', sy<8);
-      nav.classList.toggle('on-scrolled', sy>6);
       const theme = detectTheme(nav);
-      if (nav.dataset.theme!==theme) nav.setAttribute('data-theme',theme);
+      if (nav.dataset.theme !== theme) nav.setAttribute('data-theme', theme);
+      // Transparent uniquement si fond sombre/vivid — jamais sur fond clair (texte blanc illisible)
+      nav.classList.toggle('on-top', sy < 8 && theme !== 'light');
+      nav.classList.toggle('on-scrolled', sy > 6);
       ticking = false;
     });
   }
   window.addEventListener('scroll', onScroll, {passive:true});
 
   requestAnimationFrame(()=>{
-    nav.setAttribute('data-theme', detectTheme(nav));
-    nav.classList.toggle('on-top', window.scrollY<8);
+    const theme = detectTheme(nav);
+    nav.setAttribute('data-theme', theme);
+    nav.classList.toggle('on-top', window.scrollY < 8 && theme !== 'light');
   });
 
   /* ── Dark mode ── */
