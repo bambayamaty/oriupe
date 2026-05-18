@@ -145,7 +145,17 @@ function resolveBackground(el) {
   while (node && node!==document.documentElement) {
     const style = window.getComputedStyle(node);
     const bgImg = style.backgroundImage;
-    if (bgImg && bgImg!=='none') { const col=extractFirstColor(bgImg); if (col){const rgb=parseRGB(col);if(rgb)return rgb;} }
+    if (bgImg && bgImg!=='none') {
+      const col = extractFirstColor(bgImg);
+      if (col) {
+        const rgb = parseRGB(col);
+        if (rgb) {
+          // Ignorer les dégradés décoratifs quasi-transparents (mesh, orbs)
+          const aM = col.match(/rgba?\([^,]+,[^,]+,[^,]+,\s*([0-9.]+)/);
+          if (!aM || parseFloat(aM[1]) > 0.3) return rgb;
+        }
+      }
+    }
     const bg = style.backgroundColor;
     if (bg && bg!=='rgba(0, 0, 0, 0)' && bg!=='transparent') {
       const rgb = parseRGB(bg);
@@ -156,7 +166,7 @@ function resolveBackground(el) {
   return null;
 }
 function themeFromRGB(rgb) {
-  if (!rgb) return 'light';
+  if (!rgb) return 'dark'; // Oriupe est majoritairement dark — fallback sûr
   const lum = luminance(rgb);
   const max = Math.max(rgb.r,rgb.g,rgb.b)/255;
   const min = Math.min(rgb.r,rgb.g,rgb.b)/255;
