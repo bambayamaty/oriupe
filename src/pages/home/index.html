@@ -4,8 +4,20 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Oriupe — Le talent africain à portée de clic</title>
+  <meta name="description" content="Oriupe — La marketplace de talents africains. Freelances certifiés KYC, paiement escrow sécurisé, Mobile Money intégré. Abidjan, Dakar, Douala."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:site_name" content="Oriupe"/>
+  <meta property="og:title" content="Oriupe — Le talent africain à portée de clic"/>
+  <meta property="og:description" content="Oriupe — La marketplace de talents africains. Freelances certifiés KYC, paiement escrow sécurisé, Mobile Money intégré. Abidjan, Dakar, Douala."/>
+  <meta property="og:image" content="https://oriupe.com/og-home.png"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="Oriupe — Le talent africain à portée de clic"/>
+  <meta name="twitter:description" content="Oriupe — La marketplace de talents africains. Freelances certifiés KYC, paiement escrow sécurisé, Mobile Money intégré. Abidjan, Dakar, Douala."/>
+  <meta name="twitter:image" content="https://oriupe.com/og-home.png"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/src/shared/styles/base.css"/>
+<script src="/src/shared/oriupe-session.js"></script>
 <style>
 /* ════════════════════════════════════════
    RESET & TOKENS
@@ -13,29 +25,6 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 body{font-family:'Plus Jakarta Sans',sans-serif;background:#fff;color:#1B3A4A;overflow-x:hidden}
-:root{
-  /* Brand */
-  --navy:#0F2535;--navy2:#1B3A4A;--navy3:#264B5E;
-  --green:#3CB878;--green-d:#27965D;--green-l:#E4F7EE;--green-xl:#F0FBF5;
-  --blue:#29ABE2;--blue-d:#1A8BC0;--blue-l:#E2F4FB;
-  --lime:#8DC63F;--lime-l:#EEF7D6;
-  --cream:#F7F5F0;
-  /* Neutral */
-  --white:#FFFFFF;--bg:#F4F6F9;--bg2:#ECEEF3;
-  --border:rgba(27,58,74,.1);--border2:rgba(27,58,74,.07);
-  --muted:rgba(27,58,74,.52);--muted2:rgba(27,58,74,.35);
-  /* Shadows */
-  --shadow-sm:0 1px 6px rgba(15,37,53,.06);
-  --shadow:0 4px 16px rgba(15,37,53,.1);
-  --shadow-md:0 8px 32px rgba(15,37,53,.14);
-  --shadow-lg:0 20px 60px rgba(15,37,53,.2);
-  --shadow-green:0 8px 32px rgba(60,184,120,.3);
-  /* Easing */
-  --ease:cubic-bezier(.25,.46,.45,.94);
-  --spring:cubic-bezier(.34,1.56,.64,1);
-  --snappy:cubic-bezier(.4,0,.2,1);
-}
-
 /* ════════════════════════════════════════
    SCROLL PROGRESS
 ════════════════════════════════════════ */
@@ -601,7 +590,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
 <!-- ████ NAV ████ -->
 <nav id="nav">
   <div class="nav-inner">
-    <a href="#" class="logo">
+    <a href="/src/pages/home/index.html" class="logo">
       <div class="logo-mark">
         <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
           <circle cx="10" cy="10" r="8.5" fill="#8DC63F" opacity=".9"/>
@@ -614,20 +603,41 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
       <span class="logo-text">Oriupe</span>
     </a>
     <div class="nav-links">
-      <a href="#" class="active">Explorer</a>
-      <a href="#">Appels d'offres</a>
-      <a href="#">Academy</a>
-      <a href="#">Blog</a>
-      <a href="#">Tarifs</a>
+      <a href="/src/pages/catalog/index.html" class="active">Explorer</a>
+      <a href="/src/pages/offers/index.html">Appels d'offres</a>
+      <a href="/src/pages/academy/index.html">Academy</a>
+      <a href="/src/pages/blog/index.html">Blog</a>
+      <a href="/src/pages/pricing/index.html">Tarifs</a>
     </div>
-    <div class="nav-right">
+    <div class="nav-right" id="nav-right">
       <div class="nav-pill">
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="display:inline;vertical-align:middle;margin-right:4px"><circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1.1"/><path d="M6 1C6 1 4 3.5 4 6S6 11 6 11M6 1c0 0 2 2.5 2 5S6 11 6 11M1 6H11" stroke="currentColor" stroke-width="1"/></svg>
         FR / EN / AR / SW ▾
       </div>
       <div class="nav-pill">FCFA ▾</div>
-      <button class="btn-login">Se connecter</button>
-      <button class="btn-cta-nav">S'inscrire gratuitement</button>
+      <span id="nav-auth-slot"></span>
+      <div style="position:relative;display:inline-block" id="demo-menu-wrap">
+        <button onclick="var d=document.getElementById('demo-dropdown');d.style.display=d.style.display==='block'?'none':'block'" style="font-size:12px;font-weight:700;color:rgba(255,255,255,.7);padding:7px 13px;border:1px solid rgba(255,255,255,.2);border-radius:8px;background:rgba(255,255,255,.08);cursor:pointer;transition:all .15s;white-space:nowrap">
+          Demo ▾
+        </button>
+        <div id="demo-dropdown" style="display:none;position:absolute;top:calc(100% + 8px);right:0;background:#fff;border:1px solid rgba(27,58,74,.1);border-radius:12px;box-shadow:0 8px 32px rgba(15,37,53,.15);min-width:220px;z-index:200;overflow:hidden">
+          <div style="padding:10px 14px 6px;font-size:10px;font-weight:700;color:rgba(27,58,74,.35);text-transform:uppercase;letter-spacing:1px">Espaces utilisateurs</div>
+          <a href="/src/pages/dashboard/client/index.html" style="display:flex;align-items:center;gap:10px;padding:10px 14px;font-size:13px;font-weight:600;color:#1B3A4A;text-decoration:none;transition:background .12s" onmouseover="this.style.background='#F4F6F9'" onmouseout="this.style.background=''">
+            <span style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#29ABE2,#7DD6F0);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0">AM</span>
+            Dashboard Client
+          </a>
+          <a href="/src/pages/dashboard/freelance/index.html" style="display:flex;align-items:center;gap:10px;padding:10px 14px;font-size:13px;font-weight:600;color:#1B3A4A;text-decoration:none;transition:background .12s" onmouseover="this.style.background='#F4F6F9'" onmouseout="this.style.background=''">
+            <span style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#3CB878,#8DC63F);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0">KA</span>
+            Dashboard Freelance
+          </a>
+          <div style="height:1px;background:rgba(27,58,74,.07);margin:6px 0"></div>
+          <div style="padding:4px 14px 6px;font-size:10px;font-weight:700;color:rgba(27,58,74,.35);text-transform:uppercase;letter-spacing:1px">Espace Admin</div>
+          <a href="/src/pages/admin/login.html" style="display:flex;align-items:center;gap:10px;padding:10px 14px;font-size:13px;font-weight:600;color:#1B3A4A;text-decoration:none;transition:background .12s" onmouseover="this.style.background='#F4F6F9'" onmouseout="this.style.background=''">
+            <span style="width:28px;height:28px;border-radius:8px;background:#0F2535;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0">A</span>
+            Connexion Admin
+          </a>
+        </div>
+      </div>
     </div>
     <button class="hamburger" id="ham"><span></span><span></span><span></span></button>
   </div>
@@ -635,11 +645,11 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
 
 <!-- MOBILE MENU -->
 <div class="mob-menu" id="mob">
-  <a href="#">Explorer les services</a>
-  <a href="#">Appels d'offres</a>
-  <a href="#">Oriupe Academy</a>
-  <a href="#">Blog</a>
-  <a href="#">Tarifs & Abonnements</a>
+  <a href="/src/pages/catalog/index.html">Explorer les services</a>
+  <a href="/src/pages/offers/index.html">Appels d'offres</a>
+  <a href="/src/pages/academy/index.html">Oriupe Academy</a>
+  <a href="/src/pages/blog/index.html">Blog</a>
+  <a href="/src/pages/pricing/index.html">Tarifs & Abonnements</a>
   <div class="mob-btns">
     <button style="width:100%;padding:13px;border-radius:9px;border:2px solid var(--green);background:#fff;color:var(--green);font-size:14px;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer">Se connecter</button>
     <button style="width:100%;padding:13px;border-radius:9px;border:none;background:var(--green);color:#fff;font-size:14px;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer">S'inscrire gratuitement</button>
@@ -1435,10 +1445,10 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
       <p class="of-desc">La marketplace de services num&eacute;riques africains. Freelances certifi&eacute;s, paiement Escrow s&eacute;curis&eacute;, Mobile Money int&eacute;gr&eacute;.</p>
       <div class="of-badge"><div class="of-pulse"></div>Plateforme active &mdash; Abidjan, C&ocirc;te d&rsquo;Ivoire &#x1F1E8;&#x1F1EE;</div>
       <div class="of-socials">
-        <a class="of-soc" href="#" title="LinkedIn" target="_blank" rel="noopener"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1.5" y="1.5" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M4 6.5V10M4 4.5V5M6.5 10V8C6.5 7 7.1 6.2 8.2 6.2S10 7 10 8V10M6.5 6.5V10" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg></a>
-        <a class="of-soc" href="#" title="X (Twitter)" target="_blank" rel="noopener"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M1 1L5.5 7L1 12H2.5L6.2 8.2L9.5 12H12.5L7.8 5.8L12 1H10.5L7.1 4.8L4 1H1Z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/></svg></a>
-        <a class="of-soc" href="#" title="Instagram" target="_blank" rel="noopener"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1.5" y="1.5" width="11" height="11" rx="3" stroke="currentColor" stroke-width="1.2"/><circle cx="7" cy="7" r="2.8" stroke="currentColor" stroke-width="1.1"/><circle cx="10.2" cy="3.8" r=".8" fill="currentColor"/></svg></a>
-        <a class="of-soc" href="#" title="WhatsApp" target="_blank" rel="noopener"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1C3.7 1 1 3.7 1 7c0 1 .3 2 .8 2.8L1 13l3.3-.8C5.1 12.7 6 13 7 13c3.3 0 6-2.7 6-6S10.3 1 7 1Z" stroke="currentColor" stroke-width="1.2"/><path d="M5 5.5c0 0 .5 1 1 1.5S7.5 8 7.5 8L8.5 7" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg></a>
+        <a class="of-soc" href="#" aria-disabled="true" tabindex="-1" style="opacity:.5;cursor:not-allowed;pointer-events:none" title="LinkedIn" target="_blank" rel="noopener"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1.5" y="1.5" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M4 6.5V10M4 4.5V5M6.5 10V8C6.5 7 7.1 6.2 8.2 6.2S10 7 10 8V10M6.5 6.5V10" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg></a>
+        <a class="of-soc" href="#" aria-disabled="true" tabindex="-1" style="opacity:.5;cursor:not-allowed;pointer-events:none" title="X (Twitter)" target="_blank" rel="noopener"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M1 1L5.5 7L1 12H2.5L6.2 8.2L9.5 12H12.5L7.8 5.8L12 1H10.5L7.1 4.8L4 1H1Z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/></svg></a>
+        <a class="of-soc" href="#" aria-disabled="true" tabindex="-1" style="opacity:.5;cursor:not-allowed;pointer-events:none" title="Instagram" target="_blank" rel="noopener"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1.5" y="1.5" width="11" height="11" rx="3" stroke="currentColor" stroke-width="1.2"/><circle cx="7" cy="7" r="2.8" stroke="currentColor" stroke-width="1.1"/><circle cx="10.2" cy="3.8" r=".8" fill="currentColor"/></svg></a>
+        <a class="of-soc" href="#" aria-disabled="true" tabindex="-1" style="opacity:.5;cursor:not-allowed;pointer-events:none" title="WhatsApp" target="_blank" rel="noopener"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1C3.7 1 1 3.7 1 7c0 1 .3 2 .8 2.8L1 13l3.3-.8C5.1 12.7 6 13 7 13c3.3 0 6-2.7 6-6S10.3 1 7 1Z" stroke="currentColor" stroke-width="1.2"/><path d="M5 5.5c0 0 .5 1 1 1.5S7.5 8 7.5 8L8.5 7" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg></a>
       </div>
     </div>
     <div class="of-col">
@@ -1639,8 +1649,24 @@ document.querySelectorAll('.footer-links a, .footer-legal a').forEach(a=>{
   const label=(a.textContent||'').trim();
   if(FOOTER_MAP[label])a.href=FOOTER_MAP[label];
 });
-document.querySelector('.btn-login')?.addEventListener('click',()=>location.href='/src/pages/auth/index.html');
-document.querySelector('.btn-cta-nav')?.addEventListener('click',()=>location.href='/src/pages/auth/index.html');
+// Session-aware nav auth slot
+(function(){
+  var slot=document.getElementById('nav-auth-slot');
+  if(!slot)return;
+  var s=null;try{s=JSON.parse(localStorage.getItem('oriupe_session')||'null')}catch(e){}
+  if(s&&s.isLoggedIn){
+    var dashUrl=s.role==='freelance'?'/src/pages/dashboard/freelance/index.html':'/src/pages/dashboard/client/index.html';
+    slot.innerHTML='<a href="'+dashUrl+'" style="display:flex;align-items:center;gap:7px;font-size:13px;font-weight:700;color:rgba(255,255,255,.9);background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);padding:6px 14px 6px 8px;border-radius:30px;text-decoration:none;transition:all .2s"><span style="width:26px;height:26px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff">'+((s.firstName||'U')[0].toUpperCase())+'</span>'+(s.firstName||'Mon compte')+'</a>';
+  }else{
+    slot.innerHTML='<button class="btn-login" onclick="location.href=\'/src/pages/auth/index.html\'">Se connecter</button><button class="btn-cta-nav" onclick="location.href=\'/src/pages/auth/index.html\'">S\'inscrire</button>';
+  }
+})();
+// Close demo dropdown on outside click
+document.addEventListener('click',function(e){
+  const wrap=document.getElementById('demo-menu-wrap');
+  const dd=document.getElementById('demo-dropdown');
+  if(wrap&&dd&&!wrap.contains(e.target)){dd.style.display='none';}
+});
 </script>
   <script type="module" src="/src/scripts/main.js"></script>
 <script>

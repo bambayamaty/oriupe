@@ -1,26 +1,5 @@
-# Dépendances
 node_modules/
-
-# Build
 dist/
-build/
-
-# Système macOS
-.DS_Store
-**/.DS_Store
-
-# Environnement (secrets)
 .env
-.env.local
-.env.*.local
-
-# Logs
-*.log
-npm-debug.log*
-
-# Éditeur
-.vscode/settings.json
-.idea/
-
-# Vite cache
-.vite/
+.DS_Store
+*.local

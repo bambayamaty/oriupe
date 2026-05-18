@@ -807,7 +807,7 @@ CinetPay est le PSP principal recommandé pour Oriupe. Il couvre Orange Money, M
 **Documentation :** https://docs.cinetpay.com
 
 **Flux de paiement entrant (client → escrow) :**
-
+ l
 ```typescript
 // Étape 1 : Initialiser le paiement
 const initPayload = {

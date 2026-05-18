@@ -1,30 +1,29 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+<script>
+  (function(){
+    try{
+      var s=JSON.parse(localStorage.getItem('oriupe_admin_session')||'null');
+      if(!s||!s.isAdmin) throw new Error();
+      // Session expires after 8h
+      if(Date.now()-s.loginAt > 8*60*60*1000){localStorage.removeItem('oriupe_admin_session');throw new Error();}
+    }catch(e){
+      window.location.replace('/src/pages/admin/login.html');
+    }
+  })();
+</script>
 <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Oriupe Admin — Panneau de contrôle</title>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+  <link rel="stylesheet" href="/src/shared/styles/base.css"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-font-smoothing:antialiased;height:100%}
 body{font-family:"Plus Jakarta Sans",sans-serif;background:#060F1E;color:#E2E8F0;height:100vh;display:flex;overflow:hidden}
 a{text-decoration:none;color:inherit}
 button{font-family:"Plus Jakarta Sans",sans-serif;cursor:pointer}
-:root{
-  --navy:#060F1E;--navy2:#0D1929;--navy3:#111E30;
-  --green:#3CB878;--green-d:#27965D;--green-l:rgba(60,184,120,.15);
-  --blue:#29ABE2;--blue-l:rgba(41,171,226,.15);
-  --lime:#8DC63F;--lime-l:rgba(141,198,63,.15);
-  --gold:#F59E0B;--gold-l:rgba(245,158,11,.15);
-  --red:#EF4444;--red-l:rgba(239,68,68,.15);
-  --purple:#7C3AED;--purple-l:rgba(124,58,237,.15);
-  --orange:#F97316;--orange-l:rgba(249,115,22,.15);
-  --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.04);
-  --muted:rgba(255,255,255,.45);--muted2:rgba(255,255,255,.25);
-  --shadow:0 2px 12px rgba(0,0,0,.3);--shadow-md:0 8px 32px rgba(0,0,0,.4);
-  --sidebar-w:240px;--spring:cubic-bezier(.34,1.56,.64,1);--ease:cubic-bezier(.25,.46,.45,.94);
-}
 .sidebar{width:var(--sidebar-w);flex-shrink:0;background:var(--navy2);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100vh;overflow-y:auto;position:fixed;left:0;top:0;bottom:0;z-index:100}
 .sidebar::-webkit-scrollbar{width:3px}
 .sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
@@ -199,7 +198,6 @@ tr:hover td{background:rgba(255,255,255,.02)}
 .sr-desc{font-size:12px;color:var(--muted)}
 .sr-control{flex-shrink:0}
 @media(max-width:1024px){
-  :root{--sidebar-w:60px}
   .sb-logo-t,.sb-logo-badge,.sb-name,.sb-role,.sb-section-title,.sb-item span,.sb-badge{display:none}
   .sb-logo{justify-content:center;padding:16px 8px}
   .sb-admin-info{justify-content:center;padding:10px 8px}
@@ -252,9 +250,15 @@ tr:hover td{background:rgba(255,255,255,.02)}
     <div class="sb-item" onclick="showPanel('audit')"><i class="sb-ic fa-solid fa-clock-rotate-left"></i><span>Audit Trail</span></div>
     <div class="sb-item" onclick="showPanel('settings')"><i class="sb-ic fa-solid fa-gear"></i><span>Parametres</span></div>
   </div>
+  <div class="sb-section-title">Espaces Roles</div>
+  <div class="sb-nav">
+    <div class="sb-item" onclick="location.href='/src/pages/admin/moderateur.html'"><i class="sb-ic fa-solid fa-shield-halved"></i><span>Espace Modérateur</span></div>
+    <div class="sb-item" onclick="location.href='/src/pages/admin/support.html'"><i class="sb-ic fa-solid fa-headset"></i><span>Espace Support</span></div>
+    <div class="sb-item" onclick="location.href='/src/pages/admin/finance.html'"><i class="sb-ic fa-solid fa-chart-pie"></i><span>Espace Finance</span></div>
+  </div>
   <div class="sb-bottom">
     <div class="sb-nav">
-      <div class="sb-item" style="color:var(--red)" onclick="location.href='/src/pages/admin/login.html'"><i class="sb-ic fa-solid fa-right-from-bracket"></i><span>Deconnexion</span></div>
+      <div class="sb-item" style="color:var(--red)" onclick="localStorage.removeItem('oriupe_admin_session');location.href='/src/pages/admin/login.html'"><i class="sb-ic fa-solid fa-right-from-bracket"></i><span>Deconnexion</span></div>
     </div>
   </div>
 </aside>
@@ -299,34 +303,34 @@ tr:hover td{background:rgba(255,255,255,.02)}
     <!-- USERS -->
     <div class="panel" id="panel-users">
       <div class="sec-head"><div><div class="sec-h">Gestion des utilisateurs</div><div class="sec-sub">50 248 utilisateurs enregistres</div></div><div style="display:flex;gap:8px"><div class="search-wrap"><i class="search-ico fa-solid fa-magnifying-glass"></i><input class="search-inp" placeholder="Nom, email, telephone..."/></div><button class="btn btn-outline btn-sm"><i class="fa-solid fa-download"></i> Export CSV</button></div></div>
-      <div class="filter-row"><button class="filter-chip active">Tous</button><button class="filter-chip">Clients</button><button class="filter-chip">Freelances Particuliers</button><button class="filter-chip">Freelances Entreprises</button><button class="filter-chip">KYC en attente</button><button class="filter-chip">Verifies</button><button class="filter-chip">Suspendus</button><button class="filter-chip">Bannis</button></div>
+      <div class="filter-row" data-target="#users-tbody"><button class="filter-chip active" data-filter="tous" onclick="filterChip(this)">Tous</button><button class="filter-chip" data-filter="client" onclick="filterChip(this)">Clients</button><button class="filter-chip" data-filter="freelance" onclick="filterChip(this)">Freelances Particuliers</button><button class="filter-chip" data-filter="entreprise" onclick="filterChip(this)">Freelances Entreprises</button><button class="filter-chip" data-filter="kyc" onclick="filterChip(this)">KYC en attente</button><button class="filter-chip" data-filter="verifie" onclick="filterChip(this)">Verifies</button><button class="filter-chip" data-filter="suspendu" onclick="filterChip(this)">Suspendus</button><button class="filter-chip" data-filter="banni" onclick="filterChip(this)">Bannis</button></div>
       <div class="card" style="padding:0;overflow:hidden"><div class="tbl-wrap"><table>
         <thead><tr><th>Utilisateur</th><th>Type</th><th>Pays</th><th>Inscrit le</th><th>Statut</th><th>Actions</th></tr></thead>
-        <tbody>
-          <tr><td><div class="user-cell"><div class="u-av" style="background:linear-gradient(135deg,var(--green),var(--lime))">KA</div><div><div class="u-name">Kofi Asante</div><div class="u-email">kofi@gmail.com</div></div></div></td><td><span class="badge b-blue">Freelance</span></td><td>&#127468;&#127469; Ghana</td><td style="color:var(--muted);font-size:12px">12 Jan 2025</td><td><span class="badge b-green"><i class="fa-solid fa-circle-check"></i> Verifie</span></td><td><div style="display:flex;gap:5px"><button class="btn btn-icon btn-sm"><i class="fa-solid fa-eye"></i></button><button class="btn btn-icon btn-sm"><i class="fa-solid fa-envelope"></i></button><button class="btn btn-icon btn-sm" onclick="openModal('user-actions')"><i class="fa-solid fa-ellipsis"></i></button></div></td></tr>
-          <tr><td><div class="user-cell"><div class="u-av" style="background:linear-gradient(135deg,var(--blue),#7DD6F0)">AM</div><div><div class="u-name">Amina Mbaye</div><div class="u-email">amina@startup.sn</div></div></div></td><td><span class="badge b-gold">Entreprise</span></td><td>&#127480;&#127475; Senegal</td><td style="color:var(--muted);font-size:12px">10 Jan 2025</td><td><span class="badge b-orange"><i class="fa-solid fa-clock"></i> KYC en attente</span></td><td><div style="display:flex;gap:5px"><button class="btn btn-icon btn-sm"><i class="fa-solid fa-eye"></i></button><button class="btn btn-icon btn-sm" onclick="showPanel('kyc')"><i class="fa-solid fa-id-card"></i></button><button class="btn btn-icon btn-sm" onclick="openModal('user-actions')"><i class="fa-solid fa-ellipsis"></i></button></div></td></tr>
-          <tr><td><div class="user-cell"><div class="u-av" style="background:linear-gradient(135deg,#7C3AED,#A78BFA)">CB</div><div><div class="u-name">Chidi Bello</div><div class="u-email">chidi@agency.ng</div></div></div></td><td><span class="badge b-muted">Client</span></td><td>&#127475;&#127468; Nigeria</td><td style="color:var(--muted);font-size:12px">8 Jan 2025</td><td><span class="badge b-green"><i class="fa-solid fa-circle-check"></i> Verifie</span></td><td><div style="display:flex;gap:5px"><button class="btn btn-icon btn-sm"><i class="fa-solid fa-eye"></i></button><button class="btn btn-icon btn-sm"><i class="fa-solid fa-envelope"></i></button><button class="btn btn-icon btn-sm" onclick="openModal('user-actions')"><i class="fa-solid fa-ellipsis"></i></button></div></td></tr>
-          <tr><td><div class="user-cell"><div class="u-av" style="background:linear-gradient(135deg,var(--red),#F87171)">FX</div><div><div class="u-name">Fara X</div><div class="u-email">f.x@fake.com</div></div></div></td><td><span class="badge b-blue">Freelance</span></td><td>&#127464;&#127470; Cote d'Ivoire</td><td style="color:var(--muted);font-size:12px">5 Jan 2025</td><td><span class="badge b-red"><i class="fa-solid fa-ban"></i> Suspendu 7j</span></td><td><div style="display:flex;gap:5px"><button class="btn btn-icon btn-sm"><i class="fa-solid fa-eye"></i></button><button class="btn btn-icon btn-sm"><i class="fa-solid fa-envelope"></i></button><button class="btn btn-icon btn-sm" onclick="openModal('user-actions')"><i class="fa-solid fa-ellipsis"></i></button></div></td></tr>
+        <tbody id="users-tbody">
+          <tr data-tags="freelance verifie"><td><div class="user-cell"><div class="u-av" style="background:linear-gradient(135deg,var(--green),var(--lime))">KA</div><div><div class="u-name">Kofi Asante</div><div class="u-email">kofi@gmail.com</div></div></div></td><td><span class="badge b-blue">Freelance</span></td><td>&#127468;&#127469; Ghana</td><td style="color:var(--muted);font-size:12px">12 Jan 2025</td><td><span class="badge b-green"><i class="fa-solid fa-circle-check"></i> Verifie</span></td><td><div style="display:flex;gap:5px"><button class="btn btn-icon btn-sm"><i class="fa-solid fa-eye"></i></button><button class="btn btn-icon btn-sm"><i class="fa-solid fa-envelope"></i></button><button class="btn btn-icon btn-sm" onclick="openModal('user-actions')"><i class="fa-solid fa-ellipsis"></i></button></div></td></tr>
+          <tr data-tags="entreprise kyc"><td><div class="user-cell"><div class="u-av" style="background:linear-gradient(135deg,var(--blue),#7DD6F0)">AM</div><div><div class="u-name">Amina Mbaye</div><div class="u-email">amina@startup.sn</div></div></div></td><td><span class="badge b-gold">Entreprise</span></td><td>&#127480;&#127475; Senegal</td><td style="color:var(--muted);font-size:12px">10 Jan 2025</td><td><span class="badge b-orange"><i class="fa-solid fa-clock"></i> KYC en attente</span></td><td><div style="display:flex;gap:5px"><button class="btn btn-icon btn-sm"><i class="fa-solid fa-eye"></i></button><button class="btn btn-icon btn-sm" onclick="showPanel('kyc')"><i class="fa-solid fa-id-card"></i></button><button class="btn btn-icon btn-sm" onclick="openModal('user-actions')"><i class="fa-solid fa-ellipsis"></i></button></div></td></tr>
+          <tr data-tags="client verifie"><td><div class="user-cell"><div class="u-av" style="background:linear-gradient(135deg,#7C3AED,#A78BFA)">CB</div><div><div class="u-name">Chidi Bello</div><div class="u-email">chidi@agency.ng</div></div></div></td><td><span class="badge b-muted">Client</span></td><td>&#127475;&#127468; Nigeria</td><td style="color:var(--muted);font-size:12px">8 Jan 2025</td><td><span class="badge b-green"><i class="fa-solid fa-circle-check"></i> Verifie</span></td><td><div style="display:flex;gap:5px"><button class="btn btn-icon btn-sm"><i class="fa-solid fa-eye"></i></button><button class="btn btn-icon btn-sm"><i class="fa-solid fa-envelope"></i></button><button class="btn btn-icon btn-sm" onclick="openModal('user-actions')"><i class="fa-solid fa-ellipsis"></i></button></div></td></tr>
+          <tr data-tags="freelance suspendu"><td><div class="user-cell"><div class="u-av" style="background:linear-gradient(135deg,var(--red),#F87171)">FX</div><div><div class="u-name">Fara X</div><div class="u-email">f.x@fake.com</div></div></div></td><td><span class="badge b-blue">Freelance</span></td><td>&#127464;&#127470; Cote d'Ivoire</td><td style="color:var(--muted);font-size:12px">5 Jan 2025</td><td><span class="badge b-red"><i class="fa-solid fa-ban"></i> Suspendu 7j</span></td><td><div style="display:flex;gap:5px"><button class="btn btn-icon btn-sm"><i class="fa-solid fa-eye"></i></button><button class="btn btn-icon btn-sm"><i class="fa-solid fa-envelope"></i></button><button class="btn btn-icon btn-sm" onclick="openModal('user-actions')"><i class="fa-solid fa-ellipsis"></i></button></div></td></tr>
         </tbody>
       </table></div></div>
     </div>
 
     <!-- KYC -->
     <div class="panel" id="panel-kyc">
-      <div class="sec-head"><div><div class="sec-h">File d'attente KYC</div><div class="sec-sub">12 dossiers en attente &middot; SLA 24h/48h</div></div><div style="display:flex;gap:7px"><button class="filter-chip active">Tous (12)</button><button class="filter-chip">Particuliers (8)</button><button class="filter-chip">Entreprises (4)</button><button class="filter-chip" style="border-color:rgba(239,68,68,.3);color:var(--red)">SLA depasse (2)</button></div></div>
-      <div class="kyc-list">
-        <div class="kyc-card urgent">
+      <div class="sec-head"><div><div class="sec-h">File d'attente KYC</div><div class="sec-sub">12 dossiers en attente &middot; SLA 24h/48h</div></div><div class="filter-row" style="margin-bottom:0" data-target="#kyc-list-index"><button class="filter-chip active" data-filter="tous" onclick="filterChip(this)">Tous (12)</button><button class="filter-chip" data-filter="particulier" onclick="filterChip(this)">Particuliers (8)</button><button class="filter-chip" data-filter="entreprise" onclick="filterChip(this)">Entreprises (4)</button><button class="filter-chip" data-filter="sla" onclick="filterChip(this)" style="border-color:rgba(239,68,68,.3);color:var(--red)">SLA depasse (2)</button></div></div>
+      <div class="kyc-list" id="kyc-list-index">
+        <div class="kyc-card urgent" data-tags="particulier sla">
           <div class="kyc-head"><div class="u-av" style="width:38px;height:38px;background:linear-gradient(135deg,var(--blue),#7DD6F0)">AM</div><div class="kyc-info"><div class="kyc-name">Amina Mbaye &middot; <span style="color:var(--gold)">Freelance Particulier</span></div><div class="kyc-meta">amina@startup.sn &middot; +221 77 00 00 00 &middot; Dakar, Senegal</div><div class="kyc-meta">Soumis le 22 Jan 2025 a 10h32 &middot; <strong style="color:var(--red)">26h14 ecoulees</strong></div></div><div class="kyc-sla sla-late">SLA depasse</div></div>
           <div class="kyc-docs"><div class="kyc-doc"><span class="kyc-doc-icon">&#128219;</span><div class="kyc-doc-label">CNI Recto</div></div><div class="kyc-doc"><span class="kyc-doc-icon">&#128219;</span><div class="kyc-doc-label">CNI Verso</div></div><div class="kyc-doc"><span class="kyc-doc-icon">&#129315;</span><div class="kyc-doc-label">Selfie + doc</div></div></div>
           <div class="kyc-checklist"><div class="kc-item kc-ok"><i class="fa-solid fa-check"></i> Document lisible</div><div class="kc-item kc-ok"><i class="fa-solid fa-check"></i> Non expire</div><div class="kc-item kc-ok"><i class="fa-solid fa-check"></i> Selfie conforme</div><div class="kc-item kc-ok"><i class="fa-solid fa-check"></i> Mobile Money verifie</div><div class="kc-item kc-ok"><i class="fa-solid fa-check"></i> Smile Identity OK</div><div class="kc-item" style="color:var(--muted)"><i class="fa-regular fa-circle"></i> Coherence nom/photo</div></div>
           <div class="kyc-actions"><button class="btn btn-green btn-sm" onclick="openModal('kyc-approve')"><i class="fa-solid fa-circle-check"></i> Certifier</button><button class="btn btn-outline btn-sm" onclick="openModal('kyc-complement')"><i class="fa-solid fa-plus"></i> Complement</button><button class="btn btn-red btn-sm" onclick="openModal('kyc-reject')"><i class="fa-solid fa-xmark"></i> Rejeter</button><button class="btn btn-outline btn-sm" style="margin-left:auto"><i class="fa-solid fa-envelope"></i> Contacter</button></div>
         </div>
-        <div class="kyc-card">
+        <div class="kyc-card" data-tags="entreprise">
           <div class="kyc-head"><div class="u-av" style="width:38px;height:38px;background:linear-gradient(135deg,var(--green),var(--lime))">OD</div><div class="kyc-info"><div class="kyc-name">Ousmane Diallo &middot; <span style="color:var(--gold)">Freelance Entreprise</span></div><div class="kyc-meta">ousmane@agence.sn &middot; Dakar, Senegal</div><div class="kyc-meta">Soumis le 23 Jan 2025 &middot; <strong style="color:var(--gold)">18h30 ecoulees</strong></div></div><div class="kyc-sla sla-warn">5h30 restantes</div></div>
           <div class="kyc-docs"><div class="kyc-doc"><span class="kyc-doc-icon">&#128196;</span><div class="kyc-doc-label">Registre Commerce</div></div><div class="kyc-doc"><span class="kyc-doc-icon">&#128219;</span><div class="kyc-doc-label">CNI Representant</div></div><div class="kyc-doc"><span class="kyc-doc-icon">&#129315;</span><div class="kyc-doc-label">Selfie</div></div></div>
           <div class="kyc-actions"><button class="btn btn-green btn-sm" onclick="openModal('kyc-approve')"><i class="fa-solid fa-circle-check"></i> Certifier</button><button class="btn btn-outline btn-sm" onclick="openModal('kyc-complement')"><i class="fa-solid fa-plus"></i> Complement</button><button class="btn btn-red btn-sm" onclick="openModal('kyc-reject')"><i class="fa-solid fa-xmark"></i> Rejeter</button></div>
         </div>
-        <div class="kyc-card">
+        <div class="kyc-card" data-tags="particulier">
           <div class="kyc-head"><div class="u-av" style="width:38px;height:38px;background:linear-gradient(135deg,var(--purple),#A78BFA)">FT</div><div class="kyc-info"><div class="kyc-name">Fatou Traore &middot; <span style="color:var(--blue)">Freelance Particulier</span></div><div class="kyc-meta">fatou@design.ci &middot; Abidjan, Cote d'Ivoire</div><div class="kyc-meta">Soumis le 24 Jan 2025 &middot; <strong style="color:var(--green)">4h10 ecoulees</strong></div></div><div class="kyc-sla sla-ok">Dans les delais</div></div>
           <div class="kyc-docs"><div class="kyc-doc"><span class="kyc-doc-icon">&#128219;</span><div class="kyc-doc-label">CNI Recto</div></div><div class="kyc-doc"><span class="kyc-doc-icon">&#128219;</span><div class="kyc-doc-label">CNI Verso</div></div><div class="kyc-doc"><span class="kyc-doc-icon">&#129315;</span><div class="kyc-doc-label">Selfie</div></div></div>
           <div class="kyc-actions"><button class="btn btn-green btn-sm" onclick="openModal('kyc-approve')"><i class="fa-solid fa-circle-check"></i> Certifier</button><button class="btn btn-outline btn-sm" onclick="openModal('kyc-complement')"><i class="fa-solid fa-plus"></i> Complement</button><button class="btn btn-red btn-sm" onclick="openModal('kyc-reject')"><i class="fa-solid fa-xmark"></i> Rejeter</button></div>
@@ -337,12 +341,12 @@ tr:hover td{background:rgba(255,255,255,.02)}
     <!-- SERVICES -->
     <div class="panel" id="panel-services">
       <div class="sec-head"><div><div class="sec-h">Gestion des services</div><div class="sec-sub">34 services en attente de moderation</div></div><div class="search-wrap"><i class="search-ico fa-solid fa-magnifying-glass"></i><input class="search-inp" placeholder="Titre du service..."/></div></div>
-      <div class="filter-row"><button class="filter-chip active">Tous</button><button class="filter-chip" style="border-color:rgba(245,158,11,.3);color:var(--gold)">En attente (34)</button><button class="filter-chip">Publies</button><button class="filter-chip">Suspendus</button><button class="filter-chip" style="border-color:rgba(239,68,68,.3);color:var(--red)">Signales (5)</button></div>
+      <div class="filter-row" data-target="#services-tbody"><button class="filter-chip active" data-filter="tous" onclick="filterChip(this)">Tous</button><button class="filter-chip" data-filter="attente" onclick="filterChip(this)" style="border-color:rgba(245,158,11,.3);color:var(--gold)">En attente (34)</button><button class="filter-chip" data-filter="publie" onclick="filterChip(this)">Publies</button><button class="filter-chip" data-filter="suspendu" onclick="filterChip(this)">Suspendus</button><button class="filter-chip" data-filter="signale" onclick="filterChip(this)" style="border-color:rgba(239,68,68,.3);color:var(--red)">Signales (5)</button></div>
       <div class="card" style="padding:0;overflow:hidden"><table>
         <thead><tr><th>Service</th><th>Freelance</th><th>Categorie</th><th>Prix min</th><th>Statut</th><th>Actions</th></tr></thead>
-        <tbody>
-          <tr><td style="max-width:200px"><div style="font-size:13px;font-weight:600;color:#fff">Creation site web React professionnel</div><div style="font-size:11px;color:var(--muted)">Soumis le 24 Jan 2025</div></td><td><div class="user-cell"><div class="u-av" style="background:linear-gradient(135deg,var(--green),var(--lime))">KA</div><div class="u-name">Kofi Asante</div></div></td><td><span class="badge b-blue">Developpement</span></td><td style="font-weight:700;color:var(--green)">35 000 FCFA</td><td><span class="badge b-orange">En attente</span></td><td><div style="display:flex;gap:5px"><button class="btn btn-green btn-sm"><i class="fa-solid fa-check"></i> Approuver</button><button class="btn btn-red btn-sm"><i class="fa-solid fa-xmark"></i></button><button class="btn btn-outline btn-sm"><i class="fa-solid fa-star"></i></button></div></td></tr>
-          <tr><td style="max-width:200px"><div style="font-size:13px;font-weight:600;color:#fff">Logo + charte graphique</div><div style="font-size:11px;color:var(--muted)">Soumis le 23 Jan 2025</div></td><td><div class="user-cell"><div class="u-av" style="background:linear-gradient(135deg,var(--purple),#A78BFA)">OD</div><div class="u-name">Ousmane D.</div></div></td><td><span class="badge b-purple">Design</span></td><td style="font-weight:700;color:var(--green)">20 000 FCFA</td><td><span class="badge b-red"><i class="fa-solid fa-flag"></i> Signale</span></td><td><div style="display:flex;gap:5px"><button class="btn btn-green btn-sm"><i class="fa-solid fa-check"></i></button><button class="btn btn-gold btn-sm"><i class="fa-solid fa-pause"></i></button><button class="btn btn-red btn-sm"><i class="fa-solid fa-trash"></i></button></div></td></tr>
+        <tbody id="services-tbody">
+          <tr data-tags="attente"><td style="max-width:200px"><div style="font-size:13px;font-weight:600;color:#fff">Creation site web React professionnel</div><div style="font-size:11px;color:var(--muted)">Soumis le 24 Jan 2025</div></td><td><div class="user-cell"><div class="u-av" style="background:linear-gradient(135deg,var(--green),var(--lime))">KA</div><div class="u-name">Kofi Asante</div></div></td><td><span class="badge b-blue">Developpement</span></td><td style="font-weight:700;color:var(--green)">35 000 FCFA</td><td><span class="badge b-orange">En attente</span></td><td><div style="display:flex;gap:5px"><button class="btn btn-green btn-sm"><i class="fa-solid fa-check"></i> Approuver</button><button class="btn btn-red btn-sm"><i class="fa-solid fa-xmark"></i></button><button class="btn btn-outline btn-sm"><i class="fa-solid fa-star"></i></button></div></td></tr>
+          <tr data-tags="signale"><td style="max-width:200px"><div style="font-size:13px;font-weight:600;color:#fff">Logo + charte graphique</div><div style="font-size:11px;color:var(--muted)">Soumis le 23 Jan 2025</div></td><td><div class="user-cell"><div class="u-av" style="background:linear-gradient(135deg,var(--purple),#A78BFA)">OD</div><div class="u-name">Ousmane D.</div></div></td><td><span class="badge b-purple">Design</span></td><td style="font-weight:700;color:var(--green)">20 000 FCFA</td><td><span class="badge b-red"><i class="fa-solid fa-flag"></i> Signale</span></td><td><div style="display:flex;gap:5px"><button class="btn btn-green btn-sm"><i class="fa-solid fa-check"></i></button><button class="btn btn-gold btn-sm"><i class="fa-solid fa-pause"></i></button><button class="btn btn-red btn-sm"><i class="fa-solid fa-trash"></i></button></div></td></tr>
         </tbody>
       </table></div>
     </div>
@@ -369,21 +373,21 @@ tr:hover td{background:rgba(255,255,255,.02)}
         <div class="stat-card"><div class="sc-top"><div class="sc-icon" style="background:var(--blue-l)"><i class="fa-solid fa-coins" style="color:var(--blue)"></i></div></div><div class="sc-val">12,4M</div><div class="sc-lbl">FCFA bloques</div></div>
       </div>
       <div class="escrow-list">
-        <div class="escrow-card">
+        <div class="escrow-card" data-tags="encours">
           <div class="ec-top"><div><div class="ec-code">ORU-ESC-2025-CI-00892</div><div style="font-size:12px;color:var(--muted);margin-top:6px">Creation site web &middot; Kofi Asante &rarr; AgriTrack Africa</div></div><div><div class="ec-amount">65 000 FCFA</div><div class="ec-net">Net freelance : 57 200 &middot; Commission : 7 800</div></div></div>
           <div class="ec-parties"><span class="ec-party">Client : AgriTrack Africa</span><i class="fa-solid fa-arrow-right" style="font-size:11px"></i><span class="ec-party">Freelance : Kofi Asante</span></div>
           <div class="ec-prog"><div class="ec-prog-fill" style="width:65%"></div></div>
           <div class="ec-status-row"><span>Avancement : 65% &mdash; Livraison partielle recue</span><span class="badge b-blue">En cours</span></div>
           <div class="ec-actions"><button class="btn btn-green btn-sm"><i class="fa-solid fa-unlock"></i> Liberer</button><button class="btn btn-red btn-sm"><i class="fa-solid fa-rotate-left"></i> Rembourser</button><button class="btn btn-outline btn-sm" onclick="showPanel('disputes')"><i class="fa-solid fa-scale-balanced"></i> Ouvrir litige</button></div>
         </div>
-        <div class="escrow-card">
+        <div class="escrow-card" data-tags="validation">
           <div class="ec-top"><div><div class="ec-code">ORU-ESC-2025-SN-00841</div><div style="font-size:12px;color:var(--muted);margin-top:6px">Logo + charte graphique &middot; Ousmane D. &rarr; FinStart SN</div></div><div><div class="ec-amount">28 500 FCFA</div><div class="ec-net">Net freelance : 25 090 &middot; Commission : 3 410</div></div></div>
           <div class="ec-parties"><span class="ec-party">Client : FinStart SN</span><i class="fa-solid fa-arrow-right" style="font-size:11px"></i><span class="ec-party">Freelance : Ousmane D.</span></div>
           <div class="ec-prog"><div class="ec-prog-fill" style="width:100%;background:linear-gradient(90deg,var(--gold),#FCD34D)"></div></div>
           <div class="ec-status-row"><span>Livraison complete &mdash; En attente de validation client</span><span class="badge b-gold">Attente validation</span></div>
           <div class="ec-actions"><button class="btn btn-green btn-sm"><i class="fa-solid fa-unlock"></i> Liberer les fonds</button><button class="btn btn-outline btn-sm"><i class="fa-solid fa-envelope"></i> Relancer client</button></div>
         </div>
-        <div class="escrow-card" style="border-color:rgba(239,68,68,.3)">
+        <div class="escrow-card" data-tags="litige" style="border-color:rgba(239,68,68,.3)">
           <div class="ec-top"><div><div class="ec-code" style="background:var(--red-l);color:var(--red)">ORU-ESC-2025-CI-00789</div><div style="font-size:12px;color:var(--muted);margin-top:6px">Developpement app mobile &middot; Fara X &rarr; TechCorp CI</div></div><div><div class="ec-amount" style="color:var(--red)">85 000 FCFA</div><div class="ec-net">Bloque depuis 4 jours &mdash; LITIGE OUVERT</div></div></div>
           <div class="ec-parties"><span class="ec-party">Client : TechCorp CI</span><i class="fa-solid fa-arrow-right" style="font-size:11px"></i><span class="ec-party">Freelance : Fara X (Suspendu)</span></div>
           <div class="ec-prog"><div class="ec-prog-fill" style="width:30%;background:var(--red)"></div></div>
@@ -396,12 +400,13 @@ tr:hover td{background:rgba(255,255,255,.02)}
     <!-- DISPUTES -->
     <div class="panel" id="panel-disputes">
       <div class="sec-head"><div><div class="sec-h">Gestion des litiges</div><div class="sec-sub">3 litiges ouverts &middot; Arbitrage requis</div></div></div>
+      <div class="filter-row" data-target="#disputes-tbody"><button class="filter-chip active" data-filter="tous" onclick="filterChip(this)">Tous</button><button class="filter-chip" data-filter="urgent" onclick="filterChip(this)" style="border-color:rgba(239,68,68,.3);color:var(--red)">Urgents</button><button class="filter-chip" data-filter="cours" onclick="filterChip(this)">En cours</button><button class="filter-chip" data-filter="ouvert" onclick="filterChip(this)">Ouverts</button></div>
       <div class="card" style="padding:0;overflow:hidden"><table>
         <thead><tr><th>Reference</th><th>Parties</th><th>Montant</th><th>Ouvert depuis</th><th>Statut</th><th>Actions</th></tr></thead>
-        <tbody>
-          <tr><td><div style="font-weight:700;color:var(--red);font-family:monospace">#LIT-0034</div><div style="font-size:11px;color:var(--muted)">ESC-00789</div></td><td><div style="font-size:12px"><span class="badge b-muted">TechCorp CI</span> vs <span class="badge b-red">Fara X</span></div></td><td style="font-weight:700;color:var(--red)">85 000 FCFA</td><td style="font-size:12px;color:var(--red);font-weight:700">4 jours</td><td><span class="badge b-red">Urgent</span></td><td><div style="display:flex;gap:5px"><button class="btn btn-blue btn-sm" onclick="openModal('dispute-arbitration')"><i class="fa-solid fa-gavel"></i> Arbitrer</button><button class="btn btn-outline btn-sm"><i class="fa-solid fa-file-pdf"></i></button></div></td></tr>
-          <tr><td><div style="font-weight:700;color:var(--gold);font-family:monospace">#LIT-0031</div><div style="font-size:11px;color:var(--muted)">ESC-00752</div></td><td><div style="font-size:12px"><span class="badge b-muted">Startup GH</span> vs <span class="badge b-blue">Yaw Kojo</span></div></td><td style="font-weight:700;color:var(--gold)">42 000 FCFA</td><td style="font-size:12px;color:var(--gold);font-weight:700">2 jours</td><td><span class="badge b-gold">En cours</span></td><td><div style="display:flex;gap:5px"><button class="btn btn-blue btn-sm" onclick="openModal('dispute-arbitration')"><i class="fa-solid fa-gavel"></i> Arbitrer</button><button class="btn btn-outline btn-sm"><i class="fa-solid fa-file-pdf"></i></button></div></td></tr>
-          <tr><td><div style="font-weight:700;color:var(--blue);font-family:monospace">#LIT-0028</div><div style="font-size:11px;color:var(--muted)">ESC-00710</div></td><td><div style="font-size:12px"><span class="badge b-muted">ONG Togo</span> vs <span class="badge b-blue">Designer TG</span></div></td><td style="font-weight:700;color:var(--blue)">15 500 FCFA</td><td style="font-size:12px;color:var(--muted)">1 jour</td><td><span class="badge b-blue">Ouvert</span></td><td><div style="display:flex;gap:5px"><button class="btn btn-blue btn-sm" onclick="openModal('dispute-arbitration')"><i class="fa-solid fa-gavel"></i> Arbitrer</button><button class="btn btn-outline btn-sm"><i class="fa-solid fa-file-pdf"></i></button></div></td></tr>
+        <tbody id="disputes-tbody">
+          <tr data-tags="urgent"><td><div style="font-weight:700;color:var(--red);font-family:monospace">#LIT-0034</div><div style="font-size:11px;color:var(--muted)">ESC-00789</div></td><td><div style="font-size:12px"><span class="badge b-muted">TechCorp CI</span> vs <span class="badge b-red">Fara X</span></div></td><td style="font-weight:700;color:var(--red)">85 000 FCFA</td><td style="font-size:12px;color:var(--red);font-weight:700">4 jours</td><td><span class="badge b-red">Urgent</span></td><td><div style="display:flex;gap:5px"><button class="btn btn-blue btn-sm" onclick="openModal('dispute-arbitration')"><i class="fa-solid fa-gavel"></i> Arbitrer</button><button class="btn btn-outline btn-sm"><i class="fa-solid fa-file-pdf"></i></button></div></td></tr>
+          <tr data-tags="cours"><td><div style="font-weight:700;color:var(--gold);font-family:monospace">#LIT-0031</div><div style="font-size:11px;color:var(--muted)">ESC-00752</div></td><td><div style="font-size:12px"><span class="badge b-muted">Startup GH</span> vs <span class="badge b-blue">Yaw Kojo</span></div></td><td style="font-weight:700;color:var(--gold)">42 000 FCFA</td><td style="font-size:12px;color:var(--gold);font-weight:700">2 jours</td><td><span class="badge b-gold">En cours</span></td><td><div style="display:flex;gap:5px"><button class="btn btn-blue btn-sm" onclick="openModal('dispute-arbitration')"><i class="fa-solid fa-gavel"></i> Arbitrer</button><button class="btn btn-outline btn-sm"><i class="fa-solid fa-file-pdf"></i></button></div></td></tr>
+          <tr data-tags="ouvert"><td><div style="font-weight:700;color:var(--blue);font-family:monospace">#LIT-0028</div><div style="font-size:11px;color:var(--muted)">ESC-00710</div></td><td><div style="font-size:12px"><span class="badge b-muted">ONG Togo</span> vs <span class="badge b-blue">Designer TG</span></div></td><td style="font-weight:700;color:var(--blue)">15 500 FCFA</td><td style="font-size:12px;color:var(--muted)">1 jour</td><td><span class="badge b-blue">Ouvert</span></td><td><div style="display:flex;gap:5px"><button class="btn btn-blue btn-sm" onclick="openModal('dispute-arbitration')"><i class="fa-solid fa-gavel"></i> Arbitrer</button><button class="btn btn-outline btn-sm"><i class="fa-solid fa-file-pdf"></i></button></div></td></tr>
         </tbody>
       </table></div>
     </div>
@@ -460,13 +465,13 @@ tr:hover td{background:rgba(255,255,255,.02)}
     <!-- AUDIT -->
     <div class="panel" id="panel-audit">
       <div class="sec-head"><div><div class="sec-h">Audit Trail</div><div class="sec-sub">Journal des actions administrateurs</div></div><button class="btn btn-outline btn-sm"><i class="fa-solid fa-download"></i> Exporter PDF</button></div>
-      <div class="filter-row"><button class="filter-chip active">Toutes</button><button class="filter-chip">KYC</button><button class="filter-chip">Suspensions</button><button class="filter-chip">Escrow</button><button class="filter-chip">Connexions</button></div>
+      <div class="filter-row" data-target="#audit-log-list"><button class="filter-chip active" data-filter="tous" onclick="filterChip(this)">Toutes</button><button class="filter-chip" data-filter="kyc" onclick="filterChip(this)">KYC</button><button class="filter-chip" data-filter="suspension" onclick="filterChip(this)">Suspensions</button><button class="filter-chip" data-filter="escrow" onclick="filterChip(this)">Escrow</button><button class="filter-chip" data-filter="connexion" onclick="filterChip(this)">Connexions</button></div>
       <div class="card">
-        <div class="log-list">
-          <div class="log-item"><div class="log-ico" style="background:var(--green-l)"><i class="fa-solid fa-circle-check" style="color:var(--green)"></i></div><div class="log-info"><div class="log-action">KYC certifie &mdash; Kofi Asante (GH)</div><div class="log-meta">Admin : SA (super_admin) &middot; IP : 41.xxx.xxx.xx &middot; Raison : Documents conformes, Smile Identity OK</div></div><div class="log-time">Il y a 2h</div></div>
-          <div class="log-item"><div class="log-ico" style="background:var(--red-l)"><i class="fa-solid fa-ban" style="color:var(--red)"></i></div><div class="log-info"><div class="log-action">Suspension 7 jours &mdash; Fara X (CI)</div><div class="log-meta">Admin : SA (super_admin) &middot; Raison : Documents falsifies &middot; Litige #LIT-0034</div></div><div class="log-time">Il y a 4h</div></div>
-          <div class="log-item"><div class="log-ico" style="background:var(--gold-l)"><i class="fa-solid fa-unlock" style="color:var(--gold)"></i></div><div class="log-info"><div class="log-action">Escrow libere &mdash; ORU-ESC-2025-SN-00802 (28 500 FCFA)</div><div class="log-meta">Admin : SA (super_admin) &middot; Validation cliente Amina Mbaye apres livraison conforme</div></div><div class="log-time">Il y a 6h</div></div>
-          <div class="log-item"><div class="log-ico" style="background:var(--blue-l)"><i class="fa-solid fa-right-to-bracket" style="color:var(--blue)"></i></div><div class="log-info"><div class="log-action">Connexion admin &mdash; SA (super_admin)</div><div class="log-meta">IP : 41.xxx.xxx.xx &middot; Navigateur : Chrome 120 &middot; Abidjan, CI</div></div><div class="log-time">Il y a 8h</div></div>
+        <div class="log-list" id="audit-log-list">
+          <div class="log-item" data-tags="kyc"><div class="log-ico" style="background:var(--green-l)"><i class="fa-solid fa-circle-check" style="color:var(--green)"></i></div><div class="log-info"><div class="log-action">KYC certifie &mdash; Kofi Asante (GH)</div><div class="log-meta">Admin : SA (super_admin) &middot; IP : 41.xxx.xxx.xx &middot; Raison : Documents conformes, Smile Identity OK</div></div><div class="log-time">Il y a 2h</div></div>
+          <div class="log-item" data-tags="suspension"><div class="log-ico" style="background:var(--red-l)"><i class="fa-solid fa-ban" style="color:var(--red)"></i></div><div class="log-info"><div class="log-action">Suspension 7 jours &mdash; Fara X (CI)</div><div class="log-meta">Admin : SA (super_admin) &middot; Raison : Documents falsifies &middot; Litige #LIT-0034</div></div><div class="log-time">Il y a 4h</div></div>
+          <div class="log-item" data-tags="escrow"><div class="log-ico" style="background:var(--gold-l)"><i class="fa-solid fa-unlock" style="color:var(--gold)"></i></div><div class="log-info"><div class="log-action">Escrow libere &mdash; ORU-ESC-2025-SN-00802 (28 500 FCFA)</div><div class="log-meta">Admin : SA (super_admin) &middot; Validation cliente Amina Mbaye apres livraison conforme</div></div><div class="log-time">Il y a 6h</div></div>
+          <div class="log-item" data-tags="connexion"><div class="log-ico" style="background:var(--blue-l)"><i class="fa-solid fa-right-to-bracket" style="color:var(--blue)"></i></div><div class="log-info"><div class="log-action">Connexion admin &mdash; SA (super_admin)</div><div class="log-meta">IP : 41.xxx.xxx.xx &middot; Navigateur : Chrome 120 &middot; Abidjan, CI</div></div><div class="log-time">Il y a 8h</div></div>
           <div class="log-item"><div class="log-ico" style="background:var(--purple-l)"><i class="fa-solid fa-star" style="color:var(--purple)"></i></div><div class="log-info"><div class="log-action">Service mis en avant &mdash; "Creation site web React" (Kofi Asante)</div><div class="log-meta">Admin : SA &middot; Mise en avant 30 jours &middot; Page accueil + categorie Developpement</div></div><div class="log-time">Hier</div></div>
           <div class="log-item"><div class="log-ico" style="background:var(--orange-l)"><i class="fa-solid fa-xmark" style="color:var(--orange)"></i></div><div class="log-info"><div class="log-action">KYC rejete &mdash; Utilisateur anonyme (NG)</div><div class="log-meta">Admin : SA &middot; Raison : Photo floue, document expire, incoherence identite</div></div><div class="log-time">Hier</div></div>
         </div>
@@ -608,14 +613,28 @@ function closeModal(id){
 document.querySelectorAll(".modal-bg").forEach(function(bg){
   bg.addEventListener("click",function(e){if(e.target===bg)bg.classList.remove("open");});
 });
-document.querySelectorAll(".filter-chip").forEach(function(chip){
-  chip.addEventListener("click",function(){
-    var parent=this.closest(".filter-row")||this.closest("div");
-    var chips=parent.querySelectorAll(".filter-chip");
-    chips.forEach(function(c){c.classList.remove("active");});
-    this.classList.add("active");
+function filterChip(el){
+  var row=el.closest(".filter-row");
+  if(!row){
+    var p=el.parentElement;
+    if(p)p.querySelectorAll(".filter-chip").forEach(function(c){c.classList.remove("active");});
+    el.classList.add("active");return;
+  }
+  row.querySelectorAll(".filter-chip").forEach(function(c){c.classList.remove("active");});
+  el.classList.add("active");
+  var targetSel=row.dataset.target;
+  if(!targetSel)return;
+  var container=document.querySelector(targetSel);
+  if(!container)return;
+  var filter=el.dataset.filter||"tous";
+  container.querySelectorAll("[data-tags]").forEach(function(item){
+    if(filter==="tous"){item.style.display="";}
+    else{
+      var tags=(item.dataset.tags||"").split(" ");
+      item.style.display=tags.indexOf(filter)>-1?"":"none";
+    }
   });
-});
+}
 </script>
 </body>
 </html>

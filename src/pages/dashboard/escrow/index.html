@@ -2,27 +2,25 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Oriupe — Espace Escrow · Logo & Identité Visuelle</title>
+<title>Oriupe — Espace Escrow</title>
+  <meta name="description" content="Espace escrow Oriupe — suivi des fonds sécurisés et étapes de validation."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:site_name" content="Oriupe"/>
+  <meta property="og:title" content="Oriupe — Espace Escrow"/>
+  <meta property="og:description" content="Espace escrow Oriupe — suivi des fonds sécurisés et étapes de validation."/>
+  <meta property="og:image" content="https://oriupe.com/og-dashboard.png"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="Oriupe — Espace Escrow"/>
+  <meta name="twitter:description" content="Espace escrow Oriupe — suivi des fonds sécurisés et étapes de validation."/>
+  <meta name="twitter:image" content="https://oriupe.com/og-dashboard.png"/>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/src/shared/styles/base.css"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-font-smoothing:antialiased}
 body{font-family:'Plus Jakarta Sans',sans-serif;background:#F4F6F9;color:#1B3A4A;min-height:100vh}
 a{text-decoration:none;color:inherit}
 button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer}
-
-:root{
-  --navy:#0F2535;--navy2:#1B3A4A;
-  --green:#3CB878;--green-d:#27965D;--green-l:#E4F7EE;--green-xl:#F0FBF5;
-  --blue:#29ABE2;--blue-l:#E2F4FB;--blue-d:#1A8BC0;--lime:#8DC63F;--gold:#F59E0B;
-  --orange:#EA580C;--orange-l:#FFF7ED;
-  --bg:#F4F6F9;--bg2:#ECEEF3;--white:#fff;
-  --border:rgba(27,58,74,.1);--border2:rgba(27,58,74,.06);
-  --muted:rgba(27,58,74,.52);--muted2:rgba(27,58,74,.32);
-  --shadow:0 2px 10px rgba(15,37,53,.07);--shadow-md:0 6px 24px rgba(15,37,53,.11);--shadow-lg:0 16px 48px rgba(15,37,53,.16);
-  --sidebar-w:240px;
-  --spring:cubic-bezier(.34,1.56,.64,1);--ease:cubic-bezier(.25,.46,.45,.94);
-}
 
 /* ── APP LAYOUT ── */
 .app{display:flex;min-height:100vh}
@@ -861,5 +859,7 @@ document.getElementById('msgInput').addEventListener('input', function() {
 })();
 </script>
   <script type="module" src="/src/scripts/main.js"></script>
+  <script src="/src/shared/oriupe-session.js"></script>
+  <script type="module" src="/src/shared/realtime.js"></script>
 </body>
 </html>

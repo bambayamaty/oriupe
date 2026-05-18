@@ -2,13 +2,13 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Admin — Oriupe</title>
+<title>Oriupe Admin — Connexion sécurisée</title>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/src/shared/styles/base.css"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;-webkit-font-smoothing:antialiased}
 body{font-family:'Plus Jakarta Sans',sans-serif;display:flex;min-height:100vh}
-:root{--navy:#0F2535;--green:#3CB878;--lime:#8DC63F;--blue:#29ABE2;--red:#EF4444;--border:rgba(27,58,74,.12);--muted:rgba(27,58,74,.5)}
 .al{width:420px;flex-shrink:0;background:var(--navy);display:flex;flex-direction:column;padding:48px;position:relative;overflow:hidden}
 .al-orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none}
 .al-orb1{width:400px;height:400px;background:radial-gradient(circle,rgba(60,184,120,.2) 0%,transparent 70%);top:-80px;left:-80px}
@@ -74,6 +74,14 @@ body{font-family:'Plus Jakarta Sans',sans-serif;display:flex;min-height:100vh}
 .lockout-box .lock-count{font-family:'Bricolage Grotesque',sans-serif;font-size:28px;font-weight:800;display:block;margin:10px 0 4px}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes drawCheck{to{stroke-dashoffset:0}}
+.test-creds-title{font-size:10px;font-weight:700;color:rgba(255,255,255,.25);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;margin-top:20px}
+.test-cred-card{display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:10px 14px;cursor:pointer;transition:all .2s;margin-bottom:7px}
+.test-cred-card:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.18);transform:translateX(3px)}
+.tcc-left{display:flex;align-items:center;gap:10px}
+.tcc-av{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0}
+.tcc-email{font-size:11px;font-weight:600;color:rgba(255,255,255,.7)}
+.tcc-role{font-size:10px;color:rgba(255,255,255,.35);margin-top:1px}
+.tcc-arrow{font-size:11px;color:rgba(255,255,255,.25)}
 </style>
 </head>
 <body>
@@ -97,9 +105,37 @@ body{font-family:'Plus Jakarta Sans',sans-serif;display:flex;min-height:100vh}
       <div class="al-badge"><div class="al-badge-dot"></div><span>Chiffrement TLS 256-bit</span></div>
       <div class="al-badge"><div class="al-badge-dot"></div><span>Authentification TOTP obligatoire</span></div>
       <div class="al-badge"><div class="al-badge-dot"></div><span>Session expirée après 2h d'inactivité</span></div>
-      <div class="al-badge"><div class="al-badge-dot"></div><span>Whitelist IP — Alertes connexion suspecte</span></div>
     </div>
-    <p class="al-copy">© 2025 Oriupe SAS — Confidentiel — Usage interne uniquement</p>
+    <div class="test-creds-title">Accès de démonstration</div>
+    <div class="test-cred-card" onclick="fillCreds('admin@oriupe.com','Admin2025!')">
+      <div class="tcc-left">
+        <div class="tcc-av" style="background:linear-gradient(135deg,#3CB878,#27965D)">SA</div>
+        <div><div class="tcc-email">admin@oriupe.com</div><div class="tcc-role">Super Admin · Accès total</div></div>
+      </div>
+      <span class="tcc-arrow">→</span>
+    </div>
+    <div class="test-cred-card" onclick="fillCreds('moderateur@oriupe.com','Modo2025!')">
+      <div class="tcc-left">
+        <div class="tcc-av" style="background:linear-gradient(135deg,#7C3AED,#5B21B6)">MO</div>
+        <div><div class="tcc-email">moderateur@oriupe.com</div><div class="tcc-role">Modérateur · KYC & Services</div></div>
+      </div>
+      <span class="tcc-arrow">→</span>
+    </div>
+    <div class="test-cred-card" onclick="fillCreds('support@oriupe.com','Support2025!')">
+      <div class="tcc-left">
+        <div class="tcc-av" style="background:linear-gradient(135deg,#29ABE2,#1A7FAD)">SP</div>
+        <div><div class="tcc-email">support@oriupe.com</div><div class="tcc-role">Support · Litiges & Comms</div></div>
+      </div>
+      <span class="tcc-arrow">→</span>
+    </div>
+    <div class="test-cred-card" onclick="fillCreds('finance@oriupe.com','Finance2025!')">
+      <div class="tcc-left">
+        <div class="tcc-av" style="background:linear-gradient(135deg,#F59E0B,#D97706)">FN</div>
+        <div><div class="tcc-email">finance@oriupe.com</div><div class="tcc-role">Finance · Escrow & Paiements</div></div>
+      </div>
+      <span class="tcc-arrow">→</span>
+    </div>
+    <p class="al-copy">© 2025 Oriupe SAS — TOTP demo: tapez <strong style="color:rgba(255,255,255,.4)">123456</strong></p>
   </div>
 </div>
 
@@ -143,13 +179,13 @@ body{font-family:'Plus Jakarta Sans',sans-serif;display:flex;min-height:100vh}
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" id="eye-svg"><path d="M1 8C1 8 3.5 3 8 3S15 8 15 8 12.5 13 8 13 1 8 1 8Z" stroke="rgba(27,58,74,.4)" stroke-width="1.3"/><circle cx="8" cy="8" r="2" stroke="rgba(27,58,74,.4)" stroke-width="1.3"/></svg>
           </button>
         </div>
-        <div style="text-align:right;margin-top:6px"><span class="link" onclick="alert('Contactez security@oriupe.com pour réinitialiser votre mot de passe.')">Mot de passe oublié ?</span></div>
+        <div style="text-align:right;margin-top:6px"><a href="mailto:security@oriupe.com?subject=Réinitialisation%20mot%20de%20passe%20admin" class="link" style="color:inherit">Mot de passe oublié ?</a></div>
       </div>
       <button class="btn btn-green" id="btn1" onclick="step1Submit()">
         Continuer
         <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M3 7.5H12M12 7.5L8.5 4M12 7.5L8.5 11" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
-      <p style="font-size:11px;color:var(--muted);text-align:center;margin-top:16px">Demo : admin@oriupe.com / Admin2025!</p>
+      <p style="font-size:11px;color:var(--muted);text-align:center;margin-top:16px">Cliquez sur un rôle à gauche pour remplir automatiquement</p>
     </div>
 
     <!-- STEP 2 -->
@@ -216,8 +252,22 @@ body{font-family:'Plus Jakarta Sans',sans-serif;display:flex;min-height:100vh}
 </div>
 
 <script>
-let attempts=0,totpTries=0,timerIv,lockIv,timerSec=30;
+let attempts=0,totpTries=0,timerIv,lockIv,timerSec=30,redirectUrl='/src/pages/admin/index.html',currentRole='Super Admin';
+
+const ROLES={
+  'admin@oriupe.com':    {pwd:'Admin2025!',  url:'/src/pages/admin/index.html',       label:'Super Admin Oriupe'},
+  'moderateur@oriupe.com':{pwd:'Modo2025!',  url:'/src/pages/admin/moderateur.html',  label:'Modérateur Oriupe'},
+  'support@oriupe.com':  {pwd:'Support2025!',url:'/src/pages/admin/support.html',     label:'Agent Support Oriupe'},
+  'finance@oriupe.com':  {pwd:'Finance2025!',url:'/src/pages/admin/finance.html',     label:'Analyste Finance Oriupe'},
+};
+
 const totpInputs=document.querySelectorAll('.totp-inp');
+
+function fillCreds(email,pwd){
+  document.getElementById('email').value=email;
+  document.getElementById('pwd').value=pwd;
+  document.getElementById('email').focus();
+}
 
 function goStep(n){
   document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
@@ -231,7 +281,7 @@ function goStep(n){
 }
 
 function step1Submit(){
-  const email=document.getElementById('email').value.trim();
+  const email=document.getElementById('email').value.trim().toLowerCase();
   const pwd=document.getElementById('pwd').value;
   const btn=document.getElementById('btn1');
   hideErr('err1');
@@ -242,7 +292,9 @@ function step1Submit(){
   setTimeout(()=>{
     btn.disabled=false;
     btn.innerHTML='Continuer <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M3 7.5H12M12 7.5L8.5 4M12 7.5L8.5 11" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-    if(email==='admin@oriupe.com'&&pwd==='Admin2025!'){
+    const role=ROLES[email];
+    if(role&&pwd===role.pwd){
+      redirectUrl=role.url;currentRole=role.label;
       goStep(2);startTotpTimer();
     } else {
       attempts++;
@@ -291,8 +343,10 @@ function step2Submit(){
   setTimeout(()=>{
     if(code==='123456'){
       clearInterval(timerIv);goStep(3);
+      document.querySelector('.success-sub').innerHTML=`Bienvenue, <strong>${currentRole}</strong>.<br>Redirection vers le tableau de bord...`;
+      localStorage.setItem('oriupe_admin_session', JSON.stringify({isAdmin:true,role:currentRole,email:document.getElementById('email').value.trim(),loginAt:Date.now()}));
       setTimeout(()=>{document.getElementById('pfill').style.width='100%';},80);
-      setTimeout(()=>location.href='/src/pages/admin/index.html',2200);
+      setTimeout(()=>location.href=redirectUrl,2200);
     } else {
       totpTries++;
       btn.disabled=false;btn.innerHTML='Vérifier';
@@ -322,8 +376,10 @@ function useRecovery(){
   const v=document.getElementById('rec-inp').value.trim();
   if(v==='A1B2-C3D4'){
     clearInterval(timerIv);goStep(3);
+    document.querySelector('.success-sub').innerHTML=`Bienvenue, <strong>${currentRole}</strong>.<br>Redirection vers le tableau de bord...`;
+    localStorage.setItem('oriupe_admin_session', JSON.stringify({isAdmin:true,role:currentRole,email:document.getElementById('email').value.trim(),loginAt:Date.now()}));
     setTimeout(()=>document.getElementById('pfill').style.width='100%',80);
-    setTimeout(()=>location.href='/src/pages/admin/index.html',2200);
+    setTimeout(()=>location.href=redirectUrl,2200);
   } else { alert('Code de secours invalide.'); }
 }
 

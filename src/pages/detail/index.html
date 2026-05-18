@@ -2,25 +2,26 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Oriupe — Création de site web React professionnel</title>
+<title>Oriupe — Détail du service</title>
+  <meta name="description" content="Détail d'un service Oriupe — description, tarifs, délais et avis clients. Commandez en toute sécurité."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:site_name" content="Oriupe"/>
+  <meta property="og:title" content="Oriupe — Détail du service"/>
+  <meta property="og:description" content="Détail d'un service Oriupe — description, tarifs, délais et avis clients. Commandez en toute sécurité."/>
+  <meta property="og:image" content="https://oriupe.com/og-detail.png"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="Oriupe — Détail du service"/>
+  <meta name="twitter:description" content="Détail d'un service Oriupe — description, tarifs, délais et avis clients. Commandez en toute sécurité."/>
+  <meta name="twitter:image" content="https://oriupe.com/og-detail.png"/>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/src/shared/styles/base.css"/>
+<script src="/src/shared/oriupe-session.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-font-smoothing:antialiased}
 body{font-family:'Plus Jakarta Sans',sans-serif;background:#F4F6F9;color:#1B3A4A}
 a{text-decoration:none;color:inherit}
 button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer}
-:root{
-  --navy:#0F2535;--navy2:#1B3A4A;
-  --green:#3CB878;--green-d:#27965D;--green-l:#E4F7EE;--green-xl:#F0FBF5;
-  --blue:#29ABE2;--blue-l:#E2F4FB;--lime:#8DC63F;
-  --bg:#F4F6F9;--bg2:#ECEEF3;--white:#fff;
-  --border:rgba(27,58,74,.1);--border2:rgba(27,58,74,.06);
-  --muted:rgba(27,58,74,.52);--muted2:rgba(27,58,74,.35);
-  --shadow:0 2px 12px rgba(15,37,53,.08);--shadow-md:0 8px 32px rgba(15,37,53,.13);--shadow-lg:0 20px 60px rgba(15,37,53,.18);
-  --r:8px;--r-md:12px;--r-lg:16px;--r-xl:20px;
-  --spring:cubic-bezier(.34,1.56,.64,1);--ease:cubic-bezier(.25,.46,.45,.94);
-}
 #progress{position:fixed;top:0;left:0;height:3px;z-index:9999;width:0;background:linear-gradient(90deg,var(--green),var(--blue));border-radius:0 3px 3px 0}
 
 /* NAV */
@@ -359,34 +360,19 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
 @media(max-width:480px){.of-z1{grid-template-columns:1fr}}
 </style>
   <script type="module" src="/src/components/nav.js"></script>
+  <script type="module" src="/src/shared/nav.js"></script>
 </head>
 <body>
+<div id="nav-root"></div>
 <div id="progress"></div>
 
 <!-- NAV -->
-<nav>
-  <div class="logo">
-    <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="8.5" cy="8.5" r="7" fill="#8DC63F" opacity=".9"/><circle cx="19.5" cy="8.5" r="7" fill="#29ABE2" opacity=".9"/><circle cx="8.5" cy="19.5" r="7" fill="#3CB878" opacity=".9"/><circle cx="19.5" cy="19.5" r="7" fill="#1B3A4A"/><rect x="8" y="8" width="12" height="12" rx="1" fill="rgba(60,184,120,.4)"/></svg>
-    <span class="logo-t">Oriupe</span>
-  </div>
-  <div class="nav-links">
-    <a class="active" href="#">Explorer</a>
-    <a href="#">Appels d'offres</a>
-    <a href="#">Academy</a>
-    <a href="#">Blog</a>
-  </div>
-  <div class="nav-right">
-    <div class="pill">🌍 FR ▾</div>
-    <div class="pill">FCFA ▾</div>
-    <button class="btn-ghost">Se connecter</button>
-    <button class="btn-g">S'inscrire</button>
-  </div>
-</nav>
+
 
 <!-- BREADCRUMB -->
 <div class="bread">
-  <a href="#">Accueil</a><span class="sep">›</span>
-  <a href="#">Développement Web</a><span class="sep">›</span>
+  <a href="/src/pages/home/index.html">Accueil</a><span class="sep">›</span>
+  <a href="/src/pages/catalog/index.html?cat=dev">Développement Web</a><span class="sep">›</span>
   <span class="cur">Création site web React</span>
 </div>
 
@@ -476,7 +462,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
             <span class="sbadge sbadge-b">Identité vérifiée ✓</span>
           </div>
         </div>
-        <a href="#" style="font-size:13px;font-weight:700;color:var(--green);text-decoration:none;display:flex;align-items:center;gap:4px;flex-shrink:0">
+        <a href="/src/pages/profile/index.html" style="font-size:13px;font-weight:700;color:var(--green);text-decoration:none;display:flex;align-items:center;gap:4px;flex-shrink:0">
           Voir profil
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6H9.5M7 3.5L9.5 6L7 8.5" stroke="var(--green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
@@ -858,10 +844,10 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
       <p class="of-desc">La marketplace de services num&eacute;riques africains. Freelances certifi&eacute;s, paiement Escrow s&eacute;curis&eacute;, Mobile Money int&eacute;gr&eacute;.</p>
       <div class="of-badge"><div class="of-pulse"></div>Plateforme active &mdash; Abidjan, C&ocirc;te d&rsquo;Ivoire &#x1F1E8;&#x1F1EE;</div>
       <div class="of-socials">
-        <a class="of-soc" href="#" title="LinkedIn" target="_blank" rel="noopener"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1.5" y="1.5" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M4 6.5V10M4 4.5V5M6.5 10V8C6.5 7 7.1 6.2 8.2 6.2S10 7 10 8V10M6.5 6.5V10" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg></a>
-        <a class="of-soc" href="#" title="X (Twitter)" target="_blank" rel="noopener"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M1 1L5.5 7L1 12H2.5L6.2 8.2L9.5 12H12.5L7.8 5.8L12 1H10.5L7.1 4.8L4 1H1Z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/></svg></a>
-        <a class="of-soc" href="#" title="Instagram" target="_blank" rel="noopener"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1.5" y="1.5" width="11" height="11" rx="3" stroke="currentColor" stroke-width="1.2"/><circle cx="7" cy="7" r="2.8" stroke="currentColor" stroke-width="1.1"/><circle cx="10.2" cy="3.8" r=".8" fill="currentColor"/></svg></a>
-        <a class="of-soc" href="#" title="WhatsApp" target="_blank" rel="noopener"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1C3.7 1 1 3.7 1 7c0 1 .3 2 .8 2.8L1 13l3.3-.8C5.1 12.7 6 13 7 13c3.3 0 6-2.7 6-6S10.3 1 7 1Z" stroke="currentColor" stroke-width="1.2"/><path d="M5 5.5c0 0 .5 1 1 1.5S7.5 8 7.5 8L8.5 7" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg></a>
+        <a class="of-soc" href="#" aria-disabled="true" tabindex="-1" style="opacity:.5;cursor:not-allowed;pointer-events:none" title="LinkedIn" target="_blank" rel="noopener"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1.5" y="1.5" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M4 6.5V10M4 4.5V5M6.5 10V8C6.5 7 7.1 6.2 8.2 6.2S10 7 10 8V10M6.5 6.5V10" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg></a>
+        <a class="of-soc" href="#" aria-disabled="true" tabindex="-1" style="opacity:.5;cursor:not-allowed;pointer-events:none" title="X (Twitter)" target="_blank" rel="noopener"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M1 1L5.5 7L1 12H2.5L6.2 8.2L9.5 12H12.5L7.8 5.8L12 1H10.5L7.1 4.8L4 1H1Z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/></svg></a>
+        <a class="of-soc" href="#" aria-disabled="true" tabindex="-1" style="opacity:.5;cursor:not-allowed;pointer-events:none" title="Instagram" target="_blank" rel="noopener"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1.5" y="1.5" width="11" height="11" rx="3" stroke="currentColor" stroke-width="1.2"/><circle cx="7" cy="7" r="2.8" stroke="currentColor" stroke-width="1.1"/><circle cx="10.2" cy="3.8" r=".8" fill="currentColor"/></svg></a>
+        <a class="of-soc" href="#" aria-disabled="true" tabindex="-1" style="opacity:.5;cursor:not-allowed;pointer-events:none" title="WhatsApp" target="_blank" rel="noopener"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1C3.7 1 1 3.7 1 7c0 1 .3 2 .8 2.8L1 13l3.3-.8C5.1 12.7 6 13 7 13c3.3 0 6-2.7 6-6S10.3 1 7 1Z" stroke="currentColor" stroke-width="1.2"/><path d="M5 5.5c0 0 .5 1 1 1.5S7.5 8 7.5 8L8.5 7" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg></a>
       </div>
     </div>
     <div class="of-col">
@@ -1095,7 +1081,7 @@ function confirmOrder(){
       <div style="font-size:13px;color:#1B3A4A;display:flex;justify-content:space-between;margin-bottom:4px"><span>Plan sélectionné</span><strong>${document.querySelector('.offer-tab.active')?.textContent||'Basique'}</strong></div>
       <div style="font-size:13px;color:#1B3A4A;display:flex;justify-content:space-between"><span>Montant escrow</span><strong style="color:#3CB878">${fmt(total)} FCFA</strong></div>
     </div>
-    <button onclick="closeOrderModal();location.href='/src/pages/dashboard/index.html'" style="width:100%;background:var(--navy,#1B3A4A);color:#fff;border:none;border-radius:12px;padding:14px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif">Voir mes commandes →</button>
+    <button onclick="closeOrderModal();(function(){var s=null;try{s=JSON.parse(localStorage.getItem('oriupe_session'))}catch(e){}location.href=s&&s.role==='freelance'?'/src/pages/dashboard/freelance/index.html':'/src/pages/dashboard/client/index.html';})()" style="width:100%;background:var(--navy,#1B3A4A);color:#fff;border:none;border-radius:12px;padding:14px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif">Voir mes commandes →</button>
     <button onclick="closeOrderModal()" style="width:100%;background:transparent;color:rgba(27,58,74,.52);border:none;padding:12px;font-size:13px;cursor:pointer;margin-top:8px;font-family:'Plus Jakarta Sans',sans-serif">Fermer</button>
   </div>`;
 }

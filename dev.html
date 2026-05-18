@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Oriupe — Structure du projet</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/src/shared/styles/base.css"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#0F2535;color:#fff;min-height:100vh}
+a{text-decoration:none;color:inherit}
+/* ── HEADER ── */
+.header{
+  padding:32px 40px 28px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:20px;
+  background:linear-gradient(180deg,rgba(41,171,226,.06) 0%,transparent 100%)
+}
+.logo-mark{
+  width:44px;height:44px;border-radius:12px;
+  background:linear-gradient(135deg,var(--blue),var(--green));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800
+}
+.header-info{flex:1}
+.header-title{font-family:'Bricolage Grotesque',sans-serif;font-size:26px;font-weight:800;color:#fff;margin-bottom:4px}
+.header-sub{font-size:13px;color:rgba(255,255,255,.45)}
+.header-meta{display:flex;gap:12px;flex-shrink:0}
+.meta-chip{
+  padding:6px 14px;border-radius:8px;
+  font-size:11px;font-weight:700;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.1);
+  color:rgba(255,255,255,.6)
+}
+.meta-chip span{color:#fff}
+
+/* ── LAYOUT ── */
+.layout{display:flex;height:calc(100vh - 97px);overflow:hidden}
+
+/* ── LEFT TREE ── */
+.tree-panel{
+  width:320px;flex-shrink:0;
+  background:#0A1C28;
+  border-right:1px solid var(--border);
+  overflow-y:auto;padding:16px 0
+}
+.tree-panel::-webkit-scrollbar{width:3px}
+.tree-panel::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:2px}
+
+.tree-section{margin-bottom:4px}
+.tree-section-lbl{
+  padding:10px 18px 5px;
+  font-size:9px;font-weight:800;
+  color:rgba(255,255,255,.2);letter-spacing:2px
+}
+.tree-item{
+  display:flex;align-items:center;gap:8px;
+  padding:7px 18px;cursor:pointer;
+  font-size:12px;font-weight:600;
+  color:rgba(255,255,255,.5);
+  transition:all .15s;position:relative;
+  font-family:'JetBrains Mono',monospace
+}
+.tree-item:hover{background:rgba(255,255,255,.05);color:rgba(255,255,255,.85)}
+.tree-item.active{background:rgba(41,171,226,.14);color:#fff}
+.tree-item.active::before{content:'';position:absolute;left:0;top:20%;height:60%;width:2px;background:var(--blue);border-radius:0 2px 2px 0}
+.tree-indent{padding-left:32px}
+.tree-indent2{padding-left:46px}
+.tree-ico{font-size:12px;flex-shrink:0;width:16px;text-align:center}
+.tree-divider{height:1px;background:var(--border2);margin:6px 0}
+.tree-badge{margin-left:auto;padding:1px 6px;border-radius:4px;font-size:9px;font-weight:800;font-family:'Plus Jakarta Sans',sans-serif}
+.tb-new{background:rgba(60,184,120,.2);color:var(--green)}
+.tb-admin{background:rgba(239,68,68,.15);color:var(--red)}
+.tb-shared{background:rgba(245,158,11,.15);color:var(--gold)}
+
+/* ── RIGHT MAIN ── */
+.main-panel{flex:1;overflow-y:auto;padding:32px 40px}
+.main-panel::-webkit-scrollbar{width:4px}
+.main-panel::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:2px}
+
+/* ── SECTION TITLE ── */
+.sec-head{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.sec-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.sec-title{font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;color:#fff}
+.sec-count{font-size:11px;font-weight:700;color:rgba(255,255,255,.3);margin-left:2px}
+
+/* ── PAGE GRID ── */
+.page-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:40px}
+.page-card{
+  background:#0D2236;border-radius:14px;
+  border:1.5px solid rgba(255,255,255,.07);
+  padding:16px;cursor:pointer;
+  transition:all .2s;position:relative;overflow:hidden
+}
+.page-card:hover{border-color:rgba(255,255,255,.18);background:#0F2840;transform:translateY(-1px)}
+.page-card.active{border-color:var(--blue);background:rgba(41,171,226,.07)}
+.page-card-bg{position:absolute;top:-20px;right:-20px;width:70px;height:70px;border-radius:50%;opacity:.06;pointer-events:none}
+.page-card-ico{font-size:22px;margin-bottom:10px}
+.page-card-name{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;color:rgba(255,255,255,.5);margin-bottom:5px}
+.page-card-title{font-size:13px;font-weight:700;color:#fff;margin-bottom:6px}
+.page-card-desc{font-size:11px;color:rgba(255,255,255,.38);line-height:1.5;margin-bottom:10px}
+.page-card-tags{display:flex;flex-wrap:wrap;gap:4px}
+.pc-tag{padding:2px 7px;border-radius:4px;font-size:9px;font-weight:700}
+.pct-html{background:rgba(41,171,226,.12);color:var(--blue)}
+.pct-js{background:rgba(245,158,11,.12);color:var(--gold)}
+.pct-session{background:rgba(60,184,120,.12);color:var(--green)}
+.pct-auth{background:rgba(239,68,68,.12);color:var(--red)}
+.pct-new{background:rgba(141,198,63,.12);color:var(--lime)}
+.page-card-link{
+  display:flex;align-items:center;gap:5px;margin-top:10px;
+  font-size:10px;font-weight:700;color:rgba(255,255,255,.25);
+  font-family:'JetBrains Mono',monospace
+}
+.page-card:hover .page-card-link{color:var(--blue)}
+
+/* ── DETAIL PANEL ── */
+.detail-card{
+  background:#0D2236;border-radius:14px;
+  border:1.5px solid rgba(255,255,255,.07);
+  padding:24px;margin-bottom:20px
+}
+.detail-path{
+  font-family:'JetBrains Mono',monospace;font-size:12px;
+  color:rgba(255,255,255,.4);background:rgba(255,255,255,.05);
+  padding:8px 12px;border-radius:8px;margin-bottom:16px;
+  display:flex;align-items:center;gap:8px
+}
+.detail-path span{color:var(--blue)}
+.detail-title{font-size:18px;font-weight:800;color:#fff;font-family:'Bricolage Grotesque',sans-serif;margin-bottom:6px}
+.detail-sub{font-size:12px;color:rgba(255,255,255,.45);margin-bottom:18px;line-height:1.5}
+.detail-features{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px}
+.detail-feat{
+  display:flex;align-items:flex-start;gap:8px;
+  background:rgba(255,255,255,.04);border-radius:9px;padding:10px 12px
+}
+.detail-feat-ico{width:20px;height:20px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;margin-top:1px}
+.detail-feat-text{font-size:11px;color:rgba(255,255,255,.6);line-height:1.5}
+.detail-feat-text strong{color:#fff;font-weight:700;display:block;margin-bottom:2px}
+.detail-links{display:flex;gap:8px;flex-wrap:wrap}
+.det-link{
+  padding:8px 16px;border-radius:9px;
+  font-size:12px;font-weight:700;cursor:pointer;
+  transition:all .2s;border:1.5px solid transparent;
+  display:flex;align-items:center;gap:6px
+}
+.det-link.primary{background:var(--blue);color:#fff;border-color:var(--blue)}
+.det-link.primary:hover{background:var(--blue-d)}
+.det-link.ghost{border-color:rgba(255,255,255,.15);color:rgba(255,255,255,.6)}
+.det-link.ghost:hover{border-color:var(--blue);color:var(--blue)}
+
+/* ── CONNEXION MAP ── */
+.conn-map{
+  background:#0D2236;border-radius:14px;
+  border:1.5px solid rgba(255,255,255,.07);
+  padding:24px;margin-bottom:20px
+}
+.conn-title{font-size:14px;font-weight:800;color:#fff;font-family:'Bricolage Grotesque',sans-serif;margin-bottom:16px}
+.conn-flow{display:flex;align-items:center;gap:0;flex-wrap:wrap;gap:8px}
+.conn-node{
+  display:flex;flex-direction:column;align-items:center;gap:5px
+}
+.conn-node-box{
+  padding:8px 14px;border-radius:9px;
+  font-size:11px;font-weight:700;
+  border:1.5px solid;white-space:nowrap;cursor:pointer;
+  transition:all .2s;text-align:center
+}
+.cnn-home{border-color:rgba(41,171,226,.3);color:var(--blue);background:rgba(41,171,226,.08)}
+.cnn-auth{border-color:rgba(239,68,68,.3);color:var(--red);background:rgba(239,68,68,.07)}
+.cnn-dash-c{border-color:rgba(41,171,226,.3);color:var(--blue);background:rgba(41,171,226,.07)}
+.cnn-dash-f{border-color:rgba(60,184,120,.3);color:var(--green);background:rgba(60,184,120,.07)}
+.cnn-msg{border-color:rgba(245,158,11,.3);color:var(--gold);background:rgba(245,158,11,.07)}
+.cnn-catalog{border-color:rgba(124,58,237,.3);color:#A78BFA;background:rgba(124,58,237,.07)}
+.cnn-admin{border-color:rgba(239,68,68,.25);color:#FCA5A5;background:rgba(239,68,68,.06)}
+.conn-arrow{font-size:14px;color:rgba(255,255,255,.2);flex-shrink:0}
+.conn-sub{font-size:9px;color:rgba(255,255,255,.25);font-family:'JetBrains Mono',monospace}
+
+/* ── STATS BAR ── */
+.stats-bar{
+  display:grid;grid-template-columns:repeat(5,1fr);gap:12px;
+  margin-bottom:32px
+}
+.stat-box{
+  background:#0D2236;border-radius:12px;padding:14px 16px;
+  border:1.5px solid rgba(255,255,255,.07);text-align:center
+}
+.stat-val{font-size:24px;font-weight:800;font-family:'Bricolage Grotesque',sans-serif;margin-bottom:2px}
+.stat-lbl{font-size:10px;color:rgba(255,255,255,.35);font-weight:600;letter-spacing:.4px}
+
+/* ── SHARED FILES ── */
+.file-row{
+  display:flex;align-items:center;gap:12px;
+  padding:11px 14px;border-radius:10px;
+  background:rgba(255,255,255,.03);margin-bottom:6px;
+  border:1px solid rgba(255,255,255,.04);cursor:pointer;transition:all .15s
+}
+.file-row:hover{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.08)}
+.file-ico{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.file-path{font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,.5);flex:1}
+.file-path span{color:var(--blue)}
+.file-desc{font-size:11px;color:rgba(255,255,255,.35)}
+.file-size{font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,.2);flex-shrink:0}
+
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.main-panel{animation:fadeIn .3s var(--ease)}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <a class="logo-mark" href="/src/pages/home/index.html">O</a>
+  <div class="header-info">
+    <div class="header-title">Oriupe — Structure du projet</div>
+    <div class="header-sub">Plateforme freelance africaine · Vite Multi-Page App · Vanilla HTML/CSS/JS</div>
+  </div>
+  <div class="header-meta">
+    <div class="meta-chip">Pages : <span>34</span></div>
+    <div class="meta-chip">Version : <span>1.0.0</span></div>
+    <div class="meta-chip">Build : <span>Vite 5.4</span></div>
+  </div>
+</div>
+
+<div class="layout">
+
+<!-- LEFT TREE -->
+<div class="tree-panel">
+  <div class="tree-section">
+    <div class="tree-section-lbl">RACINE</div>
+    <div class="tree-item" onclick="showSection('overview')">
+      <span class="tree-ico">📁</span> Oriupe/
+    </div>
+    <div class="tree-item tree-indent" onclick="showSection('config')">
+      <span class="tree-ico">⚙️</span> vite.config.js
+    </div>
+    <div class="tree-item tree-indent" onclick="showSection('config')">
+      <span class="tree-ico">📦</span> package.json
+    </div>
+    <div class="tree-item tree-indent" onclick="showSection('config')">
+      <span class="tree-ico">🏠</span> index.html
+    </div>
+  </div>
+
+  <div class="tree-divider"></div>
+
+  <div class="tree-section">
+    <div class="tree-section-lbl">SRC / PAGES</div>
+    <div class="tree-item tree-indent" onclick="showSection('public')">
+      <span class="tree-ico">🌐</span> home/
+    </div>
+    <div class="tree-item tree-indent" onclick="showSection('public')">
+      <span class="tree-ico">🔐</span> auth/
+    </div>
+    <div class="tree-item tree-indent" onclick="showSection('public')">
+      <span class="tree-ico">🛒</span> catalog/
+    </div>
+    <div class="tree-item tree-indent" onclick="showSection('public')">
+      <span class="tree-ico">📄</span> detail/
+    </div>
+    <div class="tree-item tree-indent" onclick="showSection('public')">
+      <span class="tree-ico">👤</span> profile/
+    </div>
+    <div class="tree-item tree-indent" onclick="showSection('public')">
+      <span class="tree-ico">🚀</span> onboarding/
+    </div>
+    <div class="tree-item tree-indent" onclick="showSection('public')">
+      <span class="tree-ico">📋</span> offers/
+    </div>
+    <div class="tree-item tree-indent" onclick="showSection('public')">
+      <span class="tree-ico">💰</span> pricing/
+    </div>
+    <div class="tree-item tree-indent" onclick="showSection('public')">
+      <span class="tree-ico">📝</span> blog/
+    </div>
+    <div class="tree-item tree-indent" onclick="showSection('public')">
+      <span class="tree-ico">🎓</span> academy/
+    </div>
+    <div class="tree-item tree-indent" onclick="showSection('public')">
+      <span class="tree-ico">📞</span> contact/
+    </div>
+    <div class="tree-item tree-indent" onclick="showSection('public')">
+      <span class="tree-ico">ℹ️</span> about/</div>
+    <div class="tree-item tree-indent" onclick="showSection('public')">
+      <span class="tree-ico">❓</span> faq/ & help/
+    </div>
+    <div class="tree-item tree-indent" onclick="showSection('public')">
+      <span class="tree-ico">🗞️</span> press/ careers/ impact/
+    </div>
+    <div class="tree-item tree-indent" onclick="showSection('public')">
+      <span class="tree-ico">📜</span> privacy/ terms/
+    </div>
+  </div>
+
+  <div class="tree-divider"></div>
+
+  <div class="tree-section">
+    <div class="tree-section-lbl">ESPACES UTILISATEURS</div>
+    <div class="tree-item tree-indent active" id="nav-dash" onclick="showSection('dashboards')">
+      <span class="tree-ico">📊</span> dashboard/
+    </div>
+    <div class="tree-item tree-indent2" onclick="showSection('dashboards')">
+      <span class="tree-ico">🧑‍💼</span> client/ <div class="tree-badge tb-new">new</div>
+    </div>
+    <div class="tree-item tree-indent2" onclick="showSection('dashboards')">
+      <span class="tree-ico">🎨</span> freelance/ <div class="tree-badge tb-new">new</div>
+    </div>
+    <div class="tree-item tree-indent2" onclick="showSection('dashboards')">
+      <span class="tree-ico">🔒</span> escrow/
+    </div>
+    <div class="tree-item tree-indent" onclick="showSection('messaging')">
+      <span class="tree-ico">💬</span> messagerie/ <div class="tree-badge tb-new">new</div>
+    </div>
+    <div class="tree-item tree-indent" onclick="showSection('messaging')">
+      <span class="tree-ico">🗨️</span> chat/
+    </div>
+  </div>
+
+  <div class="tree-divider"></div>
+
+  <div class="tree-section">
+    <div class="tree-section-lbl">ADMIN</div>
+    <div class="tree-item tree-indent" onclick="showSection('admin')">
+      <span class="tree-ico">🛡️</span> admin/ <div class="tree-badge tb-admin">privé</div>
+    </div>
+    <div class="tree-item tree-indent2" onclick="showSection('admin')">
+      <span class="tree-ico">📋</span> index.html
+    </div>
+    <div class="tree-item tree-indent2" onclick="showSection('admin')">
+      <span class="tree-ico">🔑</span> login.html
+    </div>
+    <div class="tree-item tree-indent2" onclick="showSection('admin')">
+      <span class="tree-ico">⚖️</span> moderateur.html
+    </div>
+    <div class="tree-item tree-indent2" onclick="showSection('admin')">
+      <span class="tree-ico">🎧</span> support.html
+    </div>
+    <div class="tree-item tree-indent2" onclick="showSection('admin')">
+      <span class="tree-ico">💹</span> finance.html
+    </div>
+  </div>
+
+  <div class="tree-divider"></div>
+
+  <div class="tree-section">
+    <div class="tree-section-lbl">SHARED</div>
+    <div class="tree-item tree-indent" onclick="showSection('shared')">
+      <span class="tree-ico">🔗</span> shared/ <div class="tree-badge tb-shared">new</div>
+    </div>
+    <div class="tree-item tree-indent2" onclick="showSection('shared')">
+      <span class="tree-ico">📝</span> oriupe-session.js
+    </div>
+    <div class="tree-item tree-indent" onclick="showSection('shared')">
+      <span class="tree-ico">🧩</span> components/
+    </div>
+    <div class="tree-item tree-indent" onclick="showSection('shared')">
+      <span class="tree-ico">⚡</span> scripts/
+    </div>
+  </div>
+
+  <div class="tree-divider"></div>
+
+  <div class="tree-section">
+    <div class="tree-section-lbl">AUTRES</div>
+    <div class="tree-item tree-indent" onclick="showSection('public')">
+      <span class="tree-ico">⚖️</span> disputes/
+    </div>
+    <div class="tree-item tree-indent" onclick="showSection('config')">
+      <span class="tree-ico">📤</span> dist/ (build)
+    </div>
+  </div>
+</div>
+
+<!-- MAIN PANEL -->
+<div class="main-panel" id="main-panel">
+
+  <!-- OVERVIEW (default) -->
+  <div id="section-overview">
+    <!-- Stats -->
+    <div class="stats-bar">
+      <div class="stat-box">
+        <div class="stat-val" style="color:var(--blue)">34</div>
+        <div class="stat-lbl">PAGES HTML</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val" style="color:var(--green)">3</div>
+        <div class="stat-lbl">FICHIERS JS</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val" style="color:var(--gold)">5</div>
+        <div class="stat-lbl">ESPACES ADMIN</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val" style="color:var(--purple)">2</div>
+        <div class="stat-lbl">DASHBOARDS</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val" style="color:var(--lime)">1</div>
+        <div class="stat-lbl">SESSION JS</div>
+      </div>
+    </div>
+
+    <!-- Connexion map -->
+    <div class="conn-map">
+      <div class="conn-title">Flux de navigation principal</div>
+      <div class="conn-flow">
+        <div class="conn-node">
+          <div class="conn-node-box cnn-home" onclick="window.location.href='/src/pages/home/index.html'">🌐 Accueil</div>
+          <div class="conn-sub">home/</div>
+        </div>
+        <div class="conn-arrow">→</div>
+        <div class="conn-node">
+          <div class="conn-node-box cnn-auth" onclick="window.location.href='/src/pages/auth/index.html'">🔐 Auth</div>
+          <div class="conn-sub">auth/</div>
+        </div>
+        <div class="conn-arrow">→</div>
+        <div style="display:flex;flex-direction:column;gap:8px;align-items:center">
+          <div class="conn-node">
+            <div class="conn-node-box cnn-dash-c" onclick="window.location.href='/src/pages/dashboard/client/index.html'">🧑‍💼 Dashboard Client</div>
+            <div class="conn-sub">dashboard/client/</div>
+          </div>
+          <div class="conn-node">
+            <div class="conn-node-box cnn-dash-f" onclick="window.location.href='/src/pages/dashboard/freelance/index.html'">🎨 Dashboard Freelance</div>
+            <div class="conn-sub">dashboard/freelance/</div>
+          </div>
+        </div>
+        <div class="conn-arrow">→</div>
+        <div class="conn-node">
+          <div class="conn-node-box cnn-msg" onclick="window.location.href='/src/pages/messagerie/index.html'">💬 Messagerie</div>
+          <div class="conn-sub">messagerie/</div>
+        </div>
+      </div>
+      <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+        <div class="conn-node">
+          <div class="conn-node-box cnn-catalog" onclick="window.location.href='/src/pages/catalog/index.html'">🛒 Catalogue</div>
+          <div class="conn-sub">catalog/</div>
+        </div>
+        <div class="conn-arrow">→</div>
+        <div class="conn-node">
+          <div class="conn-node-box cnn-catalog" onclick="window.location.href='/src/pages/detail/index.html'">📄 Détail service</div>
+          <div class="conn-sub">detail/</div>
+        </div>
+        <div class="conn-arrow">→</div>
+        <div class="conn-node">
+          <div class="conn-node-box cnn-catalog" onclick="window.location.href='/src/pages/profile/index.html'">👤 Profil freelance</div>
+          <div class="conn-sub">profile/</div>
+        </div>
+        <div style="margin-left:20px;border-left:1px solid var(--border);padding-left:20px">
+          <div class="conn-node">
+            <div class="conn-node-box cnn-admin" onclick="window.location.href='/src/pages/admin/index.html'">🛡️ Admin</div>
+            <div class="conn-sub">admin/</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Page cards -->
+    <div class="sec-head">
+      <div class="sec-dot" style="background:var(--blue)"></div>
+      <div class="sec-title">Pages publiques</div>
+      <div class="sec-count">20 pages</div>
+    </div>
+    <div class="page-grid">
+      <div class="page-card" onclick="window.location.href='/src/pages/home/index.html'">
+        <div class="page-card-bg" style="background:var(--blue)"></div>
+        <div class="page-card-ico">🌐</div>
+        <div class="page-card-name">home/index.html</div>
+        <div class="page-card-title">Page d'accueil</div>
+        <div class="page-card-desc">Landing page principale. Hero, stats, catalogue aperçu, témoignages, CTA inscription.</div>
+        <div class="page-card-tags"><span class="pc-tag pct-html">HTML</span><span class="pc-tag pct-session">Session</span></div>
+        <div class="page-card-link">&#9654; Ouvrir</div>
+      </div>
+      <div class="page-card" onclick="window.location.href='/src/pages/auth/index.html'">
+        <div class="page-card-bg" style="background:var(--red)"></div>
+        <div class="page-card-ico">🔐</div>
+        <div class="page-card-name">auth/index.html</div>
+        <div class="page-card-title">Authentification</div>
+        <div class="page-card-desc">Connexion, inscription client/freelance, mot de passe oublié. Écrit la session localStorage.</div>
+        <div class="page-card-tags"><span class="pc-tag pct-html">HTML</span><span class="pc-tag pct-auth">Auth</span><span class="pc-tag pct-js">JS</span></div>
+        <div class="page-card-link">&#9654; Ouvrir</div>
+      </div>
+      <div class="page-card" onclick="window.location.href='/src/pages/catalog/index.html'">
+        <div class="page-card-bg" style="background:var(--purple)"></div>
+        <div class="page-card-ico">🛒</div>
+        <div class="page-card-name">catalog/index.html</div>
+        <div class="page-card-title">Catalogue services</div>
+        <div class="page-card-desc">Grille de services filtrables. Recherche, catégories, cartes freelances.</div>
+        <div class="page-card-tags"><span class="pc-tag pct-html">HTML</span><span class="pc-tag pct-session">Session</span></div>
+        <div class="page-card-link">&#9654; Ouvrir</div>
+      </div>
+      <div class="page-card" onclick="window.location.href='/src/pages/detail/index.html'">
+        <div class="page-card-bg" style="background:var(--green)"></div>
+        <div class="page-card-ico">📄</div>
+        <div class="page-card-name">detail/index.html</div>
+        <div class="page-card-title">Détail service</div>
+        <div class="page-card-desc">Page complète d'un service. Description, tarifs 3 niveaux, galerie, FAQ, freelance.</div>
+        <div class="page-card-tags"><span class="pc-tag pct-html">HTML</span><span class="pc-tag pct-session">Session</span></div>
+        <div class="page-card-link">&#9654; Ouvrir</div>
+      </div>
+      <div class="page-card" onclick="window.location.href='/src/pages/profile/index.html'">
+        <div class="page-card-bg" style="background:var(--gold)"></div>
+        <div class="page-card-ico">👤</div>
+        <div class="page-card-name">profile/index.html</div>
+        <div class="page-card-title">Profil freelance public</div>
+        <div class="page-card-desc">Vitrine publique. Portfolio, services, avis, stats, bouton contact.</div>
+        <div class="page-card-tags"><span class="pc-tag pct-html">HTML</span><span class="pc-tag pct-session">Session</span></div>
+        <div class="page-card-link">&#9654; Ouvrir</div>
+      </div>
+      <div class="page-card" onclick="window.location.href='/src/pages/onboarding/index.html'">
+        <div class="page-card-bg" style="background:var(--lime)"></div>
+        <div class="page-card-ico">🚀</div>
+        <div class="page-card-name">onboarding/index.html</div>
+        <div class="page-card-title">Onboarding freelance</div>
+        <div class="page-card-desc">Tunnel d'inscription en 5 étapes. Compétences, tarifs, KYC, portfolio.</div>
+        <div class="page-card-tags"><span class="pc-tag pct-html">HTML</span><span class="pc-tag pct-js">JS</span></div>
+        <div class="page-card-link">&#9654; Ouvrir</div>
+      </div>
+      <div class="page-card" onclick="window.location.href='/src/pages/pricing/index.html'">
+        <div class="page-card-bg" style="background:var(--blue)"></div>
+        <div class="page-card-ico">💰</div>
+        <div class="page-card-name">pricing/index.html</div>
+        <div class="page-card-title">Tarifs</div>
+        <div class="page-card-desc">Grilles tarifaires Oriupe. Plans gratuit, pro, entreprise.</div>
+        <div class="page-card-tags"><span class="pc-tag pct-html">HTML</span></div>
+        <div class="page-card-link">&#9654; Ouvrir</div>
+      </div>
+      <div class="page-card" onclick="window.location.href='/src/pages/blog/index.html'">
+        <div class="page-card-bg" style="background:var(--green)"></div>
+        <div class="page-card-ico">📝</div>
+        <div class="page-card-name">blog/index.html</div>
+        <div class="page-card-title">Blog</div>
+        <div class="page-card-desc">Articles, guides et actualités de la plateforme.</div>
+        <div class="page-card-tags"><span class="pc-tag pct-html">HTML</span></div>
+        <div class="page-card-link">&#9654; Ouvrir</div>
+      </div>
+      <div class="page-card" onclick="window.location.href='/src/pages/academy/index.html'">
+        <div class="page-card-bg" style="background:var(--purple)"></div>
+        <div class="page-card-ico">🎓</div>
+        <div class="page-card-name">academy/index.html</div>
+        <div class="page-card-title">Academy</div>
+        <div class="page-card-desc">Formation des freelances. Cours, certifications, parcours.</div>
+        <div class="page-card-tags"><span class="pc-tag pct-html">HTML</span></div>
+        <div class="page-card-link">&#9654; Ouvrir</div>
+      </div>
+    </div>
+
+    <div class="sec-head">
+      <div class="sec-dot" style="background:var(--green)"></div>
+      <div class="sec-title">Espaces utilisateurs</div>
+      <div class="sec-count">5 pages</div>
+    </div>
+    <div class="page-grid">
+      <div class="page-card" onclick="window.location.href='/src/pages/dashboard/client/index.html'">
+        <div class="page-card-bg" style="background:var(--blue)"></div>
+        <div class="page-card-ico">🧑‍💼</div>
+        <div class="page-card-name">dashboard/client/</div>
+        <div class="page-card-title">Dashboard Client</div>
+        <div class="page-card-desc">7 panels : overview, commandes, explorer, paiements, escrow, profil, paramètres. Chat overlay intégré, FAB.</div>
+        <div class="page-card-tags"><span class="pc-tag pct-new">Nouveau</span><span class="pc-tag pct-session">Session</span><span class="pc-tag pct-js">JS</span></div>
+        <div class="page-card-link">&#9654; Ouvrir</div>
+      </div>
+      <div class="page-card" onclick="window.location.href='/src/pages/dashboard/freelance/index.html'">
+        <div class="page-card-bg" style="background:var(--green)"></div>
+        <div class="page-card-ico">🎨</div>
+        <div class="page-card-name">dashboard/freelance/</div>
+        <div class="page-card-title">Dashboard Freelance</div>
+        <div class="page-card-desc">8 panels : overview, commandes, services, offres, revenus, profil, KYC, paramètres. Toggle en ligne, alertes.</div>
+        <div class="page-card-tags"><span class="pc-tag pct-new">Nouveau</span><span class="pc-tag pct-session">Session</span><span class="pc-tag pct-js">JS</span></div>
+        <div class="page-card-link">&#9654; Ouvrir</div>
+      </div>
+      <div class="page-card" onclick="window.location.href='/src/pages/messagerie/index.html'">
+        <div class="page-card-bg" style="background:var(--gold)"></div>
+        <div class="page-card-ico">💬</div>
+        <div class="page-card-name">messagerie/</div>
+        <div class="page-card-title">Messagerie unifiée</div>
+        <div class="page-card-desc">3 canaux : Oriupe Officiel (5 types de messages), Conversations directes avec escrow, Notifications système.</div>
+        <div class="page-card-tags"><span class="pc-tag pct-new">Nouveau</span><span class="pc-tag pct-js">JS</span></div>
+        <div class="page-card-link">&#9654; Ouvrir</div>
+      </div>
+      <div class="page-card" onclick="window.location.href='/src/pages/chat/index.html'">
+        <div class="page-card-bg" style="background:var(--blue)"></div>
+        <div class="page-card-ico">🗨️</div>
+        <div class="page-card-name">chat/</div>
+        <div class="page-card-title">Chat Escrow</div>
+        <div class="page-card-desc">Interface de chat dédiée avec bloc escrow intégré, suivi livraison, rôle toggle client/freelance.</div>
+        <div class="page-card-tags"><span class="pc-tag pct-html">HTML</span><span class="pc-tag pct-js">JS</span></div>
+        <div class="page-card-link">&#9654; Ouvrir</div>
+      </div>
+      <div class="page-card" onclick="window.location.href='/src/pages/dashboard/escrow/index.html'">
+        <div class="page-card-bg" style="background:var(--gold)"></div>
+        <div class="page-card-ico">🔒</div>
+        <div class="page-card-name">dashboard/escrow/</div>
+        <div class="page-card-title">Escrow dédié</div>
+        <div class="page-card-desc">Gestion détaillée des paiements sécurisés. Suivi étape par étape, historique.</div>
+        <div class="page-card-tags"><span class="pc-tag pct-html">HTML</span></div>
+        <div class="page-card-link">&#9654; Ouvrir</div>
+      </div>
+    </div>
+
+    <div class="sec-head">
+      <div class="sec-dot" style="background:var(--red)"></div>
+      <div class="sec-title">Espace Admin</div>
+      <div class="sec-count">5 pages</div>
+    </div>
+    <div class="page-grid">
+      <div class="page-card" onclick="window.location.href='/src/pages/admin/index.html'">
+        <div class="page-card-bg" style="background:var(--red)"></div>
+        <div class="page-card-ico">🛡️</div>
+        <div class="page-card-name">admin/index.html</div>
+        <div class="page-card-title">Admin principal</div>
+        <div class="page-card-desc">Dashboard admin. Statistiques globales, users, signalements, liens vers espaces rôles.</div>
+        <div class="page-card-tags"><span class="pc-tag pct-admin">Admin</span></div>
+        <div class="page-card-link">&#9654; Ouvrir</div>
+      </div>
+      <div class="page-card" onclick="window.location.href='/src/pages/admin/moderateur.html'">
+        <div class="page-card-bg" style="background:var(--purple)"></div>
+        <div class="page-card-ico">⚖️</div>
+        <div class="page-card-name">admin/moderateur.html</div>
+        <div class="page-card-title">Espace Modérateur</div>
+        <div class="page-card-desc">Modération des contenus, gestion des litiges, validation KYC.</div>
+        <div class="page-card-tags"><span class="pc-tag pct-admin">Admin</span></div>
+        <div class="page-card-link">&#9654; Ouvrir</div>
+      </div>
+      <div class="page-card" onclick="window.location.href='/src/pages/admin/support.html'">
+        <div class="page-card-bg" style="background:var(--blue)"></div>
+        <div class="page-card-ico">🎧</div>
+        <div class="page-card-name">admin/support.html</div>
+        <div class="page-card-title">Espace Support</div>
+        <div class="page-card-desc">Tickets utilisateurs, chat support, base de connaissances.</div>
+        <div class="page-card-tags"><span class="pc-tag pct-admin">Admin</span></div>
+        <div class="page-card-link">&#9654; Ouvrir</div>
+      </div>
+      <div class="page-card" onclick="window.location.href='/src/pages/admin/finance.html'">
+        <div class="page-card-bg" style="background:var(--green)"></div>
+        <div class="page-card-ico">💹</div>
+        <div class="page-card-name">admin/finance.html</div>
+        <div class="page-card-title">Espace Finance</div>
+        <div class="page-card-desc">Transactions escrow, virements, commissions, rapports financiers.</div>
+        <div class="page-card-tags"><span class="pc-tag pct-admin">Admin</span></div>
+        <div class="page-card-link">&#9654; Ouvrir</div>
+      </div>
+      <div class="page-card" onclick="window.location.href='/src/pages/admin/login.html'">
+        <div class="page-card-bg" style="background:var(--red)"></div>
+        <div class="page-card-ico">🔑</div>
+        <div class="page-card-name">admin/login.html</div>
+        <div class="page-card-title">Connexion Admin</div>
+        <div class="page-card-desc">Authentification sécurisée réservée à l'équipe interne Oriupe.</div>
+        <div class="page-card-tags"><span class="pc-tag pct-admin">Admin</span><span class="pc-tag pct-auth">Auth</span></div>
+        <div class="page-card-link">&#9654; Ouvrir</div>
+      </div>
+    </div>
+
+    <!-- Shared files -->
+    <div class="sec-head">
+      <div class="sec-dot" style="background:var(--gold)"></div>
+      <div class="sec-title">Fichiers partagés</div>
+    </div>
+    <div class="file-row" onclick="void(0)">
+      <div class="file-ico" style="background:rgba(245,158,11,.12)">⚡</div>
+      <div class="file-path">src/shared/<span>oriupe-session.js</span></div>
+      <div class="file-desc">Session persistante · localStorage · Nav dynamique · Protection routes</div>
+      <div class="file-size">~6 KB</div>
+    </div>
+    <div class="file-row" onclick="void(0)">
+      <div class="file-ico" style="background:rgba(41,171,226,.1)">🧩</div>
+      <div class="file-path">src/components/<span>nav.js</span></div>
+      <div class="file-desc">Composant navigation — scroll behaviour, mobile menu</div>
+      <div class="file-size">~2 KB</div>
+    </div>
+    <div class="file-row" onclick="void(0)">
+      <div class="file-ico" style="background:rgba(60,184,120,.1)">🧩</div>
+      <div class="file-path">src/components/<span>currency.js</span></div>
+      <div class="file-desc">Conversion devises — FCFA / EUR / USD / GHS</div>
+      <div class="file-size">~1 KB</div>
+    </div>
+    <div class="file-row" onclick="void(0)">
+      <div class="file-ico" style="background:rgba(141,198,63,.1)">⚙️</div>
+      <div class="file-path"><span>vite.config.js</span></div>
+      <div class="file-desc">Multi-page build · 34 entrées · Dev server port 5173</div>
+      <div class="file-size">~1.5 KB</div>
+    </div>
+  </div>
+
+</div><!-- /main-panel -->
+</div><!-- /layout -->
+
+<script>
+function showSection(id) {
+  // Update active tree item
+  document.querySelectorAll('.tree-item').forEach(i => i.classList.remove('active'));
+  event.currentTarget && event.currentTarget.classList.add('active');
+
+  // All sections in one page — just scroll to top for now
+  document.getElementById('main-panel').scrollTop = 0;
+}
+
+// Highlight active tree item on page load
+document.addEventListener('DOMContentLoaded', () => {
+  const first = document.querySelector('.tree-item');
+  if (first) first.classList.add('active');
+});
+</script>
+</body>
+</html>

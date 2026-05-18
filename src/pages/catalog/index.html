@@ -3,21 +3,25 @@
 <head>
 <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Oriupe — Catalogue des services</title>
+  <meta name="description" content="Explorez des centaines de services proposés par des freelances africains certifiés : développement, design, marketing, rédaction et plus."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:site_name" content="Oriupe"/>
+  <meta property="og:title" content="Oriupe — Catalogue des services"/>
+  <meta property="og:description" content="Explorez des centaines de services proposés par des freelances africains certifiés : développement, design, marketing, rédaction et plus."/>
+  <meta property="og:image" content="https://oriupe.com/og-catalog.png"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="Oriupe — Catalogue des services"/>
+  <meta name="twitter:description" content="Explorez des centaines de services proposés par des freelances africains certifiés : développement, design, marketing, rédaction et plus."/>
+  <meta name="twitter:image" content="https://oriupe.com/og-catalog.png"/>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/src/shared/styles/base.css"/>
+<script src="/src/shared/oriupe-session.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-font-smoothing:antialiased}
 body{font-family:'Plus Jakarta Sans',sans-serif;background:#F5F7FA;color:#1B3A4A;overflow-x:hidden}
 a{text-decoration:none;color:inherit}
 button,input,select{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer}
-:root{
-  --navy:#1B3A4A;--green:#3CB878;--green-d:#2E9060;--green-l:#E8F8F1;
-  --blue:#29ABE2;--blue-l:#E3F5FC;--lime:#8DC63F;--lime-l:#F0F8E3;
-  --bg:#F5F7FA;--bg2:#EEF1F5;--white:#fff;
-  --border:rgba(27,58,74,.1);--muted:rgba(27,58,74,.5);--muted2:rgba(27,58,74,.35);
-  --shadow:0 2px 12px rgba(27,58,74,.08);--shadow-lg:0 12px 40px rgba(27,58,74,.16);
-  --r:8px;--r-md:12px;--r-lg:16px;--ease:cubic-bezier(.25,.46,.45,.94);--spring:cubic-bezier(.34,1.56,.64,1);
-}
 #progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--green),var(--blue));width:0;z-index:9999;border-radius:0 2px 2px 0;transition:width .1s}
 
 /* BREADCRUMB */
@@ -297,8 +301,11 @@ footer{background:var(--navy);padding:64px 24px 32px;margin-top:0}
 @media(max-width:480px){.of-z1{grid-template-columns:1fr}}
 </style>
 <script type="module" src="/src/components/nav.js"></script>
+  <script type="module" src="/src/shared/nav.js"></script>
+  <script type="module" src="/src/shared/scroll-reveal.js"></script>
 </head>
 <body>
+<div id="nav-root"></div>
 <div id="progress"></div>
 
 <!-- BREADCRUMB -->
@@ -475,10 +482,10 @@ footer{background:var(--navy);padding:64px 24px 32px;margin-top:0}
       <p class="of-desc">La marketplace de services num&eacute;riques africains. Freelances certifi&eacute;s, paiement Escrow s&eacute;curis&eacute;, Mobile Money int&eacute;gr&eacute;.</p>
       <div class="of-badge"><div class="of-pulse"></div>Plateforme active &mdash; Abidjan, C&ocirc;te d&rsquo;Ivoire &#x1F1E8;&#x1F1EE;</div>
       <div class="of-socials">
-        <a class="of-soc" href="#" title="LinkedIn" target="_blank" rel="noopener"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1.5" y="1.5" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M4 6.5V10M4 4.5V5M6.5 10V8C6.5 7 7.1 6.2 8.2 6.2S10 7 10 8V10M6.5 6.5V10" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg></a>
-        <a class="of-soc" href="#" title="X (Twitter)" target="_blank" rel="noopener"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M1 1L5.5 7L1 12H2.5L6.2 8.2L9.5 12H12.5L7.8 5.8L12 1H10.5L7.1 4.8L4 1H1Z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/></svg></a>
-        <a class="of-soc" href="#" title="Instagram" target="_blank" rel="noopener"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1.5" y="1.5" width="11" height="11" rx="3" stroke="currentColor" stroke-width="1.2"/><circle cx="7" cy="7" r="2.8" stroke="currentColor" stroke-width="1.1"/><circle cx="10.2" cy="3.8" r=".8" fill="currentColor"/></svg></a>
-        <a class="of-soc" href="#" title="WhatsApp" target="_blank" rel="noopener"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1C3.7 1 1 3.7 1 7c0 1 .3 2 .8 2.8L1 13l3.3-.8C5.1 12.7 6 13 7 13c3.3 0 6-2.7 6-6S10.3 1 7 1Z" stroke="currentColor" stroke-width="1.2"/><path d="M5 5.5c0 0 .5 1 1 1.5S7.5 8 7.5 8L8.5 7" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg></a>
+        <a class="of-soc" href="#" aria-disabled="true" tabindex="-1" style="opacity:.5;cursor:not-allowed;pointer-events:none" title="LinkedIn" target="_blank" rel="noopener"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1.5" y="1.5" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M4 6.5V10M4 4.5V5M6.5 10V8C6.5 7 7.1 6.2 8.2 6.2S10 7 10 8V10M6.5 6.5V10" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg></a>
+        <a class="of-soc" href="#" aria-disabled="true" tabindex="-1" style="opacity:.5;cursor:not-allowed;pointer-events:none" title="X (Twitter)" target="_blank" rel="noopener"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M1 1L5.5 7L1 12H2.5L6.2 8.2L9.5 12H12.5L7.8 5.8L12 1H10.5L7.1 4.8L4 1H1Z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/></svg></a>
+        <a class="of-soc" href="#" aria-disabled="true" tabindex="-1" style="opacity:.5;cursor:not-allowed;pointer-events:none" title="Instagram" target="_blank" rel="noopener"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1.5" y="1.5" width="11" height="11" rx="3" stroke="currentColor" stroke-width="1.2"/><circle cx="7" cy="7" r="2.8" stroke="currentColor" stroke-width="1.1"/><circle cx="10.2" cy="3.8" r=".8" fill="currentColor"/></svg></a>
+        <a class="of-soc" href="#" aria-disabled="true" tabindex="-1" style="opacity:.5;cursor:not-allowed;pointer-events:none" title="WhatsApp" target="_blank" rel="noopener"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1C3.7 1 1 3.7 1 7c0 1 .3 2 .8 2.8L1 13l3.3-.8C5.1 12.7 6 13 7 13c3.3 0 6-2.7 6-6S10.3 1 7 1Z" stroke="currentColor" stroke-width="1.2"/><path d="M5 5.5c0 0 .5 1 1 1.5S7.5 8 7.5 8L8.5 7" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg></a>
       </div>
     </div>
     <div class="of-col">

@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<script>
+  (function(){
+    try{
+      var s=JSON.parse(localStorage.getItem('oriupe_admin_session')||'null');
+      if(!s||!s.isAdmin) throw new Error();
+      // Session expires after 8h
+      if(Date.now()-s.loginAt > 8*60*60*1000){localStorage.removeItem('oriupe_admin_session');throw new Error();}
+    }catch(e){
+      window.location.replace('/src/pages/admin/login.html');
+    }
+  })();
+</script>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Oriupe Admin — Finance & Transactions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="/src/shared/styles/base.css"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;height:100%}
+body{font-family:"Plus Jakarta Sans",sans-serif;background:#060F1E;color:#E2E8F0;height:100vh;display:flex;overflow:hidden}
+a{text-decoration:none;color:inherit}button{font-family:"Plus Jakarta Sans",sans-serif;cursor:pointer}
+.sidebar{width:var(--sidebar-w);flex-shrink:0;background:var(--navy2);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100vh;overflow-y:auto;position:fixed;left:0;top:0;z-index:100}
+.sidebar::-webkit-scrollbar{width:3px}.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.sb-logo{padding:22px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.sb-logo-t{font-family:"Bricolage Grotesque",sans-serif;font-size:18px;font-weight:800;color:#fff}
+.sb-logo-badge{font-size:9px;font-weight:700;color:#fff;padding:2px 7px;border-radius:4px;letter-spacing:.5px}
+.sb-admin-info{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.sb-av{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0}
+.sb-name{font-size:13px;font-weight:700;color:#fff}.sb-role-tag{font-size:10px;font-weight:600}
+.sb-online{width:7px;height:7px;background:var(--green);border-radius:50%;margin-left:auto;flex-shrink:0;box-shadow:0 0 6px var(--green)}
+.sb-section-title{font-size:10px;font-weight:700;color:var(--muted2);letter-spacing:1.2px;padding:14px 16px 6px;text-transform:uppercase}
+.sb-nav{display:flex;flex-direction:column;gap:2px;padding:0 8px}
+.sb-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;cursor:pointer;transition:all .2s;font-size:13px;font-weight:500;color:var(--muted)}
+.sb-item:hover{background:rgba(255,255,255,.05);color:#fff}.sb-item.active{background:rgba(245,158,11,.12);color:var(--gold);font-weight:700}
+.sb-ic{width:18px;text-align:center;color:var(--muted2);transition:color .2s;flex-shrink:0}.sb-item.active .sb-ic{color:var(--gold)}
+.sb-badge{font-size:10px;font-weight:700;min-width:20px;height:20px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-left:auto;padding:0 6px}
+.sb-badge.red{background:var(--red);color:#fff}.sb-badge.orange{background:var(--orange);color:#fff}.sb-badge.gold{background:var(--gold);color:#fff}
+.sb-bottom{margin-top:auto;padding:12px 8px;border-top:1px solid var(--border)}
+.main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;height:100vh;overflow:hidden}
+.topbar{height:60px;background:var(--navy2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 28px;flex-shrink:0}
+.tb-title{font-family:"Bricolage Grotesque",sans-serif;font-size:16px;font-weight:800;color:#fff}.tb-subtitle{font-size:12px;color:var(--muted)}
+.tb-right{display:flex;align-items:center;gap:10px}
+.tb-btn{height:36px;padding:0 14px;border:1px solid var(--border);border-radius:8px;background:transparent;color:var(--muted);font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:7px;transition:all .2s;font-family:"Plus Jakarta Sans",sans-serif}.tb-btn:hover{border-color:var(--gold);color:var(--gold)}
+.tb-alert{position:relative}.tb-alert-dot{position:absolute;top:-2px;right:-2px;width:8px;height:8px;background:var(--red);border-radius:50%;border:2px solid var(--navy2)}
+.content{flex:1;overflow-y:auto;padding:24px 28px}.content::-webkit-scrollbar{width:5px}.content::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+.panel{display:none}.panel.active{display:block;animation:fadeIn .25s var(--ease)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.card{background:var(--navy3);border:1px solid var(--border);border-radius:14px;padding:20px}
+.sec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px}
+.sec-h{font-family:"Bricolage Grotesque",sans-serif;font-size:20px;font-weight:800;color:#fff}.sec-sub{font-size:13px;color:var(--muted);margin-top:2px}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-bottom:24px}
+.stat-card{background:var(--navy3);border:1px solid var(--border);border-radius:14px;padding:18px 20px;transition:all .2s}
+.stat-card:hover{border-color:rgba(255,255,255,.12);transform:translateY(-2px)}.stat-card.alert{border-color:rgba(239,68,68,.25);background:rgba(239,68,68,.05)}
+.sc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.sc-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sc-trend{font-size:11px;font-weight:700;display:flex;align-items:center;gap:3px}.sc-trend.up{color:var(--green)}.sc-trend.down{color:var(--red)}
+.sc-val{font-family:"Bricolage Grotesque",sans-serif;font-size:28px;font-weight:800;color:#fff;line-height:1;margin-bottom:4px}.sc-lbl{font-size:12px;color:var(--muted)}
+.badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px}
+.b-green{background:var(--green-l);color:var(--green)}.b-red{background:var(--red-l);color:var(--red)}.b-gold{background:var(--gold-l);color:var(--gold)}.b-blue{background:var(--blue-l);color:var(--blue)}.b-purple{background:var(--purple-l);color:var(--purple)}.b-orange{background:var(--orange-l);color:var(--orange)}.b-muted{background:rgba(255,255,255,.07);color:var(--muted)}
+.btn{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;border:none;border-radius:8px;padding:8px 14px;cursor:pointer;transition:all .2s;font-family:"Plus Jakarta Sans",sans-serif}
+.btn-green{background:var(--green);color:#fff}.btn-green:hover{background:var(--green-d)}.btn-red{background:var(--red);color:#fff}.btn-blue{background:var(--blue);color:#fff}.btn-gold{background:var(--gold);color:#fff}.btn-gold:hover{background:#D97706}
+.btn-outline{background:transparent;color:var(--muted);border:1px solid var(--border)}.btn-outline:hover{border-color:var(--gold);color:var(--gold)}
+.btn-sm{padding:5px 11px;font-size:11px}.btn-icon{width:32px;height:32px;padding:0;justify-content:center;background:rgba(255,255,255,.06);color:var(--muted);border:1px solid var(--border)}.btn-icon:hover{background:rgba(255,255,255,.1);color:#fff}
+.search-wrap{position:relative}.search-inp{background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:10px;padding:9px 14px 9px 38px;font-size:13px;color:#fff;outline:none;width:240px;transition:all .2s;font-family:"Plus Jakarta Sans",sans-serif}.search-inp:focus{border-color:var(--gold)}.search-inp::placeholder{color:var(--muted2)}.search-ico{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--muted2);font-size:13px}
+.filter-row{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px}
+.filter-chip{font-size:12px;font-weight:600;padding:6px 14px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .2s;font-family:"Plus Jakarta Sans",sans-serif}.filter-chip:hover{border-color:var(--gold);color:var(--gold)}.filter-chip.active{background:var(--gold);border-color:var(--gold);color:#fff}
+.user-cell{display:flex;align-items:center;gap:10px}.u-av{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0}.u-name{font-size:13px;font-weight:600;color:#fff}.u-email{font-size:11px;color:var(--muted)}
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;padding:10px 14px;font-size:10px;font-weight:700;color:var(--muted2);letter-spacing:.7px;text-transform:uppercase;border-bottom:1px solid var(--border)}
+td{padding:12px 14px;border-bottom:1px solid var(--border2);vertical-align:middle}
+tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.02)}
+.restrict-banner{background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.2);border-radius:12px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:12px;font-size:12px;color:var(--gold)}
+.escrow-card{background:var(--navy3);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:12px}
+.escrow-head{padding:16px 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border2)}
+.escrow-body{padding:16px 18px}
+.escrow-actions{padding:12px 18px;display:flex;gap:8px;flex-wrap:wrap;background:rgba(255,255,255,.02);border-top:1px solid var(--border2)}
+.progress-bar{height:6px;background:rgba(255,255,255,.08);border-radius:3px;margin-top:8px;overflow:hidden}
+.progress-fill{height:100%;border-radius:3px;transition:width 1s ease}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(6px);z-index:500;display:none;align-items:center;justify-content:center;padding:20px}.modal-bg.open{display:flex}
+.modal{background:var(--navy3);border:1px solid var(--border);border-radius:20px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-md);animation:slideUp .3s var(--spring) both}
+@keyframes slideUp{from{transform:translateY(30px);opacity:0}to{transform:none;opacity:1}}
+.modal-head{padding:20px 22px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.modal-h{font-family:"Bricolage Grotesque",sans-serif;font-size:18px;font-weight:800;color:#fff}
+.modal-close{width:30px;height:30px;border:1px solid var(--border);border-radius:7px;background:transparent;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}.modal-close:hover{border-color:var(--red);color:var(--red)}
+.modal-body{padding:20px 22px}.modal-foot{padding:16px 22px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end}
+.modal-inp{width:100%;background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-size:13px;color:#fff;outline:none;transition:all .2s;font-family:"Plus Jakarta Sans",sans-serif;margin-bottom:12px}.modal-inp:focus{border-color:var(--gold)}.modal-inp::placeholder{color:var(--muted2)}
+.form-label{font-size:11px;font-weight:700;color:var(--muted2);letter-spacing:.5px;margin-bottom:6px;display:block}
+.form-select{width:100%;background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-size:13px;color:#fff;outline:none;font-family:"Plus Jakarta Sans",sans-serif;margin-bottom:12px}
+.alert-box{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);border-radius:12px;padding:14px 18px;margin-bottom:14px}
+.timeline{display:flex;flex-direction:column;gap:0}
+.tl-item{display:flex;gap:12px;padding-bottom:16px;position:relative}
+.tl-item:last-child{padding-bottom:0}
+.tl-dot{width:28px;height:28px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;position:relative;z-index:1}
+.tl-item:not(:last-child) .tl-dot::after{content:"";position:absolute;top:28px;left:50%;transform:translateX(-50%);width:1px;height:calc(100% + 16px - 28px);background:var(--border)}
+.tl-content{flex:1;padding-top:4px}
+.tl-title{font-size:13px;font-weight:600;color:#fff;margin-bottom:2px}
+.tl-meta{font-size:11px;color:var(--muted)}
+.amount-big{font-family:"Bricolage Grotesque",sans-serif;font-size:22px;font-weight:800;color:var(--gold)}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sb-logo">
+    <svg width="26" height="26" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="9" fill="#3CB878"/><path d="M8 22l6-12 4 8 3-5 3 9" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span class="sb-logo-t">Oriupe</span>
+    <span class="sb-logo-badge" style="background:var(--gold)">FINANCE</span>
+  </div>
+  <div class="sb-admin-info">
+    <div class="sb-av" style="background:linear-gradient(135deg,#F59E0B,#D97706)">FN</div>
+    <div>
+      <div class="sb-name">Analyste Finance</div>
+      <div class="sb-role-tag" style="color:var(--gold)">Équipe Financière</div>
+    </div>
+    <div class="sb-online"></div>
+  </div>
+
+  <div class="sb-section-title">Navigation</div>
+  <nav class="sb-nav">
+    <div class="sb-item active" onclick="showPanel('dashboard')">
+      <span class="sb-ic"><i class="fa-solid fa-chart-line"></i></span> Tableau de bord
+    </div>
+    <div class="sb-item" onclick="showPanel('escrow')">
+      <span class="sb-ic"><i class="fa-solid fa-vault"></i></span> Escrow & Paiements
+      <span class="sb-badge gold">5</span>
+    </div>
+    <div class="sb-item" onclick="showPanel('disputes')">
+      <span class="sb-ic"><i class="fa-solid fa-scale-balanced"></i></span> Litiges financiers
+      <span class="sb-badge red">3</span>
+    </div>
+    <div class="sb-item" onclick="showPanel('audit')">
+      <span class="sb-ic"><i class="fa-solid fa-scroll"></i></span> Audit financier
+    </div>
+  </nav>
+
+  <div class="sb-bottom">
+    <div class="sb-item" style="color:rgba(255,255,255,.4)" onclick="window.location.href='/src/pages/admin/index.html'">
+      <span class="sb-ic"><i class="fa-solid fa-right-from-bracket"></i></span> Admin principal
+    </div>
+    <div class="sb-item" style="color:var(--red)" onclick="localStorage.removeItem('oriupe_admin_session');window.location.href='/src/pages/admin/login.html'">
+      <span class="sb-ic"><i class="fa-solid fa-right-from-bracket"></i></span> Déconnexion
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <div>
+      <div class="tb-title" id="tb-title">Tableau de bord Financier</div>
+      <div class="tb-subtitle" id="tb-sub">Flux Escrow & Transactions — <span id="live-clock"></span></div>
+    </div>
+    <div class="tb-right">
+      <button class="tb-btn tb-alert">
+        <i class="fa-solid fa-bell"></i>
+        <span class="tb-alert-dot"></span>
+      </button>
+      <button class="tb-btn">
+        <i class="fa-solid fa-coins" style="color:var(--gold)"></i> Volume: <strong style="color:var(--gold)">142M FCFA</strong>
+      </button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- DASHBOARD FINANCIER -->
+    <div class="panel active" id="panel-dashboard">
+      <div class="restrict-banner">
+        <i class="fa-solid fa-lock fa-lg"></i>
+        <span>Accès Finance — Gestion Escrow, remboursements, litiges financiers et audit. Aucune action KYC ou utilisateurs.</span>
+      </div>
+
+      <!-- KPI Financiers -->
+      <div class="stats-grid">
+        <div class="stat-card" style="border-color:rgba(245,158,11,.2)">
+          <div class="sc-top">
+            <div class="sc-icon" style="background:var(--gold-l)"><i class="fa-solid fa-vault" style="color:var(--gold)"></i></div>
+            <span class="sc-trend up"><i class="fa-solid fa-arrow-up"></i> +18%</span>
+          </div>
+          <div class="sc-val" data-target="142" data-suffix="M">0</div>
+          <div class="sc-lbl">Volume Escrow (FCFA)</div>
+        </div>
+        <div class="stat-card">
+          <div class="sc-top">
+            <div class="sc-icon" style="background:var(--green-l)"><i class="fa-solid fa-arrow-right-arrow-left" style="color:var(--green)"></i></div>
+            <span class="sc-trend up"><i class="fa-solid fa-arrow-up"></i> +34%</span>
+          </div>
+          <div class="sc-val" data-target="1284" data-suffix="">0</div>
+          <div class="sc-lbl">Transactions ce mois</div>
+        </div>
+        <div class="stat-card">
+          <div class="sc-top">
+            <div class="sc-icon" style="background:var(--blue-l)"><i class="fa-solid fa-lock" style="color:var(--blue)"></i></div>
+            <span class="sc-trend up"><i class="fa-solid fa-arrow-up"></i> +7%</span>
+          </div>
+          <div class="sc-val" data-target="47" data-suffix="">0</div>
+          <div class="sc-lbl">Fonds en séquestre actifs</div>
+        </div>
+        <div class="stat-card alert">
+          <div class="sc-top">
+            <div class="sc-icon" style="background:var(--red-l)"><i class="fa-solid fa-rotate-left" style="color:var(--red)"></i></div>
+            <span class="sc-trend down"><i class="fa-solid fa-arrow-up"></i> +2</span>
+          </div>
+          <div class="sc-val" data-target="8" data-suffix="">0</div>
+          <div class="sc-lbl">Remboursements en attente</div>
+        </div>
+        <div class="stat-card">
+          <div class="sc-top">
+            <div class="sc-icon" style="background:var(--green-l)"><i class="fa-solid fa-percent" style="color:var(--green)"></i></div>
+            <span class="sc-trend up"><i class="fa-solid fa-arrow-up"></i> stable</span>
+          </div>
+          <div class="sc-val" data-target="7" data-suffix=".2%">0</div>
+          <div class="sc-lbl">Commission plateforme moy.</div>
+        </div>
+        <div class="stat-card">
+          <div class="sc-top">
+            <div class="sc-icon" style="background:var(--purple-l)"><i class="fa-solid fa-scale-balanced" style="color:var(--purple)"></i></div>
+            <span class="sc-trend down"><i class="fa-solid fa-arrow-up"></i> +1</span>
+          </div>
+          <div class="sc-val" data-target="3" data-suffix="">0</div>
+          <div class="sc-lbl">Litiges financiers ouverts</div>
+        </div>
+      </div>
+
+      <!-- Graphique revenus + transactions récentes côte à côte -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
+        <div class="card">
+          <div class="sec-head" style="margin-bottom:16px">
+            <div><div class="sec-h" style="font-size:16px">Revenus ce mois</div></div>
+            <span class="badge b-green"><i class="fa-solid fa-arrow-up"></i> +18%</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span style="color:var(--muted)">Commissions reçues</span><span style="font-weight:700;color:var(--green)">9,94M FCFA</span></div>
+              <div class="progress-bar"><div class="progress-fill" style="width:82%;background:var(--green)"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span style="color:var(--muted)">Frais de services</span><span style="font-weight:700;color:var(--blue)">2,14M FCFA</span></div>
+              <div class="progress-bar"><div class="progress-fill" style="width:18%;background:var(--blue)"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span style="color:var(--muted)">Remboursements émis</span><span style="font-weight:700;color:var(--red)">-1,32M FCFA</span></div>
+              <div class="progress-bar"><div class="progress-fill" style="width:11%;background:var(--red)"></div></div>
+            </div>
+          </div>
+          <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+            <span style="font-size:12px;color:var(--muted)">Net ce mois</span>
+            <span class="amount-big">10,76M FCFA</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="sec-head" style="margin-bottom:16px">
+            <div><div class="sec-h" style="font-size:16px">Par pays (volume)</div></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span style="color:var(--muted)"><i class="fa-solid fa-flag" style="color:var(--green)"></i> Sénégal</span><span style="font-weight:700;color:#fff">38,4M FCFA</span></div>
+              <div class="progress-bar"><div class="progress-fill" style="width:70%;background:var(--green)"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span style="color:var(--muted)"><i class="fa-solid fa-flag" style="color:var(--gold)"></i> Ghana</span><span style="font-weight:700;color:#fff">29,1M FCFA</span></div>
+              <div class="progress-bar"><div class="progress-fill" style="width:53%;background:var(--gold)"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span style="color:var(--muted)"><i class="fa-solid fa-flag" style="color:var(--orange)"></i> Côte d'Ivoire</span><span style="font-weight:700;color:#fff">24,8M FCFA</span></div>
+              <div class="progress-bar"><div class="progress-fill" style="width:45%;background:var(--orange)"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span style="color:var(--muted)"><i class="fa-solid fa-flag" style="color:var(--blue)"></i> Nigeria</span><span style="font-weight:700;color:#fff">18,6M FCFA</span></div>
+              <div class="progress-bar"><div class="progress-fill" style="width:34%;background:var(--blue)"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span style="color:var(--muted)"><i class="fa-solid fa-flag" style="color:var(--purple)"></i> Autres</span><span style="font-weight:700;color:#fff">31,1M FCFA</span></div>
+              <div class="progress-bar"><div class="progress-fill" style="width:57%;background:var(--purple)"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Transactions récentes -->
+      <div class="card">
+        <div class="sec-head">
+          <div><div class="sec-h">Dernières transactions</div><div class="sec-sub">Flux en temps réel</div></div>
+          <button class="btn btn-outline btn-sm" onclick="showPanel('escrow')"><i class="fa-solid fa-arrow-right"></i> Voir tout Escrow</button>
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>ID Transaction</th><th>Parties</th><th>Montant</th><th>Type</th><th>Statut</th><th>Date</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><span style="font-family:'Bricolage Grotesque';font-weight:700;color:var(--gold)">#ESC-4821</span></td>
+                <td style="font-size:12px;color:var(--muted)">Kofi Asante → Ama Osei</td>
+                <td class="amount-big" style="font-size:15px">72 500 FCFA</td>
+                <td><span class="badge b-blue">Séquestre</span></td>
+                <td><span class="badge b-gold">Bloqué litige</span></td>
+                <td style="font-size:11px;color:var(--muted)">Auj. 14:30</td>
+              </tr>
+              <tr>
+                <td><span style="font-family:'Bricolage Grotesque';font-weight:700;color:var(--gold)">#ESC-4807</span></td>
+                <td style="font-size:12px;color:var(--muted)">Fatou Diallo → Ibrahim Sy</td>
+                <td class="amount-big" style="font-size:15px">25 000 FCFA</td>
+                <td><span class="badge b-green">Libéré</span></td>
+                <td><span class="badge b-green">Complété</span></td>
+                <td style="font-size:11px;color:var(--muted)">Auj. 11:15</td>
+              </tr>
+              <tr>
+                <td><span style="font-family:'Bricolage Grotesque';font-weight:700;color:var(--gold)">#ESC-4793</span></td>
+                <td style="font-size:12px;color:var(--muted)">Client → Amara Traoré</td>
+                <td class="amount-big" style="font-size:15px">115 000 FCFA</td>
+                <td><span class="badge b-blue">Séquestre</span></td>
+                <td><span class="badge b-muted">En attente livraison</span></td>
+                <td style="font-size:11px;color:var(--muted)">Hier 16:45</td>
+              </tr>
+              <tr>
+                <td><span style="font-family:'Bricolage Grotesque';font-weight:700;color:var(--gold)">#RMB-0312</span></td>
+                <td style="font-size:12px;color:var(--muted)">Oriupe → Client XY</td>
+                <td class="amount-big" style="font-size:15px;color:var(--red)">-35 000 FCFA</td>
+                <td><span class="badge b-red">Remboursement</span></td>
+                <td><span class="badge b-green">Traité</span></td>
+                <td style="font-size:11px;color:var(--muted)">Hier 10:00</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ESCROW -->
+    <div class="panel" id="panel-escrow">
+      <div class="sec-head">
+        <div><div class="sec-h">Escrow & Paiements</div><div class="sec-sub">Gestion complète des fonds séquestrés</div></div>
+        <div style="display:flex;gap:8px">
+          <div class="search-wrap"><i class="fa-solid fa-magnifying-glass search-ico"></i><input class="search-inp" placeholder="Rechercher..."></div>
+          <button class="btn btn-gold btn-sm" onclick="openModal('modal-remboursement')"><i class="fa-solid fa-rotate-left"></i> Rembourser</button>
+        </div>
+      </div>
+      <div class="filter-row" data-target="#escrow-list-finance">
+        <button class="filter-chip active" data-filter="tous" onclick="filterChip(this)">Tous</button>
+        <button class="filter-chip" data-filter="sequestre" onclick="filterChip(this)">En séquestre</button>
+        <button class="filter-chip" data-filter="bloque" onclick="filterChip(this)">Bloqués litige</button>
+        <button class="filter-chip" data-filter="liberer" onclick="filterChip(this)">À libérer</button>
+        <button class="filter-chip" data-filter="remboursement" onclick="filterChip(this)">Remboursements</button>
+      </div>
+
+      <div id="escrow-list-finance">
+      <div class="escrow-card" data-tags="sequestre bloque" style="border-color:rgba(239,68,68,.3)">
+        <div class="escrow-head">
+          <div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+              <span style="font-weight:700;color:#fff">#ESC-4821</span>
+              <span class="badge b-red">Bloqué litige</span>
+            </div>
+            <div style="font-size:12px;color:var(--muted)">Mission: Développement web e-commerce · Kofi Asante → Ama Osei</div>
+          </div>
+          <div style="text-align:right">
+            <div class="amount-big">72 500 FCFA</div>
+            <div style="font-size:11px;color:var(--muted)">Déposé il y a 5 jours</div>
+          </div>
+        </div>
+        <div class="escrow-body">
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;font-size:12px">
+            <div><span style="color:var(--muted2)">Freelance</span><div style="color:#fff;font-weight:600;margin-top:2px">Kofi Asante</div></div>
+            <div><span style="color:var(--muted2)">Client</span><div style="color:#fff;font-weight:600;margin-top:2px">Ama Osei</div></div>
+            <div><span style="color:var(--muted2)">Commission (7%)</span><div style="color:var(--gold);font-weight:600;margin-top:2px">5 075 FCFA</div></div>
+            <div><span style="color:var(--muted2)">Net freelance</span><div style="color:var(--green);font-weight:600;margin-top:2px">67 425 FCFA</div></div>
+          </div>
+        </div>
+        <div class="escrow-actions">
+          <button class="btn btn-green btn-sm" onclick="openModal('modal-liberer')"><i class="fa-solid fa-unlock"></i> Libérer au freelance</button>
+          <button class="btn btn-red btn-sm" onclick="openModal('modal-remboursement')"><i class="fa-solid fa-rotate-left"></i> Rembourser le client</button>
+          <button class="btn btn-outline btn-sm"><i class="fa-solid fa-file-lines"></i> Dossier complet</button>
+        </div>
+      </div>
+
+      <div class="escrow-card" data-tags="sequestre liberer">
+        <div class="escrow-head">
+          <div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+              <span style="font-weight:700;color:#fff">#ESC-4793</span>
+              <span class="badge b-muted">En attente livraison</span>
+            </div>
+            <div style="font-size:12px;color:var(--muted)">Mission: Rédaction contenu SEO · Client → Amara Traoré</div>
+          </div>
+          <div style="text-align:right">
+            <div class="amount-big">115 000 FCFA</div>
+            <div style="font-size:11px;color:var(--muted)">Déposé il y a 2 jours</div>
+          </div>
+        </div>
+        <div class="escrow-body">
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;font-size:12px">
+            <div><span style="color:var(--muted2)">Freelance</span><div style="color:#fff;font-weight:600;margin-top:2px">Amara Traoré</div></div>
+            <div><span style="color:var(--muted2)">Client</span><div style="color:#fff;font-weight:600;margin-top:2px">Tech Corp CI</div></div>
+            <div><span style="color:var(--muted2)">Commission (7%)</span><div style="color:var(--gold);font-weight:600;margin-top:2px">8 050 FCFA</div></div>
+            <div><span style="color:var(--muted2)">Net freelance</span><div style="color:var(--green);font-weight:600;margin-top:2px">106 950 FCFA</div></div>
+          </div>
+          <div style="margin-top:12px">
+            <div style="font-size:11px;color:var(--muted2);margin-bottom:4px">Avancement mission</div>
+            <div class="progress-bar" style="height:8px"><div class="progress-fill" style="width:65%;background:var(--green)"></div></div>
+            <div style="font-size:11px;color:var(--muted);margin-top:4px">65% — Livraison partielle acceptée</div>
+          </div>
+        </div>
+        <div class="escrow-actions">
+          <button class="btn btn-green btn-sm" onclick="openModal('modal-liberer')"><i class="fa-solid fa-unlock"></i> Libérer</button>
+          <button class="btn btn-outline btn-sm"><i class="fa-solid fa-file-lines"></i> Dossier</button>
+        </div>
+      </div>
+
+      <div class="escrow-card" data-tags="remboursement">
+        <div class="escrow-head">
+          <div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+              <span style="font-weight:700;color:#fff">#ESC-4811</span>
+              <span class="badge b-gold">Remboursement demandé</span>
+            </div>
+            <div style="font-size:12px;color:var(--muted)">Mission: Formation vidéo · Client → Yaw Mensah</div>
+          </div>
+          <div style="text-align:right">
+            <div class="amount-big">45 000 FCFA</div>
+            <div style="font-size:11px;color:var(--muted)">Demande il y a 18h</div>
+          </div>
+        </div>
+        <div class="escrow-body">
+          <div style="font-size:12px;color:var(--muted);background:rgba(245,158,11,.06);padding:10px 14px;border-radius:8px;border-left:3px solid var(--gold)">
+            Motif de la demande: Le freelance n'a pas respecté le délai de livraison convenu (7 jours). Mission annulée d'un commun accord.
+          </div>
+        </div>
+        <div class="escrow-actions">
+          <button class="btn btn-red btn-sm" onclick="openModal('modal-remboursement')"><i class="fa-solid fa-rotate-left"></i> Valider le remboursement</button>
+          <button class="btn btn-outline btn-sm" onclick="openModal('modal-liberer')"><i class="fa-solid fa-unlock"></i> Libérer au freelance</button>
+          <button class="btn btn-outline btn-sm"><i class="fa-solid fa-file-lines"></i> Dossier</button>
+        </div>
+      </div>
+    </div>
+      </div><!-- /escrow-list-finance -->
+
+    <!-- DISPUTES FINANCIERS -->
+    <div class="panel" id="panel-disputes">
+      <div class="sec-head">
+        <div><div class="sec-h">Litiges financiers</div><div class="sec-sub">Arbitrage avec enjeu financier direct</div></div>
+      </div>
+      <div class="filter-row" data-target="#disputes-tbody-finance"><button class="filter-chip active" data-filter="tous" onclick="filterChip(this)">Tous</button><button class="filter-chip" data-filter="urgent" onclick="filterChip(this)" style="border-color:rgba(239,68,68,.3);color:var(--red)">Urgents</button><button class="filter-chip" data-filter="partiel" onclick="filterChip(this)">Partiel suggéré</button><button class="filter-chip" data-filter="insuffisant" onclick="filterChip(this)">Dossier insuffisant</button></div>
+      <div class="restrict-banner">
+        <i class="fa-solid fa-circle-info fa-lg"></i>
+        <span>Vous gérez uniquement l'aspect financier des litiges. Pour les questions comportementales, contacter le support.</span>
+      </div>
+      <div class="card">
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Litige</th><th>Parties</th><th>Montant en jeu</th><th>Demande</th><th>Recommandation IA</th><th>Actions</th></tr></thead>
+            <tbody id="disputes-tbody-finance">
+              <tr data-tags="urgent">
+                <td><span style="font-family:'Bricolage Grotesque';font-weight:700;color:var(--red)">#LIT-0291</span></td>
+                <td style="font-size:12px;color:var(--muted)">Kofi Asante vs Ama Osei</td>
+                <td class="amount-big" style="font-size:15px">72 500 FCFA</td>
+                <td><span class="badge b-green">Libérer au freelance</span></td>
+                <td style="font-size:12px;color:var(--green)"><i class="fa-solid fa-robot"></i> Libérer (conf. 87%)</td>
+                <td><button class="btn btn-gold btn-sm" onclick="openModal('modal-arbitrage')"><i class="fa-solid fa-scale-balanced"></i> Arbitrer</button></td>
+              </tr>
+              <tr data-tags="partiel">
+                <td><span style="font-family:'Bricolage Grotesque';font-weight:700;color:var(--orange)">#LIT-0284</span></td>
+                <td style="font-size:12px;color:var(--muted)">Client XY vs Ibrahim Sy</td>
+                <td class="amount-big" style="font-size:15px">45 000 FCFA</td>
+                <td><span class="badge b-red">Rembourser</span></td>
+                <td style="font-size:12px;color:var(--gold)"><i class="fa-solid fa-robot"></i> Partiel (conf. 71%)</td>
+                <td><button class="btn btn-gold btn-sm" onclick="openModal('modal-arbitrage')"><i class="fa-solid fa-scale-balanced"></i> Arbitrer</button></td>
+              </tr>
+              <tr data-tags="insuffisant">
+                <td><span style="font-family:'Bricolage Grotesque';font-weight:700;color:var(--gold)">#LIT-0278</span></td>
+                <td style="font-size:12px;color:var(--muted)">Marie C. vs Yaw Mensah</td>
+                <td class="amount-big" style="font-size:15px">28 000 FCFA</td>
+                <td><span class="badge b-muted">À déterminer</span></td>
+                <td style="font-size:12px;color:var(--muted)"><i class="fa-solid fa-robot"></i> Insuffisant (conf. 42%)</td>
+                <td><button class="btn btn-gold btn-sm" onclick="openModal('modal-arbitrage')"><i class="fa-solid fa-scale-balanced"></i> Arbitrer</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- AUDIT FINANCIER -->
+    <div class="panel" id="panel-audit">
+      <div class="sec-head">
+        <div><div class="sec-h">Audit financier</div><div class="sec-sub">Journal complet des opérations financières</div></div>
+        <button class="btn btn-outline btn-sm"><i class="fa-solid fa-download"></i> Exporter CSV</button>
+      </div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--green-l);color:var(--green)"><i class="fa-solid fa-unlock fa-xs"></i></div>
+            <div class="tl-content">
+              <div class="tl-title">Libération Escrow — #ESC-4807 · 25 000 FCFA</div>
+              <div class="tl-meta">Vers Ibrahim Sy · Validé par Analyste Finance · Auj. 11:15</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--red-l);color:var(--red)"><i class="fa-solid fa-rotate-left fa-xs"></i></div>
+            <div class="tl-content">
+              <div class="tl-title">Remboursement — #RMB-0312 · 35 000 FCFA</div>
+              <div class="tl-meta">Vers Client XY · Motif: Livraison non conforme · Hier 10:00</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--gold-l);color:var(--gold)"><i class="fa-solid fa-scale-balanced fa-xs"></i></div>
+            <div class="tl-content">
+              <div class="tl-title">Arbitrage financier — #LIT-0271 · Remboursement partiel 50%</div>
+              <div class="tl-meta">Client 22 500 FCFA / Freelance 22 500 FCFA · Hier 14:30</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--green-l);color:var(--green)"><i class="fa-solid fa-unlock fa-xs"></i></div>
+            <div class="tl-content">
+              <div class="tl-title">Libération Escrow — #ESC-4776 · 88 000 FCFA</div>
+              <div class="tl-meta">Vers Amara Traoré · Livraison acceptée · 14/05 09:22</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--blue-l);color:var(--blue)"><i class="fa-solid fa-vault fa-xs"></i></div>
+            <div class="tl-content">
+              <div class="tl-title">Nouveau séquestre — #ESC-4821 · 72 500 FCFA</div>
+              <div class="tl-meta">Mission web e-commerce · Blocage automatique · 13/05 08:00</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<!-- MODAL: Libérer fonds -->
+<div class="modal-bg" id="modal-liberer">
+  <div class="modal">
+    <div class="modal-head">
+      <span class="modal-h"><i class="fa-solid fa-unlock" style="color:var(--green);margin-right:8px"></i>Libérer les fonds</span>
+      <button class="modal-close" onclick="closeModal('modal-liberer')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div style="background:var(--green-l);border:1px solid rgba(60,184,120,.3);border-radius:10px;padding:14px;margin-bottom:16px">
+        <div style="font-size:12px;color:var(--muted2);margin-bottom:2px">Montant à libérer</div>
+        <div class="amount-big">67 425 FCFA</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px">Net après commission 7% (5 075 FCFA)</div>
+      </div>
+      <label class="form-label">Motif de libération</label>
+      <select class="form-select">
+        <option>Livraison acceptée par le client</option>
+        <option>Décision d'arbitrage en faveur du freelance</option>
+        <option>Délai d'acceptation expiré (7 jours)</option>
+      </select>
+      <label class="form-label">Note interne</label>
+      <textarea class="modal-inp" rows="3" placeholder="Commentaire pour l'audit..."></textarea>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closeModal('modal-liberer')">Annuler</button>
+      <button class="btn btn-green"><i class="fa-solid fa-unlock"></i> Confirmer la libération</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Remboursement -->
+<div class="modal-bg" id="modal-remboursement">
+  <div class="modal">
+    <div class="modal-head">
+      <span class="modal-h"><i class="fa-solid fa-rotate-left" style="color:var(--red);margin-right:8px"></i>Émettre un remboursement</span>
+      <button class="modal-close" onclick="closeModal('modal-remboursement')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="alert-box">
+        <div style="font-size:12px;font-weight:700;color:var(--red);margin-bottom:4px"><i class="fa-solid fa-triangle-exclamation"></i> Action irréversible</div>
+        <div style="font-size:12px;color:var(--muted)">Le remboursement sera immédiatement initié. Cette action est enregistrée dans l'audit.</div>
+      </div>
+      <label class="form-label">Type de remboursement</label>
+      <select class="form-select">
+        <option>Remboursement total — 72 500 FCFA</option>
+        <option>Remboursement partiel (50%) — 36 250 FCFA</option>
+        <option>Remboursement partiel personnalisé</option>
+      </select>
+      <label class="form-label">Motif</label>
+      <select class="form-select">
+        <option>Livraison non conforme</option>
+        <option>Délai non respecté</option>
+        <option>Décision d'arbitrage</option>
+        <option>Fraude confirmée</option>
+        <option>Accord amiable</option>
+      </select>
+      <label class="form-label">Justification</label>
+      <textarea class="modal-inp" rows="3" placeholder="Détaillez la décision de remboursement..."></textarea>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closeModal('modal-remboursement')">Annuler</button>
+      <button class="btn btn-red"><i class="fa-solid fa-rotate-left"></i> Valider le remboursement</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Arbitrage -->
+<div class="modal-bg" id="modal-arbitrage">
+  <div class="modal">
+    <div class="modal-head">
+      <span class="modal-h"><i class="fa-solid fa-scale-balanced" style="color:var(--gold);margin-right:8px"></i>Arbitrage financier</span>
+      <button class="modal-close" onclick="closeModal('modal-arbitrage')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div style="background:var(--gold-l);border:1px solid rgba(245,158,11,.3);border-radius:10px;padding:14px;margin-bottom:16px">
+        <div style="font-size:12px;color:var(--muted2);margin-bottom:2px">Montant total en litige</div>
+        <div class="amount-big">72 500 FCFA</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px">Recommandation IA: Libérer au freelance (87% confiance)</div>
+      </div>
+      <label class="form-label">Décision d'arbitrage</label>
+      <select class="form-select">
+        <option>Libérer intégralement au freelance</option>
+        <option>Rembourser intégralement le client</option>
+        <option>Partage 75% freelance / 25% client</option>
+        <option>Partage 50% / 50%</option>
+        <option>Partage personnalisé</option>
+      </select>
+      <label class="form-label">Raisonnement de la décision</label>
+      <textarea class="modal-inp" rows="4" placeholder="Expliquez votre décision basée sur les preuves..."></textarea>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closeModal('modal-arbitrage')">Annuler</button>
+      <button class="btn btn-gold"><i class="fa-solid fa-scale-balanced"></i> Rendre la décision</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var PANELS_META={
+  dashboard:{title:"Tableau de bord Financier",sub:"Flux Escrow & Transactions"},
+  escrow:{title:"Escrow & Paiements",sub:"Gestion des fonds séquestrés"},
+  disputes:{title:"Litiges financiers",sub:"Arbitrage avec enjeu financier"},
+  audit:{title:"Audit financier",sub:"Journal des opérations"}
+};
+function showPanel(id){
+  document.querySelectorAll(".panel").forEach(function(p){p.classList.remove("active");});
+  document.querySelectorAll(".sb-item").forEach(function(i){i.classList.remove("active");});
+  var panel=document.getElementById("panel-"+id);
+  if(panel)panel.classList.add("active");
+  document.querySelectorAll(".sb-item").forEach(function(i){
+    var oc=i.getAttribute("onclick")||"";
+    if(oc.indexOf("'"+id+"'")>-1||oc.indexOf('"'+id+'"')>-1)i.classList.add("active");
+  });
+  var m=PANELS_META[id]||{title:id,sub:""};
+  var tt=document.getElementById("tb-title");
+  var ts=document.getElementById("tb-sub");
+  if(tt)tt.innerHTML=m.title;
+  if(ts)ts.innerHTML=m.sub+' — <span id="live-clock"></span>';
+  updateClock();
+}
+function openModal(id){var m=document.getElementById(id);if(m)m.classList.add("open");}
+function closeModal(id){var m=document.getElementById(id);if(m)m.classList.remove("open");}
+function filterChip(el){
+  var row=el.closest(".filter-row");
+  if(!row){
+    var p=el.parentElement;
+    if(p)p.querySelectorAll(".filter-chip").forEach(function(c){c.classList.remove("active");});
+    el.classList.add("active");return;
+  }
+  row.querySelectorAll(".filter-chip").forEach(function(c){c.classList.remove("active");});
+  el.classList.add("active");
+  var targetSel=row.dataset.target;
+  if(!targetSel)return;
+  var container=document.querySelector(targetSel);
+  if(!container)return;
+  var filter=el.dataset.filter||"tous";
+  container.querySelectorAll("[data-tags]").forEach(function(item){
+    if(filter==="tous"){item.style.display="";}
+    else{
+      var tags=(item.dataset.tags||"").split(" ");
+      item.style.display=tags.indexOf(filter)>-1?"":"none";
+    }
+  });
+}
+function updateClock(){
+  var el=document.getElementById("live-clock");
+  if(el)el.textContent=new Date().toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit",second:"2-digit"});
+}
+setInterval(updateClock,1000);
+updateClock();
+document.querySelectorAll(".sc-val[data-target]").forEach(function(el){
+  var target=parseInt(el.dataset.target);
+  var suffix=el.dataset.suffix||"";
+  var start=0;var duration=1200;var step=Math.ceil(target/60)||1;
+  var timer=setInterval(function(){
+    start+=step;
+    if(start>=target){start=target;clearInterval(timer);}
+    el.textContent=start.toLocaleString("fr-FR")+suffix;
+  },duration/60);
+});
+document.querySelectorAll(".modal-bg").forEach(function(bg){
+  bg.addEventListener("click",function(e){if(e.target===bg)bg.classList.remove("open");});
+});
+</script>
+</body>
+</html>

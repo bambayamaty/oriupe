@@ -5,24 +5,13 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Oriupe — Messagerie & Escrow</title>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/src/shared/styles/base.css"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-font-smoothing:antialiased;height:100%}
 body{font-family:'Plus Jakarta Sans',sans-serif;background:#F4F6F9;color:#1B3A4A;height:100vh;display:flex;flex-direction:column;overflow:hidden}
 a{text-decoration:none;color:inherit}
 button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer}
-:root{
-  --navy:#0F2535;--navy2:#1B3A4A;
-  --green:#3CB878;--green-d:#27965D;--green-l:#E4F7EE;--green-xl:#F0FBF5;
-  --blue:#29ABE2;--blue-l:#E2F4FB;--blue-d:#1A8BC0;
-  --lime:#8DC63F;--gold:#F59E0B;
-  --bg:#F4F6F9;--bg2:#ECEEF3;--white:#fff;
-  --border:rgba(27,58,74,.1);--border2:rgba(27,58,74,.06);
-  --muted:rgba(27,58,74,.52);--muted2:rgba(27,58,74,.32);
-  --shadow:0 2px 10px rgba(15,37,53,.07);--shadow-md:0 6px 24px rgba(15,37,53,.11);--shadow-lg:0 16px 48px rgba(15,37,53,.16);
-  --spring:cubic-bezier(.34,1.56,.64,1);--ease:cubic-bezier(.25,.46,.45,.94);
-}
-
 /* ── CHAT APP SHELL ── */
 .chat-app{display:flex;height:100vh;overflow:hidden}
 
@@ -1872,5 +1861,240 @@ s.textContent = '@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{o
 document.head.appendChild(s);
 </script>
   <script type="module" src="/src/scripts/main.js"></script>
+
+  <!-- ═══ SUPABASE INTEGRATION ═══ -->
+  <script type="module">
+  import { supabase as sb } from '/src/shared/supabase.js'
+
+  // ── Helpers ───────────────────────────────────────────────────────────────
+
+  function fmtFCFA(n) {
+    return Number(n).toLocaleString('fr-FR') + ' FCFA'
+  }
+
+  function fmtTime(iso) {
+    const d = new Date(iso)
+    return d.getHours().toString().padStart(2,'0') + ':' + d.getMinutes().toString().padStart(2,'0')
+  }
+
+  function fmtDate(iso) {
+    return new Date(iso).toLocaleDateString('fr-FR', { day:'numeric', month:'long', year:'numeric' })
+  }
+
+  // Map order_status → STATUS enum used by the existing state machine
+  const STATUS_MAP = {
+    AWAITING_PAYMENT: 0,
+    FUNDS_SECURED:    1,
+    IN_PROGRESS:      2,
+    DELIVERED:        3,
+    VALIDATED:        4,
+    TRANSFERRING:     5,
+    COMPLETED:        6,
+    DISPUTED:         2,
+    CANCELLED:        0,
+    REFUNDED:         0
+  }
+
+  // ── Patch escrow UI with real data ────────────────────────────────────────
+
+  function patchEscrowUI(order) {
+    // Code
+    document.querySelector('.esc-code').textContent = order.escrow_code
+
+    // Amounts
+    const amts = document.querySelectorAll('.esc-amt-val')
+    if (amts[0]) amts[0].textContent = fmtFCFA(order.amount_total)
+    if (amts[1]) amts[1].textContent = fmtFCFA(order.commission_amount)
+    if (amts[2]) amts[2].textContent = fmtFCFA(order.amount_net)
+
+    // Commission label
+    const commLbl = document.querySelectorAll('.esc-amt-lbl')[1]
+    if (commLbl) commLbl.textContent = `COMMISSION ${Math.round(order.commission_rate * 100)}%`
+
+    // Payment chip
+    if (order.paid_at) {
+      document.getElementById('escPayLabel').innerHTML =
+        `<strong>${order.payment_method?.replace('_',' ') || 'Mobile Money'}</strong> · ${fmtDate(order.paid_at)}`
+    }
+
+    // Sync state machine
+    window.currentStatus = STATUS_MAP[order.status] ?? 0
+    if (typeof renderEscrow === 'function') renderEscrow()
+
+    // Copy button wires to real code
+    window._realEscrowCode = order.escrow_code
+    window.copyEscrowCode = () => {
+      navigator.clipboard.writeText(window._realEscrowCode).catch(() => {})
+      const tip = document.getElementById('escCopyTip')
+      tip.classList.add('show')
+      setTimeout(() => tip.classList.remove('show'), 2000)
+    }
+  }
+
+  // ── Render a message from DB ──────────────────────────────────────────────
+
+  function renderDbMessage(msg, myUserId) {
+    const area = document.getElementById('messagesArea')
+    const typer = document.getElementById('typingIndicator')
+    const isSent = msg.sender_id === myUserId
+    const type   = isSent ? 'sent' : 'recv'
+
+    // Check for SYSTEM messages
+    if (msg.message_type !== 'USER') {
+      const labels = {
+        SYSTEM_DELIVERY:   '📦 Livraison déposée par le freelance',
+        SYSTEM_VALIDATION: '✓ Livraison validée',
+        SYSTEM_ESCROW:     '🔐 Mise à jour Escrow'
+      }
+      const div = document.createElement('div')
+      div.className = 'sys-msg'
+      div.id = 'msg-' + msg.id
+      div.innerHTML = `<span>${labels[msg.message_type] || msg.body}</span>`
+      area.insertBefore(div, typer)
+      return
+    }
+
+    const initials = msg.sender?.raw_user_meta_data?.initials || '??'
+    const color    = msg.sender?.raw_user_meta_data?.color    || 'linear-gradient(135deg,#3CB878,#8DC63F)'
+
+    const group = document.createElement('div')
+    group.className = 'msg-group ' + type
+    group.id = 'msg-' + msg.id
+
+    const avatarHtml = !isSent
+      ? `<div class="msg-av-sm" style="background:${color}">${initials}</div>`
+      : ''
+
+    const txt = (msg.body || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br/>')
+
+    group.innerHTML = `
+      <div class="msg-row">
+        ${avatarHtml}
+        <div><div class="bubble">${txt}</div></div>
+      </div>
+      <div class="bubble-time">${fmtTime(msg.created_at)}</div>`
+    area.insertBefore(group, typer)
+  }
+
+  // ── Main bootstrap ────────────────────────────────────────────────────────
+
+  async function boot() {
+    const params   = new URLSearchParams(location.search)
+    const orderId  = params.get('order_id')
+    if (!orderId) return   // no order_id → stay in demo mode
+
+    // Check auth
+    const { data: { user } } = await sb.auth.getUser()
+    if (!user) return       // not logged in → demo mode
+
+    // Fetch order
+    const { data: order, error: oErr } = await sb
+      .from('orders')
+      .select('*, disputes(id,status)')
+      .eq('id', orderId)
+      .single()
+
+    if (oErr || !order) {
+      console.warn('[Oriupe] order not found:', oErr)
+      return
+    }
+
+    patchEscrowUI(order)
+
+    // Patch chat header with freelance name from session
+    const session = (() => { try { return JSON.parse(localStorage.getItem('oriupe_session') || '{}') } catch { return {} } })()
+    const otherName = session.role === 'client'
+      ? order.freelance_display_name || 'Freelance'
+      : order.client_display_name    || 'Client'
+    const chName = document.querySelector('.ch-name')
+    if (chName) chName.textContent = otherName
+
+    // Determine role
+    if (user.id === order.client_id)    window.currentRole = 'client'
+    if (user.id === order.freelance_id) window.currentRole = 'freelance'
+    if (typeof renderEscrow === 'function') renderEscrow()
+
+    // Load messages history
+    const { data: messages } = await sb
+      .from('collaboration_messages')
+      .select('*, sender:sender_id(id,raw_user_meta_data)')
+      .eq('order_id', orderId)
+      .order('created_at', { ascending: true })
+      .limit(100)
+
+    if (messages?.length) {
+      // Clear demo messages, keep typing indicator
+      const area  = document.getElementById('messagesArea')
+      const typer = document.getElementById('typingIndicator')
+      ;[...area.children].forEach(c => { if (c !== typer) c.remove() })
+      messages.forEach(m => renderDbMessage(m, user.id))
+
+      const area2 = document.getElementById('messagesArea')
+      area2.scrollTop = area2.scrollHeight
+    }
+
+    // Mark read
+    await sb.from('collaboration_messages')
+      .update({ read_at: new Date().toISOString() })
+      .eq('order_id', orderId)
+      .neq('sender_id', user.id)
+      .is('read_at', null)
+
+    // Real-time: new messages
+    sb.channel('chat:' + orderId)
+      .on('postgres_changes', {
+        event:  'INSERT',
+        schema: 'public',
+        table:  'collaboration_messages',
+        filter: `order_id=eq.${orderId}`
+      }, payload => {
+        if (!document.getElementById('msg-' + payload.new.id)) {
+          renderDbMessage(payload.new, user.id)
+          const area = document.getElementById('messagesArea')
+          area.scrollTop = area.scrollHeight
+        }
+      })
+      .subscribe()
+
+    // Real-time: order status changes
+    sb.channel('order:' + orderId)
+      .on('postgres_changes', {
+        event:  'UPDATE',
+        schema: 'public',
+        table:  'orders',
+        filter: `id=eq.${orderId}`
+      }, payload => patchEscrowUI(payload.new))
+      .subscribe()
+
+    // Override sendMessage to write to Supabase
+    window._sendMsgReal = async (body) => {
+      if (!body.trim()) return
+      const { error } = await sb.from('collaboration_messages').insert({
+        order_id:    orderId,
+        sender_id:   user.id,
+        body:        body.trim(),
+        message_type:'USER'
+      })
+      if (error) console.error('[Oriupe] send error:', error)
+    }
+
+    // Patch the existing sendMessage function
+    const origSend = window.sendMessage
+    window.sendMessage = function() {
+      const inp = document.getElementById('msgInput')
+      const txt = inp.value.trim()
+      if (!txt) return
+      window._sendMsgReal(txt)
+      inp.value = ''
+      inp.style.height = 'auto'
+      document.getElementById('charCount').textContent = '0'
+      document.getElementById('sendBtn').classList.remove('active')
+    }
+
+    console.log('[Oriupe] Chat connecté à l\'escrow', order.escrow_code)
+  }
+
+  boot()
+  </script>
 </body>
 </html>

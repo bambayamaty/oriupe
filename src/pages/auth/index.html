@@ -2,24 +2,24 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Oriupe — Inscription & Connexion</title>
+<title>Oriupe — Connexion & Inscription</title>
+  <meta name="description" content="Connectez-vous ou créez votre compte Oriupe. Accédez à la marketplace de talents africains certifiés."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:site_name" content="Oriupe"/>
+  <meta property="og:title" content="Oriupe — Connexion & Inscription"/>
+  <meta property="og:description" content="Connectez-vous ou créez votre compte Oriupe. Accédez à la marketplace de talents africains certifiés."/>
+  <meta property="og:image" content="https://oriupe.com/og-auth.png"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="Oriupe — Connexion & Inscription"/>
+  <meta name="twitter:description" content="Connectez-vous ou créez votre compte Oriupe. Accédez à la marketplace de talents africains certifiés."/>
+  <meta name="twitter:image" content="https://oriupe.com/og-auth.png"/>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+  <link rel="stylesheet" href="/src/shared/styles/base.css"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-font-smoothing:antialiased;height:100%}
 body{font-family:'Plus Jakarta Sans',sans-serif;background:#F4F6F9;color:#1B3A4A;min-height:100vh;display:flex;flex-direction:column}
-:root{
-  --navy:#0F2535;--navy2:#1B3A4A;
-  --green:#3CB878;--green-d:#27965D;--green-l:#E4F7EE;--green-xl:#F0FBF5;
-  --blue:#29ABE2;--blue-l:#E2F4FB;--lime:#8DC63F;
-  --bg:#F4F6F9;--bg2:#ECEEF3;--white:#fff;
-  --border:rgba(27,58,74,.1);--muted:rgba(27,58,74,.52);--muted2:rgba(27,58,74,.32);
-  --shadow:0 2px 12px rgba(15,37,53,.08);--shadow-md:0 8px 32px rgba(15,37,53,.13);--shadow-lg:0 24px 64px rgba(15,37,53,.18);
-  --spring:cubic-bezier(.34,1.56,.64,1);--ease:cubic-bezier(.25,.46,.45,.94);
-  --red:#EF4444;--red-l:#FEE2E2;
-}
-
 /* LAYOUT SPLIT */
 .auth-layout{flex:1;display:flex;min-height:100vh}
 
@@ -180,6 +180,68 @@ label.fl{font-size:12px;font-weight:700;color:var(--navy2);display:block;margin-
 .success-icon{width:64px;height:64px;border-radius:50%;background:var(--green-l);margin:0 auto 20px;display:flex;align-items:center;justify-content:center}
 
 /* MOBILE */
+
+/* ── ROLE SELECTION REDESIGN ─────────────────────────────────── */
+/* Hide old hollow circle */
+.bc-chk{display:none!important}
+
+/* Selected card: lift + check badge via ::after */
+.big-card{position:relative;overflow:visible}
+.big-card:hover{border-color:var(--green);background:var(--green-xl);transform:translateY(-1px);box-shadow:0 4px 16px rgba(60,184,120,.14)}
+.big-card.selected{border-color:var(--green);background:var(--green-xl);transform:translateY(-1px);box-shadow:0 6px 22px rgba(60,184,120,.22)}
+.big-card.selected::after{
+  content:'✓';
+  position:absolute;top:-9px;right:-9px;
+  width:22px;height:22px;
+  background:var(--green);
+  border:2px solid #fff;
+  border-radius:50%;
+  color:#fff;font-size:11px;font-weight:900;
+  display:flex;align-items:center;justify-content:center;
+  line-height:1;text-align:center;
+  box-shadow:0 2px 8px rgba(60,184,120,.45);
+  animation:popIn .25s var(--spring) both
+}
+@keyframes popIn{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+
+/* Role grid: 2 columns side by side */
+.bc-role-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:0}
+.bc-role-grid .big-card{flex-direction:column;align-items:flex-start;gap:10px;padding:18px 16px}
+.bc-role-grid .bc-ico{margin-bottom:2px}
+.bc-role-grid .bc-title{font-size:14px}
+
+/* Progressive reveal wrapper */
+.bc-subtype-wrap{
+  overflow:hidden;
+  max-height:0;opacity:0;
+  transition:max-height .5s cubic-bezier(.25,.46,.45,.94),opacity .38s ease,margin-top .38s ease;
+  margin-top:0;pointer-events:none
+}
+.bc-subtype-wrap.open{max-height:700px;opacity:1;margin-top:20px;pointer-events:auto}
+
+/* Separator between role and subtype */
+.bc-subtype-sep{
+  display:flex;align-items:center;gap:10px;
+  font-size:10.5px;font-weight:700;color:var(--muted2);
+  text-transform:uppercase;letter-spacing:.9px;
+  margin-bottom:14px
+}
+.bc-subtype-sep::before,.bc-subtype-sep::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* Step chip */
+.rs0-chip{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:11px;font-weight:700;color:var(--green);
+  background:var(--green-xl);border:1px solid rgba(60,184,120,.2);
+  border-radius:20px;padding:4px 12px;margin-bottom:14px;
+  letter-spacing:.2px
+}
+
+/* Continue button reveal */
+#rs0btn{transition:opacity .3s ease,transform .3s var(--spring)}
+#rs0btn:disabled{opacity:.45;pointer-events:none;transform:translateY(4px)}
+#rs0btn:not(:disabled){opacity:1;transform:translateY(0)}
+
 @media(max-width:900px){
   .auth-left{display:none}
   .auth-right{padding:24px 16px}
@@ -381,6 +443,23 @@ label.fl{font-size:12px;font-weight:700;color:var(--navy2);display:block;margin-
         </div>
         <div class="social-divider">ou par email</div>
 
+        <!-- Test credentials -->
+        <div style="background:#F8FAFC;border:1px solid rgba(27,58,74,.08);border-radius:12px;padding:12px 14px;margin-bottom:16px">
+          <div style="font-size:10px;font-weight:700;color:rgba(27,58,74,.35);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">Comptes de démonstration</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <div onclick="fillLogin('client@oriupe.com','Client2025!')" style="display:flex;align-items:center;gap:9px;padding:9px 11px;background:#fff;border:1px solid rgba(41,171,226,.2);border-radius:9px;cursor:pointer;transition:border-color .15s" onmouseover="this.style.borderColor='var(--blue)'" onmouseout="this.style.borderColor='rgba(41,171,226,.2)'">
+              <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#29ABE2,#7DD6F0);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0">AM</div>
+              <div><div style="font-size:11px;font-weight:700;color:#1B3A4A">Client</div><div style="font-size:10px;color:rgba(27,58,74,.45)">Awa Mbaye</div></div>
+              <svg style="margin-left:auto;color:rgba(27,58,74,.3)" width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M4.5 3L7.5 6L4.5 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <div onclick="fillLogin('freelance@oriupe.com','Freelance2025!')" style="display:flex;align-items:center;gap:9px;padding:9px 11px;background:#fff;border:1px solid rgba(60,184,120,.2);border-radius:9px;cursor:pointer;transition:border-color .15s" onmouseover="this.style.borderColor='var(--green)'" onmouseout="this.style.borderColor='rgba(60,184,120,.2)'">
+              <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#3CB878,#8DC63F);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0">KA</div>
+              <div><div style="font-size:11px;font-weight:700;color:#1B3A4A">Freelance</div><div style="font-size:10px;color:rgba(27,58,74,.45)">Kofi Asante</div></div>
+              <svg style="margin-left:auto;color:rgba(27,58,74,.3)" width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M4.5 3L7.5 6L4.5 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+          </div>
+        </div>
+
         <div class="form-group">
           <label class="fl">Email <span class="fl-required">*</span></label>
           <div class="inp-icon">
@@ -414,7 +493,62 @@ label.fl{font-size:12px;font-weight:700;color:var(--navy2);display:block;margin-
       <!-- ═ INSCRIPTION MULTI-ETAPES ═ -->
       <div class="auth-panel" id="panel-register">
         <div class="rflow-progress"><div class="rflow-bar" id="rfBar" style="width:8%"></div></div>
-<div class="reg-step active" id="rs0"><div class="auth-title">Bienvenue sur Oriupe</div><div class="auth-sub" style="margin-bottom:20px">Vous etes ?</div><div class="big-cards"><div class="big-card" id="bc-client" onclick="selCard('bc-client')"><div class="bc-ico" style="background:var(--blue-l)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="#29ABE2" stroke-width="1.8"/><path d="M4 20C4 16.7 7.6 14 12 14s8 2.7 8 6" stroke="#29ABE2" stroke-width="1.8" stroke-linecap="round"/></svg></div><div style="flex:1"><div class="bc-title">Je suis Client</div><div class="bc-desc">Je souhaite commander des services numeriques a des freelances africains talentueux</div><div class="bc-tag grn">Compte actif immediatement</div></div><div class="bc-chk"></div></div><div class="big-card" id="bc-freelance" onclick="selCard('bc-freelance')"><div class="bc-ico" style="background:var(--green-l)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2L15.5 9H22L16.5 13.5L18.5 20.5L12 16.5L5.5 20.5L7.5 13.5L2 9H8.5L12 2Z" stroke="#3CB878" stroke-width="1.8" stroke-linejoin="round"/></svg></div><div style="flex:1"><div class="bc-title">Je suis Freelance</div><div class="bc-desc">Je souhaite vendre mes competences numeriques et recevoir des commandes</div><div class="bc-tag orn">Verification d'identite requise</div></div><div class="bc-chk"></div></div></div><button class="btn-submit" style="margin-top:20px" id="rs0btn" disabled onclick="goNext()">Continuer <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3.5 8H12.5M9.5 5L12.5 8L9.5 11" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div style="text-align:center;margin-top:14px;font-size:12px;color:var(--muted)" id="reg-login-hint">Deja membre ? <a onclick="switchAuth('login')" style="color:var(--green);font-weight:700;cursor:pointer">Se connecter</a></div></div>
+<div class="reg-step active" id="rs0">
+<div class="rflow-progress" style="margin-bottom:18px"><div class="rflow-bar" id="rfBar" style="width:12%"></div></div>
+<div class="rs0-chip"><i class="fa-regular fa-user"></i> Étape 1 sur 3</div>
+<div class="auth-title" style="margin-bottom:4px">Bienvenue sur Oriupe</div>
+<div class="auth-sub" style="margin-bottom:18px">Vous êtes ?</div>
+
+<div class="bc-role-grid">
+  <div class="big-card" id="bc-client" onclick="selRole('client')">
+    <div class="bc-ico" style="background:var(--blue-l)"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="#29ABE2" stroke-width="1.8"/><path d="M4 20C4 16.7 7.6 14 12 14s8 2.7 8 6" stroke="#29ABE2" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+    <div>
+      <div class="bc-title">Je suis Client</div>
+      <div class="bc-desc">Je commande des services numériques à des freelances africains</div>
+      <div class="bc-tag grn" style="margin-top:8px">Compte actif immédiatement</div>
+    </div>
+  </div>
+  <div class="big-card" id="bc-freelance" onclick="selRole('freelance')">
+    <div class="bc-ico" style="background:var(--green-l)"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 2L15.5 9H22L16.5 13.5L18.5 20.5L12 16.5L5.5 20.5L7.5 13.5L2 9H8.5L12 2Z" stroke="#3CB878" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+    <div>
+      <div class="bc-title">Je suis Freelance</div>
+      <div class="bc-desc">Je vends mes compétences numériques et reçois des commandes</div>
+      <div class="bc-tag orn" style="margin-top:8px">Vérification d'identité requise</div>
+    </div>
+  </div>
+</div>
+
+<div class="bc-subtype-wrap" id="subtype-wrap">
+  <div class="bc-subtype-sep"><span id="subtype-label">Quel est votre profil ?</span></div>
+
+  <div id="subtypes-client" class="big-cards" style="display:none">
+    <div class="big-card" id="bc-cpart" onclick="selSubtype('cpart')">
+      <div class="bc-ico" style="background:#F0F4FF"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="#4F6AF5" stroke-width="1.8"/><path d="M4 20C4 16.7 7.6 14 12 14s8 2.7 8 6" stroke="#4F6AF5" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+      <div style="flex:1"><div class="bc-title">Particulier</div><div class="bc-desc">Je commande pour mes projets personnels ou en tant qu'indépendant</div><div class="bc-tag grn">Aucun document requis</div></div>
+    </div>
+    <div class="big-card" id="bc-centrepr" onclick="selSubtype('centrepr')">
+      <div class="bc-ico" style="background:#FFF4E5"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="7" width="18" height="14" rx="2" stroke="#E07B00" stroke-width="1.8"/><path d="M8 7V5C8 4 9 3 10 3H14C15 3 16 4 16 5V7" stroke="#E07B00" stroke-width="1.8"/><path d="M8 12H16M8 16H12" stroke="#E07B00" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+      <div style="flex:1"><div class="bc-title">Entreprise</div><div class="bc-desc">Je commande pour le compte d'une société, agence ou organisation</div><div class="bc-tag orn">Informations entreprise demandées</div></div>
+    </div>
+  </div>
+
+  <div id="subtypes-freelance" class="big-cards" style="display:none">
+    <div class="big-card" id="bc-fpart" onclick="selSubtype('fpart')">
+      <div class="bc-ico" style="background:var(--green-l)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="#3CB878" stroke-width="1.8"/><path d="M4 20C4 16.7 7.6 14 12 14s8 2.7 8 6" stroke="#3CB878" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+      <div style="flex:1"><div class="bc-title">Freelance Particulier</div><div class="bc-desc">Je propose mes compétences en mon nom propre, sans structure juridique</div><div class="bc-tag blu">Vérification identité · 24h ouvrées</div><div style="font-size:10px;color:var(--muted);margin-top:6px">CNI ou Passeport · Selfie · Justificatif résidence</div></div>
+    </div>
+    <div class="big-card" id="bc-fentrepr" onclick="selSubtype('fentrepr')">
+      <div class="bc-ico" style="background:#FFF4E5"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="7" width="18" height="14" rx="2" stroke="#E07B00" stroke-width="1.8"/><path d="M8 7V5C8 4 9 3 10 3H14C15 3 16 4 16 5V7" stroke="#E07B00" stroke-width="1.8"/><path d="M8 12H16M8 16H12" stroke="#E07B00" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+      <div style="flex:1"><div class="bc-title">Freelance Entreprise</div><div class="bc-desc">Je représente une agence ou une équipe proposant des services numériques</div><div class="bc-tag orn">Vérification entreprise · 48h ouvrées</div><div style="font-size:10px;color:var(--muted);margin-top:6px">RC · CNI représentant · Selfie · Résidence siège</div></div>
+    </div>
+  </div>
+
+  <div id="freelance-note" style="display:none;margin-top:12px" class="note-box">🔐 La vérification est obligatoire pour publier vos services et recevoir des paiements. Vos documents sont traités de manière confidentielle.</div>
+</div>
+
+<button class="btn-submit" style="margin-top:22px" id="rs0btn" disabled onclick="goToForm()">Continuer <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3.5 8H12.5M9.5 5L12.5 8L9.5 11" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+<div style="text-align:center;margin-top:16px;font-size:12px;color:var(--muted)" id="reg-login-hint">Déjà membre ? <a onclick="switchAuth('login')" style="color:var(--green);font-weight:700;cursor:pointer">Se connecter</a></div>
+</div>
 <div class="reg-step" id="rs1c"><button class="rflow-back" onclick="showStep('rs0')"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3L5 7L9 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Retour</button><div class="auth-title">Vous etes client.</div><div class="auth-sub" style="margin-bottom:20px">Quel est votre profil ?</div><div class="big-cards"><div class="big-card" id="bc-cpart" onclick="selCard('bc-cpart')"><div class="bc-ico" style="background:#F0F4FF"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="#4F6AF5" stroke-width="1.8"/><path d="M4 20C4 16.7 7.6 14 12 14s8 2.7 8 6" stroke="#4F6AF5" stroke-width="1.8" stroke-linecap="round"/></svg></div><div style="flex:1"><div class="bc-title">Particulier</div><div class="bc-desc">Je commande pour mes projets personnels ou en tant qu'independant</div><div class="bc-tag grn">Aucun document requis</div></div><div class="bc-chk"></div></div><div class="big-card" id="bc-centrepr" onclick="selCard('bc-centrepr')"><div class="bc-ico" style="background:#FFF4E5"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="7" width="18" height="14" rx="2" stroke="#E07B00" stroke-width="1.8"/><path d="M8 7V5C8 4 9 3 10 3H14C15 3 16 4 16 5V7" stroke="#E07B00" stroke-width="1.8"/><path d="M8 12H16M8 16H12" stroke="#E07B00" stroke-width="1.6" stroke-linecap="round"/></svg></div><div style="flex:1"><div class="bc-title">Entreprise</div><div class="bc-desc">Je commande pour le compte d'une societe, d'une agence ou d'une organisation</div><div class="bc-tag orn">Informations entreprise demandees</div></div><div class="bc-chk"></div></div></div><button class="btn-submit" style="margin-top:20px" id="rs1cbtn" disabled onclick="goNext()">Continuer <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3.5 8H12.5M9.5 5L12.5 8L9.5 11" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
 <div class="reg-step" id="rs1f"><button class="rflow-back" onclick="showStep('rs0')"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3L5 7L9 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Retour</button><div class="auth-title">Vous etes Freelance.</div><div class="auth-sub" style="margin-bottom:20px">Quel est votre profil ?</div><div class="big-cards"><div class="big-card" id="bc-fpart" onclick="selCard('bc-fpart')"><div class="bc-ico" style="background:var(--green-l)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="#3CB878" stroke-width="1.8"/><path d="M4 20C4 16.7 7.6 14 12 14s8 2.7 8 6" stroke="#3CB878" stroke-width="1.8" stroke-linecap="round"/></svg></div><div style="flex:1"><div class="bc-title">Freelance Particulier</div><div class="bc-desc">Je propose mes competences en mon nom propre, sans structure juridique</div><div class="bc-tag blu">Verification identite - 24h ouvrées</div><div style="font-size:10px;color:var(--muted);margin-top:6px">CNI ou Passeport · Selfie · Justificatif residence</div></div><div class="bc-chk"></div></div><div class="big-card" id="bc-fentrepr" onclick="selCard('bc-fentrepr')"><div class="bc-ico" style="background:#FFF4E5"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="7" width="18" height="14" rx="2" stroke="#E07B00" stroke-width="1.8"/><path d="M8 7V5C8 4 9 3 10 3H14C15 3 16 4 16 5V7" stroke="#E07B00" stroke-width="1.8"/><path d="M8 12H16M8 16H12" stroke="#E07B00" stroke-width="1.6" stroke-linecap="round"/></svg></div><div style="flex:1"><div class="bc-title">Freelance Entreprise</div><div class="bc-desc">Je represente une agence ou une equipe qui propose des services numeriques</div><div class="bc-tag orn">Verification entreprise - 48h ouvrées</div><div style="font-size:10px;color:var(--muted);margin-top:6px">RC · CNI representant · Selfie · Residence siege</div></div><div class="bc-chk"></div></div></div><div class="note-box" style="margin-top:14px">&#x1F510; La verification est obligatoire pour publier vos services et recevoir des paiements. Vos documents sont traites de maniere confidentielle.</div><button class="btn-submit" id="rs1fbtn" disabled onclick="goNext()">Continuer <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3.5 8H12.5M9.5 5L12.5 8L9.5 11" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
 <div class="reg-step" id="rs2cp"><button class="rflow-back" onclick="showStep('rs1c')"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3L5 7L9 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Retour</button><div class="auth-title">Créez votre compte client</div><div class="auth-sub">Votre compte sera actif immediatement.</div><div class="form-row"><div class="form-group"><label class="fl">Prenom <span class="fl-required">*</span></label><input class="inp" type="text" id="cp-fn" placeholder="Jean-Pierre"/></div><div class="form-group"><label class="fl">Nom <span class="fl-required">*</span></label><input class="inp" type="text" id="cp-ln" placeholder="Kouassi"/></div></div><div class="form-group"><label class="fl">Email <span class="fl-required">*</span></label><div class="inp-icon"><svg class="icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1.5" y="3" width="13" height="10" rx="2" stroke="var(--muted2)" stroke-width="1.3"/><path d="M1.5 6L8 10L14.5 6" stroke="var(--muted2)" stroke-width="1.2"/></svg><input class="inp" type="email" id="cp-em" placeholder="votre@email.com"/></div></div><div class="form-group"><label class="fl">Mot de passe <span class="fl-required">*</span></label><div class="inp-icon" style="position:relative"><svg class="icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="7" rx="2" stroke="var(--muted2)" stroke-width="1.3"/><path d="M5 7V5.5A3 3 0 0111 5.5V7" stroke="var(--muted2)" stroke-width="1.3"/></svg><input type="password" class="inp" id="cp-pwd" placeholder="Min. 8 caracteres" style="padding-right:44px" oninput="chkStr(this)"/><button class="inp-eye" type="button" onclick="togPwd('cp-pwd',this)"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 8C1 8 3.5 3 8 3s7 5 7 5-2.5 5-7 5-7-5-7-5Z" stroke="var(--muted2)" stroke-width="1.3"/><circle cx="8" cy="8" r="2.5" stroke="var(--muted2)" stroke-width="1.3"/></svg></button></div><div class="pw-strength" id="cp-pwd-s"><div class="pw-bars"><div class="pw-bar" id="cp-pwd-b1"></div><div class="pw-bar" id="cp-pwd-b2"></div><div class="pw-bar" id="cp-pwd-b3"></div><div class="pw-bar" id="cp-pwd-b4"></div></div><div class="pw-label" id="cp-pwd-l">Trop court</div></div></div><div class="form-group"><label class="fl">Confirmer le mot de passe <span class="fl-required">*</span></label><input class="inp" type="password" id="cp-pwd2" placeholder="Repetez le mot de passe"/></div><div class="form-group"><label class="fl">Numero Mobile Money <span class="fl-required">*</span></label><div class="phone-wrap"><div class="phone-prefix"><span class="pp-flag" id="cp-pfx-flag">&#x1F1E8;&#x1F1EE;</span><span id="cp-pfx-code">+225</span><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2.5 4L5 6.5L7.5 4" stroke="var(--muted)" stroke-width="1.3" stroke-linecap="round"/></svg><select onchange="chgPfx(this,'cp-pfx')"><option value="+225" data-flag="CI">CI +225</option><option value="+221" data-flag="SN">SN +221</option><option value="+233" data-flag="GH">GH +233</option><option value="+234" data-flag="NG">NG +234</option><option value="+237" data-flag="CM">CM +237</option><option value="+254" data-flag="KE">KE +254</option><option value="+228" data-flag="TG">TG +228</option><option value="+229" data-flag="BJ">BJ +229</option><option value="+226" data-flag="BF">BF +226</option><option value="+223" data-flag="ML">ML +223</option></select></div><input type="tel" class="inp" id="cp-tel" style="flex:1" placeholder="07 00 00 00 00"/></div></div><div class="form-row"><div class="form-group"><label class="fl">Pays de residence <span class="fl-required">*</span></label><select class="inp"><option value="">Pays...</option><option>Cote d'Ivoire</option><option>Senegal</option><option>Ghana</option><option>Nigeria</option><option>Cameroun</option><option>Burkina Faso</option><option>Mali</option><option>Togo</option><option>Benin</option><option>Kenya</option><option>Maroc</option><option>Tunisie</option><option>Algerie</option><option>Egypte</option><option>Gabon</option><option>RD Congo</option><option>Tanzanie</option><option>Ethiopie</option><option>Autre</option></select></div><div class="form-group"><label class="fl">Ville</label><input class="inp" type="text" placeholder="Abidjan"/></div></div><div class="check-wrap" onclick="toggleCheck('cp-cgu')" style="margin-bottom:20px"><div class="check-box" id="cp-cgu"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" class="chk-icon" style="display:none"><path d="M2 5L4.5 7.5L8 3" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="check-label">J'accepte les <a href="/src/pages/terms/index.html" target="_blank">CGU &amp; CGV</a> et la <a href="/src/pages/privacy/index.html" target="_blank">Politique de Confidentialite</a> d'Oriupe.</div></div><button class="btn-submit" onclick="submitForm('rsokc')">Creer mon compte client <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3.5 8H12.5M9.5 5L12.5 8L9.5 11" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
@@ -423,8 +557,8 @@ label.fl{font-size:12px;font-weight:700;color:var(--navy2);display:block;margin-
 <div class="reg-step" id="rs2fe"><button class="rflow-back" onclick="showStep('rs1f')"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3L5 7L9 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Retour</button><div class="auth-title">Compte Freelance Entreprise</div><div class="auth-sub">Informations de base avant la verification.</div><span class="fsep">Representant legal</span><div class="form-row"><div class="form-group"><label class="fl">Prenom <span class="fl-required">*</span></label><input class="inp" type="text" placeholder="Jean-Pierre"/></div><div class="form-group"><label class="fl">Nom <span class="fl-required">*</span></label><input class="inp" type="text" placeholder="Kouassi"/></div></div><div class="form-row"><div class="form-group"><label class="fl">Fonction</label><select class="inp"><option>Gerant</option><option>PDG</option><option>Fondateur</option><option>Directeur General</option><option>Autre</option></select></div><div class="form-group"><label class="fl">Email professionnel <span class="fl-required">*</span></label><input class="inp" type="email" placeholder="jean@agence.com"/></div></div><div class="form-group"><label class="fl">Mot de passe <span class="fl-required">*</span></label><div class="inp-icon" style="position:relative"><svg class="icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="7" rx="2" stroke="var(--muted2)" stroke-width="1.3"/><path d="M5 7V5.5A3 3 0 0111 5.5V7" stroke="var(--muted2)" stroke-width="1.3"/></svg><input type="password" class="inp" id="fe-pwd" placeholder="Min. 8 caracteres" style="padding-right:44px" oninput="chkStr(this)"/><button class="inp-eye" type="button" onclick="togPwd('fe-pwd',this)"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 8C1 8 3.5 3 8 3s7 5 7 5-2.5 5-7 5-7-5-7-5Z" stroke="var(--muted2)" stroke-width="1.3"/><circle cx="8" cy="8" r="2.5" stroke="var(--muted2)" stroke-width="1.3"/></svg></button></div><div class="pw-strength" id="fe-pwd-s"><div class="pw-bars"><div class="pw-bar" id="fe-pwd-b1"></div><div class="pw-bar" id="fe-pwd-b2"></div><div class="pw-bar" id="fe-pwd-b3"></div><div class="pw-bar" id="fe-pwd-b4"></div></div><div class="pw-label" id="fe-pwd-l">Trop court</div></div></div><div class="form-group"><label class="fl">Confirmer <span class="fl-required">*</span></label><input class="inp" type="password" placeholder="Repetez"/></div><div class="form-group"><label class="fl">Tel. Mobile Money <span class="fl-required">*</span></label><div class="phone-wrap"><div class="phone-prefix"><span class="pp-flag" id="fe-pfx-flag">&#x1F1E8;&#x1F1EE;</span><span id="fe-pfx-code">+225</span><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2.5 4L5 6.5L7.5 4" stroke="var(--muted)" stroke-width="1.3" stroke-linecap="round"/></svg><select onchange="chgPfx(this,'fe-pfx')"><option value="+225" data-flag="CI">CI +225</option><option value="+221" data-flag="SN">SN +221</option><option value="+233" data-flag="GH">GH +233</option><option value="+234" data-flag="NG">NG +234</option><option value="+237" data-flag="CM">CM +237</option><option value="+254" data-flag="KE">KE +254</option><option value="+228" data-flag="TG">TG +228</option><option value="+229" data-flag="BJ">BJ +229</option><option value="+226" data-flag="BF">BF +226</option><option value="+223" data-flag="ML">ML +223</option></select></div><input type="tel" class="inp" id="fe-tel" style="flex:1" placeholder="07 00 00 00 00"/></div></div><span class="fsep">Informations entreprise</span><div class="form-group"><label class="fl">Nom legal <span class="fl-required">*</span></label><input class="inp" type="text" placeholder="Mon Agence SAS"/></div><div class="form-row"><div class="form-group"><label class="fl">Forme juridique</label><select class="inp"><option value="">Forme...</option><option>SARL</option><option>SAS</option><option>SA</option><option>GIE</option><option>ONG</option><option>Auto-entrepreneur</option><option>Autre</option></select></div><div class="form-group"><label class="fl">N&#176; immatriculation <span class="fl-required">*</span></label><input class="inp" type="text" placeholder="RCCM / SIRET"/></div></div><div class="form-row"><div class="form-group"><label class="fl">Secteur</label><select class="inp"><option value="">Secteur...</option><option>Technologies &amp; Digital</option><option>Commerce</option><option>Services financiers</option><option>Sante</option><option>Education</option><option>Medias &amp; Comm.</option><option>Agriculture</option><option>BTP</option><option>Transport</option><option>Energie</option><option>Autre</option></select></div><div class="form-group"><label class="fl">Pays</label><select class="inp"><option value="">Pays...</option><option>Cote d'Ivoire</option><option>Senegal</option><option>Ghana</option><option>Nigeria</option><option>Cameroun</option><option>Burkina Faso</option><option>Mali</option><option>Togo</option><option>Benin</option><option>Kenya</option><option>Maroc</option><option>Tunisie</option><option>Algerie</option><option>Egypte</option><option>Gabon</option><option>RD Congo</option><option>Tanzanie</option><option>Ethiopie</option><option>Autre</option></select></div></div><div class="form-group"><label class="fl">Adresse siege social <span class="fl-required">*</span></label><input class="inp" type="text" placeholder="12 Rue des Entrepreneurs, Abidjan"/></div><div class="form-row"><div class="form-group"><label class="fl">Tel. professionnel</label><input class="inp" type="tel" placeholder="+225 27 00 00 00"/></div><div class="form-group"><label class="fl">Site web</label><input class="inp" type="url" placeholder="https://agence.com"/></div></div><span class="fsep">Profil commercial</span><div class="form-group"><label class="fl">Services proposes</label><div class="lang-chips svc-grid"><span class="chip" onclick="togChip(this)">Dev. Web &amp; Mobile</span><span class="chip" onclick="togChip(this)">Design UI/UX</span><span class="chip" onclick="togChip(this)">Marketing Digital</span><span class="chip" onclick="togChip(this)">Redaction</span><span class="chip" onclick="togChip(this)">Video &amp; Motion</span><span class="chip" onclick="togChip(this)">Finance</span><span class="chip" onclick="togChip(this)">Musique &amp; Audio</span><span class="chip" onclick="togChip(this)">Formation</span></div></div><div class="form-row"><div class="form-group"><label class="fl">Collaborateurs</label><select class="inp"><option>1 (seul)</option><option>2-5</option><option>6-20</option><option>21-50</option><option>Plus de 50</option></select></div></div><div class="form-group"><label class="fl">Description de l'entreprise</label><textarea class="inp" rows="3" placeholder="Decrivez votre agence, vos expertises..." style="resize:vertical"></textarea></div><div class="check-wrap" onclick="toggleCheck('fe-cgu')" style="margin-bottom:20px"><div class="check-box" id="fe-cgu"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" class="chk-icon" style="display:none"><path d="M2 5L4.5 7.5L8 3" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="check-label">J'accepte les <a href="/src/pages/terms/index.html" target="_blank">CGU &amp; CGV</a> et la <a href="/src/pages/privacy/index.html" target="_blank">Politique de Confidentialite</a> d'Oriupe.</div></div><button class="btn-submit" onclick="showStep('rs3fe')">Continuer vers la verification entreprise <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3.5 8H12.5M9.5 5L12.5 8L9.5 11" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
 <div class="reg-step" id="rs3fp"><button class="rflow-back" onclick="showStep('rs2fp')"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3L5 7L9 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Retour</button><div class="auth-title">Verification de votre identite</div><div class="auth-sub">Votre compte sera certifie sous 24 heures ouvrées.</div><div class="info-ban">&#x1F512; Vos documents sont transmis via connexion chiffree SSL et verifies par Smile Identity, leader africain du KYC. Ils ne sont pas conserves au-dela de la verification.</div><div class="kyc-sec"><div class="kyc-ttl">Piece d'identite officielle <span class="badge-r">Obligatoire</span></div><div class="urow"><div class="upload-zone" id="uz-fp-id-r"><input type="file" accept="image/*,.pdf" onchange="handleUpload(this,'uz-fp-id-r')"/><div class="uz-empty"><div class="uz-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 3V13M6 7L10 3L14 7" stroke="var(--muted2)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="3" y="13" width="14" height="4" rx="1" stroke="var(--muted2)" stroke-width="1.4"/></svg></div><div class="uz-label">Recto CNI ou Passeport</div><div class="uz-hint">JPG, PNG ou PDF - Max 10 Mo</div></div><div class="uz-preview"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7L5.5 10.5L12 4" stroke="var(--green)" stroke-width="2" stroke-linecap="round"/></svg><span class="uz-fname" style="font-size:12px;font-weight:700;color:var(--navy2);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span><button class="uz-del" onclick="clrUpload(event,'uz-fp-id-r')">&#x2715;</button></div></div><div class="upload-zone" id="uz-fp-id-v"><input type="file" accept="image/*,.pdf" onchange="handleUpload(this,'uz-fp-id-v')"/><div class="uz-empty"><div class="uz-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 3V13M6 7L10 3L14 7" stroke="var(--muted2)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="3" y="13" width="14" height="4" rx="1" stroke="var(--muted2)" stroke-width="1.4"/></svg></div><div class="uz-label">Verso CNI ou Passeport</div><div class="uz-hint">JPG, PNG ou PDF - Max 10 Mo</div></div><div class="uz-preview"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7L5.5 10.5L12 4" stroke="var(--green)" stroke-width="2" stroke-linecap="round"/></svg><span class="uz-fname" style="font-size:12px;font-weight:700;color:var(--navy2);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span><button class="uz-del" onclick="clrUpload(event,'uz-fp-id-v')">&#x2715;</button></div></div></div></div><div class="kyc-sec"><div class="kyc-ttl">Justificatif de residence <span class="badge-r">Obligatoire</span></div><div class="upload-zone" id="uz-fp-res"><input type="file" accept="image/*,.pdf" onchange="handleUpload(this,'uz-fp-res')"/><div class="uz-empty"><div class="uz-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 3V13M6 7L10 3L14 7" stroke="var(--muted2)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="3" y="13" width="14" height="4" rx="1" stroke="var(--muted2)" stroke-width="1.4"/></svg></div><div class="uz-label">Facture (elec, eau, tel) ou quittance - moins de 3 mois</div><div class="uz-hint">JPG, PNG ou PDF - Max 10 Mo</div></div><div class="uz-preview"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7L5.5 10.5L12 4" stroke="var(--green)" stroke-width="2" stroke-linecap="round"/></svg><span class="uz-fname" style="font-size:12px;font-weight:700;color:var(--navy2);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span><button class="uz-del" onclick="clrUpload(event,'uz-fp-res')">&#x2715;</button></div></div><div style="font-size:11px;color:var(--muted);margin-top:6px">Le document doit afficher votre nom et adresse actuelle</div></div><div class="kyc-sec"><div class="kyc-ttl">Selfie avec votre piece d'identite <span class="badge-r">Obligatoire</span></div><div class="upload-zone" id="uz-fp-selfie"><input type="file" accept="image/*,.pdf" onchange="handleUpload(this,'uz-fp-selfie')"/><div class="uz-empty"><div class="uz-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 3V13M6 7L10 3L14 7" stroke="var(--muted2)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="3" y="13" width="14" height="4" rx="1" stroke="var(--muted2)" stroke-width="1.4"/></svg></div><div class="uz-label">Visage + CNI ouverte · Fond neutre · Bonne luminosite</div><div class="uz-hint">JPG ou PNG uniquement - Max 8 Mo</div></div><div class="uz-preview"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7L5.5 10.5L12 4" stroke="var(--green)" stroke-width="2" stroke-linecap="round"/></svg><span class="uz-fname" style="font-size:12px;font-weight:700;color:var(--navy2);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span><button class="uz-del" onclick="clrUpload(event,'uz-fp-selfie')">&#x2715;</button></div></div></div><div class="kyc-sec"><div class="kyc-ttl">Verification Mobile Money <span class="badge-r">Obligatoire</span></div><div style="font-size:13px;color:var(--navy2);font-weight:600;margin-bottom:8px">Numero : <span id="fp-phone-disp">-</span></div><div class="sms-row"><input class="inp" type="text" id="fp-sms" placeholder="Code a 6 chiffres" maxlength="6" style="flex:1"/><button class="btn-sms" id="fp-sms-btn" onclick="sendSMS('fp-sms-btn','fp-sms-ok')">Recevoir le code SMS</button></div><div class="sms-ok" id="fp-sms-ok"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7L5.5 10.5L12 4" stroke="var(--green)" stroke-width="2" stroke-linecap="round"/></svg> Numero verifie &#x2713;</div></div><div class="note-box">En soumettant ce dossier, vous confirmez que tous les documents sont authentiques et vous appartiennent. Toute fraude entraine un bannissement definitif.</div><button class="btn-submit btn-navy" onclick="submitForm('rsokf')">Soumettre mon dossier pour verification <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3.5 8H12.5M9.5 5L12.5 8L9.5 11" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
 <div class="reg-step" id="rs3fe"><button class="rflow-back" onclick="showStep('rs2fe')"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3L5 7L9 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Retour</button><div class="auth-title">Verification de votre entreprise</div><div class="auth-sub">La verification entreprise prend 48 heures ouvrées.</div><div class="info-ban">&#x1F512; Vos documents sont transmis via connexion chiffree SSL et verifies par Smile Identity, leader africain du KYC. Ils ne sont pas conserves au-dela de la verification.</div><div class="kyc-sec"><div class="kyc-ttl">Registre de commerce <span class="badge-r">Obligatoire</span></div><div class="upload-zone" id="uz-fe-rc"><input type="file" accept="image/*,.pdf" onchange="handleUpload(this,'uz-fe-rc')"/><div class="uz-empty"><div class="uz-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 3V13M6 7L10 3L14 7" stroke="var(--muted2)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="3" y="13" width="14" height="4" rx="1" stroke="var(--muted2)" stroke-width="1.4"/></svg></div><div class="uz-label">RC, SIRET, recepisse de creation ou equivalent local</div><div class="uz-hint">JPG, PNG ou PDF - Max 10 Mo</div></div><div class="uz-preview"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7L5.5 10.5L12 4" stroke="var(--green)" stroke-width="2" stroke-linecap="round"/></svg><span class="uz-fname" style="font-size:12px;font-weight:700;color:var(--navy2);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span><button class="uz-del" onclick="clrUpload(event,'uz-fe-rc')">&#x2715;</button></div></div></div><div class="kyc-sec"><div class="kyc-ttl">Piece d'identite du representant legal <span class="badge-r">Obligatoire</span></div><div class="urow"><div class="upload-zone" id="uz-fe-id-r"><input type="file" accept="image/*,.pdf" onchange="handleUpload(this,'uz-fe-id-r')"/><div class="uz-empty"><div class="uz-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 3V13M6 7L10 3L14 7" stroke="var(--muted2)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="3" y="13" width="14" height="4" rx="1" stroke="var(--muted2)" stroke-width="1.4"/></svg></div><div class="uz-label">Recto CNI ou Passeport du representant</div><div class="uz-hint">JPG, PNG ou PDF - Max 10 Mo</div></div><div class="uz-preview"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7L5.5 10.5L12 4" stroke="var(--green)" stroke-width="2" stroke-linecap="round"/></svg><span class="uz-fname" style="font-size:12px;font-weight:700;color:var(--navy2);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span><button class="uz-del" onclick="clrUpload(event,'uz-fe-id-r')">&#x2715;</button></div></div><div class="upload-zone" id="uz-fe-id-v"><input type="file" accept="image/*,.pdf" onchange="handleUpload(this,'uz-fe-id-v')"/><div class="uz-empty"><div class="uz-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 3V13M6 7L10 3L14 7" stroke="var(--muted2)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="3" y="13" width="14" height="4" rx="1" stroke="var(--muted2)" stroke-width="1.4"/></svg></div><div class="uz-label">Verso CNI ou Passeport du representant</div><div class="uz-hint">JPG, PNG ou PDF - Max 10 Mo</div></div><div class="uz-preview"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7L5.5 10.5L12 4" stroke="var(--green)" stroke-width="2" stroke-linecap="round"/></svg><span class="uz-fname" style="font-size:12px;font-weight:700;color:var(--navy2);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span><button class="uz-del" onclick="clrUpload(event,'uz-fe-id-v')">&#x2715;</button></div></div></div></div><div class="kyc-sec"><div class="kyc-ttl">Selfie du representant legal <span class="badge-r">Obligatoire</span></div><div class="upload-zone" id="uz-fe-selfie"><input type="file" accept="image/*,.pdf" onchange="handleUpload(this,'uz-fe-selfie')"/><div class="uz-empty"><div class="uz-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 3V13M6 7L10 3L14 7" stroke="var(--muted2)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="3" y="13" width="14" height="4" rx="1" stroke="var(--muted2)" stroke-width="1.4"/></svg></div><div class="uz-label">Representant + piece d'identite ouverte · Fond neutre</div><div class="uz-hint">JPG ou PNG - Max 8 Mo</div></div><div class="uz-preview"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7L5.5 10.5L12 4" stroke="var(--green)" stroke-width="2" stroke-linecap="round"/></svg><span class="uz-fname" style="font-size:12px;font-weight:700;color:var(--navy2);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span><button class="uz-del" onclick="clrUpload(event,'uz-fe-selfie')">&#x2715;</button></div></div></div><div class="kyc-sec"><div class="kyc-ttl">Justificatif de domicile du siege <span class="badge-r">Obligatoire</span></div><div class="upload-zone" id="uz-fe-siege"><input type="file" accept="image/*,.pdf" onchange="handleUpload(this,'uz-fe-siege')"/><div class="uz-empty"><div class="uz-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 3V13M6 7L10 3L14 7" stroke="var(--muted2)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="3" y="13" width="14" height="4" rx="1" stroke="var(--muted2)" stroke-width="1.4"/></svg></div><div class="uz-label">Bail commercial ou facture du siege - moins de 3 mois</div><div class="uz-hint">JPG, PNG ou PDF - Max 10 Mo</div></div><div class="uz-preview"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7L5.5 10.5L12 4" stroke="var(--green)" stroke-width="2" stroke-linecap="round"/></svg><span class="uz-fname" style="font-size:12px;font-weight:700;color:var(--navy2);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span><button class="uz-del" onclick="clrUpload(event,'uz-fe-siege')">&#x2715;</button></div></div></div><div class="kyc-sec"><div class="kyc-ttl">Justificatif bancaire <span class="badge-o">Optionnel</span></div><div class="upload-zone" id="uz-fe-bank"><input type="file" accept="image/*,.pdf" onchange="handleUpload(this,'uz-fe-bank')"/><div class="uz-empty"><div class="uz-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 3V13M6 7L10 3L14 7" stroke="var(--muted2)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="3" y="13" width="14" height="4" rx="1" stroke="var(--muted2)" stroke-width="1.4"/></svg></div><div class="uz-label">RIB, releve de compte ou attestation bancaire</div><div class="uz-hint">JPG, PNG ou PDF - Max 10 Mo</div></div><div class="uz-preview"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7L5.5 10.5L12 4" stroke="var(--green)" stroke-width="2" stroke-linecap="round"/></svg><span class="uz-fname" style="font-size:12px;font-weight:700;color:var(--navy2);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span><button class="uz-del" onclick="clrUpload(event,'uz-fe-bank')">&#x2715;</button></div></div></div><div class="kyc-sec"><div class="kyc-ttl">Verification Mobile Money du representant <span class="badge-r">Obligatoire</span></div><div class="sms-row"><input class="inp" type="text" id="fe-sms" placeholder="Code a 6 chiffres" maxlength="6" style="flex:1"/><button class="btn-sms" id="fe-sms-btn" onclick="sendSMS('fe-sms-btn','fe-sms-ok')">Recevoir le code SMS</button></div><div class="sms-ok" id="fe-sms-ok"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7L5.5 10.5L12 4" stroke="var(--green)" stroke-width="2" stroke-linecap="round"/></svg> Numero verifie &#x2713;</div></div><div class="note-box">En soumettant ce dossier, vous confirmez que tous les documents sont authentiques. Toute fraude entraine un bannissement definitif du compte.</div><button class="btn-submit btn-navy" onclick="submitForm('rsokf')">Soumettre le dossier entreprise pour verification <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3.5 8H12.5M9.5 5L12.5 8L9.5 11" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
-<div class="reg-step" id="rsokc" style="text-align:center;padding:8px 0"><div class="ss-ico" style="background:var(--green-l)"><svg width="40" height="40" viewBox="0 0 40 40" fill="none"><path d="M8 20L16.5 28.5L32 12" stroke="var(--green)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ss-title">Votre compte est actif !</div><p style="font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:20px">Bienvenue sur Oriupe. Vous pouvez des maintenant parcourir les services, contacter des freelances et passer votre premiere commande.</p><div class="ss-info"><div><div class="ss-il">Statut</div><div class="ss-iv">Client verifie &#x2713;</div></div></div><div class="ss-info"><div><div class="ss-il">Acces</div><div class="ss-iv">Immediat - verifiez votre boite mail pour confirmer votre email</div></div></div><button class="btn-submit" style="margin-bottom:10px" onclick="location.href='/src/pages/catalog/index.html'">Explorer les services <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3.5 8H12.5M9.5 5L12.5 8L9.5 11" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button class="btn-outline" onclick="location.href='/src/pages/home/index.html'">Acceder a mon tableau de bord</button></div>
-<div class="reg-step" id="rsokf" style="text-align:center;padding:8px 0"><div class="ss-ico" style="background:#FFF4E5"><svg width="40" height="40" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="16" stroke="#F59E0B" stroke-width="2.5"/><path d="M20 12V20L25 25" stroke="#F59E0B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ss-title">Dossier soumis avec succes !</div><p style="font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:20px">Votre dossier de verification a bien ete recu. L'equipe Oriupe vous contacte dans les 24-48 heures ouvrées.</p><div class="ss-info"><div><div class="ss-il">Reference dossier</div><div class="ss-iv" style="color:var(--blue)">KYC-2025-CI-00892</div></div></div><div class="ss-info"><div><div class="ss-il">Prochaine etape</div><div class="ss-iv">Email de confirmation des validation - Badge Certifie ajoute automatiquement</div></div></div><div class="tracker"><div class="tr-s done"><div class="tr-dot">&#x2713;</div>Dossier recu</div><div class="tr-s now"><div class="tr-dot">&#x2192;</div>En cours d'examen</div><div class="tr-s"><div class="tr-dot"></div>Decision</div><div class="tr-s"><div class="tr-dot"></div>Compte active</div></div><div style="text-align:left;margin-bottom:16px;font-size:13px;color:var(--muted);line-height:1.8">En attendant :<br>&#183; Completez votre profil (photo, biographie)<br>&#183; Preparez la description de vos services<br>&#183; Explorez les appels d'offres actifs</div><button class="btn-submit" style="margin-bottom:10px" onclick="location.href='/src/pages/home/index.html'">Completer mon profil <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3.5 8H12.5M9.5 5L12.5 8L9.5 11" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button class="btn-outline" onclick="location.href='/src/pages/offers/index.html'">Acceder aux appels d'offres</button></div>
+<div class="reg-step" id="rsokc" style="text-align:center;padding:8px 0"><div class="ss-ico" style="background:var(--green-l)"><svg width="40" height="40" viewBox="0 0 40 40" fill="none"><path d="M8 20L16.5 28.5L32 12" stroke="var(--green)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ss-title">Votre compte est actif !</div><p style="font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:20px">Bienvenue sur Oriupe. Vous pouvez des maintenant parcourir les services, contacter des freelances et passer votre premiere commande.</p><div class="ss-info"><div><div class="ss-il">Statut</div><div class="ss-iv">Client verifie &#x2713;</div></div></div><div class="ss-info"><div><div class="ss-il">Acces</div><div class="ss-iv">Immediat - verifiez votre boite mail pour confirmer votre email</div></div></div><button class="btn-submit" style="margin-bottom:10px" onclick="location.href='/src/pages/catalog/index.html'">Explorer les services <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3.5 8H12.5M9.5 5L12.5 8L9.5 11" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button class="btn-outline" onclick="location.href='/src/pages/dashboard/client/index.html'">Acceder a mon tableau de bord</button></div>
+<div class="reg-step" id="rsokf" style="text-align:center;padding:8px 0"><div class="ss-ico" style="background:#FFF4E5"><svg width="40" height="40" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="16" stroke="#F59E0B" stroke-width="2.5"/><path d="M20 12V20L25 25" stroke="#F59E0B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ss-title">Dossier soumis avec succes !</div><p style="font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:20px">Votre dossier de verification a bien ete recu. L'equipe Oriupe vous contacte dans les 24-48 heures ouvrées.</p><div class="ss-info"><div><div class="ss-il">Reference dossier</div><div class="ss-iv" style="color:var(--blue)">KYC-2025-CI-00892</div></div></div><div class="ss-info"><div><div class="ss-il">Prochaine etape</div><div class="ss-iv">Email de confirmation des validation - Badge Certifie ajoute automatiquement</div></div></div><div class="tracker"><div class="tr-s done"><div class="tr-dot">&#x2713;</div>Dossier recu</div><div class="tr-s now"><div class="tr-dot">&#x2192;</div>En cours d'examen</div><div class="tr-s"><div class="tr-dot"></div>Decision</div><div class="tr-s"><div class="tr-dot"></div>Compte active</div></div><div style="text-align:left;margin-bottom:16px;font-size:13px;color:var(--muted);line-height:1.8">En attendant :<br>&#183; Completez votre profil (photo, biographie)<br>&#183; Preparez la description de vos services<br>&#183; Explorez les appels d'offres actifs</div><button class="btn-submit" style="margin-bottom:10px" onclick="location.href='/src/pages/dashboard/freelance/index.html'">Acceder a mon tableau de bord <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3.5 8H12.5M9.5 5L12.5 8L9.5 11" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button class="btn-outline" onclick="location.href='/src/pages/dashboard/freelance/index.html'">Explorer les appels d'offres</button></div>
       </div>
 
       <!-- ═ MOT DE PASSE OUBLIÉ ═ -->
@@ -460,14 +594,16 @@ label.fl{font-size:12px;font-weight:700;color:var(--navy2);display:block;margin-
 </div>
 
 <script>
-const R={role:null,clientType:null,freelanceType:null,curStep:'rs0'};
+const R={role:null,subtype:null,curStep:'rs0'};
 const PROG={rs0:8,rs1c:22,rs1f:22,rs2cp:50,rs2ce:50,rs2fp:50,rs2fe:50,rs3fp:85,rs3fe:85,rsokc:100,rsokf:100};
-const NEXT_MAP={rs0:()=>R.role==='client'?'rs1c':'rs1f',rs1c:()=>R.clientType==='particulier'?'rs2cp':'rs2ce',rs1f:()=>R.freelanceType==='particulier'?'rs2fp':'rs2fe'};
+
+// Subtype → form step mapping
+const SUBTYPE_STEP={cpart:'rs2cp',centrepr:'rs2ce',fpart:'rs2fp',fentrepr:'rs2fe'};
 
 function showStep(id){
   document.querySelectorAll('.reg-step').forEach(s=>s.classList.remove('active'));
   const el=document.getElementById(id);
-  if(el){el.classList.add('active');}
+  if(el)el.classList.add('active');
   const bar=document.getElementById('rfBar');
   if(bar)bar.style.width=(PROG[id]||8)+'%';
   R.curStep=id;
@@ -476,29 +612,65 @@ function showStep(id){
   document.querySelector('.auth-right')?.scrollTo(0,0);
 }
 
-function goNext(){
-  const fn=NEXT_MAP[R.curStep];
-  if(fn)showStep(fn());
+function selRole(role){
+  R.role=role;
+  R.subtype=null;
+  // Update role card styles
+  ['bc-client','bc-freelance'].forEach(id=>{
+    const c=document.getElementById(id);
+    if(c)c.classList.toggle('selected',id==='bc-'+role);
+  });
+  // Disable continue until subtype chosen
+  const btn=document.getElementById('rs0btn');
+  if(btn)btn.disabled=true;
+  // Reveal sub-section
+  const wrap=document.getElementById('subtype-wrap');
+  if(wrap)wrap.classList.add('open');
+  // Show correct sub-options
+  const sc=document.getElementById('subtypes-client');
+  const sf=document.getElementById('subtypes-freelance');
+  const fn=document.getElementById('freelance-note');
+  const lbl=document.getElementById('subtype-label');
+  if(sc)sc.style.display=role==='client'?'grid':'none';
+  if(sf)sf.style.display=role==='freelance'?'grid':'none';
+  if(fn)fn.style.display=role==='freelance'?'block':'none';
+  if(lbl)lbl.textContent=role==='client'?'Quel est votre profil client ?':'Quel type de freelance êtes-vous ?';
+  // Reset subtype selection
+  ['bc-cpart','bc-centrepr','bc-fpart','bc-fentrepr'].forEach(id=>{
+    const c=document.getElementById(id);
+    if(c)c.classList.remove('selected');
+  });
+  // Scroll subtype into view after animation
+  setTimeout(()=>{
+    const wrap=document.getElementById('subtype-wrap');
+    if(wrap)wrap.scrollIntoView({behavior:'smooth',block:'nearest'});
+  },200);
 }
 
+function selSubtype(type){
+  R.subtype=type;
+  const group=type.startsWith('c')?['bc-cpart','bc-centrepr']:['bc-fpart','bc-fentrepr'];
+  group.forEach(id=>{
+    const c=document.getElementById(id);
+    if(c)c.classList.toggle('selected',id==='bc-'+type);
+  });
+  const btn=document.getElementById('rs0btn');
+  if(btn)btn.disabled=false;
+}
+
+function goToForm(){
+  const step=SUBTYPE_STEP[R.subtype];
+  if(step)showStep(step);
+}
+
+// Legacy: selCard still used by rs1c and rs1f steps if navigated directly
 function selCard(cardId){
   const card=document.getElementById(cardId);if(!card)return;
-  const group=cardId.startsWith('bc-f')&&!cardId.startsWith('bc-fp')?'ftype':
-               cardId.startsWith('bc-c')&&cardId!=='bc-client'?'ctype':'role';
-  document.querySelectorAll('.big-card').forEach(c=>{
-    const cg=c.id.startsWith('bc-f')&&!c.id.startsWith('bc-fp')?'ftype':
-              c.id.startsWith('bc-c')&&c.id!=='bc-client'?'ctype':'role';
-    if(cg===group){c.classList.remove('selected');const chk=c.querySelector('.bc-chk');if(chk)chk.innerHTML='';}
-  });
   card.classList.add('selected');
-  const chk=card.querySelector('.bc-chk');
-  if(chk)chk.innerHTML='<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-  if(cardId==='bc-client'){R.role='client';const b=document.getElementById('rs0btn');if(b)b.disabled=false;}
-  else if(cardId==='bc-freelance'){R.role='freelance';const b=document.getElementById('rs0btn');if(b)b.disabled=false;}
-  else if(cardId==='bc-cpart'){R.clientType='particulier';const b=document.getElementById('rs1cbtn');if(b)b.disabled=false;}
-  else if(cardId==='bc-centrepr'){R.clientType='entreprise';const b=document.getElementById('rs1cbtn');if(b)b.disabled=false;}
-  else if(cardId==='bc-fpart'){R.freelanceType='particulier';const b=document.getElementById('rs1fbtn');if(b)b.disabled=false;}
-  else if(cardId==='bc-fentrepr'){R.freelanceType='entreprise';const b=document.getElementById('rs1fbtn');if(b)b.disabled=false;}
+  if(cardId==='bc-cpart'){R.subtype='cpart';const b=document.getElementById('rs1cbtn');if(b)b.disabled=false;}
+  else if(cardId==='bc-centrepr'){R.subtype='centrepr';const b=document.getElementById('rs1cbtn');if(b)b.disabled=false;}
+  else if(cardId==='bc-fpart'){R.subtype='fpart';const b=document.getElementById('rs1fbtn');if(b)b.disabled=false;}
+  else if(cardId==='bc-fentrepr'){R.subtype='fentrepr';const b=document.getElementById('rs1fbtn');if(b)b.disabled=false;}
 }
 
 function switchAuth(mode){
@@ -589,11 +761,33 @@ function validateEmail(inp){
   else{inp.classList.remove('error');err?.classList.remove('show');}
 }
 
+const LOGIN_ROLES={
+  'client@oriupe.com':{
+    pwd:'Client2025!', url:'/src/pages/dashboard/client/index.html',
+    session:{firstName:'Awa',lastName:'Mbaye',email:'client@oriupe.com',role:'client',isKycVerified:true,kycToken:'kc-awa-2025-ci',badgeLabel:'Compte vérifié',unreadMessages:2,activeOrders:4,avatarUrl:null}
+  },
+  'freelance@oriupe.com':{
+    pwd:'Freelance2025!', url:'/src/pages/dashboard/freelance/index.html',
+    session:{firstName:'Kofi',lastName:'Asante',email:'freelance@oriupe.com',role:'freelance',isKycVerified:true,kycToken:'kf-kofi-2025-ci',badgeLabel:'Identité vérifiée',unreadMessages:3,activeOrders:4,avatarUrl:null}
+  },
+};
+function fillLogin(email,pwd){
+  document.getElementById('loginEmail').value=email;
+  document.getElementById('loginPwd').value=pwd;
+  document.getElementById('loginEmail').focus();
+}
+function _writeSession(data){
+  try{localStorage.setItem('oriupe_session',JSON.stringify({...data,isLoggedIn:true,expiresAt:Date.now()+30*24*60*60*1000}));}catch(e){}
+}
 function handleLogin(){
+  const email=(document.getElementById('loginEmail').value||'').trim().toLowerCase();
   const btn=document.querySelector('#panel-login .btn-submit');
   btn.disabled=true;
   btn.innerHTML='<svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="animation:spin 1s linear infinite"><path d="M8 2C4.7 2 2 4.7 2 8" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg> Connexion en cours...';
-  setTimeout(()=>{window.location.href='/src/pages/home/index.html';},1800);
+  const role=LOGIN_ROLES[email];
+  if(role&&role.session) _writeSession(role.session);
+  const dest=role?role.url:'/src/pages/dashboard/client/index.html';
+  setTimeout(()=>{window.location.href=dest;},1400);
 }
 
 function handleForgot(){

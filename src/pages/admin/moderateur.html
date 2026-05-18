@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<script>
+  (function(){
+    try{
+      var s=JSON.parse(localStorage.getItem('oriupe_admin_session')||'null');
+      if(!s||!s.isAdmin) throw new Error();
+      // Session expires after 8h
+      if(Date.now()-s.loginAt > 8*60*60*1000){localStorage.removeItem('oriupe_admin_session');throw new Error();}
+    }catch(e){
+      window.location.replace('/src/pages/admin/login.html');
+    }
+  })();
+</script>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Oriupe Admin — Espace Modérateur</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+  <link rel="stylesheet" href="/src/shared/styles/base.css"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;height:100%}
+body{font-family:"Plus Jakarta Sans",sans-serif;background:#060F1E;color:#E2E8F0;height:100vh;display:flex;overflow:hidden}
+a{text-decoration:none;color:inherit}button{font-family:"Plus Jakarta Sans",sans-serif;cursor:pointer}
+.sidebar{width:var(--sidebar-w);flex-shrink:0;background:var(--navy2);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100vh;overflow-y:auto;position:fixed;left:0;top:0;z-index:100}
+.sidebar::-webkit-scrollbar{width:3px}.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.sb-logo{padding:22px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.sb-logo-t{font-family:"Bricolage Grotesque",sans-serif;font-size:18px;font-weight:800;color:#fff}
+.sb-logo-badge{font-size:9px;font-weight:700;color:#fff;padding:2px 7px;border-radius:4px;letter-spacing:.5px}
+.sb-admin-info{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.sb-av{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0}
+.sb-name{font-size:13px;font-weight:700;color:#fff}.sb-role-tag{font-size:10px;font-weight:600}
+.sb-online{width:7px;height:7px;background:var(--green);border-radius:50%;margin-left:auto;flex-shrink:0;box-shadow:0 0 6px var(--green)}
+.sb-section-title{font-size:10px;font-weight:700;color:var(--muted2);letter-spacing:1.2px;padding:14px 16px 6px;text-transform:uppercase}
+.sb-nav{display:flex;flex-direction:column;gap:2px;padding:0 8px}
+.sb-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;cursor:pointer;transition:all .2s;font-size:13px;font-weight:500;color:var(--muted)}
+.sb-item:hover{background:rgba(255,255,255,.05);color:#fff}.sb-item.active{background:rgba(60,184,120,.12);color:var(--green);font-weight:700}
+.sb-ic{width:18px;text-align:center;color:var(--muted2);transition:color .2s;flex-shrink:0}.sb-item.active .sb-ic{color:var(--green)}
+.sb-badge{font-size:10px;font-weight:700;min-width:20px;height:20px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-left:auto;padding:0 6px}
+.sb-badge.red{background:var(--red);color:#fff}.sb-badge.orange{background:var(--orange);color:#fff}.sb-badge.blue{background:var(--blue);color:#fff}.sb-badge.green{background:var(--green);color:#fff}
+.sb-bottom{margin-top:auto;padding:12px 8px;border-top:1px solid var(--border)}
+.main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;height:100vh;overflow:hidden}
+.topbar{height:60px;background:var(--navy2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 28px;flex-shrink:0}
+.tb-title{font-family:"Bricolage Grotesque",sans-serif;font-size:16px;font-weight:800;color:#fff}.tb-subtitle{font-size:12px;color:var(--muted)}
+.tb-right{display:flex;align-items:center;gap:10px}
+.tb-btn{height:36px;padding:0 14px;border:1px solid var(--border);border-radius:8px;background:transparent;color:var(--muted);font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:7px;transition:all .2s;font-family:"Plus Jakarta Sans",sans-serif}.tb-btn:hover{border-color:var(--green);color:var(--green)}
+.tb-alert{position:relative}.tb-alert-dot{position:absolute;top:-2px;right:-2px;width:8px;height:8px;background:var(--red);border-radius:50%;border:2px solid var(--navy2)}
+.content{flex:1;overflow-y:auto;padding:24px 28px}.content::-webkit-scrollbar{width:5px}.content::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+.panel{display:none}.panel.active{display:block;animation:fadeIn .25s var(--ease)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.card{background:var(--navy3);border:1px solid var(--border);border-radius:14px;padding:20px}
+.sec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px}
+.sec-h{font-family:"Bricolage Grotesque",sans-serif;font-size:20px;font-weight:800;color:#fff}.sec-sub{font-size:13px;color:var(--muted);margin-top:2px}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px;margin-bottom:24px}
+.stat-card{background:var(--navy3);border:1px solid var(--border);border-radius:14px;padding:18px 20px;transition:all .2s}
+.stat-card:hover{border-color:rgba(255,255,255,.12);transform:translateY(-2px)}.stat-card.alert{border-color:rgba(239,68,68,.25);background:rgba(239,68,68,.05)}
+.sc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.sc-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sc-trend{font-size:11px;font-weight:700;display:flex;align-items:center;gap:3px}.sc-trend.up{color:var(--green)}.sc-trend.down{color:var(--red)}
+.sc-val{font-family:"Bricolage Grotesque",sans-serif;font-size:28px;font-weight:800;color:#fff;line-height:1;margin-bottom:4px}.sc-lbl{font-size:12px;color:var(--muted)}
+.badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px}
+.b-green{background:var(--green-l);color:var(--green)}.b-red{background:var(--red-l);color:var(--red)}.b-gold{background:var(--gold-l);color:var(--gold)}.b-blue{background:var(--blue-l);color:var(--blue)}.b-purple{background:var(--purple-l);color:var(--purple)}.b-orange{background:var(--orange-l);color:var(--orange)}.b-muted{background:rgba(255,255,255,.07);color:var(--muted)}
+.btn{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;border:none;border-radius:8px;padding:8px 14px;cursor:pointer;transition:all .2s;font-family:"Plus Jakarta Sans",sans-serif}
+.btn-green{background:var(--green);color:#fff}.btn-green:hover{background:var(--green-d)}.btn-red{background:var(--red);color:#fff}.btn-blue{background:var(--blue);color:#fff}.btn-gold{background:var(--gold);color:#fff}
+.btn-outline{background:transparent;color:var(--muted);border:1px solid var(--border)}.btn-outline:hover{border-color:var(--green);color:var(--green)}
+.btn-sm{padding:5px 11px;font-size:11px}.btn-icon{width:32px;height:32px;padding:0;justify-content:center;background:rgba(255,255,255,.06);color:var(--muted);border:1px solid var(--border)}.btn-icon:hover{background:rgba(255,255,255,.1);color:#fff}
+.search-wrap{position:relative}.search-inp{background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:10px;padding:9px 14px 9px 38px;font-size:13px;color:#fff;outline:none;width:240px;transition:all .2s;font-family:"Plus Jakarta Sans",sans-serif}.search-inp:focus{border-color:var(--green)}.search-inp::placeholder{color:var(--muted2)}.search-ico{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--muted2);font-size:13px}
+.filter-row{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px}
+.filter-chip{font-size:12px;font-weight:600;padding:6px 14px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .2s;font-family:"Plus Jakarta Sans",sans-serif}.filter-chip:hover{border-color:var(--green);color:var(--green)}.filter-chip.active{background:var(--green);border-color:var(--green);color:#fff}
+.user-cell{display:flex;align-items:center;gap:10px}.u-av{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0}.u-name{font-size:13px;font-weight:600;color:#fff}.u-email{font-size:11px;color:var(--muted)}
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;padding:10px 14px;font-size:10px;font-weight:700;color:var(--muted2);letter-spacing:.7px;text-transform:uppercase;border-bottom:1px solid var(--border)}
+td{padding:12px 14px;border-bottom:1px solid var(--border2);vertical-align:middle}
+tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.02)}
+.kyc-list{display:flex;flex-direction:column;gap:12px}
+.kyc-card{background:var(--navy3);border:1px solid var(--border);border-radius:14px;overflow:hidden}.kyc-card.urgent{border-color:rgba(239,68,68,.3)}
+.kyc-head{padding:16px 18px;display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--border2)}
+.kyc-info{flex:1}.kyc-name{font-size:14px;font-weight:700;color:#fff;margin-bottom:3px}.kyc-meta{font-size:11px;color:var(--muted)}
+.kyc-sla{font-size:11px;font-weight:700;padding:4px 10px;border-radius:6px;flex-shrink:0}
+.sla-ok{background:var(--green-l);color:var(--green)}.sla-warn{background:var(--gold-l);color:var(--gold)}.sla-late{background:var(--red-l);color:var(--red)}
+.kyc-docs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:14px 18px}
+.kyc-doc{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;cursor:pointer;transition:all .2s}.kyc-doc:hover{border-color:var(--blue);background:var(--blue-l)}
+.kyc-doc-icon{width:36px;height:36px;margin:0 auto 8px;color:var(--muted)}.kyc-doc-label{font-size:11px;font-weight:600;color:var(--muted)}
+.kyc-actions{padding:12px 18px;display:flex;gap:8px;flex-wrap:wrap;background:rgba(255,255,255,.02);border-top:1px solid var(--border2)}
+.kyc-checklist{padding:0 18px 14px;display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.kc-item{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted)}.kc-ok{color:var(--green)}.kc-err{color:var(--red)}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(6px);z-index:500;display:none;align-items:center;justify-content:center;padding:20px}.modal-bg.open{display:flex}
+.modal{background:var(--navy3);border:1px solid var(--border);border-radius:20px;width:100%;max-width:460px;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-md);animation:slideUp .3s var(--spring) both}
+@keyframes slideUp{from{transform:translateY(30px);opacity:0}to{transform:none;opacity:1}}
+.modal-head{padding:20px 22px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.modal-h{font-family:"Bricolage Grotesque",sans-serif;font-size:18px;font-weight:800;color:#fff}
+.modal-close{width:30px;height:30px;border:1px solid var(--border);border-radius:7px;background:transparent;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;font-size:16px}.modal-close:hover{border-color:var(--red);color:var(--red)}
+.modal-body{padding:20px 22px}.modal-foot{padding:16px 22px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end}
+.modal-inp{width:100%;background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-size:13px;color:#fff;outline:none;transition:all .2s;font-family:"Plus Jakarta Sans",sans-serif;margin-bottom:12px}.modal-inp:focus{border-color:var(--green)}.modal-inp::placeholder{color:var(--muted2)}
+.modal-lbl{font-size:12px;font-weight:700;color:rgba(255,255,255,.7);margin-bottom:7px;display:block}
+.modal-select{width:100%;background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-size:13px;color:#fff;outline:none;font-family:"Plus Jakarta Sans",sans-serif;margin-bottom:12px;appearance:none;cursor:pointer}.modal-select option{background:var(--navy2);color:#fff}
+.warn-box{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:10px;padding:14px;display:flex;gap:10px;margin-bottom:16px}
+.log-list{display:flex;flex-direction:column}.log-item{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border2)}.log-item:last-child{border-bottom:none}
+.log-ico{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;margin-top:2px}.log-info{flex:1}.log-action{font-size:13px;font-weight:600;color:#fff;margin-bottom:3px}.log-meta{font-size:11px;color:var(--muted);line-height:1.5}.log-time{font-size:10px;color:var(--muted2);flex-shrink:0}
+.restricted-banner{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.restricted-banner p{font-size:13px;color:rgba(255,255,255,.7);line-height:1.6}
+@media(max-width:1024px){.sb-logo-t,.sb-logo-badge,.sb-name,.sb-role-tag,.sb-section-title,.sb-item span,.sb-badge{display:none}.sb-logo{justify-content:center;padding:16px 8px}.sb-admin-info{justify-content:center}.sb-item{justify-content:center}.sb-ic{width:auto}.sb-nav{padding:0 4px}}
+</style>
+</head>
+<body>
+<aside class="sidebar">
+  <div class="sb-logo">
+    <svg width="26" height="26" viewBox="0 0 28 28" fill="none"><circle cx="8.5" cy="8.5" r="7" fill="#8DC63F" opacity=".9"/><circle cx="19.5" cy="8.5" r="7" fill="#29ABE2" opacity=".9"/><circle cx="8.5" cy="19.5" r="7" fill="#3CB878" opacity=".9"/><circle cx="19.5" cy="19.5" r="7" fill="rgba(255,255,255,.1)"/><rect x="8" y="8" width="12" height="12" rx="1.2" fill="rgba(60,184,120,.42)"/></svg>
+    <span class="sb-logo-t">Oriupe</span>
+    <span class="sb-logo-badge" style="background:var(--blue)">MODO</span>
+  </div>
+  <div class="sb-admin-info">
+    <div class="sb-av" style="background:linear-gradient(135deg,var(--blue),#7DD6F0)">MO</div>
+    <div><div class="sb-name">Marie Ouédraogo</div><div class="sb-role-tag" style="color:var(--blue)">Modératrice</div></div>
+    <div class="sb-online"></div>
+  </div>
+  <div class="sb-section-title">Modération</div>
+  <div class="sb-nav">
+    <div class="sb-item active" onclick="showPanel('dashboard')"><i class="sb-ic fa-solid fa-chart-bar"></i><span>Vue d'ensemble</span></div>
+    <div class="sb-item" onclick="showPanel('kyc')"><i class="sb-ic fa-solid fa-id-card"></i><span>Vérification KYC</span><div class="sb-badge orange">12</div></div>
+    <div class="sb-item" onclick="showPanel('services')"><i class="sb-ic fa-solid fa-briefcase"></i><span>Services</span><div class="sb-badge orange">34</div></div>
+    <div class="sb-item" onclick="showPanel('offers')"><i class="sb-ic fa-solid fa-file-contract"></i><span>Appels d'offres</span><div class="sb-badge blue">8</div></div>
+    <div class="sb-item" onclick="showPanel('academy')"><i class="sb-ic fa-solid fa-graduation-cap"></i><span>Academy</span></div>
+    <div class="sb-item" onclick="showPanel('audit')"><i class="sb-ic fa-solid fa-clock-rotate-left"></i><span>Mes actions</span></div>
+  </div>
+  <div class="sb-bottom">
+    <div class="sb-nav">
+      <div class="sb-item" style="color:rgba(255,255,255,.4)" onclick="location.href='/src/pages/admin/index.html'"><i class="sb-ic fa-solid fa-arrow-left"></i><span>Admin principal</span></div>
+      <div class="sb-item" style="color:var(--red)" onclick="localStorage.removeItem('oriupe_admin_session');location.href='/src/pages/admin/login.html'"><i class="sb-ic fa-solid fa-right-from-bracket"></i><span>Déconnexion</span></div>
+    </div>
+  </div>
+</aside>
+<div class="main">
+  <div class="topbar">
+    <div><div class="tb-title" id="tb-title">Vue d'ensemble</div><div class="tb-subtitle" id="tb-sub">Espace modérateur · <span id="live-time"></span></div></div>
+    <div class="tb-right">
+      <button class="tb-btn"><i class="fa-solid fa-rotate" style="font-size:11px"></i> Actualiser</button>
+      <button class="tb-btn tb-alert"><i class="fa-solid fa-bell" style="font-size:12px"></i><div class="tb-alert-dot"></div></button>
+      <div class="tb-btn" style="background:var(--blue-l);border-color:rgba(41,171,226,.3);color:var(--blue)"><i class="fa-solid fa-user-shield" style="font-size:11px"></i> Modérateur</div>
+    </div>
+  </div>
+  <div class="content">
+
+    <div class="panel active" id="panel-dashboard">
+      <div class="restricted-banner">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round" style="flex-shrink:0"><path d="M10 2L3 5v5c0 4 3 7.3 7 8 4-.7 7-4 7-8V5l-7-3z"/></svg>
+        <p>Vous avez accès à la <strong style="color:#fff">modération KYC, services et appels d'offres</strong>. Les sections financières et les paramètres système sont réservés au Super Admin.</p>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card alert"><div class="sc-top"><div class="sc-icon" style="background:var(--red-l)"><i class="fa-solid fa-id-card" style="color:var(--red);font-size:16px"></i></div><div class="sc-trend down"><i class="fa-solid fa-triangle-exclamation"></i> Urgent</div></div><div class="sc-val" data-target="12">—</div><div class="sc-lbl">KYC en attente</div></div>
+        <div class="stat-card alert"><div class="sc-top"><div class="sc-icon" style="background:var(--orange-l)"><i class="fa-solid fa-briefcase" style="color:var(--orange);font-size:16px"></i></div><div class="sc-trend down"><i class="fa-solid fa-clock"></i> À traiter</div></div><div class="sc-val" data-target="34">—</div><div class="sc-lbl">Services en attente</div></div>
+        <div class="stat-card"><div class="sc-top"><div class="sc-icon" style="background:var(--blue-l)"><i class="fa-solid fa-file-contract" style="color:var(--blue);font-size:16px"></i></div><div class="sc-trend up"><i class="fa-solid fa-arrow-up"></i>+3</div></div><div class="sc-val" data-target="8">—</div><div class="sc-lbl">Appels d'offres</div></div>
+        <div class="stat-card"><div class="sc-top"><div class="sc-icon" style="background:var(--green-l)"><i class="fa-solid fa-circle-check" style="color:var(--green);font-size:16px"></i></div><div class="sc-trend up"><i class="fa-solid fa-arrow-up"></i>+28%</div></div><div class="sc-val" data-target="847">—</div><div class="sc-lbl">KYC validés ce mois</div></div>
+      </div>
+      <div class="card">
+        <div class="sec-h" style="font-size:15px;margin-bottom:14px">Dossiers KYC urgents — SLA dépassé</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;align-items:center;gap:12px;padding:12px;background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);border-radius:10px;cursor:pointer" onclick="showPanel('kyc')">
+            <div class="u-av" style="width:36px;height:36px;background:linear-gradient(135deg,var(--blue),#7DD6F0)">AM</div>
+            <div style="flex:1"><div style="font-size:13px;font-weight:600;color:#fff">Amina Mbaye — Freelance Particulier</div><div style="font-size:11px;color:var(--red)">26h14 écoulées — SLA violé</div></div>
+            <span class="badge b-red">Urgent</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;padding:12px;background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.2);border-radius:10px;cursor:pointer" onclick="showPanel('kyc')">
+            <div class="u-av" style="width:36px;height:36px;background:linear-gradient(135deg,var(--green),var(--lime))">OD</div>
+            <div style="flex:1"><div style="font-size:13px;font-weight:600;color:#fff">Ousmane Diallo — Freelance Entreprise</div><div style="font-size:11px;color:var(--gold)">18h30 écoulées — 5h30 restantes</div></div>
+            <span class="badge b-gold">Attention</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" id="panel-kyc">
+      <div class="sec-head"><div><div class="sec-h">File d'attente KYC</div><div class="sec-sub">12 dossiers · SLA 24h particuliers / 48h entreprises</div></div><div class="filter-row" style="margin-bottom:0" data-target="#kyc-list-modo"><button class="filter-chip active" data-filter="tous" onclick="filterChip(this)">Tous (12)</button><button class="filter-chip" data-filter="particulier" onclick="filterChip(this)">Particuliers (8)</button><button class="filter-chip" data-filter="entreprise" onclick="filterChip(this)">Entreprises (4)</button><button class="filter-chip" data-filter="sla" onclick="filterChip(this)" style="border-color:rgba(239,68,68,.3);color:var(--red)">SLA dépassé (2)</button></div></div>
+      <div class="kyc-list" id="kyc-list-modo">
+        <div class="kyc-card urgent" data-tags="particulier sla">
+          <div class="kyc-head"><div class="u-av" style="width:38px;height:38px;background:linear-gradient(135deg,var(--blue),#7DD6F0)">AM</div><div class="kyc-info"><div class="kyc-name">Amina Mbaye <span style="color:var(--gold);font-weight:500">· Freelance Particulier</span></div><div class="kyc-meta">amina@startup.sn · +221 77 000 0000 · Dakar, Sénégal</div><div class="kyc-meta" style="margin-top:3px">Soumis le 22 Jan 2025 à 10h32 · <strong style="color:var(--red)">26h14 écoulées</strong></div></div><div class="kyc-sla sla-late">SLA dépassé</div></div>
+          <div class="kyc-docs">
+            <div class="kyc-doc"><svg class="kyc-doc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="8" cy="12" r="2"/><path d="M14 10h4M14 13h3"/></svg><div class="kyc-doc-label">CNI Recto</div></div>
+            <div class="kyc-doc"><svg class="kyc-doc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="8" cy="12" r="2"/><path d="M14 10h4M14 13h3"/></svg><div class="kyc-doc-label">CNI Verso</div></div>
+            <div class="kyc-doc"><svg class="kyc-doc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg><div class="kyc-doc-label">Selfie + doc</div></div>
+          </div>
+          <div class="kyc-checklist"><div class="kc-item kc-ok"><i class="fa-solid fa-check"></i> Document lisible</div><div class="kc-item kc-ok"><i class="fa-solid fa-check"></i> Non expiré</div><div class="kc-item kc-ok"><i class="fa-solid fa-check"></i> Selfie conforme</div><div class="kc-item kc-ok"><i class="fa-solid fa-check"></i> Mobile Money OK</div><div class="kc-item kc-ok"><i class="fa-solid fa-check"></i> Smile Identity OK</div><div class="kc-item" style="color:var(--muted)"><i class="fa-regular fa-circle"></i> Cohérence nom/photo</div></div>
+          <div class="kyc-actions"><button class="btn btn-green btn-sm" onclick="openModal('kyc-approve')"><i class="fa-solid fa-circle-check"></i> Certifier</button><button class="btn btn-outline btn-sm" onclick="openModal('kyc-complement')"><i class="fa-solid fa-plus"></i> Complément</button><button class="btn btn-red btn-sm" onclick="openModal('kyc-reject')"><i class="fa-solid fa-xmark"></i> Rejeter</button><button class="btn btn-outline btn-sm" style="margin-left:auto"><i class="fa-solid fa-envelope"></i> Contacter</button></div>
+        </div>
+        <div class="kyc-card">
+          <div class="kyc-head"><div class="u-av" style="width:38px;height:38px;background:linear-gradient(135deg,var(--green),var(--lime))">OD</div><div class="kyc-info"><div class="kyc-name">Ousmane Diallo <span style="color:var(--gold);font-weight:500">· Freelance Entreprise</span></div><div class="kyc-meta">ousmane@agence.sn · +221 76 000 0000 · Dakar, Sénégal</div><div class="kyc-meta" style="margin-top:3px">Soumis le 23 Jan · <strong style="color:var(--gold)">18h30 écoulées — 5h30 restantes</strong></div></div><div class="kyc-sla sla-warn">5h30 restantes</div></div>
+          <div class="kyc-docs">
+            <div class="kyc-doc"><svg class="kyc-doc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg><div class="kyc-doc-label">Registre Commerce</div></div>
+            <div class="kyc-doc"><svg class="kyc-doc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="8" cy="12" r="2"/><path d="M14 10h4M14 13h3"/></svg><div class="kyc-doc-label">CNI Représentant</div></div>
+            <div class="kyc-doc"><svg class="kyc-doc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg><div class="kyc-doc-label">Selfie + doc</div></div>
+          </div>
+          <div class="kyc-actions"><button class="btn btn-green btn-sm" onclick="openModal('kyc-approve')"><i class="fa-solid fa-circle-check"></i> Certifier</button><button class="btn btn-outline btn-sm" onclick="openModal('kyc-complement')"><i class="fa-solid fa-plus"></i> Complément</button><button class="btn btn-red btn-sm" onclick="openModal('kyc-reject')"><i class="fa-solid fa-xmark"></i> Rejeter</button></div>
+        </div>
+        <div class="kyc-card">
+          <div class="kyc-head"><div class="u-av" style="width:38px;height:38px;background:linear-gradient(135deg,var(--purple),#A78BFA)">FT</div><div class="kyc-info"><div class="kyc-name">Fatou Traoré <span style="color:var(--blue);font-weight:500">· Freelance Particulier</span></div><div class="kyc-meta">fatou@design.ci · +225 07 000 0000 · Abidjan, Côte d'Ivoire</div><div class="kyc-meta" style="margin-top:3px">Soumis le 24 Jan · <strong style="color:var(--green)">4h10 écoulées — dans les délais</strong></div></div><div class="kyc-sla sla-ok">Dans les délais</div></div>
+          <div class="kyc-docs">
+            <div class="kyc-doc"><svg class="kyc-doc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="8" cy="12" r="2"/><path d="M14 10h4M14 13h3"/></svg><div class="kyc-doc-label">CNI Recto</div></div>
+            <div class="kyc-doc"><svg class="kyc-doc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="8" cy="12" r="2"/><path d="M14 10h4M14 13h3"/></svg><div class="kyc-doc-label">CNI Verso</div></div>
+            <div class="kyc-doc"><svg class="kyc-doc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg><div class="kyc-doc-label">Selfie + doc</div></div>
+          </div>
+          <div class="kyc-actions"><button class="btn btn-green btn-sm" onclick="openModal('kyc-approve')"><i class="fa-solid fa-circle-check"></i> Certifier</button><button class="btn btn-outline btn-sm" onclick="openModal('kyc-complement')"><i class="fa-solid fa-plus"></i> Complément</button><button class="btn btn-red btn-sm" onclick="openModal('kyc-reject')"><i class="fa-solid fa-xmark"></i> Rejeter</button></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" id="panel-services">
+      <div class="sec-head"><div><div class="sec-h">Modération des services</div><div class="sec-sub">34 services en attente</div></div><div class="search-wrap"><i class="search-ico fa-solid fa-magnifying-glass"></i><input class="search-inp" placeholder="Titre, freelance..."/></div></div>
+      <div class="filter-row" data-target="#services-tbody-modo"><button class="filter-chip active" data-filter="tous" onclick="filterChip(this)">Tous</button><button class="filter-chip" data-filter="attente" onclick="filterChip(this)">En attente (34)</button><button class="filter-chip" data-filter="publie" onclick="filterChip(this)">Publiés</button><button class="filter-chip" data-filter="suspendu" onclick="filterChip(this)">Suspendus</button><button class="filter-chip" data-filter="signale" onclick="filterChip(this)" style="border-color:rgba(239,68,68,.3);color:var(--red)">Signalés (5)</button></div>
+      <div class="card" style="padding:0;overflow:hidden"><div class="tbl-wrap"><table>
+        <thead><tr><th>Service</th><th>Freelance</th><th>Catégorie</th><th>Prix min</th><th>Statut</th><th>Actions</th></tr></thead>
+        <tbody id="services-tbody-modo">
+          <tr data-tags="attente"><td style="max-width:200px"><div style="font-size:13px;font-weight:600;color:#fff">Création site web React professionnel</div><div style="font-size:11px;color:var(--muted)">Soumis le 24 Jan 2025</div></td><td><div class="user-cell"><div class="u-av" style="background:linear-gradient(135deg,var(--green),var(--lime))">KA</div><div class="u-name">Kofi Asante</div></div></td><td><span class="badge b-blue">Développement</span></td><td style="font-weight:700;color:var(--green)">35 000 FCFA</td><td><span class="badge b-orange">En attente</span></td><td><div style="display:flex;gap:5px"><button class="btn btn-green btn-sm"><i class="fa-solid fa-check"></i> Approuver</button><button class="btn btn-red btn-sm"><i class="fa-solid fa-xmark"></i></button><button class="btn btn-outline btn-sm"><i class="fa-solid fa-star"></i></button></div></td></tr>
+          <tr data-tags="signale"><td style="max-width:200px"><div style="font-size:13px;font-weight:600;color:#fff">Logo + charte graphique</div><div style="font-size:11px;color:var(--muted)">Soumis le 23 Jan 2025</div></td><td><div class="user-cell"><div class="u-av" style="background:linear-gradient(135deg,var(--purple),#A78BFA)">OD</div><div class="u-name">Ousmane D.</div></div></td><td><span class="badge b-purple">Design</span></td><td style="font-weight:700;color:var(--green)">20 000 FCFA</td><td><span class="badge b-red"><i class="fa-solid fa-flag"></i> Signalé</span></td><td><div style="display:flex;gap:5px"><button class="btn btn-green btn-sm"><i class="fa-solid fa-check"></i></button><button class="btn btn-gold btn-sm"><i class="fa-solid fa-pause"></i></button><button class="btn btn-red btn-sm"><i class="fa-solid fa-trash"></i></button></div></td></tr>
+          <tr data-tags="attente"><td style="max-width:200px"><div style="font-size:13px;font-weight:600;color:#fff">Marketing digital réseaux sociaux</div><div style="font-size:11px;color:var(--muted)">Soumis le 22 Jan 2025</div></td><td><div class="user-cell"><div class="u-av" style="background:linear-gradient(135deg,var(--gold),#FCD34D);color:#78350F">YK</div><div class="u-name">Yaw Kojo</div></div></td><td><span class="badge b-gold">Marketing</span></td><td style="font-weight:700;color:var(--green)">15 000 FCFA</td><td><span class="badge b-orange">En attente</span></td><td><div style="display:flex;gap:5px"><button class="btn btn-green btn-sm"><i class="fa-solid fa-check"></i> Approuver</button><button class="btn btn-red btn-sm"><i class="fa-solid fa-xmark"></i></button></div></td></tr>
+        </tbody>
+      </table></div></div>
+    </div>
+
+    <div class="panel" id="panel-offers">
+      <div class="sec-head"><div><div class="sec-h">Appels d'offres</div><div class="sec-sub">8 appels d'offres à modérer</div></div></div>
+      <div class="card" style="padding:0;overflow:hidden"><div class="tbl-wrap"><table>
+        <thead><tr><th>Projet</th><th>Client</th><th>Budget</th><th>Délai</th><th>Statut</th><th>Actions</th></tr></thead>
+        <tbody id="offers-tbody-modo">
+          <tr data-tags="attente"><td style="max-width:220px"><div style="font-weight:600;color:#fff">Plateforme e-commerce B2B Mobile Money</div><div style="font-size:11px;color:var(--muted)">AgriTrack Africa · CI</div></td><td style="font-size:12px;color:rgba(255,255,255,.7)">AgriTrack Africa</td><td style="font-weight:700;color:var(--green);font-size:12px">800K – 1,5M FCFA</td><td style="font-size:12px;color:var(--muted)">3 mois</td><td><span class="badge b-orange">En attente</span></td><td><div style="display:flex;gap:5px"><button class="btn btn-green btn-sm"><i class="fa-solid fa-check"></i> Approuver</button><button class="btn btn-gold btn-sm"><i class="fa-solid fa-star"></i></button><button class="btn btn-red btn-sm"><i class="fa-solid fa-xmark"></i></button></div></td></tr>
+          <tr data-tags="attente"><td style="max-width:220px"><div style="font-weight:600;color:#fff">Refonte identité visuelle FinTech</div><div style="font-size:11px;color:var(--muted)">PayNow Sénégal · SN</div></td><td style="font-size:12px;color:rgba(255,255,255,.7)">PayNow SN</td><td style="font-weight:700;color:var(--green);font-size:12px">600K – 900K FCFA</td><td style="font-size:12px;color:var(--muted)">45 jours</td><td><span class="badge b-orange">En attente</span></td><td><div style="display:flex;gap:5px"><button class="btn btn-green btn-sm"><i class="fa-solid fa-check"></i> Approuver</button><button class="btn btn-red btn-sm"><i class="fa-solid fa-xmark"></i></button></div></td></tr>
+        </tbody>
+      </table></div></div>
+    </div>
+
+    <div class="panel" id="panel-academy">
+      <div class="sec-head"><div><div class="sec-h">Academy — Modération</div><div class="sec-sub">3 formations soumises en attente de validation</div></div></div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div class="card" style="display:flex;align-items:center;gap:16px">
+          <div style="width:48px;height:48px;border-radius:12px;background:var(--blue-l);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="fa-solid fa-graduation-cap" style="color:var(--blue);font-size:18px"></i></div>
+          <div style="flex:1"><div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:4px">Devenir freelance avec Oriupe — Débutant</div><div style="font-size:12px;color:var(--muted)">Par : Kofi Asante · 4h30 · Français · Soumis le 20 Jan 2025</div></div>
+          <div style="display:flex;gap:7px"><button class="btn btn-green btn-sm"><i class="fa-solid fa-check"></i> Approuver</button><button class="btn btn-red btn-sm"><i class="fa-solid fa-xmark"></i></button></div>
+        </div>
+        <div class="card" style="display:flex;align-items:center;gap:16px">
+          <div style="width:48px;height:48px;border-radius:12px;background:var(--green-l);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="fa-solid fa-coins" style="color:var(--green);font-size:18px"></i></div>
+          <div style="flex:1"><div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:4px">Gérer ses finances via Mobile Money</div><div style="font-size:12px;color:var(--muted)">Par : Fatou Traoré · 2h15 · Français + Anglais · Soumis le 18 Jan 2025</div></div>
+          <div style="display:flex;gap:7px"><button class="btn btn-green btn-sm"><i class="fa-solid fa-check"></i> Approuver</button><button class="btn btn-red btn-sm"><i class="fa-solid fa-xmark"></i></button></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" id="panel-audit">
+      <div class="sec-head"><div><div class="sec-h">Mes actions récentes</div><div class="sec-sub">Journal de vos décisions de modération</div></div></div>
+      <div class="card">
+        <div class="log-list">
+          <div class="log-item"><div class="log-ico" style="background:var(--green-l)"><i class="fa-solid fa-circle-check" style="color:var(--green)"></i></div><div class="log-info"><div class="log-action">KYC certifié — Kofi Asante (GH)</div><div class="log-meta">Documents conformes · Smile Identity OK · Motif : identité vérifiée</div></div><div class="log-time">Il y a 2h</div></div>
+          <div class="log-item"><div class="log-ico" style="background:var(--orange-l)"><i class="fa-solid fa-plus" style="color:var(--orange)"></i></div><div class="log-info"><div class="log-action">Complément demandé — Ibrahim Sanogo (ML)</div><div class="log-meta">Document manquant : selfie avec CNI flou · Délai : 48h</div></div><div class="log-time">Il y a 4h</div></div>
+          <div class="log-item"><div class="log-ico" style="background:var(--green-l)"><i class="fa-solid fa-check" style="color:var(--green)"></i></div><div class="log-info"><div class="log-action">Service approuvé — "Développement React" (Kofi Asante)</div><div class="log-meta">Contenu conforme · Tarifs cohérents avec la catégorie</div></div><div class="log-time">Hier</div></div>
+          <div class="log-item"><div class="log-ico" style="background:var(--red-l)"><i class="fa-solid fa-xmark" style="color:var(--red)"></i></div><div class="log-info"><div class="log-action">KYC rejeté — Utilisateur (NG)</div><div class="log-meta">Motif : photo floue, document expiré, incohérence identité</div></div><div class="log-time">Hier</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODALS -->
+<div class="modal-bg" id="modal-kyc-approve">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-h">Certifier le compte</div><button class="modal-close" onclick="closeModal('kyc-approve')">&times;</button></div>
+    <div class="modal-body">
+      <div style="width:52px;height:52px;border-radius:50%;background:var(--green-l);margin:0 auto 14px;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-circle-check" style="color:var(--green);font-size:22px"></i></div>
+      <p style="text-align:center;font-size:13px;color:rgba(255,255,255,.7);line-height:1.7;margin-bottom:16px">Le badge <strong style="color:var(--green)">Identité vérifiée ✓</strong> sera ajouté au profil et l'utilisateur sera notifié par email.</p>
+      <label class="modal-lbl">Template de réponse</label>
+      <select class="modal-select"><option>Félicitations — Identité vérifiée</option><option>Félicitations — Entreprise vérifiée</option><option>Message personnalisé</option></select>
+      <label class="modal-lbl">Note interne</label>
+      <textarea class="modal-inp" rows="3" placeholder="Observation pour l'audit trail..."></textarea>
+    </div>
+    <div class="modal-foot"><button class="btn btn-outline" onclick="closeModal('kyc-approve')">Annuler</button><button class="btn btn-green" onclick="closeModal('kyc-approve')"><i class="fa-solid fa-circle-check"></i> Confirmer la certification</button></div>
+  </div>
+</div>
+<div class="modal-bg" id="modal-kyc-reject">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-h">Rejeter le dossier KYC</div><button class="modal-close" onclick="closeModal('kyc-reject')">&times;</button></div>
+    <div class="modal-body">
+      <div class="warn-box"><i class="fa-solid fa-triangle-exclamation" style="color:var(--red)"></i><p>Le freelance recevra un email explicatif. Il pourra soumettre un nouveau dossier après correction.</p></div>
+      <label class="modal-lbl">Motif</label>
+      <select class="modal-select"><option>Sélectionner...</option><option>Document flou ou illisible</option><option>Document expiré</option><option>Document falsifié</option><option>Incohérence identité</option><option>Selfie non conforme</option><option>Justificatif de résidence manquant</option></select>
+      <label class="modal-lbl">Message au freelance</label>
+      <textarea class="modal-inp" rows="3" placeholder="Indiquez précisément ce qui doit être corrigé..."></textarea>
+    </div>
+    <div class="modal-foot"><button class="btn btn-outline" onclick="closeModal('kyc-reject')">Annuler</button><button class="btn btn-red" onclick="closeModal('kyc-reject')"><i class="fa-solid fa-xmark"></i> Rejeter le dossier</button></div>
+  </div>
+</div>
+<div class="modal-bg" id="modal-kyc-complement">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-h">Demander un complément</div><button class="modal-close" onclick="closeModal('kyc-complement')">&times;</button></div>
+    <div class="modal-body">
+      <label class="modal-lbl">Document demandé</label>
+      <select class="modal-select"><option>CNI Recto</option><option>CNI Verso</option><option>Selfie avec document</option><option>Justificatif de résidence</option><option>Registre de commerce</option></select>
+      <label class="modal-lbl">Instructions précises</label>
+      <textarea class="modal-inp" rows="3" placeholder="Indiquez ce qui est attendu..."></textarea>
+    </div>
+    <div class="modal-foot"><button class="btn btn-outline" onclick="closeModal('kyc-complement')">Annuler</button><button class="btn btn-blue" onclick="closeModal('kyc-complement')"><i class="fa-solid fa-paper-plane"></i> Envoyer</button></div>
+  </div>
+</div>
+<script>
+
+var PANELS_META={};
+function showPanel(id){
+  document.querySelectorAll(".panel").forEach(function(p){p.classList.remove("active");});
+  document.querySelectorAll(".sb-item").forEach(function(i){i.classList.remove("active");});
+  var panel=document.getElementById("panel-"+id);
+  if(panel)panel.classList.add("active");
+  document.querySelectorAll(".sb-item").forEach(function(i){
+    var oc=i.getAttribute("onclick")||"";
+    if(oc.indexOf("'"+id+"'")>-1||oc.indexOf('"'+id+'"')>-1)i.classList.add("active");
+  });
+  var m=PANELS_META[id]||{title:id,sub:""};
+  var tt=document.getElementById("tb-title");
+  var ts=document.getElementById("tb-sub");
+  if(tt)tt.innerHTML=m.title;
+  if(ts)ts.innerHTML=m.sub;
+}
+function openModal(id){var m=document.getElementById("modal-"+id);if(m)m.classList.add("open");}
+function closeModal(id){var m=document.getElementById("modal-"+id);if(m)m.classList.remove("open");}
+document.addEventListener("DOMContentLoaded",function(){
+  document.querySelectorAll(".modal-bg").forEach(function(bg){
+    bg.addEventListener("click",function(e){if(e.target===bg)bg.classList.remove("open");});
+  });
+  function filterChip(el){
+  var row=el.closest(".filter-row");
+  if(!row){
+    var p=el.parentElement;
+    if(p)p.querySelectorAll(".filter-chip").forEach(function(c){c.classList.remove("active");});
+    el.classList.add("active");return;
+  }
+  row.querySelectorAll(".filter-chip").forEach(function(c){c.classList.remove("active");});
+  el.classList.add("active");
+  var targetSel=row.dataset.target;
+  if(!targetSel)return;
+  var container=document.querySelector(targetSel);
+  if(!container)return;
+  var filter=el.dataset.filter||"tous";
+  container.querySelectorAll("[data-tags]").forEach(function(item){
+    if(filter==="tous"){item.style.display="";}
+    else{
+      var tags=(item.dataset.tags||"").split(" ");
+      item.style.display=tags.indexOf(filter)>-1?"":"none";
+    }
+  });
+}
+  // Live clock
+  function tick(){
+    var el=document.getElementById("live-time");
+    if(el)el.textContent=new Date().toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit",second:"2-digit"});
+  }
+  tick();setInterval(tick,1000);
+  // Animate counters
+  document.querySelectorAll(".sc-val[data-target]").forEach(function(el){
+    var target=parseInt(el.dataset.target);
+    var suffix=el.dataset.suffix||"";
+    var start=0;var duration=1200;var step=Math.ceil(target/60);
+    var timer=setInterval(function(){
+      start+=step;
+      if(start>=target){start=target;clearInterval(timer);}
+      el.textContent=start.toLocaleString("fr-FR")+suffix;
+    },duration/60);
+  });
+});
+
+PANELS_META={
+  dashboard:{title:"Vue d'ensemble",sub:"Espace modérateur · "},
+  kyc:{title:"Vérification KYC",sub:"File d'attente · SLA 24h/48h"},
+  services:{title:"Services",sub:"Modération des services publiés"},
+  offers:{title:"Appels d'offres",sub:"Modération"},
+  academy:{title:"Academy",sub:"Validation des formations"},
+  audit:{title:"Mes actions",sub:"Journal de modération"}
+};
+</script>
+</body></html>
