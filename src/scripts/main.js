@@ -8,10 +8,18 @@
 
 /* ─── AUTH ───────────────────────────────────────── */
 export function isLoggedIn() {
-  try { return !!JSON.parse(localStorage.getItem('oriupe_user')); } catch { return false; }
+  try {
+    const s = JSON.parse(localStorage.getItem('oriupe_session') || 'null');
+    if (!s || !s.isLoggedIn) return false;
+    if (s.expiresAt && Date.now() > s.expiresAt) {
+      localStorage.removeItem('oriupe_session');
+      return false;
+    }
+    return true;
+  } catch { return false; }
 }
 export function getUser() {
-  try { return JSON.parse(localStorage.getItem('oriupe_user')); } catch { return null; }
+  try { return JSON.parse(localStorage.getItem('oriupe_session') || 'null'); } catch { return null; }
 }
 export function goWithAuth(dest) {
   window.location.href = isLoggedIn()
@@ -207,7 +215,7 @@ function initSupportModals() {
           ['Cookies analytiques','Mesure d\'audience anonymisée. Outil sans traçage cross-site.'],
           ['Cookies de préférence','Mémorisent vos choix : filtres, historique de navigation.'],
         ].map(([h,p])=>`<div class="sp-legal-section"><div class="sp-legal-h">${h}</div><p class="sp-legal-p">${p}</p></div>`).join('')}
-        <button class="sp-submit" style="background:#E53935;margin-top:8px" onclick="localStorage.clear();sessionStorage.clear();document.getElementById('on-support-overlay').classList.remove('on-open');document.body.style.overflow='';alert('Données locales effacées.')">Effacer mes cookies</button>`
+        <button class="sp-submit" style="background:#E53935;margin-top:8px" onclick="['oriupe_session','oriupe_currency','oriupe_currency_choice','oriupe_cookie_consent'].forEach(k=>localStorage.removeItem(k));sessionStorage.clear();document.getElementById('on-support-overlay').classList.remove('on-open');document.body.style.overflow='';alert('Données locales Oriupe effacées.')">Effacer mes cookies</button>`
     },
   };
 
@@ -233,18 +241,6 @@ function initSupportModals() {
   overlay.addEventListener('click', e=>{ if(e.target===overlay) closeSupport(); });
   document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeSupport(); });
 
-  const MAP = {
-    "Centre d'aide":'aide', "Nous contacter":'contacter', "Gestion des litiges":'litiges',
-    "CGU & CGV":'cgu', "CGV":'cgu', "Confidentialité":'confidentialite', "Cookies":'cookies',
-  };
-  document.querySelectorAll('footer a').forEach(a=>{
-    const key = MAP[a.textContent.trim()];
-    if (key) {
-      a.style.cursor='pointer';
-      a.removeAttribute('href');
-      a.addEventListener('click', e=>{ e.preventDefault(); openSupport(key); });
-    }
-  });
 }
 
 /* ─── INIT ───────────────────────────────────────── */
