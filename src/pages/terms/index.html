@@ -210,10 +210,9 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
 @media(max-width:768px){.of-z1{grid-template-columns:1fr 1fr;padding:36px 20px 32px;gap:24px}.of-brand{grid-column:1/-1}.of-z2{flex-direction:column;align-items:flex-start;padding:16px 20px;gap:14px}.of-nl{flex-direction:column;align-items:flex-start;width:100%}.of-nl-form{width:100%}.of-nl-inp{flex:1;width:auto}}
 @media(max-width:480px){.of-z1{grid-template-columns:1fr}}
 </style>
-  <script type="module" src="/src/shared/nav.js"></script>
+  <script type="module" src="/src/components/nav.js"></script>
 </head>
 <body>
-<div id="nav-root"></div>
 
 <!-- NAV -->
 
@@ -373,7 +372,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
       <ul>
         <li>Fournir un cahier des charges clair et complet lors de toute commande</li>
         <li>Effectuer le paiement dans les délais impartis</li>
-        <li>Procéder à la validation ou au refus motivé de la livraison dans un délai de 14 jours calendaires</li>
+        <li>Procéder à la validation ou au refus motivé de la livraison dans un délai de 5 jours calendaires</li>
         <li>Ne pas demander de prestations illégales ou contraires aux bonnes mœurs</li>
         <li>Respecter les droits de propriété intellectuelle des Freelances</li>
       </ul>
@@ -390,9 +389,9 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
       <table class="info-table">
         <thead><tr><th>Type</th><th>Taux</th><th>Prélevé sur</th></tr></thead>
         <tbody>
-          <tr><td>Commission Freelance (offre Starter)</td><td>18%</td><td>Montant brut de la commande</td></tr>
-          <tr><td>Commission Freelance (offre Pro)</td><td>12%</td><td>Montant brut de la commande</td></tr>
-          <tr><td>Commission Freelance (offre Business)</td><td>8%</td><td>Montant brut de la commande</td></tr>
+          <tr><td>Commission Freelance (offre Gratuit)</td><td>15%</td><td>Montant brut de la commande</td></tr>
+          <tr><td>Commission Freelance (offre Pro)</td><td>10%</td><td>Montant brut de la commande</td></tr>
+          <tr><td>Commission Freelance (offre Business)</td><td>7%</td><td>Montant brut de la commande</td></tr>
           <tr><td>Frais de service Client</td><td>5%</td><td>Montant de la commande</td></tr>
           <tr><td>Frais de retrait mobile money</td><td>1.5% (min. 500 FCFA)</td><td>Montant du retrait</td></tr>
           <tr><td>Frais de retrait virement bancaire</td><td>Gratuit</td><td>—</td></tr>
@@ -416,14 +415,14 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
         <li><strong>Portefeuille Oriupe :</strong> Solde disponible sur le compte</li>
       </ul>
       <h3>8.2 Fonctionnement de l'escrow</h3>
-      <p>Lors de toute commande, le montant total est prélevé sur le moyen de paiement du Client et placé en Escrow (escrow) géré par Oriupe. Les fonds sont maintenus en Escrow jusqu'à :</p>
+      <p>Lors de toute commande, le montant total est traité par un prestataire de paiement agréé et sécurisé selon les règles escrow d'Oriupe. Oriupe orchestre les statuts, la validation et la libération, sans se substituer au prestataire de paiement chargé de la conservation et du mouvement des fonds.</p>
       <ul>
         <li>La validation explicite de la livraison par le Client</li>
-        <li>L'expiration du délai de validation automatique (14 jours après livraison sans action du Client)</li>
+        <li>L'expiration du délai de validation automatique (5 jours après livraison sans action du Client)</li>
         <li>La décision de résolution d'un litige par l'équipe Oriupe</li>
       </ul>
       <div class="highlight-box blue">
-        <strong>Validation automatique :</strong> Si le Client ne valide ni ne conteste la livraison dans les 14 jours suivant la notification de livraison, les fonds sont automatiquement libérés au Freelance. Passé ce délai, aucun litige ne peut être ouvert pour cette commande.
+        <strong>Validation automatique :</strong> Si le Client ne valide ni ne conteste la livraison dans les 5 jours suivant la notification de livraison, la commande peut être automatiquement validée selon les règles serveur. Passé ce délai, aucun litige ne peut être ouvert pour cette commande.
       </div>
       <h3>8.3 Délais de règlement aux Freelances</h3>
       <p>Une fois la livraison validée, les fonds sont disponibles sur le portefeuille Oriupe du Freelance dans un délai de 24 heures. Le retrait vers un compte mobile money ou bancaire est ensuite traité dans un délai de 1 à 3 jours ouvrés.</p>

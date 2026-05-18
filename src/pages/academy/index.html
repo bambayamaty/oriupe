@@ -477,10 +477,8 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
 @media(max-width:480px){.of-z1{grid-template-columns:1fr}}
 </style>
   <script type="module" src="/src/components/nav.js"></script>
-  <script type="module" src="/src/shared/nav.js"></script>
 </head>
 <body>
-<div id="nav-root"></div>
 <div id="progress"></div>
 
 <!-- ████ NAV ████ -->
@@ -1426,7 +1424,9 @@ document.querySelectorAll('.cc-fav').forEach(btn=>{
 document.querySelectorAll('.btn-enroll').forEach(btn=>{
   btn.addEventListener('click',e=>{
     if(btn.textContent.trim().startsWith('Continuer'))return;
-    if(!localStorage.getItem('oriupe_user')){
+    let session=null;
+    try{session=JSON.parse(localStorage.getItem('oriupe_session')||'null')}catch(err){}
+    if(!session||!session.isLoggedIn){
       e.stopPropagation();
       if(window.showToast)showToast('Connectez-vous pour vous inscrire à ce cours.','info');
       setTimeout(()=>location.href='/src/pages/auth/index.html',1400);

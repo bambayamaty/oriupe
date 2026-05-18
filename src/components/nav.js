@@ -91,6 +91,12 @@ const CSS = `
 #oriupe-nav .on-dark-btn { padding:8px 10px; display:flex; align-items:center; justify-content:center; border-radius:8px; }
 #oriupe-nav .on-dark-btn:hover { background:rgba(255,255,255,.1); }
 
+#oriupe-nav .on-account { display:flex; align-items:center; gap:8px; text-decoration:none; font-size:13px; font-weight:600; background:rgba(255,255,255,.1); border:1.5px solid rgba(255,255,255,.2); padding:6px 14px 6px 8px; border-radius:30px; transition:all .2s; color:rgba(255,255,255,.9); }
+#oriupe-nav .on-account:hover { background:rgba(255,255,255,.18); border-color:rgba(255,255,255,.35); }
+#oriupe-nav[data-theme="light"] .on-account { color:#1B3A4A; background:rgba(27,58,74,.07); border-color:rgba(27,58,74,.15); }
+#oriupe-nav[data-theme="light"] .on-account:hover { background:rgba(27,58,74,.12); }
+#oriupe-nav .on-account-av { width:26px; height:26px; border-radius:50%; background:#3CB878; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:800; color:#fff; flex-shrink:0; }
+#oriupe-nav .on-account-name { max-width:100px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 @media(max-width:1100px){ #oriupe-nav{padding:0 28px;} }
 @media(max-width:768px){
   #oriupe-nav{padding:0 16px;}
@@ -172,6 +178,11 @@ function detectTheme(nav) {
   return themeFromRGB(el ? resolveBackground(el) : null);
 }
 
+/* ─── SESSION ───────────────────────────────────── */
+function getSession() {
+  try { return JSON.parse(localStorage.getItem('oriupe_session') || 'null'); } catch { return null; }
+}
+
 /* ─── ACTIVE LINK ────────────────────────────────── */
 function detectActive() {
   const path = window.location.pathname;
@@ -184,6 +195,18 @@ function detectActive() {
 function buildNavHTML() {
   const active = detectActive();
   const links = PAGES.map(p=>`<a href="${p.href}"${p.key===active?' class="on-active"':''}>${p.label}</a>`).join('');
+  const s = getSession();
+  const loggedIn = s && s.isLoggedIn;
+  const dashUrl = s?.role === 'freelance'
+    ? '/src/pages/dashboard/freelance/index.html'
+    : '/src/pages/dashboard/client/index.html';
+  const authSlot = loggedIn
+    ? `<a href="${dashUrl}" class="on-account" aria-label="Mon espace">
+         <span class="on-account-av">${(s.firstName||'U')[0].toUpperCase()}</span>
+         <span class="on-account-name">${s.firstName||'Mon compte'}</span>
+       </a>`
+    : `<button class="on-ghost" id="on-btn-login">Se connecter</button>
+       <button class="on-cta"   id="on-btn-signup">S'inscrire</button>`;
   return `
     <div class="on-left">
       <a class="on-logo" href="/src/pages/home/index.html" aria-label="Oriupe — Accueil">
@@ -196,8 +219,7 @@ function buildNavHTML() {
         <svg class="on-dark-moon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.5 10.5A6 6 0 017 4c0-.7.1-1.4.3-2.1A6.5 6.5 0 1014.1 10c-.2.2-.4.3-.6.5z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <svg class="on-dark-sun" width="16" height="16" viewBox="0 0 16 16" fill="none" style="display:none"><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.4"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.41 1.41M11.54 11.54l1.41 1.41M3.05 12.95l1.41-1.41M11.54 4.46l1.41-1.41" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
       </button>
-      <button class="on-ghost" id="on-btn-login">Se connecter</button>
-      <button class="on-cta"   id="on-btn-signup">S'inscrire</button>
+      ${authSlot}
     </div>`;
 }
 
@@ -218,7 +240,7 @@ async function init() {
   nav.innerHTML = buildNavHTML();
   nav.setAttribute('data-theme','light');
 
-  /* Boutons auth */
+  /* Boutons auth (uniquement si non connecté) */
   nav.querySelector('#on-btn-login')?.addEventListener('click',()=>{ window.location.href='/src/pages/auth/index.html'; });
   nav.querySelector('#on-btn-signup')?.addEventListener('click',()=>{ window.location.href='/src/pages/auth/index.html?register=1'; });
 

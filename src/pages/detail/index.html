@@ -360,10 +360,8 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
 @media(max-width:480px){.of-z1{grid-template-columns:1fr}}
 </style>
   <script type="module" src="/src/components/nav.js"></script>
-  <script type="module" src="/src/shared/nav.js"></script>
 </head>
 <body>
-<div id="nav-root"></div>
 <div id="progress"></div>
 
 <!-- NAV -->
@@ -1008,6 +1006,8 @@ function openOrderModal(){
 #order-modal .btn-confirm{width:100%;background:linear-gradient(135deg,#3CB878,#4FD090);color:#fff;border:none;border-radius:12px;padding:16px;font-size:15px;font-weight:800;cursor:pointer;transition:all .2s;box-shadow:0 4px 20px rgba(60,184,120,.35);font-family:'Plus Jakarta Sans',sans-serif}
 #order-modal .btn-confirm:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(60,184,120,.45)}
 #order-modal .om-escrow{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:11px;color:rgba(27,58,74,.45)}
+#order-modal .om-alert{display:none;margin-top:12px;border:1px solid rgba(245,158,11,.28);background:#FFF8EB;color:#7A4B00;border-radius:12px;padding:12px 14px;font-size:12px;line-height:1.55}
+#order-modal .om-alert.show{display:block}
 #order-modal .om-success{text-align:center;padding:20px 0}
 #order-modal .om-success-icon{width:72px;height:72px;background:linear-gradient(135deg,#3CB878,#4FD090);border-radius:50%;margin:0 auto 20px;display:flex;align-items:center;justify-content:center}
 </style>
@@ -1015,7 +1015,7 @@ function openOrderModal(){
 <div class="om-box">
   <button class="om-close" onclick="closeOrderModal()">✕</button>
   <div class="om-title">Finaliser la commande</div>
-  <div class="om-sub">Paiement sécurisé via Escrow Oriupe — libéré à la livraison</div>
+  <div class="om-sub">Paiement traite par un prestataire agree — liberation apres validation client</div>
   <div class="om-plan">
     <div>
       <div class="om-plan-name">Plan ${plan}</div>
@@ -1046,8 +1046,9 @@ function openOrderModal(){
   </div>
   <button class="btn-confirm" onclick="confirmOrder()">
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="vertical-align:-2px;margin-right:6px"><path d="M10 2L14 4V9C14 13 10 15 10 15C10 15 6 13 6 9V4L10 2Z" stroke="#fff" stroke-width="1.5" fill="rgba(255,255,255,.15)"/><path d="M7.5 8.5L9 10L12.5 6.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    Confirmer et payer
+    Continuer vers le paiement sécurisé
   </button>
+  <div class="om-alert" id="om-alert"></div>
   <div class="om-escrow">
     <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1.5L11 3.5V7C11 10 7 12.5 7 12.5C7 12.5 3 10 3 7V3.5L7 1.5Z" stroke="#3CB878" stroke-width="1.3" fill="rgba(60,184,120,.1)"/></svg>
     Votre argent est protégé par Escrow Oriupe. Il sera libéré uniquement à votre validation.
@@ -1068,22 +1069,11 @@ function confirmOrder(){
     return;
   }
   const pm=document.querySelector('#order-modal .pm-opt.sel')?.textContent?.trim()||'Mobile Money';
-  const box=document.querySelector('#order-modal .om-box');
-  const total=calcTotal();
-  const fmt=n=>n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,' ');
-  box.innerHTML=`
-  <div class="om-success">
-    <div class="om-success-icon"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M8 16L13 21L24 10" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-    <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;color:#1B3A4A;margin-bottom:8px">Commande confirmée !</div>
-    <div style="font-size:14px;color:rgba(27,58,74,.52);line-height:1.7;margin-bottom:24px">Votre paiement de <strong>${fmt(total)} FCFA</strong> via ${pm} est sécurisé.<br>Kofi Asante commencera dans les <strong>2 heures</strong>.<br>Vous recevrez une notification dès le début.</div>
-    <div style="background:#F0FBF5;border:1px solid rgba(60,184,120,.2);border-radius:14px;padding:16px;text-align:left;margin-bottom:24px">
-      <div style="font-size:12px;font-weight:700;color:#27965D;margin-bottom:8px">📋 RÉCAPITULATIF DE COMMANDE</div>
-      <div style="font-size:13px;color:#1B3A4A;display:flex;justify-content:space-between;margin-bottom:4px"><span>Plan sélectionné</span><strong>${document.querySelector('.offer-tab.active')?.textContent||'Basique'}</strong></div>
-      <div style="font-size:13px;color:#1B3A4A;display:flex;justify-content:space-between"><span>Montant escrow</span><strong style="color:#3CB878">${fmt(total)} FCFA</strong></div>
-    </div>
-    <button onclick="closeOrderModal();(function(){var s=null;try{s=JSON.parse(localStorage.getItem('oriupe_session'))}catch(e){}location.href=s&&s.role==='freelance'?'/src/pages/dashboard/freelance/index.html':'/src/pages/dashboard/client/index.html';})()" style="width:100%;background:var(--navy,#1B3A4A);color:#fff;border:none;border-radius:12px;padding:14px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif">Voir mes commandes →</button>
-    <button onclick="closeOrderModal()" style="width:100%;background:transparent;color:rgba(27,58,74,.52);border:none;padding:12px;font-size:13px;cursor:pointer;margin-top:8px;font-family:'Plus Jakarta Sans',sans-serif">Fermer</button>
-  </div>`;
+  const alert=document.getElementById('om-alert');
+  if(alert){
+    alert.innerHTML=`Paiement non lance : aucun prestataire de paiement n'est encore connecte pour ${pm}. Prochaine implementation : creation de commande serveur, redirection PSP, webhook de confirmation, puis statut escrow verifie cote backend.`;
+    alert.classList.add('show');
+  }
 }
 
 /* ── CONTACT MODAL ── */

@@ -255,10 +255,9 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
 @media(max-width:768px){.of-z1{grid-template-columns:1fr 1fr;padding:36px 20px 32px;gap:24px}.of-brand{grid-column:1/-1}.of-z2{flex-direction:column;align-items:flex-start;padding:16px 20px;gap:14px}.of-nl{flex-direction:column;align-items:flex-start;width:100%}.of-nl-form{width:100%}.of-nl-inp{flex:1;width:auto}}
 @media(max-width:480px){.of-z1{grid-template-columns:1fr}}
 </style>
-  <script type="module" src="/src/shared/nav.js"></script>
+  <script type="module" src="/src/components/nav.js"></script>
 </head>
 <body>
-<div id="nav-root"></div>
 
 <!-- NAV -->
 
@@ -365,9 +364,8 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
             <li><strong>Mobile Money :</strong> Wave, Orange Money, MTN Mobile Money, Moov Money, Airtel Money, M-Pesa</li>
             <li><strong>Cartes bancaires :</strong> Visa et Mastercard (débit et crédit)</li>
             <li><strong>Virement bancaire :</strong> disponible pour les plans Pro et Business</li>
-            <li><strong>Crypto (bêta) :</strong> USDT et USDC sur certains pays</li>
           </ul>
-          <p>Tous les paiements sont sécurisés via notre système d'escrow — les fonds sont retenus jusqu'à la validation de la livraison par le client.</p>
+          <p>Les paiements doivent être traités par un prestataire de paiement connecté. Oriupe sécurise ensuite la transaction via des statuts escrow, jusqu'à la validation de la livraison par le client.</p>
         </div>
       </div>
     </div>
@@ -380,14 +378,14 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
       </div>
       <div class="acc-body">
         <div class="acc-body-inner">
-          <p>L'escrow (Escrow) est notre système de protection des paiements. Voici comment il fonctionne :</p>
+          <p>L'escrow est une couche de protection des paiements, pas un moyen de paiement autonome. Voici comment il fonctionne :</p>
           <ul>
-            <li><strong>Étape 1 :</strong> Le client passe commande et paie — les fonds sont bloqués sur le compte escrow Oriupe.</li>
+            <li><strong>Étape 1 :</strong> Le client passe commande et paie via un prestataire de paiement connecté.</li>
             <li><strong>Étape 2 :</strong> Le freelance réalise le travail et livre le fichier/résultat sur la plateforme.</li>
-            <li><strong>Étape 3 :</strong> Le client valide la livraison. Les fonds (moins la commission Oriupe) sont libérés vers le compte du freelance.</li>
+            <li><strong>Étape 3 :</strong> Le client valide la livraison. Le payout freelance est déclenché selon les règles serveur, moins la commission Oriupe.</li>
             <li><strong>Refus :</strong> Si le client refuse la livraison, une procédure de révision ou de litige est ouverte.</li>
           </ul>
-          <p>Si le client ne répond pas dans les 5 jours suivant la livraison, la commande est automatiquement validée et les fonds libérés.</p>
+          <p>Si le client ne répond pas dans les 5 jours suivant la livraison, la commande peut être automatiquement validée par le backend selon les règles de litige.</p>
         </div>
       </div>
     </div>
@@ -425,7 +423,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
             <li>Consultez les services similaires dans votre catégorie pour connaître les fourchettes de prix du marché.</li>
             <li>Proposez plusieurs forfaits (Basic, Standard, Premium) pour toucher différents budgets.</li>
             <li>N'oubliez pas d'inclure la commission Oriupe dans votre calcul de prix (15%, 10% ou 7% selon votre plan).</li>
-            <li>Le prix minimum par commande est de 2 500 FCFA.</li>
+            <li>Le prix minimum par commande est de 5 000 FCFA.</li>
           </ul>
         </div>
       </div>
