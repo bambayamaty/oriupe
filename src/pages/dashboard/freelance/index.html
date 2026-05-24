@@ -25,16 +25,19 @@ button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:p
 /* ── SIDEBAR (green-accented) ── */
 .sidebar{width:230px;flex-shrink:0;background:var(--navy);display:flex;flex-direction:column;height:100vh;overflow:hidden;border-right:1px solid rgba(255,255,255,.05)}
 .sb-top{padding:18px 16px 14px;border-bottom:1px solid rgba(255,255,255,.07)}
-.sb-logo{display:flex;align-items:center;gap:9px;cursor:pointer;text-decoration:none}
-.sb-logo-mark{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,var(--green),var(--lime));display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:800;color:#fff;flex-shrink:0}
+.sb-logo{display:flex;align-items:center;gap:10px;cursor:pointer;text-decoration:none;transition:opacity .2s,transform .28s cubic-bezier(.34,1.56,.64,1)}
+.sb-logo:hover{opacity:.82;transform:scale(1.04)}
+.sb-logo:hover svg{filter:drop-shadow(0 2px 8px rgba(60,184,120,.5))}
+.sb-logo:focus-visible{outline:2px solid #3CB878;outline-offset:3px;border-radius:6px}
+.sb-logo-mark{display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .sb-logo-t{font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;color:#fff}
 .sb-user{padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:10px;cursor:pointer}
 .sb-av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--lime));display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0;position:relative}
 .sb-online-dot{position:absolute;bottom:1px;right:1px;width:10px;height:10px;border-radius:50%;background:#22C55E;border:2px solid var(--navy)}
 .sb-user-info{flex:1;min-width:0}
 .sb-user-name{font-size:12px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.sb-user-role{font-size:10px;color:rgba(255,255,255,.4);font-weight:500}
-.sb-online-toggle{display:flex;align-items:center;gap:6px;padding:6px 16px;border-bottom:1px solid rgba(255,255,255,.07);font-size:10px;color:rgba(255,255,255,.5);font-weight:600}
+.sb-user-role{font-size:11px;color:rgba(255,255,255,.4);font-weight:500}
+.sb-online-toggle{display:flex;align-items:center;gap:6px;padding:6px 16px;border-bottom:1px solid rgba(255,255,255,.07);font-size:11px;color:rgba(255,255,255,.5);font-weight:600}
 .toggle-sm{position:relative;width:32px;height:18px;flex-shrink:0;cursor:pointer}
 .toggle-sm input{opacity:0;width:0;height:0}
 .toggle-track-sm{position:absolute;inset:0;border-radius:9px;background:rgba(255,255,255,.15);transition:all .25s;cursor:pointer}
@@ -44,14 +47,14 @@ button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:p
 .online-label{color:#22C55E;font-weight:700}
 .sb-nav-wrap{flex:1;overflow-y:auto;padding:10px 0}
 .sb-nav-wrap::-webkit-scrollbar{width:0}
-.sb-section-lbl{padding:8px 16px 4px;font-size:9px;font-weight:700;color:rgba(255,255,255,.25);letter-spacing:1.5px}
+.sb-section-lbl{padding:8px 16px 4px;font-size:11px;font-weight:700;color:rgba(255,255,255,.25);letter-spacing:1.5px}
 .sb-item{display:flex;align-items:center;gap:10px;padding:9px 16px;cursor:pointer;font-size:12px;font-weight:600;color:rgba(255,255,255,.55);transition:all .15s;position:relative}
 .sb-item:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.85)}
 .sb-item.active{background:rgba(60,184,120,.18);color:#fff}
 .sb-item.active::before{content:'';position:absolute;left:0;top:20%;height:60%;width:3px;background:var(--green);border-radius:0 3px 3px 0}
 .sb-item svg{flex-shrink:0;opacity:.7}
 .sb-item.active svg{opacity:1}
-.sb-item-badge{margin-left:auto;border-radius:10px;font-size:9px;font-weight:800;padding:2px 6px;color:#fff}
+.sb-item-badge{margin-left:auto;border-radius:10px;font-size:11px;font-weight:800;padding:2px 6px;color:#fff}
 .sb-item-badge.blue{background:var(--blue)}
 .sb-item-badge.green{background:var(--green)}
 .sb-item-badge.gold{background:var(--gold)}
@@ -66,7 +69,7 @@ button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:p
 .topbar{background:#fff;border-bottom:1px solid var(--border);padding:0 24px;height:58px;display:flex;align-items:center;gap:16px;flex-shrink:0;box-shadow:var(--shadow)}
 .topbar-title{font-size:16px;font-weight:800;color:var(--navy2);flex:1;font-family:'Bricolage Grotesque',sans-serif}
 .topbar-actions{display:flex;align-items:center;gap:10px}
-.tb-btn{width:36px;height:36px;border:1.5px solid var(--border);border-radius:9px;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;color:var(--muted);position:relative}
+.tb-btn{width:36px;height:36px;border:1.5px solid var(--border);border-radius:12px;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;color:var(--muted);position:relative}
 .tb-btn:hover{border-color:var(--green);color:var(--green);background:var(--green-l)}
 .tb-notif-dot{position:absolute;top:6px;right:6px;width:8px;height:8px;background:var(--red);border-radius:50%;border:1.5px solid #fff}
 .content{flex:1;overflow-y:auto;padding:24px}
@@ -92,7 +95,7 @@ button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:p
 .kpi-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:12px}
 .kpi-val{font-size:22px;font-weight:800;color:var(--navy2);font-family:'Bricolage Grotesque',sans-serif;margin-bottom:2px}
 .kpi-lbl{font-size:11px;color:var(--muted);font-weight:500}
-.kpi-delta{font-size:10px;font-weight:700;margin-top:4px}
+.kpi-delta{font-size:11px;font-weight:700;margin-top:4px}
 .kpi-delta.up{color:var(--green)}
 .kpi-delta.warn{color:var(--gold)}
 .kpi-delta.danger{color:var(--red)}
@@ -106,20 +109,20 @@ button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:p
 /* ── ORDER CARDS ── */
 .order-list{display:flex;flex-direction:column;gap:12px;margin-bottom:24px}
 .order-card{background:#fff;border-radius:14px;padding:16px 18px;border:1.5px solid var(--border2);box-shadow:var(--shadow);display:flex;align-items:center;gap:14px;cursor:pointer;transition:all .2s}
-.order-card:hover{box-shadow:var(--shadow-md);border-color:var(--border)}
+.order-card:hover{box-shadow:var(--shadow-md);border-color:var(--border);transform:translateY(-2px)}
 .order-card.urgent{border-color:rgba(239,68,68,.25);background:rgba(255,255,255,1)}
 .order-av{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;flex-shrink:0}
 .order-info{flex:1;min-width:0}
 .order-title{font-size:13px;font-weight:700;color:var(--navy2);margin-bottom:3px}
 .order-meta{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.order-status{padding:3px 9px;border-radius:20px;font-size:10px;font-weight:800;white-space:nowrap}
+.order-status{padding:3px 9px;border-radius:20px;font-size:11px;font-weight:800;white-space:nowrap}
 .os-progress{background:var(--blue-l);color:var(--blue-d)}
 .os-review{background:rgba(124,58,237,.1);color:var(--purple)}
 .os-done{background:var(--green-l);color:var(--green-d)}
-.os-wait{background:rgba(245,158,11,.12);color:#D97706}
-.deadline-chip{padding:2px 8px;border-radius:6px;font-size:9px;font-weight:800;white-space:nowrap}
+.os-wait{background:rgba(245,158,11,.12);color:var(--gold-d)}
+.deadline-chip{padding:2px 8px;border-radius:6px;font-size:11px;font-weight:800;white-space:nowrap}
 .dc-urgent{background:rgba(239,68,68,.12);color:var(--red)}
-.dc-soon{background:rgba(245,158,11,.12);color:#D97706}
+.dc-soon{background:rgba(245,158,11,.12);color:var(--gold-d)}
 .dc-ok{background:var(--green-l);color:var(--green-d)}
 .order-price{font-size:14px;font-weight:800;color:var(--navy2);font-family:'Bricolage Grotesque',sans-serif;white-space:nowrap}
 .order-actions{display:flex;gap:6px;flex-shrink:0}
@@ -153,13 +156,13 @@ button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:p
 .sc-body{padding:14px}
 .sc-title{font-size:12px;font-weight:700;color:var(--navy2);margin-bottom:4px}
 .sc-price{font-size:14px;font-weight:800;color:var(--navy2);font-family:'Bricolage Grotesque',sans-serif}
-.sc-rating{font-size:10px;color:var(--gold);font-weight:700}
-.sc-status{padding:2px 8px;border-radius:5px;font-size:9px;font-weight:800;margin-left:auto;display:inline-block}
+.sc-rating{font-size:11px;color:var(--gold);font-weight:700}
+.sc-status{padding:2px 8px;border-radius:5px;font-size:11px;font-weight:800;margin-left:auto;display:inline-block}
 .scs-active{background:var(--green-l);color:var(--green-d)}
 .scs-draft{background:var(--bg2);color:var(--muted)}
 .sc-top-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
 .sc-footer{display:flex;align-items:center;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:1px solid var(--border2)}
-.sc-stat{font-size:10px;color:var(--muted);display:flex;align-items:center;gap:4px}
+.sc-stat{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:4px}
 
 /* ── REVENUE CHART ── */
 .revenue-card{background:#fff;border-radius:14px;padding:20px;border:1.5px solid var(--border2);box-shadow:var(--shadow);margin-bottom:20px}
@@ -170,10 +173,10 @@ button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:p
 .rev-bar{width:100%;background:var(--green-l);border-radius:4px 4px 0 0;transition:all .3s var(--ease);cursor:pointer}
 .rev-bar:hover{background:var(--green);opacity:.8}
 .rev-bar.current{background:var(--green)}
-.rev-bar-lbl{font-size:9px;color:var(--muted);font-weight:600}
+.rev-bar-lbl{font-size:11px;color:var(--muted);font-weight:600}
 .stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px}
 .stat-card{background:#fff;border-radius:12px;padding:14px;border:1.5px solid var(--border2);box-shadow:var(--shadow)}
-.stat-label{font-size:9px;font-weight:700;color:var(--muted);letter-spacing:.5px;margin-bottom:6px}
+.stat-label{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.5px;margin-bottom:6px}
 .stat-value{font-size:18px;font-weight:800;color:var(--navy2);font-family:'Bricolage Grotesque',sans-serif}
 
 /* ── OFFERS ── */
@@ -184,7 +187,7 @@ button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:p
 .offer-title{font-size:13px;font-weight:700;color:var(--navy2);margin-bottom:3px}
 .offer-meta{font-size:11px;color:var(--muted)}
 .offer-budget{font-size:14px;font-weight:800;color:var(--green);font-family:'Bricolage Grotesque',sans-serif;white-space:nowrap}
-.offer-badge{padding:3px 8px;border-radius:10px;font-size:9px;font-weight:800}
+.offer-badge{padding:3px 8px;border-radius:10px;font-size:11px;font-weight:800}
 .ob-new{background:var(--blue-l);color:var(--blue-d)}
 .ob-seen{background:var(--bg2);color:var(--muted)}
 
@@ -194,7 +197,7 @@ button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:p
 .kyc-info{flex:1}
 .kyc-name{font-size:13px;font-weight:700;color:var(--navy2)}
 .kyc-sub{font-size:11px;color:var(--muted);margin-top:2px}
-.kyc-status{padding:4px 10px;border-radius:8px;font-size:10px;font-weight:800;white-space:nowrap}
+.kyc-status{padding:4px 10px;border-radius:8px;font-size:11px;font-weight:800;white-space:nowrap}
 .ks-done{background:var(--green-l);color:var(--green-d)}
 .ks-todo{background:var(--bg2);color:var(--muted)}
 .ks-review{background:var(--blue-l);color:var(--blue-d)}
@@ -216,7 +219,7 @@ button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:p
 .form-inp:focus{border-color:var(--green)}
 .form-inp::placeholder{color:var(--muted2)}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.btn-save{padding:10px 22px;background:var(--green);color:#fff;border-radius:10px;border:none;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-save{padding:10px 22px;background:var(--green);color:#fff;12px;border:none;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s}
 .btn-save:hover{background:var(--green-d)}
 
 /* ── CHIP FILTERS ── */
@@ -253,7 +256,7 @@ button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:p
 .co-back-btn{width:30px;height:30px;border-radius:8px;border:1.5px solid rgba(255,255,255,.15);background:transparent;color:rgba(255,255,255,.6);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;flex-shrink:0}
 .co-back-btn:hover{border-color:var(--green);color:var(--green)}
 .co-title{font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;color:#fff;flex:1}
-.co-full-link{font-size:10px;font-weight:700;color:rgba(255,255,255,.55);text-decoration:none;border:1px solid rgba(255,255,255,.15);padding:3px 8px;border-radius:6px;white-space:nowrap;transition:color .2s,border-color .2s}
+.co-full-link{font-size:11px;font-weight:700;color:rgba(255,255,255,.55);text-decoration:none;border:1px solid rgba(255,255,255,.15);padding:3px 8px;border-radius:6px;white-space:nowrap;transition:color .2s,border-color .2s}
 .co-full-link:hover{color:#fff;border-color:rgba(255,255,255,.4)}
 .co-conv-list{flex:1;overflow-y:auto}
 .co-conv-list::-webkit-scrollbar{width:3px}
@@ -266,10 +269,10 @@ button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:p
 .co-online{position:absolute;bottom:1px;right:1px;width:9px;height:9px;border-radius:50%;background:#22C55E;border:2px solid var(--navy)}
 .co-conv-info{flex:1;min-width:0}
 .co-conv-name{font-size:12px;font-weight:700;color:rgba(255,255,255,.85)}
-.co-conv-preview{font-size:10px;color:rgba(255,255,255,.35);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.co-conv-preview{font-size:11px;color:rgba(255,255,255,.35);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .co-conv-meta{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
-.co-conv-time{font-size:9px;color:rgba(255,255,255,.2)}
-.co-conv-badge{min-width:17px;height:17px;background:var(--green);color:#fff;border-radius:17px;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center;padding:0 4px}
+.co-conv-time{font-size:11px;color:rgba(255,255,255,.2)}
+.co-conv-badge{min-width:17px;height:17px;background:var(--green);color:#fff;border-radius:17px;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;padding:0 4px}
 
 /* Chat main area */
 .co-main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;background:var(--bg)}
@@ -280,9 +283,9 @@ button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:p
 .co-escrow::after{content:'';position:absolute;bottom:-30px;left:-30px;width:130px;height:130px;border-radius:50%;background:radial-gradient(circle,rgba(141,198,63,.1) 0%,transparent 70%)}
 .co-esc-inner{padding:12px 18px;position:relative;z-index:1}
 .co-esc-head{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
-.co-esc-label{font-size:9px;font-weight:800;color:rgba(255,255,255,.4);letter-spacing:1.8px}
+.co-esc-label{font-size:11px;font-weight:800;color:rgba(255,255,255,.4);letter-spacing:1.8px}
 .co-esc-code{font-family:monospace;font-size:11px;color:rgba(255,255,255,.55);background:rgba(255,255,255,.06);padding:3px 8px;border-radius:5px}
-.co-esc-status{padding:3px 9px;border-radius:20px;font-size:9px;font-weight:800;letter-spacing:.4px}
+.co-esc-status{padding:3px 9px;border-radius:20px;font-size:11px;font-weight:800;letter-spacing:.4px}
 .esb-progress{background:rgba(41,171,226,.15);color:var(--blue);border:1px solid rgba(41,171,226,.25)}
 .esb-secured{background:rgba(60,184,120,.15);color:var(--green);border:1px solid rgba(60,184,120,.25)}
 .esb-awaiting{background:rgba(245,158,11,.15);color:var(--gold);border:1px solid rgba(245,158,11,.25)}
@@ -299,7 +302,7 @@ button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:p
 .co-ch-online{position:absolute;bottom:1px;right:1px;width:9px;height:9px;background:#22C55E;border-radius:50%;border:2px solid #fff}
 .co-ch-info{flex:1}
 .co-ch-name{font-size:13px;font-weight:700;color:var(--navy2)}
-.co-ch-status{font-size:10px;font-weight:600}
+.co-ch-status{font-size:11px;font-weight:600}
 .co-ch-actions{display:flex;gap:5px}
 .co-ch-btn{width:32px;height:32px;border:1.5px solid var(--border);border-radius:7px;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;color:var(--muted)}
 .co-ch-btn:hover{border-color:var(--green);color:var(--green)}
@@ -308,22 +311,22 @@ button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:p
 .co-messages::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
 .msg{display:flex;gap:8px;max-width:75%}
 .msg.sent{align-self:flex-end;flex-direction:row-reverse}
-.msg-av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:#fff;flex-shrink:0;margin-top:2px}
+.msg-av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0;margin-top:2px}
 .msg-bubble{padding:10px 14px;border-radius:14px;font-size:12px;line-height:1.5;color:var(--navy2);background:#fff;box-shadow:var(--shadow);border:1.5px solid var(--border2)}
 .msg.sent .msg-bubble{background:var(--green);color:#fff;border-color:var(--green);border-radius:14px 14px 4px 14px}
 .msg.recv .msg-bubble{border-radius:14px 14px 14px 4px}
-.msg-time{font-size:9px;color:var(--muted2);margin-top:4px;text-align:right}
+.msg-time{font-size:11px;color:var(--muted2);margin-top:4px;text-align:right}
 .msg.recv .msg-time{text-align:left}
 .co-input-area{background:#fff;border-top:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0}
 .co-inp{flex:1;padding:10px 14px;border-radius:12px;border:1.5px solid var(--border);background:var(--bg);font-size:13px;color:var(--navy2);outline:none;transition:border-color .2s;font-family:'Plus Jakarta Sans',sans-serif}
 .co-inp:focus{border-color:var(--green)}
-.co-send-btn{width:40px;height:40px;border-radius:11px;background:var(--green);border:none;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;flex-shrink:0}
+.co-send-btn{width:40px;height:40px;border-radius:12px;background:var(--green);border:none;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;flex-shrink:0}
 .co-send-btn:hover{background:var(--green-d);transform:scale(1.05)}
 
 /* ── FLOATING CHAT FAB ── */
 .chat-fab{position:fixed;bottom:28px;right:28px;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--green-d));box-shadow:0 4px 20px rgba(60,184,120,.45);border:none;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:900;transition:all .25s var(--spring)}
 .chat-fab:hover{transform:scale(1.1);box-shadow:0 6px 28px rgba(60,184,120,.55)}
-.chat-fab-badge{position:absolute;top:-3px;right:-3px;width:18px;height:18px;background:var(--red);border-radius:50%;border:2px solid #fff;font-size:9px;font-weight:800;color:#fff;display:flex;align-items:center;justify-content:center}
+.chat-fab-badge{position:absolute;top:-3px;right:-3px;width:18px;height:18px;background:var(--red);border-radius:50%;border:2px solid #fff;font-size:11px;font-weight:800;color:#fff;display:flex;align-items:center;justify-content:center}
 
 @media(max-width:768px){
   .sidebar{width:60px}
@@ -333,6 +336,26 @@ button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:p
   .service-grid{grid-template-columns:1fr}
   .profile-grid{grid-template-columns:1fr}
   .co-sidebar{width:220px}
+}
+@media(max-width:480px){
+  .sidebar{position:fixed!important;bottom:0;left:0;right:0;top:auto!important;width:100%!important;height:56px!important;flex-direction:row;border-right:none;border-top:1px solid rgba(255,255,255,.12);z-index:200;overflow:visible}
+  .sb-top,.sb-user,.sb-online-toggle,.sb-bottom,.sb-divider{display:none!important}
+  .sb-section-lbl{display:none!important}
+  .sb-nav-wrap{flex-direction:row;padding:0;overflow-x:auto;overflow-y:hidden;flex:1;height:56px;scrollbar-width:none}
+  .sb-nav-wrap::-webkit-scrollbar{display:none}
+  .sb-section{display:flex;flex-direction:row;padding:0;align-items:stretch;height:56px}
+  .sb-item{flex-direction:column;justify-content:center;align-items:center;gap:2px;padding:0;min-width:54px;flex:1;max-width:76px;height:56px;border-radius:0}
+  .sb-item span{display:block!important;font-size:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:58px;text-align:center}
+  .sb-item svg{width:18px;height:18px}
+  .sb-item.active::before{top:0;left:15%;height:2px;width:70%;border-radius:0 0 3px 3px}
+  .sb-item-badge{display:none!important}
+  body{overflow:auto}
+  .main{overflow:auto;height:auto;padding-bottom:56px}
+  .content{overflow:visible;padding:16px 10px}
+  .kpi-grid{grid-template-columns:1fr 1fr}
+  .topbar{padding:0 12px}
+  .co-sidebar{width:100%!important}
+  .chat-overlay-inner{flex-direction:column}
 }
 
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
@@ -346,7 +369,7 @@ button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:p
 <aside class="sidebar">
   <div class="sb-top">
     <a class="sb-logo" href="/src/pages/home/index.html">
-      <div class="sb-logo-mark">O</div>
+      <div class="sb-logo-mark"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" role="img" aria-label="Logo Oriupe"><circle cx="10" cy="10" r="8.5" fill="#8DC63F" opacity=".9"/><circle cx="22" cy="10" r="8.5" fill="#29ABE2" opacity=".9"/><circle cx="10" cy="22" r="8.5" fill="#3CB878" opacity=".9"/><circle cx="22" cy="22" r="8.5" fill="rgba(255,255,255,.1)"/><rect x="9.5" y="9.5" width="13" height="13" rx="1.5" fill="rgba(60,184,120,.45)"/></svg></div>
       <span class="sb-logo-t">Oriupe</span>
     </a>
   </div>
@@ -441,7 +464,7 @@ button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:p
         <span class="tb-notif-dot"></span>
       </button>
       <button class="tb-btn" onclick="showPanel('profile')" title="Profil">
-        <div style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--lime));display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:#fff">KA</div>
+        <div style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--lime));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff">KA</div>
       </button>
     </div>
   </div>
@@ -460,25 +483,25 @@ button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:p
       <div class="kpi-grid">
         <div class="kpi-card" onclick="showPanel('revenue')">
           <div class="kpi-icon" style="background:var(--green-l)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
-          <div class="kpi-val" data-target="325000" data-suffix=" FCFA">0</div>
+          <div class="kpi-val" id="kpi-revenue" data-target="325000" data-suffix=" FCFA">0</div>
           <div class="kpi-lbl">Revenus ce mois</div>
           <div class="kpi-delta up">&#x2191; +18% vs avril</div>
         </div>
         <div class="kpi-card" onclick="showPanel('orders')">
           <div class="kpi-icon" style="background:var(--blue-l)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2.5"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg></div>
-          <div class="kpi-val" data-target="4">0</div>
+          <div class="kpi-val" id="kpi-orders" data-target="4">0</div>
           <div class="kpi-lbl">Commandes actives</div>
           <div class="kpi-delta danger">1 en retard</div>
         </div>
         <div class="kpi-card" onclick="showPanel('profile')">
           <div class="kpi-icon" style="background:rgba(245,158,11,.1)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
-          <div class="kpi-val">4.9</div>
+          <div class="kpi-val" id="kpi-rating">4.9</div>
           <div class="kpi-lbl">Note moyenne</div>
           <div class="kpi-delta up">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
         </div>
         <div class="kpi-card" onclick="showPanel('services')">
           <div class="kpi-icon" style="background:rgba(141,198,63,.1)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--lime)" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
-          <div class="kpi-val" data-target="96" data-suffix="%">0</div>
+          <div class="kpi-val" id="kpi-completion" data-target="96" data-suffix="%">0</div>
           <div class="kpi-lbl">Taux de complétion</div>
           <div class="kpi-delta up">Top 5% plateforme</div>
         </div>
@@ -565,7 +588,7 @@ button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:p
         <span class="sec-action" onclick="showPanel('revenue')">Détails ›</span>
       </div>
       <div class="revenue-card">
-        <div class="rev-total" data-target="325000" data-suffix=" FCFA">0</div>
+        <div class="rev-total" id="kpi-rev-total" data-target="325000" data-suffix=" FCFA">0</div>
         <div class="rev-sub">Mai 2025 — vs 275 000 FCFA en avril</div>
         <div class="rev-bars">
           <div class="rev-bar-wrap"><div class="rev-bar" style="height:35%"></div><div class="rev-bar-lbl">Jan</div></div>
@@ -642,7 +665,7 @@ button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:p
     <div class="panel" id="panel-services">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
         <div></div>
-        <button class="oa-btn primary" style="padding:8px 16px">+ Nouveau service</button>
+        <button class="oa-btn primary" style="padding:8px 16px" onclick="window.location.href='/src/pages/create-service/index.html'">+ Nouveau service</button>
       </div>
       <div class="service-grid">
         <div class="service-card">
@@ -683,7 +706,7 @@ button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:p
             <div class="sc-price">120 000 FCFA</div>
             <div class="sc-footer">
               <div class="sc-stat">Pas encore publié</div>
-              <button class="oa-btn primary" style="padding:3px 10px;font-size:10px">Publier</button>
+              <button class="oa-btn primary" style="padding:3px 10px;font-size:11px">Publier</button>
             </div>
           </div>
         </div>
@@ -698,7 +721,7 @@ button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:p
         <div class="chip">Archivées (8)</div>
       </div>
       <div class="offer-card new" onclick="openChat('moussa')">
-        <div class="order-av" style="background:linear-gradient(135deg,#F59E0B,#D97706);width:40px;height:40px;border-radius:50%">MS</div>
+        <div class="order-av" style="background:linear-gradient(135deg,var(--gold),var(--gold-d));width:40px;height:40px;border-radius:50%">MS</div>
         <div class="offer-info">
           <div class="offer-title">Création d'un logo pour startup fintech</div>
           <div class="offer-meta">Moussa Sylla — Budget indicatif: 60–90K FCFA • Publié il y a 2h</div>
@@ -772,17 +795,17 @@ button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:p
       </div>
       <div class="sec-head"><div class="sec-title">Derniers paiements reçus</div></div>
       <div style="background:#fff;border-radius:14px;overflow:hidden;border:1.5px solid var(--border2);box-shadow:var(--shadow)">
-        <div style="display:grid;grid-template-columns:1fr 1.5fr 1fr 1fr;padding:12px 18px;background:var(--bg);border-bottom:1px solid var(--border);font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.5px">
+        <div style="display:grid;grid-template-columns:1fr 1.5fr 1fr 1fr;padding:12px 18px;background:var(--bg);border-bottom:1px solid var(--border);font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.5px">
           <div>DATE</div><div>CLIENT</div><div>MONTANT</div><div>STATUT</div>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1.5fr 1fr 1fr;padding:13px 18px;border-bottom:1px solid var(--border2);font-size:12px">
-          <div style="color:var(--muted)">8 mai</div><div style="font-weight:600">Amara Coulibaly</div><div style="font-weight:800;color:var(--green);font-family:'Bricolage Grotesque',sans-serif">25 000 FCFA</div><div><span style="padding:3px 8px;border-radius:10px;font-size:10px;font-weight:800;background:var(--green-l);color:var(--green-d)">Reçu</span></div>
+          <div style="color:var(--muted)">8 mai</div><div style="font-weight:600">Amara Coulibaly</div><div style="font-weight:800;color:var(--green);font-family:'Bricolage Grotesque',sans-serif">25 000 FCFA</div><div><span style="padding:3px 8px;border-radius:10px;font-size:11px;font-weight:800;background:var(--green-l);color:var(--green-d)">Reçu</span></div>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1.5fr 1fr 1fr;padding:13px 18px;border-bottom:1px solid var(--border2);font-size:12px">
-          <div style="color:var(--muted)">5 mai</div><div style="font-weight:600">Client précédent</div><div style="font-weight:800;color:var(--green);font-family:'Bricolage Grotesque',sans-serif">80 000 FCFA</div><div><span style="padding:3px 8px;border-radius:10px;font-size:10px;font-weight:800;background:var(--green-l);color:var(--green-d)">Reçu</span></div>
+          <div style="color:var(--muted)">5 mai</div><div style="font-weight:600">Client précédent</div><div style="font-weight:800;color:var(--green);font-family:'Bricolage Grotesque',sans-serif">80 000 FCFA</div><div><span style="padding:3px 8px;border-radius:10px;font-size:11px;font-weight:800;background:var(--green-l);color:var(--green-d)">Reçu</span></div>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1.5fr 1fr 1fr;padding:13px 18px;font-size:12px">
-          <div style="color:var(--muted)">En attente</div><div style="font-weight:600">Awa Mbaye</div><div style="font-weight:800;color:var(--gold);font-family:'Bricolage Grotesque',sans-serif">350 000 FCFA</div><div><span style="padding:3px 8px;border-radius:10px;font-size:10px;font-weight:800;background:rgba(245,158,11,.12);color:#D97706">Escrow</span></div>
+          <div style="color:var(--muted)">En attente</div><div style="font-weight:600">Awa Mbaye</div><div style="font-weight:800;color:var(--gold);font-family:'Bricolage Grotesque',sans-serif">350 000 FCFA</div><div><span style="padding:3px 8px;border-radius:10px;font-size:11px;font-weight:800;background:rgba(245,158,11,.12);color:var(--gold-d)">Escrow</span></div>
         </div>
       </div>
     </div>
@@ -806,6 +829,7 @@ button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:p
             <div style="display:flex;flex-direction:column;gap:8px">
               <div class="oa-btn" style="text-align:left;padding:10px 12px;display:flex;align-items:center;gap:8px;width:100%;cursor:pointer" onclick="showPanel('services')">🏷️ Mes services</div>
               <div class="oa-btn" style="text-align:left;padding:10px 12px;display:flex;align-items:center;gap:8px;width:100%;cursor:pointer" onclick="showPanel('kyc')">🔒 Compléter KYC</div>
+              <div class="oa-btn primary" style="text-align:left;padding:10px 12px;display:flex;align-items:center;gap:8px;width:100%;cursor:pointer" onclick="window.location.href='/src/pages/profile/index.html'">👤 Voir mon profil public</div>
               <div class="oa-btn" style="text-align:left;padding:10px 12px;display:flex;align-items:center;gap:8px;width:100%;cursor:pointer" onclick="window.location.href='/src/pages/home/index.html'">🏠 Page d'accueil</div>
             </div>
           </div>
@@ -898,7 +922,7 @@ button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:p
           <div class="setting-info"><div class="setting-name">Retour à l'accueil</div><div class="setting-desc">Page principale Oriupe</div></div>
           <div class="setting-chevron">&#8250;</div>
         </div>
-        <div class="setting-item" onclick="window.location.href='/src/pages/auth/index.html'">
+        <div class="setting-item" onclick="if(typeof logout==='function'){logout();}else{localStorage.removeItem('oriupe_session');window.location.href='/src/pages/auth/index.html';}">
           <div class="setting-ico" style="background:rgba(239,68,68,.08)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg></div>
           <div class="setting-info"><div class="setting-name" style="color:var(--red)">Déconnexion</div><div class="setting-desc">Quitter votre session</div></div>
           <div class="setting-chevron" style="color:var(--red)">&#8250;</div>
@@ -957,7 +981,7 @@ button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:p
           <div class="co-conv-meta"><div class="co-conv-time">8 mai</div></div>
         </div>
         <div class="co-conv-item" id="conv-moussa" onclick="selectConv('moussa')">
-          <div class="co-av" style="background:linear-gradient(135deg,#F59E0B,#D97706)">MS</div>
+          <div class="co-av" style="background:linear-gradient(135deg,var(--gold),var(--gold-d))">MS</div>
           <div class="co-conv-info">
             <div class="co-conv-name">Moussa Sylla</div>
             <div class="co-conv-preview">Intéressé par votre offre</div>
@@ -976,7 +1000,7 @@ button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:p
             <div class="co-esc-code" id="co-esc-code">#ESC-0025-KA01</div>
             <span class="co-esc-status esb-progress" id="co-esc-status">En cours</span>
             <div style="flex:1"></div>
-            <button onclick="closeChat();showPanel('revenue')" style="padding:4px 10px;border-radius:7px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.07);color:rgba(255,255,255,.7);font-size:10px;font-weight:700;cursor:pointer">Revenus ›</button>
+            <button onclick="closeChat();showPanel('revenue')" style="padding:4px 10px;border-radius:7px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.07);color:rgba(255,255,255,.7);font-size:11px;font-weight:700;cursor:pointer">Revenus ›</button>
           </div>
           <div class="co-esc-amounts">
             <div class="co-esc-amt"><div class="co-esc-amt-lbl">COMMANDE</div><div class="co-esc-amt-val" id="co-esc-total">350 000 FCFA</div></div>
@@ -1036,7 +1060,7 @@ button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:p
       </div>
 
       <div class="co-input-area">
-        <button style="width:36px;height:36px;border-radius:9px;border:1.5px solid var(--border);background:#fff;color:var(--muted);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0">
+        <button style="width:36px;height:36px;border-radius:12px;border:1.5px solid var(--border);background:#fff;color:var(--muted);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
         </button>
         <input class="co-inp" id="co-input" placeholder="Répondre à votre client…" onkeydown="if(event.key==='Enter')sendMsg()"/>
@@ -1135,7 +1159,7 @@ const CONV_DATA = {
     escrow: null
   },
   moussa: {
-    name: 'Moussa Sylla', initials: 'MS', color: 'linear-gradient(135deg,#F59E0B,#D97706)',
+    name: 'Moussa Sylla', initials: 'MS', color: 'linear-gradient(135deg,var(--gold),var(--gold-d))',
     status: 'En ligne', online: true,
     escrow: null
   }
@@ -1225,12 +1249,151 @@ document.addEventListener('keydown', e => {
 </script>
 <script src="/src/shared/oriupe-session.js"></script>
 <script>
+// Protection de route — freelance ou admin uniquement
+requireAuth(['freelance', 'admin']);
+
 const _sf = getSession();
 if (_sf && _sf.unreadMessages > 0) {
   const fab = document.getElementById('chat-fab');
   if (fab) { const b = fab.querySelector('.chat-fab-badge'); if(b) b.textContent = _sf.unreadMessages; }
 }
+// Populate sidebar user data from session
+if (_sf) {
+  const nameEl = document.querySelector('.sb-user-name');
+  const roleEl = document.querySelector('.sb-user-role');
+  const avEl = document.querySelector('.sb-av');
+  if (nameEl) nameEl.textContent = ((_sf.firstName || '') + ' ' + (_sf.lastName || '')).trim() || 'Mon compte';
+  if (roleEl) roleEl.textContent = _sf.role === 'freelance' ? 'Freelance' : 'Client';
+  if (avEl) {
+    const initials = ((_sf.firstName||'?')[0] + (_sf.lastName||'?')[0]).toUpperCase();
+    // preserve child elements (online dot), update only the first text node
+    const textNode = [...avEl.childNodes].find(n => n.nodeType === Node.TEXT_NODE);
+    if (textNode) textNode.textContent = initials;
+    else avEl.prepend(document.createTextNode(initials));
+  }
+}
 document.querySelectorAll('.sb-logout').forEach(btn => { btn.onclick = () => logout(); });
+
+// Detect service submission redirect
+(function(){
+  const p = new URLSearchParams(window.location.search);
+  if(p.get('service_submitted')==='1'){
+    history.replaceState(null,'',window.location.pathname);
+    _flDashToast('Votre service est soumis et en attente de modération.');
+    _renderPendingServices();
+    if(typeof showPanel === 'function') showPanel('services');
+  }
+})();
+
+function _flDashToast(msg){
+  const t = document.createElement('div');
+  t.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:#0F2535;color:#fff;font-size:13px;font-weight:600;padding:12px 22px;border-radius:12px;z-index:9999;opacity:0;transition:all .35s;box-shadow:0 8px 28px rgba(0,0,0,.22);white-space:nowrap;max-width:90vw;text-align:center';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{ t.style.opacity='1'; t.style.transform='translateX(-50%) translateY(0)'; }));
+  setTimeout(()=>{ t.style.opacity='0'; t.style.transform='translateX(-50%) translateY(10px)'; setTimeout(()=>t.remove(), 400); }, 4000);
+}
+
+function _renderPendingServices(){
+  try{
+    const pending = JSON.parse(localStorage.getItem('oriupe_pending_services')||'[]');
+    if(!pending.length) return;
+    const panel = document.getElementById('panel-services');
+    if(!panel) return;
+    const existing = document.getElementById('pending-svc-block');
+    if(existing) existing.remove();
+    const block = document.createElement('div');
+    block.id = 'pending-svc-block';
+    block.style.cssText = 'margin-bottom:16px';
+    block.innerHTML = '<div style="font-size:13px;font-weight:700;color:#1B3A4A;margin-bottom:10px">En attente de modération</div>' +
+      pending.slice(0,3).map(svc=>`
+        <div style="background:#fff;border:1px solid #E2E8F0;border-radius:12px;padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;gap:12px">
+          <div>
+            <div style="font-size:13px;font-weight:700;color:#1B3A4A">${svc.title||'Service sans titre'}</div>
+            <div style="font-size:11px;color:#64748B;margin-top:3px">${svc.category||''} · À partir de ${svc.price_start||'—'} FCFA</div>
+          </div>
+          <span style="font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;background:rgba(245,158,11,.12);color:var(--gold-d);white-space:nowrap">En modération</span>
+        </div>`).join('');
+    const serviceGrid = panel.querySelector('.service-grid');
+    if(serviceGrid) panel.insertBefore(block, serviceGrid);
+    else panel.prepend(block);
+  }catch(e){}
+}
+_renderPendingServices();
+</script>
+<script type="module">
+/* ── Dashboard freelance — stats dynamiques Supabase ── */
+import { supabase, isSupabaseConfigured } from '/src/shared/supabase.js'
+
+function _fmtFCFA(n){return Number(n).toLocaleString('fr-FR')+' FCFA'}
+
+async function _loadFlStats(){
+  if(!isSupabaseConfigured||!supabase)return null
+  try{
+    const{data:{user}}=await supabase.auth.getUser()
+    if(!user)return null
+
+    const now=new Date()
+    const monthStart=new Date(now.getFullYear(),now.getMonth(),1).toISOString()
+    const monthEnd=new Date(now.getFullYear(),now.getMonth()+1,0,23,59,59,999).toISOString()
+
+    const[ordersRes,revenueRes,ratingRes,allOrdersRes]=await Promise.all([
+      supabase.from('orders').select('id',{count:'exact',head:true})
+        .eq('freelance_id',user.id)
+        .in('status',['FUNDS_SECURED','IN_PROGRESS','DELIVERED']),
+      supabase.from('orders').select('amount_net')
+        .eq('freelance_id',user.id)
+        .eq('status','COMPLETED')
+        .gte('completed_at',monthStart)
+        .lte('completed_at',monthEnd),
+      supabase.from('freelance_rating').select('avg_rating,review_count')
+        .eq('freelance_id',user.id)
+        .maybeSingle(),
+      supabase.from('orders').select('status')
+        .eq('freelance_id',user.id)
+        .in('status',['COMPLETED','CANCELLED']),
+    ])
+
+    const activeOrders=ordersRes.count||0
+    const monthRevenue=(revenueRes.data||[]).reduce((s,o)=>s+(o.amount_net||0),0)
+    const avgRating=ratingRes.data?.avg_rating||null
+    const reviewCount=ratingRes.data?.review_count||0
+    const doneOrders=allOrdersRes.data||[]
+    const completionRate=doneOrders.length>0
+      ?Math.round(doneOrders.filter(o=>o.status==='COMPLETED').length/doneOrders.length*100)
+      :null
+
+    return{activeOrders,monthRevenue,avgRating,reviewCount,completionRate}
+  }catch(e){
+    console.warn('[Dashboard FL] Supabase stats error:',e)
+    return null
+  }
+}
+
+const stats=await _loadFlStats()
+if(stats){
+  const el={
+    revenue:document.getElementById('kpi-revenue'),
+    orders:document.getElementById('kpi-orders'),
+    rating:document.getElementById('kpi-rating'),
+    completion:document.getElementById('kpi-completion'),
+    revTotal:document.getElementById('kpi-rev-total'),
+  }
+  if(el.revenue&&stats.monthRevenue>=0)
+    el.revenue.textContent=_fmtFCFA(stats.monthRevenue)
+  if(el.orders)
+    el.orders.textContent=stats.activeOrders
+  if(el.rating&&stats.avgRating)
+    el.rating.textContent=Number(stats.avgRating).toFixed(1)
+  if(el.completion&&stats.completionRate!==null)
+    el.completion.textContent=stats.completionRate+'%'
+  if(el.revTotal&&stats.monthRevenue>=0)
+    el.revTotal.textContent=_fmtFCFA(stats.monthRevenue)
+
+  // Mettre à jour la puce commandes actives dans le sidebar
+  const sbBadge=document.querySelector('.sb-item-badge.blue')
+  if(sbBadge&&stats.activeOrders>=0)sbBadge.textContent=stats.activeOrders
+}
 </script>
 <script type="module" src="/src/shared/realtime.js"></script>
 </body>

@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Publier un projet — Oriupe</title>
+  <link rel="stylesheet" href="/src/shared/styles/base.css"/>
+  <script type="module" src="/src/components/nav.js"></script>
+  <script src="/src/shared/oriupe-session.js"></script>
+  <style>
+    :root {
+      --green:#3CB878; --navy:#0F2535; --navy2:#1B3A4A;
+      --blue:#29ABE2; --lime:#8DC63F; --gold:#F59E0B;
+      --red:#E53935; --bg:#F4F6F9;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:var(--bg);font-family:'Plus Jakarta Sans',sans-serif;color:#1a2533}
+
+    /* ── HERO ─────────────────────────────────────────────── */
+    .pp-hero{
+      background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 60%,#1f4a6e 100%);
+      padding:36px 24px 32px;
+      text-align:center;
+      position:relative;
+      overflow:hidden;
+    }
+    .pp-hero::before{
+      content:'';position:absolute;inset:0;
+      background:radial-gradient(ellipse 60% 80% at 70% 50%,rgba(41,171,226,.15),transparent);
+      pointer-events:none;
+    }
+    .pp-hero h1{
+      font-family:'Bricolage Grotesque',sans-serif;
+      font-weight:800;font-size:clamp(1.6rem,3.5vw,2.4rem);
+      color:#fff;margin-bottom:10px;
+    }
+    .pp-hero p{color:rgba(255,255,255,.72);font-size:.95rem;max-width:520px;margin:0 auto}
+
+    /* ── WRAPPER ──────────────────────────────────────────── */
+    .pp-wrap{max-width:880px;margin:0 auto;padding:32px 16px 80px}
+
+    /* ── MODE SELECTION ───────────────────────────────────── */
+    .pp-mode-section{margin-bottom:0}
+    .pp-mode-title{
+      font-family:'Bricolage Grotesque',sans-serif;
+      font-weight:700;font-size:1.15rem;color:var(--navy);
+      margin-bottom:20px;text-align:center;
+    }
+    .pp-mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    @media(max-width:600px){.pp-mode-grid{grid-template-columns:1fr}}
+
+    .pp-mode-card{
+      border:2px solid #e2e8f0;border-radius:16px;
+      padding:28px 24px;cursor:pointer;
+      background:#fff;transition:all .2s;
+      position:relative;
+    }
+    .pp-mode-card:hover{border-color:var(--blue);box-shadow:0 4px 20px rgba(41,171,226,.15)}
+    .pp-mode-card.selected{
+      border-color:var(--green);
+      box-shadow:0 4px 24px rgba(60,184,120,.18);
+    }
+    .pp-mode-card .check-badge{
+      position:absolute;top:16px;right:16px;
+      width:24px;height:24px;border-radius:50%;
+      background:var(--green);display:none;
+      align-items:center;justify-content:center;
+    }
+    .pp-mode-card.selected .check-badge{display:flex}
+    .pp-mode-card .check-badge svg{width:14px;height:14px;stroke:#fff;fill:none}
+    .pp-mode-icon{
+      width:52px;height:52px;border-radius:12px;
+      display:flex;align-items:center;justify-content:center;
+      margin-bottom:16px;
+    }
+    .pp-mode-icon.ao{background:rgba(41,171,226,.12)}
+    .pp-mode-icon.direct{background:rgba(141,198,63,.12)}
+    .pp-mode-icon svg{width:26px;height:26px}
+    .pp-mode-card h3{
+      font-family:'Bricolage Grotesque',sans-serif;
+      font-weight:700;font-size:1rem;color:var(--navy);margin-bottom:8px;
+    }
+    .pp-mode-card p{font-size:.84rem;color:#64748b;line-height:1.5}
+    .pp-mode-badge{
+      display:inline-block;margin-top:12px;
+      padding:4px 10px;border-radius:20px;font-size:.74rem;font-weight:600;
+    }
+    .pp-mode-badge.ao{background:rgba(41,171,226,.12);color:var(--blue)}
+    .pp-mode-badge.direct{background:rgba(141,198,63,.12);color:#5a8a1a}
+
+    .pp-mode-confirm{
+      margin-top:24px;text-align:center;
+      display:none;
+    }
+    .pp-mode-confirm.visible{display:block}
+    .btn-start{
+      background:var(--green);color:#fff;border:none;
+      padding:12px 32px;border-radius:10px;
+      font-weight:700;font-size:.95rem;cursor:pointer;
+      transition:background .2s;
+    }
+    .btn-start:hover{background:#2da86a}
+
+    /* ── PROGRESS BAR ─────────────────────────────────────── */
+    .pp-progress{
+      background:#fff;border-radius:14px;
+      padding:20px 24px;margin-bottom:24px;
+      box-shadow:0 2px 12px rgba(0,0,0,.06);
+      display:none;
+    }
+    .pp-progress.visible{display:block}
+    .pp-prog-steps{
+      display:flex;align-items:center;gap:0;
+    }
+    .pp-prog-step{
+      display:flex;align-items:center;flex:1;
+    }
+    .pp-prog-step:last-child{flex:0}
+    .pp-step-dot{
+      width:34px;height:34px;border-radius:50%;
+      border:2px solid #e2e8f0;background:#fff;
+      display:flex;align-items:center;justify-content:center;
+      font-size:.78rem;font-weight:700;color:#94a3b8;
+      flex-shrink:0;cursor:pointer;transition:all .2s;
+    }
+    .pp-step-dot.done{
+      background:var(--green);border-color:var(--green);color:#fff;
+    }
+    .pp-step-dot.active{
+      background:var(--blue);border-color:var(--blue);color:#fff;
+    }
+    .pp-step-line{
+      flex:1;height:2px;background:#e2e8f0;margin:0 4px;
+    }
+    .pp-step-line.done{background:var(--green)}
+    .pp-prog-labels{
+      display:flex;margin-top:10px;
+    }
+    .pp-prog-label{
+      flex:1;font-size:.72rem;color:#94a3b8;
+      text-align:center;font-weight:500;
+      padding:0 4px;
+    }
+    .pp-prog-label.active{color:var(--blue);font-weight:700}
+    .pp-prog-label.done{color:var(--green)}
+    .pp-prog-label:last-child{flex:0;min-width:80px;text-align:right}
+
+    /* ── FORM LAYOUT ──────────────────────────────────────── */
+    .pp-form-wrap{
+      display:grid;
+      grid-template-columns:1fr 280px;
+      gap:24px;align-items:start;
+    }
+    @media(max-width:720px){
+      .pp-form-wrap{grid-template-columns:1fr}
+      .pp-sidebar{display:none}
+    }
+
+    .pp-step-content{display:none}
+    .pp-step-content.active{display:block}
+
+    .pp-card{
+      background:#fff;border-radius:16px;
+      padding:28px;
+      box-shadow:0 2px 12px rgba(0,0,0,.06);
+      margin-bottom:20px;
+    }
+    .pp-card h2{
+      font-family:'Bricolage Grotesque',sans-serif;
+      font-weight:700;font-size:1.1rem;color:var(--navy);
+      margin-bottom:20px;display:flex;align-items:center;gap:10px;
+    }
+    .pp-card h2 .step-pill{
+      width:26px;height:26px;border-radius:50%;
+      background:var(--blue);color:#fff;
+      font-size:.72rem;font-weight:800;
+      display:flex;align-items:center;justify-content:center;
+      flex-shrink:0;
+    }
+
+    /* ── FORM CONTROLS ────────────────────────────────────── */
+    .pp-field{margin-bottom:18px}
+    .pp-field label{
+      display:block;font-size:.82rem;font-weight:600;
+      color:#374151;margin-bottom:6px;
+    }
+    .pp-field label span{color:var(--red);margin-left:2px}
+    .pp-field input,
+    .pp-field select,
+    .pp-field textarea{
+      width:100%;padding:10px 14px;
+      border:1.5px solid #e2e8f0;border-radius:10px;
+      font-size:.88rem;font-family:inherit;
+      background:#fafbfc;color:#1a2533;
+      transition:border-color .2s;outline:none;
+    }
+    .pp-field input:focus,
+    .pp-field select:focus,
+    .pp-field textarea:focus{
+      border-color:var(--blue);background:#fff;
+    }
+    .pp-field textarea{resize:vertical;min-height:120px}
+    .pp-field .hint{font-size:.76rem;color:#94a3b8;margin-top:4px}
+    .pp-field .char-count{
+      float:right;font-size:.74rem;color:#94a3b8;
+    }
+
+    .pp-field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    @media(max-width:500px){.pp-field-row{grid-template-columns:1fr}}
+
+    /* ── COMPETENCES TAGS ─────────────────────────────────── */
+    .skill-tags-wrap{
+      display:flex;flex-wrap:wrap;gap:8px;
+      border:1.5px solid #e2e8f0;border-radius:10px;
+      padding:10px;background:#fafbfc;min-height:46px;
+    }
+    .skill-tag{
+      background:rgba(41,171,226,.12);color:var(--blue);
+      padding:4px 10px;border-radius:20px;
+      font-size:.78rem;font-weight:600;
+      display:flex;align-items:center;gap:6px;
+    }
+    .skill-tag button{
+      background:none;border:none;cursor:pointer;
+      color:var(--blue);font-size:.9rem;padding:0;
+      line-height:1;
+    }
+    .skill-tag-input{
+      border:none;outline:none;font-size:.84rem;
+      background:transparent;flex:1;min-width:100px;
+      font-family:inherit;
+    }
+
+    /* ── BUDGET RANGE ─────────────────────────────────────── */
+    .budget-grid{display:grid;grid-template-columns:1fr auto 1fr;align-items:end;gap:10px}
+    .budget-sep{font-size:.84rem;color:#94a3b8;padding-bottom:12px;text-align:center}
+    .budget-currency{position:relative}
+    .budget-currency input{padding-left:36px}
+    .budget-currency .cur{
+      position:absolute;left:12px;bottom:11px;
+      font-size:.84rem;color:#94a3b8;font-weight:600;
+    }
+
+    /* ── FILE UPLOAD ──────────────────────────────────────── */
+    .pp-dropzone{
+      border:2px dashed #cbd5e1;border-radius:12px;
+      padding:32px;text-align:center;cursor:pointer;
+      background:#fafbfc;transition:all .2s;
+    }
+    .pp-dropzone:hover,.pp-dropzone.drag-over{
+      border-color:var(--blue);background:rgba(41,171,226,.05);
+    }
+    .pp-dropzone svg{width:36px;height:36px;stroke:#94a3b8;fill:none;margin-bottom:10px}
+    .pp-dropzone p{font-size:.84rem;color:#64748b}
+    .pp-dropzone .sub{font-size:.75rem;color:#94a3b8;margin-top:4px}
+    #ppFileInput{display:none}
+
+    .file-list{margin-top:12px;display:flex;flex-direction:column;gap:8px}
+    .file-item{
+      display:flex;align-items:center;gap:10px;
+      background:#f1f5f9;border-radius:8px;padding:8px 12px;
+    }
+    .file-item svg{width:18px;height:18px;stroke:#64748b;fill:none;flex-shrink:0}
+    .file-item span{font-size:.82rem;color:#374151;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .file-item .file-size{font-size:.74rem;color:#94a3b8;flex-shrink:0}
+    .file-item button{
+      background:none;border:none;cursor:pointer;
+      color:#94a3b8;font-size:1rem;padding:0 4px;
+    }
+    .file-item button:hover{color:var(--red)}
+
+    /* ── RADIO CARDS ──────────────────────────────────────── */
+    .radio-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    @media(max-width:480px){.radio-cards{grid-template-columns:1fr}}
+    .radio-card{
+      border:2px solid #e2e8f0;border-radius:12px;
+      padding:16px;cursor:pointer;transition:all .2s;
+    }
+    .radio-card.selected{border-color:var(--green);background:rgba(60,184,120,.04)}
+    .radio-card input[type=radio]{display:none}
+    .radio-card-inner{display:flex;align-items:flex-start;gap:12px}
+    .radio-dot{
+      width:18px;height:18px;border-radius:50%;
+      border:2px solid #cbd5e1;flex-shrink:0;margin-top:2px;
+      display:flex;align-items:center;justify-content:center;
+      transition:all .2s;
+    }
+    .radio-card.selected .radio-dot{
+      border-color:var(--green);
+    }
+    .radio-dot-fill{
+      width:8px;height:8px;border-radius:50%;
+      background:var(--green);display:none;
+    }
+    .radio-card.selected .radio-dot-fill{display:block}
+    .radio-card-text h4{font-size:.88rem;font-weight:700;color:var(--navy);margin-bottom:4px}
+    .radio-card-text p{font-size:.78rem;color:#64748b;line-height:1.4}
+
+    /* ── TOGGLE SWITCH ────────────────────────────────────── */
+    .toggle-row{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:14px 0;border-bottom:1px solid #f1f5f9;
+    }
+    .toggle-row:last-child{border-bottom:none}
+    .toggle-info h4{font-size:.88rem;font-weight:600;color:#374151;margin-bottom:2px}
+    .toggle-info p{font-size:.76rem;color:#94a3b8}
+    .toggle{
+      position:relative;width:42px;height:24px;flex-shrink:0;
+    }
+    .toggle input{opacity:0;width:0;height:0}
+    .toggle-slider{
+      position:absolute;inset:0;border-radius:24px;
+      background:#e2e8f0;cursor:pointer;transition:.2s;
+    }
+    .toggle-slider::before{
+      content:'';position:absolute;
+      width:18px;height:18px;border-radius:50%;
+      background:#fff;left:3px;top:3px;
+      transition:.2s;
+    }
+    .toggle input:checked + .toggle-slider{background:var(--green)}
+    .toggle input:checked + .toggle-slider::before{transform:translateX(18px)}
+
+    /* ── SIDEBAR ──────────────────────────────────────────── */
+    .pp-sidebar{position:sticky;top:80px}
+    .pp-prev-card{
+      background:#fff;border-radius:16px;
+      padding:20px;
+      box-shadow:0 2px 12px rgba(0,0,0,.06);
+      margin-bottom:16px;
+    }
+    .pp-prev-card h4{
+      font-size:.78rem;font-weight:700;text-transform:uppercase;
+      letter-spacing:.06em;color:#94a3b8;margin-bottom:14px;
+    }
+    .prev-title{
+      font-family:'Bricolage Grotesque',sans-serif;
+      font-weight:700;font-size:1rem;color:var(--navy);
+      margin-bottom:8px;line-height:1.3;
+      min-height:20px;
+    }
+    .prev-badge{
+      display:inline-flex;align-items:center;gap:6px;
+      padding:4px 10px;border-radius:20px;
+      font-size:.75rem;font-weight:600;
+      margin-bottom:10px;
+    }
+    .prev-badge.ao{background:rgba(41,171,226,.12);color:var(--blue)}
+    .prev-badge.direct{background:rgba(141,198,63,.12);color:#5a8a1a}
+    .prev-budget{font-size:.92rem;font-weight:700;color:var(--green);margin-bottom:8px}
+    .prev-deadline{font-size:.8rem;color:#64748b;margin-bottom:12px}
+    .prev-skills{display:flex;flex-wrap:wrap;gap:6px}
+    .prev-skill-chip{
+      background:#f1f5f9;color:#64748b;
+      padding:3px 9px;border-radius:20px;font-size:.72rem;font-weight:600;
+    }
+
+    .pp-tips-card{
+      background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 100%);
+      border-radius:16px;padding:20px;
+      box-shadow:0 2px 12px rgba(0,0,0,.12);
+    }
+    .pp-tips-card h4{
+      font-size:.78rem;font-weight:700;color:rgba(255,255,255,.6);
+      text-transform:uppercase;letter-spacing:.06em;margin-bottom:14px;
+    }
+    .pp-tip{
+      display:flex;align-items:flex-start;gap:10px;
+      margin-bottom:12px;
+    }
+    .pp-tip:last-child{margin-bottom:0}
+    .pp-tip-icon{
+      width:28px;height:28px;border-radius:8px;
+      background:rgba(255,255,255,.1);
+      display:flex;align-items:center;justify-content:center;flex-shrink:0;
+    }
+    .pp-tip-icon svg{width:14px;height:14px;stroke:#fff;fill:none}
+    .pp-tip p{font-size:.78rem;color:rgba(255,255,255,.8);line-height:1.4}
+
+    /* ── STEP NAV ─────────────────────────────────────────── */
+    .pp-step-nav{
+      display:flex;justify-content:space-between;
+      margin-top:8px;
+    }
+    .btn-prev{
+      background:#fff;color:#374151;
+      border:1.5px solid #e2e8f0;
+      padding:11px 24px;border-radius:10px;
+      font-weight:600;font-size:.88rem;cursor:pointer;
+      transition:all .2s;display:flex;align-items:center;gap:8px;
+    }
+    .btn-prev:hover{border-color:var(--navy);color:var(--navy)}
+    .btn-prev svg{width:16px;height:16px;stroke:currentColor;fill:none}
+    .btn-next{
+      background:var(--blue);color:#fff;border:none;
+      padding:11px 28px;border-radius:10px;
+      font-weight:700;font-size:.88rem;cursor:pointer;
+      transition:background .2s;display:flex;align-items:center;gap:8px;
+    }
+    .btn-next:hover{background:#1a9ad2}
+    .btn-next svg{width:16px;height:16px;stroke:currentColor;fill:none}
+    .btn-submit{
+      background:var(--green);color:#fff;border:none;
+      padding:13px 32px;border-radius:10px;
+      font-weight:700;font-size:.95rem;cursor:pointer;
+      transition:background .2s;display:flex;align-items:center;gap:10px;
+    }
+    .btn-submit:hover{background:#2da86a}
+    .btn-submit svg{width:18px;height:18px;stroke:currentColor;fill:none}
+
+    /* ── TOAST ────────────────────────────────────────────── */
+    .pp-toast{
+      position:fixed;bottom:28px;left:50%;transform:translateX(-50%);
+      background:var(--navy);color:#fff;
+      padding:12px 24px;border-radius:12px;
+      font-size:.88rem;font-weight:600;
+      box-shadow:0 8px 24px rgba(0,0,0,.25);
+      z-index:9999;opacity:0;transition:opacity .3s;
+      pointer-events:none;white-space:nowrap;
+    }
+    .pp-toast.show{opacity:1}
+
+    /* ── LEAVE GUARD ──────────────────────────────────────── */
+    .pp-overlay{
+      position:fixed;inset:0;background:rgba(0,0,0,.5);
+      z-index:1000;display:none;align-items:center;justify-content:center;
+    }
+    .pp-overlay.open{display:flex}
+    .pp-dialog{
+      background:#fff;border-radius:20px;
+      padding:32px;max-width:400px;width:90%;
+      text-align:center;
+    }
+    .pp-dialog h3{
+      font-family:'Bricolage Grotesque',sans-serif;
+      font-weight:800;font-size:1.2rem;color:var(--navy);margin-bottom:10px;
+    }
+    .pp-dialog p{font-size:.88rem;color:#64748b;margin-bottom:24px;line-height:1.5}
+    .pp-dialog-btns{display:flex;gap:12px;justify-content:center}
+    .btn-dialog-cancel{
+      background:#fff;border:1.5px solid #e2e8f0;color:#374151;
+      padding:10px 22px;border-radius:10px;
+      font-weight:600;font-size:.88rem;cursor:pointer;
+    }
+    .btn-dialog-leave{
+      background:var(--red);color:#fff;border:none;
+      padding:10px 22px;border-radius:10px;
+      font-weight:600;font-size:.88rem;cursor:pointer;
+    }
+
+    /* ── FINAL SUMMARY ────────────────────────────────────── */
+    .pp-summary{
+      background:linear-gradient(135deg,#f8faff 0%,#f0f9f4 100%);
+      border:1.5px solid #e2e8f0;border-radius:14px;
+      padding:24px;margin-bottom:20px;
+    }
+    .pp-summary-row{
+      display:flex;justify-content:space-between;
+      align-items:flex-start;padding:10px 0;
+      border-bottom:1px solid #e8edf2;
+    }
+    .pp-summary-row:last-child{border-bottom:none}
+    .pp-summary-row .label{font-size:.8rem;color:#94a3b8;font-weight:600;min-width:110px}
+    .pp-summary-row .val{font-size:.88rem;color:#374151;font-weight:500;text-align:right;max-width:240px}
+
+    .mode-badge-hero{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:6px 14px;border-radius:20px;
+      font-size:.82rem;font-weight:700;margin-bottom:8px;
+    }
+    .mode-badge-hero.ao{background:rgba(41,171,226,.15);color:var(--blue)}
+    .mode-badge-hero.direct{background:rgba(141,198,63,.15);color:#5a8a1a}
+  </style>
+</head>
+<body>
+<div id="nav-root"></div>
+
+<!-- ── HERO ───────────────────────────────────────────────── -->
+<section class="pp-hero">
+  <h1>Publier un projet</h1>
+  <p>Trouvez le freelance idéal parmi notre communauté de talents africains vérifiés</p>
+</section>
+
+<!-- ── MAIN WRAPPER ───────────────────────────────────────── -->
+<div class="pp-wrap">
+
+  <!-- MODE SELECTION -->
+  <div id="ppModeSection" class="pp-mode-section">
+    <p class="pp-mode-title">Comment souhaitez-vous recruter ?</p>
+    <div class="pp-mode-grid">
+
+      <!-- Appel d'offres -->
+      <div class="pp-mode-card" id="modeAO" onclick="selectMode('ao')">
+        <span class="check-badge">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"/></svg>
+        </span>
+        <div class="pp-mode-icon ao">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+          </svg>
+        </div>
+        <h3>Appel d'offres ouvert</h3>
+        <p>Publiez votre projet et recevez des propositions de plusieurs freelances. Comparez les offres et choisissez la meilleure.</p>
+        <span class="pp-mode-badge ao">Recommandé pour les nouveaux projets</span>
+      </div>
+
+      <!-- Commande directe -->
+      <div class="pp-mode-card" id="modeDirect" onclick="selectMode('direct')">
+        <span class="check-badge">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"/></svg>
+        </span>
+        <div class="pp-mode-icon direct">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--lime)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </div>
+        <h3>Commande directe</h3>
+        <p>Vous avez déjà un freelance en tête ? Envoyez-lui une commande directe en définissant le périmètre et le budget.</p>
+        <span class="pp-mode-badge direct">Idéal si vous avez un freelance favori</span>
+      </div>
+
+    </div>
+
+    <div class="pp-mode-confirm" id="ppModeConfirm">
+      <button type="button" class="btn-start" onclick="startForm()">
+        Continuer avec ce mode →
+      </button>
+    </div>
+  </div>
+
+  <!-- PROGRESS BAR -->
+  <div id="ppProgress" class="pp-progress">
+    <div class="pp-prog-steps">
+      <div class="pp-step-dot active" id="dot1" onclick="goToStep(1)">1</div>
+      <div class="pp-step-line" id="line1"></div>
+      <div class="pp-step-dot" id="dot2" onclick="goToStep(2)">2</div>
+      <div class="pp-step-line" id="line2"></div>
+      <div class="pp-step-dot" id="dot3" onclick="goToStep(3)">3</div>
+      <div class="pp-step-line" id="line3"></div>
+      <div class="pp-step-dot" id="dot4" onclick="goToStep(4)">4</div>
+    </div>
+    <div class="pp-prog-labels">
+      <span class="pp-prog-label active" id="lbl1">Description</span>
+      <span class="pp-prog-label" id="lbl2">Budget & Délai</span>
+      <span class="pp-prog-label" id="lbl3">Fichiers</span>
+      <span class="pp-prog-label" id="lbl4">Publication</span>
+    </div>
+  </div>
+
+  <!-- FORM AREA -->
+  <div id="ppFormArea" style="display:none">
+    <div class="pp-form-wrap">
+      <!-- STEPS (left column) -->
+      <div class="pp-steps-col">
+
+        <!-- STEP 1 — Description -->
+        <div class="pp-step-content active" id="step1">
+          <div class="pp-card">
+            <h2>
+              <span class="step-pill">1</span>
+              Description du projet
+            </h2>
+
+            <div class="pp-field">
+              <label>Titre du projet <span>*</span></label>
+              <input type="text" id="ppTitle" maxlength="100" placeholder="ex: Création d'une application mobile e-commerce"
+                     oninput="updatePreview();updateCharCount(this,'ppTitleCount',100);setDirty()"/>
+              <div class="hint">
+                Soyez précis et accrocheur
+                <span class="char-count" id="ppTitleCount">0/100</span>
+              </div>
+            </div>
+
+            <div class="pp-field">
+              <label>Catégorie <span>*</span></label>
+              <select id="ppCategory" onchange="onCategoryChange();setDirty()">
+                <option value="">— Choisir une catégorie —</option>
+                <option value="dev">Développement & Tech</option>
+                <option value="design">Design & Créatif</option>
+                <option value="marketing">Marketing & Communication</option>
+                <option value="writing">Rédaction & Traduction</option>
+                <option value="video">Vidéo & Animation</option>
+                <option value="data">Data & Analyse</option>
+                <option value="finance">Finance & Comptabilité</option>
+                <option value="other">Autre</option>
+              </select>
+            </div>
+
+            <div class="pp-field" id="ppSubcatWrap" style="display:none">
+              <label>Sous-catégorie</label>
+              <select id="ppSubcategory" onchange="setDirty()"></select>
+            </div>
+
+            <div class="pp-field">
+              <label>Description détaillée <span>*</span></label>
+              <textarea id="ppDesc" maxlength="3000"
+                        placeholder="Décrivez votre projet en détail : objectifs, contexte, résultats attendus, contraintes techniques..."
+                        oninput="updateCharCount(this,'ppDescCount',3000);setDirty()"></textarea>
+              <div class="hint">
+                Minimum 150 caractères. Plus vous êtes précis, meilleures seront les propositions.
+                <span class="char-count" id="ppDescCount">0/3000</span>
+              </div>
+            </div>
+
+            <div class="pp-field">
+              <label>Compétences requises</label>
+              <div class="skill-tags-wrap" id="ppSkillsWrap">
+                <input type="text" class="skill-tag-input" id="ppSkillInput"
+                       placeholder="ex: React, Figma, Python…"
+                       onkeydown="handleSkillKey(event)"/>
+              </div>
+              <div class="hint">Appuyez sur Entrée pour ajouter une compétence (max 8)</div>
+            </div>
+
+          </div>
+          <div class="pp-step-nav">
+            <div></div>
+            <button type="button" class="btn-next" onclick="nextStep()">
+              Suivant
+              <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- STEP 2 — Budget & Délai -->
+        <div class="pp-step-content" id="step2">
+          <div class="pp-card">
+            <h2>
+              <span class="step-pill">2</span>
+              Budget et délai
+            </h2>
+
+            <div class="pp-field">
+              <label>Type de budget <span>*</span></label>
+              <div class="radio-cards">
+                <label class="radio-card selected" id="budgetFixedCard" onclick="selectBudgetType('fixed')">
+                  <input type="radio" name="budgetType" value="fixed" checked/>
+                  <div class="radio-card-inner">
+                    <div class="radio-dot"><div class="radio-dot-fill"></div></div>
+                    <div class="radio-card-text">
+                      <h4>Budget fixe</h4>
+                      <p>Un montant total pour l'ensemble du projet</p>
+                    </div>
+                  </div>
+                </label>
+                <label class="radio-card" id="budgetHourlyCard" onclick="selectBudgetType('hourly')">
+                  <input type="radio" name="budgetType" value="hourly"/>
+                  <div class="radio-card-inner">
+                    <div class="radio-dot"><div class="radio-dot-fill"></div></div>
+                    <div class="radio-card-text">
+                      <h4>Taux horaire</h4>
+                      <p>Paiement à l'heure de travail effectuée</p>
+                    </div>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <div class="pp-field" id="fixedBudgetField">
+              <label>Fourchette de budget (FCFA) <span>*</span></label>
+              <div class="budget-grid">
+                <div class="budget-currency">
+                  <span class="cur">₣</span>
+                  <input type="number" id="ppBudgetMin" placeholder="Minimum"
+                         min="0" oninput="updatePreview();setDirty()"/>
+                </div>
+                <div class="budget-sep">–</div>
+                <div class="budget-currency">
+                  <span class="cur">₣</span>
+                  <input type="number" id="ppBudgetMax" placeholder="Maximum"
+                         min="0" oninput="updatePreview();setDirty()"/>
+                </div>
+              </div>
+              <div class="hint">Indiquez une fourchette réaliste pour attirer de bonnes propositions</div>
+            </div>
+
+            <div class="pp-field" id="hourlyBudgetField" style="display:none">
+              <label>Taux horaire estimé (FCFA/h)</label>
+              <div class="budget-grid">
+                <div class="budget-currency">
+                  <span class="cur">₣</span>
+                  <input type="number" id="ppRateMin" placeholder="Min/h" min="0" oninput="setDirty()"/>
+                </div>
+                <div class="budget-sep">–</div>
+                <div class="budget-currency">
+                  <span class="cur">₣</span>
+                  <input type="number" id="ppRateMax" placeholder="Max/h" min="0" oninput="setDirty()"/>
+                </div>
+              </div>
+            </div>
+
+            <div class="pp-field-row">
+              <div class="pp-field">
+                <label>Durée estimée <span>*</span></label>
+                <select id="ppDuration" onchange="updatePreview();setDirty()">
+                  <option value="">— Sélectionner —</option>
+                  <option value="less1w">Moins d'1 semaine</option>
+                  <option value="1-2w">1 à 2 semaines</option>
+                  <option value="1m">1 mois</option>
+                  <option value="2-3m">2 à 3 mois</option>
+                  <option value="3-6m">3 à 6 mois</option>
+                  <option value="6m+">Plus de 6 mois</option>
+                </select>
+              </div>
+              <div class="pp-field">
+                <label>Date limite de candidature</label>
+                <input type="date" id="ppDeadline" onchange="updatePreview();setDirty()"/>
+              </div>
+            </div>
+
+            <div class="pp-field">
+              <label>Niveau d'expérience requis</label>
+              <select id="ppLevel" onchange="setDirty()">
+                <option value="">— Peu importe —</option>
+                <option value="junior">Junior (0-2 ans)</option>
+                <option value="mid">Intermédiaire (2-5 ans)</option>
+                <option value="senior">Senior (5+ ans)</option>
+                <option value="expert">Expert reconnu</option>
+              </select>
+            </div>
+
+          </div>
+          <div class="pp-step-nav">
+            <button type="button" class="btn-prev" onclick="prevStep()">
+              <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+              Retour
+            </button>
+            <button type="button" class="btn-next" onclick="nextStep()">
+              Suivant
+              <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- STEP 3 — Fichiers & Contexte -->
+        <div class="pp-step-content" id="step3">
+          <div class="pp-card">
+            <h2>
+              <span class="step-pill">3</span>
+              Fichiers et contexte
+            </h2>
+
+            <div class="pp-field">
+              <label>Documents de référence</label>
+              <div class="pp-dropzone" id="ppDropzone"
+                   ondragover="handleDragOver(event)"
+                   ondragleave="handleDragLeave(event)"
+                   ondrop="handleDrop(event)"
+                   onclick="document.getElementById('ppFileInput').click()">
+                <svg viewBox="0 0 24 24">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+                  <polyline points="17 8 12 3 7 8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+                  <line x1="12" y1="3" x2="12" y2="15" stroke-linecap="round" stroke-width="2"/>
+                </svg>
+                <p>Glissez vos fichiers ici ou <strong>cliquez pour parcourir</strong></p>
+                <p class="sub">PDF, DOCX, PNG, JPG — max 10 MB par fichier, 5 fichiers maximum</p>
+              </div>
+              <input type="file" id="ppFileInput" multiple accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
+                     onchange="handleFileSelect(this.files)"/>
+              <div class="file-list" id="ppFileList"></div>
+            </div>
+
+            <div class="pp-field">
+              <label>Lien de référence (facultatif)</label>
+              <input type="url" id="ppRefUrl" placeholder="https://exemple.com/maquette-figma" oninput="setDirty()"/>
+              <div class="hint">Lien Figma, Google Drive, GitHub, etc.</div>
+            </div>
+
+            <div class="pp-field">
+              <label>Informations supplémentaires</label>
+              <textarea id="ppContext" placeholder="Contexte métier, contraintes techniques, accès nécessaires, stack imposée..."
+                        oninput="setDirty()" style="min-height:100px"></textarea>
+            </div>
+
+          </div>
+          <div class="pp-step-nav">
+            <button type="button" class="btn-prev" onclick="prevStep()">
+              <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+              Retour
+            </button>
+            <button type="button" class="btn-next" onclick="nextStep()">
+              Suivant
+              <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- STEP 4 — Confidentialité & Publication -->
+        <div class="pp-step-content" id="step4">
+          <div class="pp-card">
+            <h2>
+              <span class="step-pill">4</span>
+              Confidentialité et publication
+            </h2>
+
+            <div class="pp-field">
+              <label>Visibilité du projet</label>
+              <div class="radio-cards">
+                <label class="radio-card selected" id="visPublicCard" onclick="selectVisibility('public')">
+                  <input type="radio" name="visibility" value="public" checked/>
+                  <div class="radio-card-inner">
+                    <div class="radio-dot"><div class="radio-dot-fill"></div></div>
+                    <div class="radio-card-text">
+                      <h4>Public</h4>
+                      <p>Visible par tous les freelances de la plateforme</p>
+                    </div>
+                  </div>
+                </label>
+                <label class="radio-card" id="visPrivateCard" onclick="selectVisibility('private')">
+                  <input type="radio" name="visibility" value="private"/>
+                  <div class="radio-card-inner">
+                    <div class="radio-dot"><div class="radio-dot-fill"></div></div>
+                    <div class="radio-card-text">
+                      <h4>Privé (invitation)</h4>
+                      <p>Visible uniquement par les freelances que vous invitez</p>
+                    </div>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <div class="pp-field">
+              <label>Options de confidentialité</label>
+              <div>
+                <div class="toggle-row">
+                  <div class="toggle-info">
+                    <h4>NDA requis</h4>
+                    <p>Les candidats doivent accepter un accord de non-divulgation</p>
+                  </div>
+                  <label class="toggle">
+                    <input type="checkbox" id="ppNda" onchange="setDirty()"/>
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                <div class="toggle-row">
+                  <div class="toggle-info">
+                    <h4>Masquer le budget</h4>
+                    <p>Le budget ne sera pas affiché publiquement</p>
+                  </div>
+                  <label class="toggle">
+                    <input type="checkbox" id="ppHideBudget" onchange="setDirty()"/>
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                <div class="toggle-row">
+                  <div class="toggle-info">
+                    <h4>Masquer le nom de l'entreprise</h4>
+                    <p>Votre identité ne sera révélée qu'aux candidats retenus</p>
+                  </div>
+                  <label class="toggle">
+                    <input type="checkbox" id="ppHideName" onchange="setDirty()"/>
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Final summary before submit -->
+          <div class="pp-card">
+            <h2>
+              <svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+              </svg>
+              Récapitulatif
+            </h2>
+            <div class="pp-summary" id="ppSummary">
+              <div class="pp-summary-row"><span class="label">Mode</span><span class="val" id="sumMode">—</span></div>
+              <div class="pp-summary-row"><span class="label">Titre</span><span class="val" id="sumTitle">—</span></div>
+              <div class="pp-summary-row"><span class="label">Catégorie</span><span class="val" id="sumCat">—</span></div>
+              <div class="pp-summary-row"><span class="label">Budget</span><span class="val" id="sumBudget">—</span></div>
+              <div class="pp-summary-row"><span class="label">Durée</span><span class="val" id="sumDuration">—</span></div>
+              <div class="pp-summary-row"><span class="label">Compétences</span><span class="val" id="sumSkills">—</span></div>
+              <div class="pp-summary-row"><span class="label">Visibilité</span><span class="val" id="sumVisibility">—</span></div>
+            </div>
+          </div>
+
+          <div class="pp-step-nav">
+            <button type="button" class="btn-prev" onclick="prevStep()">
+              <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+              Retour
+            </button>
+            <button type="button" class="btn-submit" onclick="submitProject()">
+              <svg viewBox="0 0 24 24"><path d="M22 2L11 13" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><path d="M22 2L15 22 11 13 2 9l20-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+              Publier mon projet
+            </button>
+          </div>
+        </div>
+
+      </div><!-- /pp-steps-col -->
+
+      <!-- SIDEBAR -->
+      <aside class="pp-sidebar">
+        <div class="pp-prev-card">
+          <h4>Aperçu</h4>
+          <div id="prevModeBadge"></div>
+          <div class="prev-title" id="prevTitle">Titre de votre projet</div>
+          <div class="prev-budget" id="prevBudget">Budget non défini</div>
+          <div class="prev-deadline" id="prevDeadline"></div>
+          <div class="prev-skills" id="prevSkills"></div>
+        </div>
+
+        <div class="pp-tips-card">
+          <h4>Conseils</h4>
+          <div class="pp-tip">
+            <div class="pp-tip-icon">
+              <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"/></svg>
+            </div>
+            <p>Un titre clair et précis attire 3× plus de propositions qualifiées</p>
+          </div>
+          <div class="pp-tip">
+            <div class="pp-tip-icon">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke-width="2"/><path d="M12 8v4l3 3" stroke-linecap="round" stroke-width="2"/></svg>
+            </div>
+            <p>Précisez vos délais pour filtrer les freelances disponibles rapidement</p>
+          </div>
+          <div class="pp-tip">
+            <div class="pp-tip-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+            </div>
+            <p>Joindre un cahier des charges augmente la qualité des candidatures</p>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div><!-- /ppFormArea -->
+
+</div><!-- /pp-wrap -->
+
+<!-- TOAST -->
+<div class="pp-toast" id="ppToast"></div>
+
+<!-- LEAVE GUARD -->
+<div class="pp-overlay" id="ppLeaveGuard">
+  <div class="pp-dialog">
+    <h3>Quitter la page ?</h3>
+    <p>Vos données saisies seront perdues si vous quittez maintenant. Voulez-vous vraiment partir ?</p>
+    <div class="pp-dialog-btns">
+      <button type="button" class="btn-dialog-cancel" onclick="closeLeaveGuard()">Rester</button>
+      <button type="button" class="btn-dialog-leave" onclick="confirmLeave()">Quitter</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  requireAuth(['client', 'admin']);
+  const _ppSession = getSession();
+
+  /* ─────────────────────────────────────────────────────────
+     STATE
+  ───────────────────────────────────────────────────────── */
+  const PROJECTS_KEY = 'oriupe_pending_projects';
+
+  let currentMode   = null; // 'ao' | 'direct'
+  let currentStep   = 1;
+  let skills        = [];
+  let uploadedFiles = [];
+  let isDirty       = false;
+  let pendingLeaveHref = null;
+
+  const DURATION_LABELS = {
+    'less1w':'Moins d\'1 semaine','1-2w':'1 à 2 semaines',
+    '1m':'1 mois','2-3m':'2 à 3 mois','3-6m':'3 à 6 mois','6m+':'Plus de 6 mois'
+  };
+
+  const SUBCATS = {
+    dev:['Application web','Application mobile','API / Backend','Blockchain / Web3','Automatisation','DevOps / Infra','IA / Machine learning'],
+    design:['UI / UX Design','Identité visuelle','Illustration','Motion design','3D / Modélisation'],
+    marketing:['SEO','Réseaux sociaux','Campagnes payantes','Email marketing','Stratégie digitale'],
+    writing:['Rédaction web','Copywriting','Traduction','Correction / Relecture'],
+    video:['Montage vidéo','Animation','Podcast','Motion graphics'],
+    data:['Analyse de données','Visualisation','Data engineering','BI / Reporting'],
+    finance:['Comptabilité','Audit','Modélisation financière','Fiscalité'],
+    other:[]
+  };
+
+  /* ─────────────────────────────────────────────────────────
+     MODE SELECTION
+  ───────────────────────────────────────────────────────── */
+  function selectMode(mode) {
+    currentMode = mode;
+    document.getElementById('modeAO').classList.toggle('selected', mode === 'ao');
+    document.getElementById('modeDirect').classList.toggle('selected', mode === 'direct');
+    document.getElementById('ppModeConfirm').classList.add('visible');
+  }
+
+  function startForm() {
+    if (!currentMode) return;
+    document.getElementById('ppModeSection').style.display = 'none';
+    document.getElementById('ppProgress').classList.add('visible');
+    document.getElementById('ppFormArea').style.display = 'block';
+    updateSideBadge();
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  function updateSideBadge() {
+    const el = document.getElementById('prevModeBadge');
+    if (currentMode === 'ao') {
+      el.innerHTML = '<span class="prev-badge ao">📢 Appel d\'offres</span>';
+    } else {
+      el.innerHTML = '<span class="prev-badge direct">👤 Commande directe</span>';
+    }
+  }
+
+  /* ─────────────────────────────────────────────────────────
+     STEP NAVIGATION
+  ───────────────────────────────────────────────────────── */
+  function goToStep(n) {
+    if (n > currentStep) return; // can only go back
+    _switchStep(n);
+  }
+
+  function nextStep() {
+    if (!validateStep(currentStep)) return;
+    if (currentStep === 4) return;
+    _switchStep(currentStep + 1);
+    if (currentStep === 4) buildSummary();
+  }
+
+  function prevStep() {
+    if (currentStep <= 1) return;
+    _switchStep(currentStep - 1);
+  }
+
+  function _switchStep(n) {
+    document.getElementById('step' + currentStep).classList.remove('active');
+    currentStep = n;
+    document.getElementById('step' + currentStep).classList.add('active');
+    updateProgress();
+    window.scrollTo({top: document.getElementById('ppProgress').offsetTop - 80, behavior:'smooth'});
+  }
+
+  function updateProgress() {
+    for (let i = 1; i <= 4; i++) {
+      const dot = document.getElementById('dot' + i);
+      const lbl = document.getElementById('lbl' + i);
+      dot.classList.remove('active','done');
+      lbl.classList.remove('active','done');
+      if (i < currentStep)       { dot.classList.add('done'); lbl.classList.add('done'); }
+      else if (i === currentStep){ dot.classList.add('active'); lbl.classList.add('active'); }
+      if (i < 4) {
+        const line = document.getElementById('line' + i);
+        line.classList.toggle('done', i < currentStep);
+      }
+    }
+  }
+
+  /* ─────────────────────────────────────────────────────────
+     VALIDATION
+  ───────────────────────────────────────────────────────── */
+  function validateStep(step) {
+    if (step === 1) {
+      const title = document.getElementById('ppTitle').value.trim();
+      const cat   = document.getElementById('ppCategory').value;
+      const desc  = document.getElementById('ppDesc').value.trim();
+      if (!title) { showToast('Veuillez saisir un titre pour le projet'); highlight('ppTitle'); return false; }
+      if (!cat)   { showToast('Veuillez choisir une catégorie'); highlight('ppCategory'); return false; }
+      if (desc.length < 150) { showToast('La description doit faire au moins 150 caractères'); highlight('ppDesc'); return false; }
+    }
+    if (step === 2) {
+      const type = document.querySelector('input[name="budgetType"]:checked').value;
+      const dur  = document.getElementById('ppDuration').value;
+      if (type === 'fixed') {
+        const min = parseInt(document.getElementById('ppBudgetMin').value) || 0;
+        const max = parseInt(document.getElementById('ppBudgetMax').value) || 0;
+        if (!min && !max) { showToast('Veuillez indiquer une fourchette de budget'); return false; }
+        if (max && min > max) { showToast('Le budget minimum doit être inférieur au maximum'); return false; }
+      }
+      if (!dur) { showToast('Veuillez indiquer la durée estimée du projet'); highlight('ppDuration'); return false; }
+    }
+    return true;
+  }
+
+  function highlight(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.style.borderColor = 'var(--red)';
+    setTimeout(() => { el.style.borderColor = ''; }, 2000);
+  }
+
+  /* ─────────────────────────────────────────────────────────
+     CATEGORY / SUBCATEGORY
+  ───────────────────────────────────────────────────────── */
+  function onCategoryChange() {
+    const cat  = document.getElementById('ppCategory').value;
+    const wrap = document.getElementById('ppSubcatWrap');
+    const sel  = document.getElementById('ppSubcategory');
+    const subs = SUBCATS[cat] || [];
+    if (subs.length) {
+      sel.innerHTML = '<option value="">— Toutes sous-catégories —</option>' +
+        subs.map(s => `<option value="${s}">${s}</option>`).join('');
+      wrap.style.display = 'block';
+    } else {
+      wrap.style.display = 'none';
+    }
+    updatePreview();
+  }
+
+  /* ─────────────────────────────────────────────────────────
+     SKILLS TAGS
+  ───────────────────────────────────────────────────────── */
+  function handleSkillKey(e) {
+    if (e.key === 'Enter' || e.key === ',') {
+      e.preventDefault();
+      const val = e.target.value.trim().replace(/,$/, '');
+      if (val && !skills.includes(val) && skills.length < 8) {
+        skills.push(val);
+        e.target.value = '';
+        renderSkills();
+        updatePreview();
+        setDirty();
+      }
+    }
+  }
+
+  function removeSkill(i) {
+    skills.splice(i, 1);
+    renderSkills();
+    updatePreview();
+    setDirty();
+  }
+
+  function renderSkills() {
+    const wrap  = document.getElementById('ppSkillsWrap');
+    const input = document.getElementById('ppSkillInput');
+    wrap.innerHTML = '';
+    skills.forEach((s, i) => {
+      const tag = document.createElement('span');
+      tag.className = 'skill-tag';
+      tag.innerHTML = `${_esc(s)}<button type="button" onclick="removeSkill(${i})">×</button>`;
+      wrap.appendChild(tag);
+    });
+    wrap.appendChild(input);
+  }
+
+  /* ─────────────────────────────────────────────────────────
+     BUDGET TYPE
+  ───────────────────────────────────────────────────────── */
+  function selectBudgetType(type) {
+    document.getElementById('budgetFixedCard').classList.toggle('selected', type === 'fixed');
+    document.getElementById('budgetHourlyCard').classList.toggle('selected', type === 'hourly');
+    document.getElementById('fixedBudgetField').style.display  = type === 'fixed'  ? 'block' : 'none';
+    document.getElementById('hourlyBudgetField').style.display = type === 'hourly' ? 'block' : 'none';
+    document.querySelector(`input[value="${type}"]`).checked = true;
+    setDirty();
+  }
+
+  /* ─────────────────────────────────────────────────────────
+     VISIBILITY
+  ───────────────────────────────────────────────────────── */
+  function selectVisibility(vis) {
+    document.getElementById('visPublicCard').classList.toggle('selected', vis === 'public');
+    document.getElementById('visPrivateCard').classList.toggle('selected', vis === 'private');
+    setDirty();
+  }
+
+  /* ─────────────────────────────────────────────────────────
+     FILE UPLOAD
+  ───────────────────────────────────────────────────────── */
+  function handleDragOver(e) {
+    e.preventDefault();
+    document.getElementById('ppDropzone').classList.add('drag-over');
+  }
+  function handleDragLeave() {
+    document.getElementById('ppDropzone').classList.remove('drag-over');
+  }
+  function handleDrop(e) {
+    e.preventDefault();
+    document.getElementById('ppDropzone').classList.remove('drag-over');
+    handleFileSelect(e.dataTransfer.files);
+  }
+  function handleFileSelect(files) {
+    const allowed = ['application/pdf','application/msword',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'image/png','image/jpeg'];
+    for (const f of files) {
+      if (uploadedFiles.length >= 5) { showToast('Maximum 5 fichiers'); break; }
+      if (!allowed.includes(f.type)) { showToast(`Fichier non supporté : ${f.name}`); continue; }
+      if (f.size > 10 * 1024 * 1024)  { showToast(`Fichier trop lourd : ${f.name}`); continue; }
+      uploadedFiles.push(f);
+    }
+    renderFiles();
+    setDirty();
+  }
+
+  function renderFiles() {
+    const list = document.getElementById('ppFileList');
+    list.innerHTML = '';
+    uploadedFiles.forEach((f, i) => {
+      const item = document.createElement('div');
+      item.className = 'file-item';
+      const size = f.size > 1024 * 1024
+        ? (f.size / 1024 / 1024).toFixed(1) + ' MB'
+        : Math.round(f.size / 1024) + ' KB';
+      item.innerHTML = `
+        <svg viewBox="0 0 24 24"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><polyline points="13 2 13 9 20 9" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+        <span>${_esc(f.name)}</span>
+        <span class="file-size">${size}</span>
+        <button type="button" onclick="removeFile(${i})">×</button>`;
+      list.appendChild(item);
+    });
+  }
+
+  function removeFile(i) {
+    uploadedFiles.splice(i, 1);
+    renderFiles();
+    setDirty();
+  }
+
+  /* ─────────────────────────────────────────────────────────
+     PREVIEW SIDEBAR
+  ───────────────────────────────────────────────────────── */
+  function updatePreview() {
+    const title    = document.getElementById('ppTitle').value.trim();
+    const catEl    = document.getElementById('ppCategory');
+    const catLabel = catEl.options[catEl.selectedIndex]?.text || '';
+    const budMin   = document.getElementById('ppBudgetMin').value;
+    const budMax   = document.getElementById('ppBudgetMax').value;
+    const durEl    = document.getElementById('ppDuration');
+    const deadline = document.getElementById('ppDeadline').value;
+
+    document.getElementById('prevTitle').textContent = title || 'Titre de votre projet';
+
+    if (budMin || budMax) {
+      const minFmt = budMin ? parseInt(budMin).toLocaleString('fr-FR') + ' ₣' : '?';
+      const maxFmt = budMax ? parseInt(budMax).toLocaleString('fr-FR') + ' ₣' : '?';
+      document.getElementById('prevBudget').textContent = `${minFmt} – ${maxFmt}`;
+    } else {
+      document.getElementById('prevBudget').textContent = 'Budget non défini';
+    }
+
+    const dur = durEl.value ? DURATION_LABELS[durEl.value] : '';
+    document.getElementById('prevDeadline').textContent = dur
+      ? `⏱ ${dur}` + (deadline ? ` · Limite : ${new Date(deadline).toLocaleDateString('fr-FR')}` : '')
+      : '';
+
+    const skillsEl = document.getElementById('prevSkills');
+    skillsEl.innerHTML = skills.slice(0,4).map(s => `<span class="prev-skill-chip">${_esc(s)}</span>`).join('');
+  }
+
+  /* ─────────────────────────────────────────────────────────
+     FINAL SUMMARY
+  ───────────────────────────────────────────────────────── */
+  function buildSummary() {
+    const modeLabel    = currentMode === 'ao' ? 'Appel d\'offres ouvert' : 'Commande directe';
+    const title        = document.getElementById('ppTitle').value.trim();
+    const catEl        = document.getElementById('ppCategory');
+    const catLabel     = catEl.options[catEl.selectedIndex]?.text || '—';
+    const budMin       = document.getElementById('ppBudgetMin').value;
+    const budMax       = document.getElementById('ppBudgetMax').value;
+    const durEl        = document.getElementById('ppDuration');
+    const durLabel     = durEl.value ? DURATION_LABELS[durEl.value] : '—';
+    const visChecked   = document.querySelector('input[name="visibility"]:checked').value;
+    const budType      = document.querySelector('input[name="budgetType"]:checked').value;
+
+    let budStr = '—';
+    if (budType === 'hourly') {
+      const rMin = document.getElementById('ppRateMin').value;
+      const rMax = document.getElementById('ppRateMax').value;
+      budStr = (rMin || rMax) ? `${rMin||'?'} – ${rMax||'?'} ₣/h` : '—';
+    } else if (budMin || budMax) {
+      budStr = `${budMin ? parseInt(budMin).toLocaleString('fr-FR') : '?'} – ${budMax ? parseInt(budMax).toLocaleString('fr-FR') : '?'} ₣`;
+    }
+
+    document.getElementById('sumMode').textContent       = modeLabel;
+    document.getElementById('sumTitle').textContent      = title || '—';
+    document.getElementById('sumCat').textContent        = catLabel;
+    document.getElementById('sumBudget').textContent     = budStr;
+    document.getElementById('sumDuration').textContent   = durLabel;
+    document.getElementById('sumSkills').textContent     = skills.length ? skills.join(', ') : '—';
+    document.getElementById('sumVisibility').textContent = visChecked === 'public' ? 'Public' : 'Privé (invitation)';
+  }
+
+  /* ─────────────────────────────────────────────────────────
+     SUBMIT
+  ───────────────────────────────────────────────────────── */
+  function submitProject() {
+    const title   = document.getElementById('ppTitle').value.trim();
+    const cat     = document.getElementById('ppCategory').value;
+    const catEl   = document.getElementById('ppCategory');
+    const catLabel = catEl.options[catEl.selectedIndex]?.text || cat;
+    const desc    = document.getElementById('ppDesc').value.trim();
+    const budMin  = document.getElementById('ppBudgetMin').value;
+    const budMax  = document.getElementById('ppBudgetMax').value;
+    const dur     = document.getElementById('ppDuration').value;
+    const vis     = document.querySelector('input[name="visibility"]:checked').value;
+
+    const project = {
+      id:          'proj_' + Date.now(),
+      mode:        currentMode,
+      title,
+      category:    catLabel,
+      description: desc,
+      skills:      [...skills],
+      budgetMin:   parseInt(budMin) || 0,
+      budgetMax:   parseInt(budMax) || 0,
+      duration:    DURATION_LABELS[dur] || dur,
+      visibility:  vis,
+      nda:         document.getElementById('ppNda').checked,
+      refUrl:      document.getElementById('ppRefUrl').value.trim(),
+      status:      'pending',
+      submittedAt: new Date().toISOString()
+    };
+
+    // Push to pending queue (localStorage fallback)
+    const existing = JSON.parse(localStorage.getItem(PROJECTS_KEY) || '[]');
+    existing.push(project);
+    localStorage.setItem(PROJECTS_KEY, JSON.stringify(existing));
+
+    // Persist to Supabase (best-effort, non-blocking)
+    if (typeof window._ppSbInsert === 'function') window._ppSbInsert(project);
+
+    isDirty = false;
+    window.location.href = '/src/pages/dashboard/client/index.html?project_submitted=1';
+  }
+
+  /* ─────────────────────────────────────────────────────────
+     UTILS
+  ───────────────────────────────────────────────────────── */
+  function setDirty() { isDirty = true; }
+
+  function updateCharCount(el, countId, max) {
+    document.getElementById(countId).textContent = `${el.value.length}/${max}`;
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('ppToast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  function _esc(s) {
+    return String(s)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  /* ─────────────────────────────────────────────────────────
+     LEAVE GUARD
+  ───────────────────────────────────────────────────────── */
+  window.addEventListener('click', (e) => {
+    const a = e.target.closest('a[href]');
+    if (!a || !isDirty) return;
+    const href = a.getAttribute('href');
+    if (!href || href.startsWith('#') || href.startsWith('javascript')) return;
+    e.preventDefault();
+    pendingLeaveHref = href;
+    document.getElementById('ppLeaveGuard').classList.add('open');
+  });
+
+  function closeLeaveGuard() {
+    document.getElementById('ppLeaveGuard').classList.remove('open');
+    pendingLeaveHref = null;
+  }
+
+  function confirmLeave() {
+    isDirty = false;
+    if (pendingLeaveHref) window.location.href = pendingLeaveHref;
+  }
+
+  window.addEventListener('beforeunload', (e) => {
+    if (isDirty) { e.preventDefault(); e.returnValue = ''; }
+  });
+</script>
+<script type="module">
+/* ── Publish-project — persistance Supabase ── */
+import { supabase, isSupabaseConfigured } from '/src/shared/supabase.js'
+window._ppSbInsert = async function(project) {
+  if (!isSupabaseConfigured || !supabase) return
+  try {
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return
+    await supabase.from('projects').insert({
+      client_id:   user.id,
+      title:       project.title,
+      description: project.description,
+      category:    project.category,
+      skills:      project.skills || [],
+      budget_min:  project.budgetMin || 0,
+      budget_max:  project.budgetMax || null,
+      duration:    project.duration,
+      visibility:  project.visibility || 'public',
+      mode:        project.mode || 'ao',
+      has_nda:     project.nda || false,
+      ref_url:     project.refUrl || null,
+      status:      'active',
+    })
+    console.log('[Publish-project] Inséré dans Supabase')
+  } catch (e) {
+    console.warn('[Publish-project] Erreur Supabase:', e)
+  }
+}
+</script>
+</body>
+</html>

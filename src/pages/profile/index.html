@@ -588,11 +588,612 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
 @media(max-width:1100px){.of-z1{grid-template-columns:1fr 1fr 1fr;padding:44px 32px 40px;gap:28px}.of-brand{grid-column:1/-1}.of-z2{padding:18px 32px}}
 @media(max-width:768px){.of-z1{grid-template-columns:1fr 1fr;padding:36px 20px 32px;gap:24px}.of-brand{grid-column:1/-1}.of-z2{flex-direction:column;align-items:flex-start;padding:16px 20px;gap:14px}.of-nl{flex-direction:column;align-items:flex-start;width:100%}.of-nl-form{width:100%}.of-nl-inp{flex:1;width:auto}}
 @media(max-width:480px){.of-z1{grid-template-columns:1fr}}
+
+/* ══ EDIT MODE ══ */
+.edit-mode-bar{
+  position:fixed;bottom:0;left:0;right:0;z-index:9998;
+  background:#fff;border-top:2px solid var(--green);
+  padding:14px 52px;display:none;
+  align-items:center;justify-content:space-between;gap:16px;
+  box-shadow:0 -4px 28px rgba(15,37,53,.14)
+}
+.edit-mode-bar.visible{display:flex}
+.edit-bar-left{display:flex;align-items:center;gap:10px}
+.edit-bar-dot{width:8px;height:8px;background:#F59E0B;border-radius:50%;
+  animation:pulse 1.5s ease-in-out infinite;flex-shrink:0}
+.edit-bar-txt{font-size:13px;color:var(--muted);font-weight:500}
+.edit-bar-actions{display:flex;gap:10px}
+.btn-save-profile{
+  background:var(--green);color:#fff;font-size:13px;font-weight:700;
+  padding:11px 24px;border-radius:10px;border:none;
+  box-shadow:var(--shadow-green);transition:all .2s var(--spring);cursor:pointer;
+  display:flex;align-items:center;gap:7px;font-family:'Plus Jakarta Sans',sans-serif
+}
+.btn-save-profile:hover{background:var(--green-d);transform:translateY(-1px)}
+.btn-cancel-edit{
+  background:#fff;color:var(--navy2);font-size:13px;font-weight:600;
+  padding:11px 18px;border-radius:10px;border:1.5px solid var(--border);
+  transition:all .2s;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif
+}
+.btn-cancel-edit:hover{border-color:var(--navy2)}
+.btn-edit-profile{
+  background:#fff;color:var(--navy2);font-size:13px;font-weight:600;
+  padding:10px 16px;border-radius:10px;border:1.5px solid var(--border);
+  display:flex;align-items:center;gap:7px;transition:all .2s;cursor:pointer;
+  font-family:'Plus Jakarta Sans',sans-serif
+}
+.btn-edit-profile:hover{border-color:var(--green);color:var(--green)}
+.btn-edit-profile.active{background:rgba(245,158,11,.08);border-color:#F59E0B;color:#92400E}
+
+/* Avatar edit overlay */
+.av-edit-overlay{
+  position:absolute;inset:0;border-radius:50%;
+  background:rgba(15,37,53,.55);
+  display:none;align-items:center;justify-content:center;
+  cursor:pointer;transition:opacity .2s;z-index:2
+}
+.edit-mode .av-edit-overlay{display:flex}
+
+/* Contenteditable fields */
+.edit-mode [contenteditable="true"]{
+  outline:2px dashed rgba(60,184,120,.45);
+  outline-offset:3px;border-radius:5px;
+  background:rgba(60,184,120,.05);cursor:text;
+  transition:outline .2s,background .2s
+}
+.edit-mode [contenteditable="true"]:focus{
+  outline:2px solid var(--green);
+  background:rgba(60,184,120,.08)
+}
+
+/* Skill remove buttons */
+.skill-rm{
+  display:none;margin-left:5px;padding:0 2px;
+  background:none;border:none;color:rgba(27,58,74,.4);
+  font-size:14px;line-height:1;cursor:pointer;
+  transition:color .15s;vertical-align:middle;font-weight:700
+}
+.skill-rm:hover{color:#E53935}
+.edit-mode .skill-rm{display:inline}
+
+/* Add skill row */
+.add-skill-row{
+  display:none;align-items:center;gap:8px;
+  margin-top:10px;width:100%
+}
+.add-skill-input{
+  flex:1;max-width:220px;background:#fff;
+  border:1.5px solid var(--border);border-radius:20px;
+  padding:6px 14px;font-size:12px;font-weight:500;color:var(--navy2);
+  outline:none;transition:border-color .2s;
+  font-family:'Plus Jakarta Sans',sans-serif
+}
+.add-skill-input:focus{border-color:var(--green)}
+.btn-add-skill{
+  background:var(--green-l);color:var(--green-d);font-size:12px;font-weight:700;
+  padding:6px 14px;border-radius:20px;border:1px solid rgba(60,184,120,.3);
+  cursor:pointer;transition:all .2s;white-space:nowrap;
+  font-family:'Plus Jakarta Sans',sans-serif
+}
+.btn-add-skill:hover{background:var(--green);color:#fff}
+
+/* Service edit actions */
+.svc-edit-actions{
+  display:none;align-items:center;gap:6px;flex-shrink:0;margin-left:8px
+}
+.svc-edit-btn,.svc-del-btn{
+  width:30px;height:30px;border-radius:8px;border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .2s;background:#fff
+}
+.svc-edit-btn{color:var(--muted)}
+.svc-edit-btn:hover{background:var(--blue-l);border-color:#29ABE2;color:#0A6A90}
+.svc-del-btn{color:var(--muted)}
+.svc-del-btn:hover{background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.3);color:#E53935}
+
+/* Add service button */
+.add-svc-btn{
+  display:none;align-items:center;justify-content:center;gap:9px;
+  padding:15px;border-radius:var(--rlg);margin-top:8px;
+  border:2px dashed rgba(60,184,120,.35);
+  background:var(--green-xl);color:var(--green-d);
+  font-size:13px;font-weight:700;cursor:pointer;
+  transition:all .2s;width:100%;
+  font-family:'Plus Jakarta Sans',sans-serif
+}
+.add-svc-btn:hover{border-color:var(--green);background:rgba(60,184,120,.12);transform:none}
+
+/* Portfolio delete button */
+.port-del{
+  position:absolute;top:8px;left:8px;z-index:10;
+  display:none;width:26px;height:26px;border-radius:7px;
+  background:rgba(239,68,68,.88);color:#fff;border:none;
+  font-size:15px;font-weight:700;line-height:1;
+  align-items:center;justify-content:center;cursor:pointer;
+  transition:background .2s
+}
+.port-del:hover{background:#E53935}
+.edit-mode .port-del{display:flex}
+
+/* Add portfolio card */
+.add-port-card{
+  border-radius:var(--rlg);overflow:hidden;cursor:pointer;
+  border:2px dashed rgba(60,184,120,.35);
+  background:var(--green-xl);
+  display:none;align-items:center;justify-content:center;
+  flex-direction:column;gap:8px;min-height:160px;
+  color:var(--green-d);font-size:12px;font-weight:700;
+  transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif
+}
+.add-port-card:hover{border-color:var(--green);background:rgba(60,184,120,.1)}
+.edit-mode .add-port-card{display:flex}
+
+/* Lang controls */
+.lang-del-btn{
+  display:none;width:22px;height:22px;border-radius:5px;
+  border:none;background:rgba(239,68,68,.1);color:#E53935;
+  cursor:pointer;align-items:center;justify-content:center;
+  flex-shrink:0;font-size:13px;font-weight:700;transition:background .2s
+}
+.lang-del-btn:hover{background:rgba(239,68,68,.2)}
+.edit-mode .lang-del-btn{display:flex}
+.add-lang-btn{
+  display:none;align-items:center;gap:6px;
+  color:var(--green-d);font-size:12px;font-weight:700;cursor:pointer;
+  background:none;border:none;padding:8px 0 0;margin-top:4px;
+  font-family:'Plus Jakarta Sans',sans-serif;transition:color .2s
+}
+.add-lang-btn:hover{color:var(--green)}
+.edit-mode .add-lang-btn{display:flex}
+
+/* Toast */
+.ep-toast{
+  position:fixed;bottom:80px;left:50%;
+  transform:translateX(-50%) translateY(16px);
+  background:#1B3A4A;color:#fff;padding:12px 22px;border-radius:10px;
+  font-size:13px;font-weight:600;
+  box-shadow:0 8px 28px rgba(15,37,53,.28);
+  opacity:0;transition:all .35s var(--spring);z-index:10000;
+  display:flex;align-items:center;gap:8px;pointer-events:none;white-space:nowrap
+}
+.ep-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* Edit modals */
+.ep-overlay{
+  position:fixed;inset:0;background:rgba(15,37,53,.6);
+  z-index:9999;display:none;align-items:center;justify-content:center;
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);padding:20px
+}
+.ep-overlay.open{display:flex}
+.ep-modal{
+  background:#fff;border-radius:var(--rxl);padding:32px;
+  width:100%;max-width:480px;max-height:90vh;overflow-y:auto;
+  box-shadow:0 24px 80px rgba(15,37,53,.28);
+  animation:ep-in .25s var(--spring)
+}
+@keyframes ep-in{from{opacity:0;transform:scale(.95) translateY(10px)}}
+.ep-modal-title{
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:20px;font-weight:800;color:var(--navy2);
+  margin-bottom:22px;letter-spacing:-.3px
+}
+.ep-field{margin-bottom:16px}
+.ep-label{
+  font-size:11px;font-weight:700;color:var(--navy2);
+  margin-bottom:6px;letter-spacing:.5px;display:block
+}
+.ep-input,.ep-select,.ep-textarea{
+  width:100%;background:var(--bg);border:1.5px solid var(--border);
+  border-radius:10px;padding:11px 14px;font-size:13px;color:var(--navy2);
+  outline:none;transition:border-color .2s,background .2s;
+  font-family:'Plus Jakarta Sans',sans-serif
+}
+.ep-input:focus,.ep-select:focus,.ep-textarea:focus{
+  border-color:var(--green);background:#fff
+}
+.ep-textarea{resize:vertical;min-height:80px;line-height:1.6}
+.ep-grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ep-modal-actions{display:flex;gap:10px;margin-top:22px}
+.ep-btn-save{
+  flex:1;background:var(--green);color:#fff;font-size:13px;font-weight:700;
+  padding:12px;border-radius:10px;border:none;cursor:pointer;
+  box-shadow:var(--shadow-green);transition:all .2s;
+  font-family:'Plus Jakarta Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:7px
+}
+.ep-btn-save:hover{background:var(--green-d);transform:translateY(-1px)}
+.ep-btn-cancel{
+  background:#fff;color:var(--navy2);font-size:13px;font-weight:600;
+  padding:12px 18px;border-radius:10px;border:1.5px solid var(--border);
+  cursor:pointer;transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif
+}
+.ep-btn-cancel:hover{border-color:var(--navy2)}
+@media(max-width:600px){
+  .edit-mode-bar{padding:12px 16px;flex-direction:column;gap:10px;align-items:stretch}
+  .edit-bar-actions{justify-content:flex-end}
+  .ep-modal{padding:22px}
+  .ep-grid2{grid-template-columns:1fr}
+}
+
+/* ════════════════════════════════════════════════════
+   OWNER / VISITOR MODE SYSTEM
+════════════════════════════════════════════════════ */
+.profile-visitor .owner-only{display:none!important}
+.profile-owner  .visitor-only{display:none!important}
+/* Preview mode: owner sees the visitor version */
+.profile-preview .owner-only{display:none!important}
+.profile-preview .preview-bar{display:flex!important}
+.profile-preview .visitor-only{display:block!important}
+/* Owner-specific controls that have display:none by default */
+.profile-owner #addSkillRow{display:flex!important}
+.profile-owner .lang-del-btn{display:flex!important}
+
+/* ── OWNER BANDEAU ─────────────────────────────── */
+.owner-bandeau{
+  background:rgba(60,184,120,.07);
+  border-bottom:1.5px solid rgba(60,184,120,.18);
+  padding:10px 52px;display:flex;align-items:center;
+  justify-content:space-between;flex-wrap:wrap;gap:10px;
+  font-size:13px;color:var(--navy2);
+}
+.owner-bandeau-left{display:flex;align-items:center;gap:8px}
+.owner-bandeau-left svg{flex-shrink:0}
+.owner-bandeau-right{display:flex;gap:8px}
+.btn-preview-mode{
+  background:#fff;border:1.5px solid var(--border);color:var(--navy2);
+  font-size:12px;font-weight:600;padding:7px 14px;border-radius:8px;cursor:pointer;
+  transition:all .2s;display:flex;align-items:center;gap:6px;
+}
+.btn-preview-mode:hover{border-color:var(--navy2)}
+.btn-edit-identity{
+  background:var(--green);color:#fff;border:none;
+  font-size:12px;font-weight:700;padding:7px 16px;border-radius:8px;cursor:pointer;
+  transition:background .2s;display:flex;align-items:center;gap:6px;
+}
+.btn-edit-identity:hover{background:var(--green-d)}
+@media(max-width:768px){.owner-bandeau{padding:10px 16px}}
+
+/* ── PREVIEW BAR ───────────────────────────────── */
+.preview-bar{
+  display:none;position:sticky;top:64px;z-index:299;
+  background:linear-gradient(90deg,#F59E0B,#FBBF24);
+  color:#1C1917;padding:10px 52px;
+  align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  font-size:13px;font-weight:600;
+}
+.btn-exit-preview{
+  background:rgba(0,0,0,.15);border:none;color:#1C1917;
+  font-size:12px;font-weight:700;padding:7px 14px;border-radius:8px;cursor:pointer;
+}
+@media(max-width:768px){.preview-bar{padding:10px 16px}}
+
+/* ── AVAILABILITY TOGGLE ───────────────────────── */
+.avail-toggle-wrap{position:relative}
+.avail-toggle-btn{
+  display:flex;align-items:center;gap:9px;
+  background:#fff;border:1.5px solid var(--border);
+  padding:9px 14px;border-radius:10px;cursor:pointer;
+  font-size:13px;font-weight:600;color:var(--navy2);
+  transition:all .2s;min-width:160px;
+}
+.avail-toggle-btn:hover{border-color:var(--green)}
+.avail-dot-live{
+  width:9px;height:9px;border-radius:50%;flex-shrink:0;
+  animation:pulse 2s ease-in-out infinite;
+}
+.avail-dot-live.available{background:#22C55E}
+.avail-dot-live.busy{background:#F59E0B;animation:none}
+.avail-dot-live.offline{background:#9CA3AF;animation:none}
+.avail-toggle-label{flex:1}
+.avail-dropdown-menu{
+  position:absolute;top:calc(100%+6px);left:0;right:0;
+  background:#fff;border:1px solid var(--border);border-radius:12px;
+  box-shadow:0 8px 28px rgba(15,37,53,.14);
+  overflow:hidden;display:none;z-index:100;
+}
+.avail-dropdown-menu.open{display:block}
+.avail-option{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px;font-size:13px;font-weight:600;cursor:pointer;
+  transition:background .15s;color:var(--navy2);
+}
+.avail-option:hover{background:var(--bg)}
+.avail-opt-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+
+/* ── SECTION PENCIL BUTTON ─────────────────────── */
+.sec-pencil{
+  width:30px;height:30px;border-radius:8px;
+  border:1.5px solid var(--border2);background:#fff;
+  color:var(--muted2);display:inline-flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .2s;flex-shrink:0;
+  opacity:.65;
+}
+.sec-pencil:hover{border-color:var(--green);color:var(--green-d);opacity:1;background:var(--green-xl)}
+.sc-title-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:20px}
+.sc-title-row .sc-title{margin-bottom:0}
+/* About inline edit */
+.about-editing{outline:none;border:1.5px solid var(--green);
+  border-radius:8px;padding:10px;background:rgba(60,184,120,.04);
+  min-height:80px;white-space:pre-wrap;}
+.about-edit-controls{display:none;gap:8px;margin-top:10px}
+.about-edit-controls.visible{display:flex}
+
+/* ── SERVICE PRO OVERLAY (owner mode) ──────────── */
+.svc-row{position:relative}
+.svc-pro-overlay{
+  position:absolute;inset:0;
+  background:rgba(15,37,53,.88);
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  opacity:0;transition:opacity .2s;
+  border-radius:var(--rlg);
+  backdrop-filter:blur(4px);
+  pointer-events:none;
+}
+.profile-owner .svc-row:hover .svc-pro-overlay{opacity:1;pointer-events:auto}
+.svc-pro-btn{
+  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);
+  color:#fff;font-size:11px;font-weight:600;
+  padding:7px 11px;border-radius:7px;cursor:pointer;
+  transition:background .15s;display:flex;align-items:center;gap:5px;
+  white-space:nowrap;
+}
+.svc-pro-btn:hover{background:rgba(255,255,255,.26)}
+.svc-pro-btn.pause-btn.paused{background:rgba(245,158,11,.25);border-color:rgba(245,158,11,.4);color:#FDE68A}
+/* Service status badge */
+.svc-status-badge{
+  font-size:10px;font-weight:700;
+  display:inline-flex;align-items:center;gap:4px;
+  padding:2px 7px;border-radius:10px;margin-top:3px;
+}
+.svc-status-badge.active{background:rgba(60,184,120,.12);color:var(--green-d)}
+.svc-status-badge.paused{background:rgba(245,158,11,.12);color:#92400E}
+.svc-status-badge.pending{background:rgba(100,116,139,.09);color:#475569}
+/* Service commander button (visitor) */
+.svc-commander-btn{
+  background:var(--green);color:#fff;border:none;
+  font-size:11px;font-weight:700;padding:7px 13px;border-radius:8px;
+  cursor:pointer;transition:background .2s;white-space:nowrap;flex-shrink:0;
+}
+.svc-commander-btn:hover{background:var(--green-d)}
+/* Service counter */
+.svc-counter{font-size:12px;color:var(--muted);margin-bottom:14px}
+.svc-counter b{color:var(--navy2)}
+/* Add service dashed card */
+.add-svc-dashed{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  padding:16px;border-radius:var(--rlg);margin-top:10px;
+  border:2px dashed rgba(60,184,120,.3);
+  background:var(--green-xl);color:var(--green-d);
+  font-size:13px;font-weight:700;cursor:pointer;
+  transition:all .2s;text-decoration:none;
+}
+.add-svc-dashed:hover{border-color:var(--green);background:rgba(60,184,120,.1)}
+
+/* ── PORTFOLIO REBUILT ─────────────────────────── */
+/* Visitor: hover overlay has "Voir le projet" button */
+.port-card.visitor-card:hover .port-overlay{opacity:1}
+/* Owner: hover overlay has edit/delete */
+.port-owner-overlay{
+  position:absolute;inset:0;
+  background:rgba(15,37,53,.78);
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  opacity:0;transition:opacity .2s;
+  border-radius:var(--rlg) var(--rlg) 0 0;
+  backdrop-filter:blur(3px);
+}
+.port-card:hover .port-owner-overlay{opacity:1}
+.port-owner-btn{
+  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);
+  color:#fff;font-size:11px;font-weight:600;
+  padding:6px 11px;border-radius:7px;cursor:pointer;
+  transition:background .15s;display:flex;align-items:center;gap:5px;
+}
+.port-owner-btn:hover{background:rgba(255,255,255,.26)}
+.port-owner-btn.del:hover{background:rgba(239,68,68,.4);border-color:rgba(239,68,68,.6)}
+/* Port drag handle */
+.port-drag-handle{
+  position:absolute;top:8px;right:8px;
+  width:22px;height:22px;border-radius:5px;
+  background:rgba(255,255,255,.12);
+  display:none;align-items:center;justify-content:center;
+  cursor:grab;color:rgba(255,255,255,.7);
+}
+.profile-owner .port-card:hover .port-drag-handle{display:flex}
+/* Add port card */
+.port-add-card{
+  border-radius:var(--rlg);overflow:hidden;cursor:pointer;
+  border:2px dashed rgba(60,184,120,.3);
+  background:var(--green-xl);
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:8px;min-height:160px;
+  color:var(--green-d);font-size:12px;font-weight:700;
+  transition:all .2s;
+}
+.port-add-card:hover{border-color:var(--green);background:rgba(60,184,120,.1)}
+/* Voir plus */
+.port-voir-plus-wrap{text-align:center;margin-top:16px}
+.btn-voir-plus{
+  background:#fff;border:1.5px solid var(--border);color:var(--navy2);
+  font-size:13px;font-weight:600;padding:10px 28px;border-radius:10px;
+  cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:8px;
+}
+.btn-voir-plus:hover{border-color:var(--green);color:var(--green)}
+/* Portfolio detail modal */
+.port-detail-modal{max-width:680px;padding:0;overflow:hidden}
+.pdm-img{width:100%;height:280px;object-fit:cover;background:linear-gradient(135deg,#0F2535,#1A5A7A);
+  display:flex;align-items:center;justify-content:center}
+.pdm-body{padding:28px}
+.pdm-title{font-family:'Bricolage Grotesque',sans-serif;font-size:1.3rem;font-weight:800;
+  color:var(--navy2);margin-bottom:12px}
+.pdm-desc{font-size:13px;color:var(--muted);line-height:1.8;margin-bottom:16px}
+.pdm-tags{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:16px}
+.pdm-tag{font-size:11px;font-weight:600;padding:4px 11px;border-radius:14px;
+  background:var(--bg);border:1px solid var(--border2);color:var(--navy2)}
+.pdm-meta{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+.pdm-meta-item{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:5px}
+.pdm-meta-item b{color:var(--navy2)}
+.btn-see-live{
+  background:var(--green);color:#fff;border:none;
+  padding:11px 22px;border-radius:10px;font-size:13px;font-weight:700;
+  cursor:pointer;display:inline-flex;align-items:center;gap:7px;text-decoration:none;
+  transition:background .2s;
+}
+.btn-see-live:hover{background:var(--green-d)}
+/* Portfolio edit modal */
+.port-edit-modal{max-width:560px}
+.port-img-upload{
+  border:2px dashed #cbd5e1;border-radius:10px;padding:24px;
+  text-align:center;cursor:pointer;background:#fafbfc;transition:all .2s;
+  margin-bottom:12px;
+}
+.port-img-upload:hover{border-color:var(--green);background:rgba(60,184,120,.04)}
+.port-img-preview{
+  width:100%;height:140px;object-fit:cover;border-radius:8px;
+  display:none;margin-bottom:12px;
+}
+
+/* ── EXPERIENCES SECTION ───────────────────────── */
+.exp-list{display:flex;flex-direction:column;gap:0}
+.exp-item{
+  display:flex;gap:16px;padding:16px 0;
+  border-bottom:1px solid var(--border2);position:relative;
+}
+.exp-item:last-of-type{border-bottom:none}
+.exp-timeline{display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:28px}
+.exp-dot{width:12px;height:12px;border-radius:50%;background:var(--green);
+  border:2px solid #fff;box-shadow:0 0 0 2px var(--green);flex-shrink:0;margin-top:4px}
+.exp-line{flex:1;width:2px;background:var(--border2);margin-top:4px}
+.exp-content{flex:1;min-width:0}
+.exp-role{font-size:14px;font-weight:700;color:var(--navy2);margin-bottom:2px}
+.exp-company{font-size:13px;color:var(--muted);margin-bottom:3px}
+.exp-dates{font-size:11px;color:var(--muted2);margin-bottom:8px}
+.exp-desc{font-size:13px;color:var(--muted);line-height:1.65}
+.exp-item-actions{
+  display:flex;gap:6px;align-items:flex-start;flex-shrink:0;
+  opacity:0;transition:opacity .2s;
+}
+.exp-item:hover .exp-item-actions{opacity:1}
+.exp-action-btn{
+  width:26px;height:26px;border-radius:7px;border:1px solid var(--border);
+  background:#fff;color:var(--muted2);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;transition:all .15s;
+}
+.exp-action-btn:hover{border-color:var(--green);color:var(--green-d);background:var(--green-xl)}
+.exp-action-btn.del:hover{border-color:rgba(239,68,68,.3);color:#E53935;background:rgba(239,68,68,.06)}
+.btn-add-exp{
+  display:flex;align-items:center;gap:7px;
+  margin-top:14px;color:var(--green-d);font-size:13px;font-weight:700;
+  background:none;border:none;cursor:pointer;padding:0;
+  font-family:'Plus Jakarta Sans',sans-serif;transition:color .2s;
+}
+.btn-add-exp:hover{color:var(--green)}
+
+/* ── CERTIFICATIONS SECTION ────────────────────── */
+.cert-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:480px){.cert-grid{grid-template-columns:1fr}}
+.cert-item{
+  display:flex;align-items:flex-start;gap:12px;
+  background:var(--bg);border:1px solid var(--border2);
+  border-radius:12px;padding:14px;position:relative;
+}
+.cert-icon{
+  width:38px;height:38px;border-radius:9px;
+  background:linear-gradient(135deg,var(--blue),#7DD6F0);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.cert-info{flex:1;min-width:0}
+.cert-name{font-size:12px;font-weight:700;color:var(--navy2);margin-bottom:2px;line-height:1.3}
+.cert-org{font-size:11px;color:var(--muted2);margin-bottom:3px}
+.cert-date{font-size:10px;color:var(--muted2)}
+.cert-del{
+  position:absolute;top:8px;right:8px;
+  width:20px;height:20px;border-radius:5px;
+  background:none;border:none;color:var(--muted2);cursor:pointer;
+  display:none;align-items:center;justify-content:center;
+  font-size:13px;transition:color .15s;
+}
+.cert-item:hover .cert-del{display:flex}
+.cert-del:hover{color:#E53935}
+.btn-add-cert{
+  display:flex;align-items:center;gap:7px;
+  margin-top:14px;color:var(--green-d);font-size:13px;font-weight:700;
+  background:none;border:none;cursor:pointer;padding:0;
+  font-family:'Plus Jakarta Sans',sans-serif;transition:color .2s;
+}
+.btn-add-cert:hover{color:var(--green)}
+
+/* ── PROFILE COMPLETION CARD (owner sidebar) ───── */
+.completion-card{
+  background:#fff;border-radius:var(--rxl);border:1px solid var(--border);
+  padding:22px 24px;box-shadow:var(--shadow);
+}
+.compl-title{font-size:13px;font-weight:700;color:var(--navy2);margin-bottom:4px}
+.compl-pct-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.compl-pct{font-size:22px;font-weight:800;color:var(--green);font-family:'Bricolage Grotesque',sans-serif}
+.compl-bar-track{height:6px;background:var(--bg2);border-radius:3px;overflow:hidden;margin-bottom:14px}
+.compl-bar-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--green),var(--lime));transition:width .4s}
+.compl-item{
+  display:flex;align-items:center;gap:9px;
+  font-size:12px;color:var(--muted);padding:5px 0;
+}
+.compl-dot{width:16px;height:16px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:9px;flex-shrink:0}
+.compl-dot.done{background:rgba(60,184,120,.15);color:var(--green)}
+.compl-dot.todo{background:var(--bg2);color:var(--muted2)}
+
+/* ── CONFIRM MODAL ─────────────────────────────── */
+.confirm-modal{max-width:380px;text-align:center}
+.confirm-modal h3{font-family:'Bricolage Grotesque',sans-serif;font-size:1.1rem;
+  font-weight:800;color:var(--navy2);margin-bottom:8px}
+.confirm-modal p{font-size:13px;color:var(--muted);margin-bottom:22px;line-height:1.6}
+.confirm-btns{display:flex;gap:10px;justify-content:center}
+
+/* ── IDENTITY MODAL ────────────────────────────── */
+.identity-modal{max-width:500px}
+.id-avatar-preview{
+  width:72px;height:72px;border-radius:50%;
+  background:linear-gradient(135deg,#3CB878,#8DC63F);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;color:#fff;
+  cursor:pointer;position:relative;overflow:hidden;margin:0 auto 16px;
+  border:3px solid #fff;box-shadow:0 4px 14px rgba(60,184,120,.25);
+}
+.id-avatar-overlay{
+  position:absolute;inset:0;background:rgba(15,37,53,.55);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transition:opacity .2s;
+}
+.id-avatar-preview:hover .id-avatar-overlay{opacity:1}
 </style>
   <script type="module" src="/src/components/nav.js"></script>
 </head>
 <body>
+<script>(function(){try{var s=JSON.parse(localStorage.getItem('oriupe_session')||'{}');document.body.classList.add(s&&s.isLoggedIn&&s.role==='freelance'?'profile-owner':'profile-visitor');}catch(e){document.body.classList.add('profile-visitor');}})();</script>
 <div id="progress"></div>
+<div id="nav-root"></div>
+
+<!-- ████ OWNER BANDEAU ████ -->
+<div class="owner-bandeau owner-only" id="ownerBandeau">
+  <div class="owner-bandeau-left">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#3CB878" stroke-width="1.4"/><path d="M8 5v3l2 2" stroke="#3CB878" stroke-width="1.4" stroke-linecap="round"/></svg>
+    <span>Vous consultez votre profil public</span>
+  </div>
+  <div class="owner-bandeau-right">
+    <button type="button" class="btn-preview-mode" onclick="enterPreviewMode()">
+      <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M1 6.5s2.5-5 5.5-5 5.5 5 5.5 5-2.5 5-5.5 5-5.5-5-5.5-5Z" stroke="currentColor" stroke-width="1.2"/><circle cx="6.5" cy="6.5" r="2" stroke="currentColor" stroke-width="1.2"/></svg>
+      Voir comme un visiteur
+    </button>
+    <button type="button" class="btn-edit-identity" onclick="openIdentityModal()">
+      <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M9 2L11 4L5.5 9.5H3.5V7.5L9 2Z" stroke="#fff" stroke-width="1.3" stroke-linejoin="round"/></svg>
+      Modifier mon profil
+    </button>
+  </div>
+</div>
+
+<!-- ████ PREVIEW BAR ████ -->
+<div class="preview-bar" id="previewBar">
+  <span>👁 Mode prévisualisation — vous voyez votre profil comme un client</span>
+  <button type="button" class="btn-exit-preview" onclick="exitPreviewMode()">Quitter la prévisualisation ×</button>
+</div>
 
 <!-- ████ NAV ████ -->
 
@@ -618,8 +1219,8 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
     <rect x="268" y="82" width="24" height="5" rx="2.5" fill="rgba(255,255,255,.04)"/>
     <path d="M255 104H305M255 118C255 118 265 110 280 114S305 118 305 118" stroke="rgba(141,198,63,.3)" stroke-width="1.5" stroke-linecap="round"/>
   </svg>
-  <div class="banner-edit">
-    <button class="btn-edit-banner">
+  <div class="banner-edit owner-only">
+    <button type="button" class="btn-edit-banner" onclick="openIdentityModal()">
       <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M9 2L11 4L5.5 9.5H3.5V7.5L9 2Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
       Modifier la bannière
     </button>
@@ -630,18 +1231,21 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
 <div class="profile-header-wrap">
   <div class="profile-header r">
     <div class="av-wrap">
-      <div class="av-main">KA</div>
+      <div class="av-main" id="avatarMain">KA</div>
       <div class="av-online"></div>
+      <div class="av-edit-overlay" onclick="openIdentityModal()" title="Changer la photo">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M2 14V17H5L14.7 7.3L11.7 4.3L2 14ZM16.7 5.3C17.1 4.9 17.1 4.3 16.7 3.9L14.1 1.3C13.7 .9 13.1 .9 12.7 1.3L10.7 3.3L13.7 6.3L16.7 5.3Z" fill="rgba(255,255,255,.9)"/></svg>
+      </div>
     </div>
 
     <div class="ph-info">
       <div class="ph-top">
         <div>
-          <div class="ph-name">Kofi Asante</div>
-          <div class="ph-title">Développeur Full-Stack · React · Next.js · Node.js</div>
+          <div class="ph-name" id="profileName" data-placeholder="Votre nom complet">Kofi Asante</div>
+          <div class="ph-title" id="profileTitle" data-placeholder="Votre titre professionnel">Développeur Full-Stack · React · Next.js · Node.js</div>
           <div class="ph-location">
             <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1.5C4.3 1.5 2.5 3.3 2.5 5.5c0 3.3 4 7 4 7s4-3.7 4-7c0-2.2-1.8-4-4-4Z" stroke="var(--muted)" stroke-width="1.2"/><circle cx="6.5" cy="5.5" r="1.5" stroke="var(--muted)" stroke-width="1.1"/></svg>
-            Accra, Ghana · 🇬🇭
+            <span id="profileLocation" data-placeholder="Ville, Pays">Accra, Ghana · 🇬🇭</span>
             <span style="margin-left:8px;color:var(--border);font-size:11px">|</span>
             <span style="margin-left:8px;color:#22C55E;font-weight:700;font-size:12px">● En ligne maintenant</span>
           </div>
@@ -666,11 +1270,35 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
         </div>
 
         <div class="ph-actions">
+          <!-- OWNER: availability toggle -->
+          <div class="avail-toggle-wrap owner-only" id="availToggleWrap">
+            <button type="button" class="avail-toggle-btn" id="availToggleBtn" onclick="toggleAvailDropdown()">
+              <span class="avail-dot-live available" id="availDotLive"></span>
+              <span class="avail-toggle-label" id="availToggleLabel">Disponible</span>
+              <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </button>
+            <div class="avail-dropdown-menu" id="availDropdownMenu">
+              <div class="avail-option" onclick="setAvailability('available')">
+                <span class="avail-opt-dot" style="background:#22C55E"></span>Disponible
+              </div>
+              <div class="avail-option" onclick="setAvailability('busy')">
+                <span class="avail-opt-dot" style="background:#F59E0B"></span>Occupé
+              </div>
+              <div class="avail-option" onclick="setAvailability('offline')">
+                <span class="avail-opt-dot" style="background:#9CA3AF"></span>Indisponible
+              </div>
+            </div>
+          </div>
+          <!-- VISITOR: contact + save buttons -->
+          <button class="btn-contact visitor-only" onclick="window.location.href='/src/pages/messagerie/index.html'">
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2 3H13V10H8L5 13V10H2V3Z" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            Contacter Kofi
+          </button>
           <button class="btn-contact">
             <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2 3H13V10H8L5 13V10H2V3Z" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></svg>
             Contacter Kofi
           </button>
-          <button class="btn-save" id="saveBtn" onclick="toggleSave()">
+          <button class="btn-save visitor-only" id="saveBtn" onclick="toggleSave()">
             <svg class="heart-icon" width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="#1B3A4A" stroke-width="1.4"><path d="M7.5 13L1.5 7A3.3 3.3 0 116.5 2.5c.3.4.6.7 1 1 .4-.3.7-.7 1-1A3.3 3.3 0 1113.5 7L7.5 13Z"/></svg>
             Sauvegarder
           </button>
@@ -747,8 +1375,10 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
     <!-- À propos -->
     <div class="sec-card r">
       <div class="sc-title">
-        À propos de Kofi
-        <span style="font-size:12px;color:var(--muted);font-weight:400">Développeur · Designer · Entrepreneur</span>
+        <span>À propos de Kofi <span style="font-size:12px;color:var(--muted);font-weight:400">· Développeur · Designer · Entrepreneur</span></span>
+        <button type="button" class="sec-pencil owner-only" title="Modifier la biographie" onclick="editAbout()">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M9 2L11 4L5.5 9.5H3.5V7.5L9 2Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+        </button>
       </div>
       <div class="about-text" id="aboutText" style="max-height:160px;overflow:hidden;transition:max-height .4s var(--ease)">
         <p>Développeur Full-Stack passionné avec <strong>5 ans d'expérience</strong> dans la création d'applications web et mobiles pour startups et entreprises africaines. Je me spécialise dans l'écosystème JavaScript moderne — <strong>React, Next.js, Node.js et TypeScript</strong>.</p>
@@ -762,8 +1392,13 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
 
       <!-- Compétences -->
       <div style="margin-top:22px;padding-top:20px;border-top:1px solid var(--border2)">
-        <div style="font-size:12px;font-weight:700;color:var(--navy2);margin-bottom:12px;letter-spacing:.4px">COMPÉTENCES PRINCIPALES</div>
-        <div class="skills-wrap">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+          <div style="font-size:12px;font-weight:700;color:var(--navy2);letter-spacing:.4px">COMPÉTENCES PRINCIPALES</div>
+          <button type="button" class="sec-pencil owner-only" title="Modifier les compétences" onclick="editSkillsMode()" id="skillsPencil">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M9 2L11 4L5.5 9.5H3.5V7.5L9 2Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <div class="skills-wrap" id="skillsWrap">
           <span class="skill-tag featured">React.js</span>
           <span class="skill-tag featured">Next.js</span>
           <span class="skill-tag featured">Node.js</span>
@@ -780,209 +1415,143 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
           <span class="skill-tag">Git / GitHub</span>
           <span class="skill-tag">Agile/Scrum</span>
         </div>
+        <div class="add-skill-row" id="addSkillRow">
+          <input class="add-skill-input" id="newSkillInput" placeholder="Nouvelle compétence…" maxlength="40"/>
+          <button class="btn-add-skill" onclick="addSkill()">+ Ajouter</button>
+        </div>
       </div>
 
       <!-- Langues -->
       <div style="margin-top:22px;padding-top:20px;border-top:1px solid var(--border2)">
-        <div style="font-size:12px;font-weight:700;color:var(--navy2);margin-bottom:14px;letter-spacing:.4px">LANGUES</div>
-        <div class="lang-grid">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+          <div style="font-size:12px;font-weight:700;color:var(--navy2);letter-spacing:.4px">LANGUES</div>
+          <button type="button" class="sec-pencil owner-only" title="Modifier les langues" onclick="editLangsMode()">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M9 2L11 4L5.5 9.5H3.5V7.5L9 2Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <div class="lang-grid" id="langGrid">
           <div class="lang-row">
-            <span class="lang-name">Français</span>
-            <div class="lang-bar-wrap"><div class="lang-bar" style="width:95%"></div></div>
-            <span class="lang-level">Courant</span>
+            <span class="lang-name" id="ln-fr">Français</span>
+            <div class="lang-bar-wrap"><div class="lang-bar" id="lb-fr" style="width:95%"></div></div>
+            <span class="lang-level" id="ll-fr">Courant</span>
+            <button class="lang-del-btn" onclick="deleteLang(this)" title="Supprimer">×</button>
           </div>
           <div class="lang-row">
             <span class="lang-name">Anglais</span>
             <div class="lang-bar-wrap"><div class="lang-bar" style="width:100%"></div></div>
             <span class="lang-level">Natif</span>
+            <button class="lang-del-btn" onclick="deleteLang(this)" title="Supprimer">×</button>
           </div>
           <div class="lang-row">
             <span class="lang-name">Twi</span>
             <div class="lang-bar-wrap"><div class="lang-bar" style="width:100%"></div></div>
             <span class="lang-level">Natif</span>
+            <button class="lang-del-btn" onclick="deleteLang(this)" title="Supprimer">×</button>
           </div>
           <div class="lang-row">
             <span class="lang-name">Haoussa</span>
             <div class="lang-bar-wrap"><div class="lang-bar" style="width:40%"></div></div>
             <span class="lang-level">Notions</span>
+            <button class="lang-del-btn" onclick="deleteLang(this)" title="Supprimer">×</button>
           </div>
         </div>
+        <button class="add-lang-btn" id="addLangBtn" onclick="openLangModal()">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.3"/><path d="M7 4V10M4 7H10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          Ajouter une langue
+        </button>
       </div>
     </div>
 
     <!-- Portfolio -->
-    <div class="sec-card r">
-      <div class="sc-title">
-        Portfolio
-        <span class="sc-see-all">Voir tout (12)
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7H11M8 4L11 7L8 10" stroke="var(--green)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </span>
+    <div class="sec-card r" id="sectionPortfolio">
+      <div class="sc-title" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+        <span>Portfolio</span>
+        <div style="display:flex;align-items:center;gap:10px">
+          <button type="button" class="sec-pencil owner-only" title="Ajouter une réalisation" onclick="openPortEdit(null)">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" stroke-width="1.2"/><path d="M6.5 4V9M4 6.5H9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          </button>
+          <span id="portSeeAll" class="sc-see-all visitor-only" style="display:none">Voir tout
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7H11M8 4L11 7L8 10" stroke="var(--green)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </div>
       </div>
-      <div class="portfolio-grid sg">
-
-        <div class="port-card r">
-          <div class="port-img" style="background:linear-gradient(135deg,#0F2535,#1A5A7A)">
-            <svg width="52" height="40" viewBox="0 0 52 40" fill="none">
-              <rect x="4" y="4" width="44" height="32" rx="4" fill="rgba(41,171,226,.1)" stroke="rgba(41,171,226,.3)" stroke-width="1"/>
-              <path d="M10 20L26 8L42 20" stroke="#29ABE2" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M12 18V34H24V26H28V34H40V18" stroke="#29ABE2" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <div class="port-overlay">
-              <button class="port-btn">Voir live</button>
-              <button class="port-btn">Détails</button>
-            </div>
-          </div>
-          <div class="port-body">
-            <div class="port-title">AgriConnect — Plateforme agriculteurs</div>
-            <div class="port-meta">Next.js · PostgreSQL · 2024</div>
-          </div>
-        </div>
-
-        <div class="port-card r">
-          <div class="port-img" style="background:linear-gradient(135deg,#0A3020,#1A6038)">
-            <svg width="52" height="40" viewBox="0 0 52 40" fill="none">
-              <rect x="16" y="4" width="20" height="32" rx="4" fill="rgba(60,184,120,.1)" stroke="rgba(60,184,120,.3)" stroke-width="1"/>
-              <rect x="19" y="8" width="14" height="18" rx="2" fill="rgba(60,184,120,.15)"/>
-              <rect x="22" y="28" width="8" height="4" rx="2" fill="rgba(60,184,120,.4)"/>
-              <path d="M7 18L13 14V22L7 18Z" fill="rgba(60,184,120,.5)"/>
-              <path d="M45 18L39 14V22L45 18Z" fill="rgba(60,184,120,.5)"/>
-            </svg>
-            <div class="port-overlay">
-              <button class="port-btn">Voir live</button>
-              <button class="port-btn">Détails</button>
-            </div>
-          </div>
-          <div class="port-body">
-            <div class="port-title">PayFlow — App Mobile Money</div>
-            <div class="port-meta">React Native · Node.js · 2024</div>
-          </div>
-        </div>
-
-        <div class="port-card r">
-          <div class="port-img" style="background:linear-gradient(135deg,#1A1240,#2D1E78)">
-            <svg width="52" height="40" viewBox="0 0 52 40" fill="none">
-              <rect x="4" y="8" width="44" height="24" rx="4" fill="rgba(196,181,253,.08)" stroke="rgba(196,181,253,.2)" stroke-width="1"/>
-              <path d="M8 16H28M8 22H20" stroke="rgba(196,181,253,.6)" stroke-width="2" stroke-linecap="round"/>
-              <rect x="32" y="12" width="12" height="16" rx="3" fill="rgba(196,181,253,.2)" stroke="rgba(196,181,253,.3)" stroke-width="1"/>
-              <path d="M24 8V4H48V28H44" stroke="rgba(196,181,253,.3)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <div class="port-overlay">
-              <button class="port-btn">Voir live</button>
-              <button class="port-btn">Détails</button>
-            </div>
-          </div>
-          <div class="port-body">
-            <div class="port-title">HealthTech Dashboard RH</div>
-            <div class="port-meta">React · TypeScript · 2023</div>
-          </div>
-        </div>
-
-        <div class="port-card r">
-          <div class="port-img" style="background:linear-gradient(135deg,#1A3A20,#2A6040)">
-            <svg width="52" height="40" viewBox="0 0 52 40" fill="none">
-              <path d="M10 30L20 16L28 22L36 10L46 30Z" stroke="#8DC63F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="rgba(141,198,63,.1)"/>
-              <path d="M4 30H48" stroke="rgba(141,198,63,.4)" stroke-width="1" stroke-linecap="round"/>
-            </svg>
-            <div class="port-overlay">
-              <button class="port-btn">Voir live</button>
-              <button class="port-btn">Détails</button>
-            </div>
-          </div>
-          <div class="port-body">
-            <div class="port-title">EduMetrics — Suivi scolaire</div>
-            <div class="port-meta">Vue.js · Firebase · 2023</div>
-          </div>
-        </div>
-
-        <div class="port-card r">
-          <div class="port-img" style="background:linear-gradient(135deg,#2A1A08,#5A3010)">
-            <svg width="52" height="40" viewBox="0 0 52 40" fill="none">
-              <rect x="8" y="6" width="36" height="28" rx="5" fill="rgba(245,158,11,.08)" stroke="rgba(245,158,11,.3)" stroke-width="1"/>
-              <rect x="12" y="10" width="28" height="16" rx="3" fill="rgba(245,158,11,.12)"/>
-              <path d="M12 32H40" stroke="rgba(245,158,11,.4)" stroke-width="1.5" stroke-linecap="round"/>
-              <path d="M24 26V30M28 26V30" stroke="rgba(245,158,11,.5)" stroke-width="1.5" stroke-linecap="round"/>
-            </svg>
-            <div class="port-overlay">
-              <button class="port-btn">Voir live</button>
-              <button class="port-btn">Détails</button>
-            </div>
-          </div>
-          <div class="port-body">
-            <div class="port-title">MarketHub — E-commerce CI</div>
-            <div class="port-meta">Next.js · Stripe · CinetPay · 2023</div>
-          </div>
-        </div>
-
-        <div class="port-card r">
-          <div class="port-img" style="background:linear-gradient(135deg,#0A2A40,#1A5070)">
-            <svg width="52" height="40" viewBox="0 0 52 40" fill="none">
-              <circle cx="26" cy="20" r="13" fill="rgba(41,171,226,.08)" stroke="rgba(41,171,226,.25)" stroke-width="1"/>
-              <path d="M26 7C26 7 20 12 20 20s6 13 6 13M26 7c0 0 6 5 6 13s-6 13-6 13M13 20H39" stroke="rgba(41,171,226,.5)" stroke-width="1.5"/>
-              <circle cx="26" cy="20" r="3" fill="rgba(41,171,226,.6)"/>
-            </svg>
-            <div class="port-overlay">
-              <button class="port-btn">Voir live</button>
-              <button class="port-btn">Détails</button>
-            </div>
-          </div>
-          <div class="port-body">
-            <div class="port-title">TradeNet — SaaS export Afrique</div>
-            <div class="port-meta">Node.js · GraphQL · AWS · 2022</div>
-          </div>
-        </div>
-
+      <div class="portfolio-grid sg" id="portfolioGrid">
+        <!-- JS-rendered -->
+      </div>
+      <div class="port-voir-plus-wrap" id="portVoirPlusWrap" style="display:none">
+        <button type="button" class="btn-voir-plus" id="portVoirPlusBtn" onclick="loadMorePortfolio()">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2V12M2 7H12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <span id="portVoirPlusTxt">Voir plus</span>
+        </button>
       </div>
     </div>
 
     <!-- Mes services -->
-    <div class="sec-card r">
-      <div class="sc-title">
-        Mes services (3)
-        <span class="sc-see-all">Voir tous
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7H11M8 4L11 7L8 10" stroke="var(--green)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </span>
+    <div class="sec-card r" id="sectionServices">
+      <div class="sc-title" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <span id="svcTitle">Mes services (3)</span>
+        <button type="button" class="sec-pencil owner-only" title="Gérer mes services" onclick="window.location.href='/src/pages/create-service/index.html'">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" stroke-width="1.2"/><path d="M6.5 4V9M4 6.5H9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        </button>
       </div>
-      <div class="services-list sg">
+      <div class="svc-counter owner-only" id="svcCounter"></div>
+      <div class="services-list sg" id="servicesList">
 
-        <div class="svc-row r">
+        <div class="svc-row r" data-svc-status="active" data-svc-id="svc1">
           <div class="svc-thumb" style="background:linear-gradient(135deg,#0F2535,#1A4A6A)">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 12L2 12M12 5L12 2M19 12L22 12M12 19L12 22" stroke="rgba(60,184,120,.7)" stroke-width="1.8" stroke-linecap="round"/><path d="M6 6L8 8M18 6L16 8M6 18L8 16M18 18L16 16" stroke="rgba(60,184,120,.5)" stroke-width="1.6" stroke-linecap="round"/><circle cx="12" cy="12" r="4" stroke="#3CB878" stroke-width="1.8"/></svg>
           </div>
           <div class="svc-info">
-            <div class="svc-row-title">Création de site web React professionnel, responsive & SEO</div>
+            <div class="svc-row-title">Création de site web React professionnel, responsive &amp; SEO</div>
             <div class="svc-row-meta">
               <svg width="10" height="10" viewBox="0 0 10 10" fill="#FFD700"><path d="M5 1L6.2 3.8H9L6.8 5.4L7.6 8.5L5 7L2.4 8.5L3.2 5.4L1 3.8H3.8Z"/></svg>
-              4,9 · (124 avis)
-              <span style="width:3px;height:3px;border-radius:50%;background:var(--muted2);display:inline-block"></span>
-              892 commandes
+              4,9 · (124 avis) · 892 commandes
             </div>
+            <div class="svc-status-badge active owner-only">● Actif</div>
           </div>
-          <div class="svc-row-price">
-            <span class="svc-price-from">À partir de</span>
-            35 000 FCFA
+          <div class="svc-row-price"><span class="svc-price-from">À partir de</span>35 000 FCFA</div>
+          <button type="button" class="svc-commander-btn visitor-only" onclick="window.location.href='/src/pages/detail/index.html?id=svc1'">Commander</button>
+          <div class="svc-pro-overlay owner-only">
+            <button type="button" class="svc-pro-btn" onclick="window.location.href='/src/pages/create-service/index.html?edit=svc1'">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 2L10 4L4.5 9.5H2.5V7.5L8 2Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>Modifier
+            </button>
+            <button type="button" class="svc-pro-btn" onclick="previewService(this.closest('.svc-row'))">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 6s2-4.5 5-4.5S11 6 11 6s-2 4.5-5 4.5S1 6 1 6Z" stroke="currentColor" stroke-width="1.2"/><circle cx="6" cy="6" r="1.8" stroke="currentColor" stroke-width="1.1"/></svg>Prévisualiser
+            </button>
+            <button type="button" class="svc-pro-btn pause-btn" data-paused="0" onclick="toggleSvcPause(this.closest('.svc-row'))">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="2.5" y="2" width="3" height="8" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="6.5" y="2" width="3" height="8" rx="1" stroke="currentColor" stroke-width="1.2"/></svg>Pause
+            </button>
           </div>
         </div>
 
-        <div class="svc-row r">
+        <div class="svc-row r" data-svc-status="active" data-svc-id="svc2">
           <div class="svc-thumb" style="background:linear-gradient(135deg,#0A3020,#1A5A38)">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="5" y="2" width="10" height="18" rx="3" stroke="rgba(141,198,63,.7)" stroke-width="1.8"/><path d="M8 18.5H12M8 4.5H10" stroke="rgba(141,198,63,.5)" stroke-width="1.5" stroke-linecap="round"/><path d="M19 8L22 10L19 12M15 8L12 10L15 12" stroke="#8DC63F" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
           <div class="svc-info">
-            <div class="svc-row-title">Application mobile Flutter cross-platform iOS & Android</div>
+            <div class="svc-row-title">Application mobile Flutter cross-platform iOS &amp; Android</div>
             <div class="svc-row-meta">
               <svg width="10" height="10" viewBox="0 0 10 10" fill="#FFD700"><path d="M5 1L6.2 3.8H9L6.8 5.4L7.6 8.5L5 7L2.4 8.5L3.2 5.4L1 3.8H3.8Z"/></svg>
-              4,8 · (67 avis)
-              <span style="width:3px;height:3px;border-radius:50%;background:var(--muted2);display:inline-block"></span>
-              134 commandes
+              4,8 · (67 avis) · 134 commandes
             </div>
+            <div class="svc-status-badge active owner-only">● Actif</div>
           </div>
-          <div class="svc-row-price">
-            <span class="svc-price-from">À partir de</span>
-            80 000 FCFA
+          <div class="svc-row-price"><span class="svc-price-from">À partir de</span>80 000 FCFA</div>
+          <button type="button" class="svc-commander-btn visitor-only" onclick="window.location.href='/src/pages/detail/index.html?id=svc2'">Commander</button>
+          <div class="svc-pro-overlay owner-only">
+            <button type="button" class="svc-pro-btn" onclick="window.location.href='/src/pages/create-service/index.html?edit=svc2'">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 2L10 4L4.5 9.5H2.5V7.5L8 2Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>Modifier
+            </button>
+            <button type="button" class="svc-pro-btn" onclick="previewService(this.closest('.svc-row'))">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 6s2-4.5 5-4.5S11 6 11 6s-2 4.5-5 4.5S1 6 1 6Z" stroke="currentColor" stroke-width="1.2"/><circle cx="6" cy="6" r="1.8" stroke="currentColor" stroke-width="1.1"/></svg>Prévisualiser
+            </button>
+            <button type="button" class="svc-pro-btn pause-btn" data-paused="0" onclick="toggleSvcPause(this.closest('.svc-row'))">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="2.5" y="2" width="3" height="8" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="6.5" y="2" width="3" height="8" rx="1" stroke="currentColor" stroke-width="1.2"/></svg>Pause
+            </button>
           </div>
         </div>
 
-        <div class="svc-row r">
+        <div class="svc-row r" data-svc-status="active" data-svc-id="svc3">
           <div class="svc-thumb" style="background:linear-gradient(135deg,#0C304A,#1A5A7A)">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M2 12H22M2 8H12M2 16H8" stroke="rgba(41,171,226,.7)" stroke-width="2" stroke-linecap="round"/><circle cx="18" cy="16" r="5" fill="rgba(41,171,226,.1)" stroke="#29ABE2" stroke-width="1.6"/><path d="M16 16H20M18 14V18" stroke="#29ABE2" stroke-width="1.5" stroke-linecap="round"/></svg>
           </div>
@@ -990,18 +1559,60 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
             <div class="svc-row-title">API REST Node.js sécurisée + documentation Swagger complète</div>
             <div class="svc-row-meta">
               <svg width="10" height="10" viewBox="0 0 10 10" fill="#FFD700"><path d="M5 1L6.2 3.8H9L6.8 5.4L7.6 8.5L5 7L2.4 8.5L3.2 5.4L1 3.8H3.8Z"/></svg>
-              5,0 · (34 avis)
-              <span style="width:3px;height:3px;border-radius:50%;background:var(--muted2);display:inline-block"></span>
-              58 commandes
+              5,0 · (34 avis) · 58 commandes
             </div>
+            <div class="svc-status-badge active owner-only">● Actif</div>
           </div>
-          <div class="svc-row-price">
-            <span class="svc-price-from">À partir de</span>
-            45 000 FCFA
+          <div class="svc-row-price"><span class="svc-price-from">À partir de</span>45 000 FCFA</div>
+          <button type="button" class="svc-commander-btn visitor-only" onclick="window.location.href='/src/pages/detail/index.html?id=svc3'">Commander</button>
+          <div class="svc-pro-overlay owner-only">
+            <button type="button" class="svc-pro-btn" onclick="window.location.href='/src/pages/create-service/index.html?edit=svc3'">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 2L10 4L4.5 9.5H2.5V7.5L8 2Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>Modifier
+            </button>
+            <button type="button" class="svc-pro-btn" onclick="previewService(this.closest('.svc-row'))">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 6s2-4.5 5-4.5S11 6 11 6s-2 4.5-5 4.5S1 6 1 6Z" stroke="currentColor" stroke-width="1.2"/><circle cx="6" cy="6" r="1.8" stroke="currentColor" stroke-width="1.1"/></svg>Prévisualiser
+            </button>
+            <button type="button" class="svc-pro-btn pause-btn" data-paused="0" onclick="toggleSvcPause(this.closest('.svc-row'))">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="2.5" y="2" width="3" height="8" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="6.5" y="2" width="3" height="8" rx="1" stroke="currentColor" stroke-width="1.2"/></svg>Pause
+            </button>
           </div>
         </div>
 
       </div>
+      <a href="/src/pages/create-service/index.html" class="add-svc-dashed owner-only">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.4"/><path d="M8 5V11M5 8H11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        Créer un nouveau service
+      </a>
+    </div>
+
+    <!-- Expériences -->
+    <div class="sec-card r" id="sectionExp">
+      <div class="sc-title" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+        <span>Expériences professionnelles</span>
+        <button type="button" class="sec-pencil owner-only" title="Ajouter une expérience" onclick="openExpModal(null)">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" stroke-width="1.2"/><path d="M6.5 4V9M4 6.5H9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <div class="exp-list" id="expList"><!-- JS-rendered --></div>
+      <button type="button" class="btn-add-exp owner-only" onclick="openExpModal(null)">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.3"/><path d="M7 4V10M4 7H10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Ajouter une expérience
+      </button>
+    </div>
+
+    <!-- Certifications -->
+    <div class="sec-card r" id="sectionCert">
+      <div class="sc-title" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+        <span>Certifications</span>
+        <button type="button" class="sec-pencil owner-only" title="Ajouter une certification" onclick="openCertModal(null)">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" stroke-width="1.2"/><path d="M6.5 4V9M4 6.5H9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <div class="cert-grid" id="certGrid"><!-- JS-rendered --></div>
+      <button type="button" class="btn-add-cert owner-only" onclick="openCertModal(null)">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.3"/><path d="M7 4V10M4 7H10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Ajouter une certification
+      </button>
     </div>
 
     <!-- Avis -->
@@ -1144,8 +1755,19 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
       <div class="avail-text">Kofi accepte de nouvelles commandes. Temps de réponse moyen : <strong style="color:var(--green-d)">&lt; 1 heure</strong>. Livraison possible dès demain.</div>
     </div>
 
-    <!-- Contact card -->
-    <div class="contact-card r">
+    <!-- Completion card (owner only) -->
+    <div class="completion-card r owner-only" id="completionCard">
+      <div class="compl-title">Complétion du profil</div>
+      <div class="compl-pct-row">
+        <span class="compl-pct" id="complPct">78%</span>
+        <span style="font-size:11px;color:var(--muted)">Excellent</span>
+      </div>
+      <div class="compl-bar-track"><div class="compl-bar-fill" id="complBar" style="width:78%"></div></div>
+      <div id="complItems"></div>
+    </div>
+
+    <!-- Contact card (visitor only) -->
+    <div class="contact-card r visitor-only">
       <div class="cc-bg"></div>
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
         <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--lime));display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;flex-shrink:0;position:relative;z-index:1">KA</div>
@@ -1163,7 +1785,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 3H14V11H9L6 14V11H2V3Z" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/></svg>
         Contacter Kofi
       </button>
-      <button class="btn-view-services">
+      <button type="button" class="btn-view-services" onclick="document.getElementById('sectionServices').scrollIntoView({behavior:'smooth'})">
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1.5" y="2.5" width="11" height="9" rx="2" stroke="currentColor" stroke-width="1.3"/><path d="M4 6H10M4 8.5H7.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
         Voir ses services
       </button>
@@ -1249,8 +1871,312 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
   </div>
 </div>
 
+<!-- ████ MODAL PORTFOLIO DETAIL (visiteur) ████ -->
+<div class="ep-overlay" id="portDetailModal">
+  <div class="ep-modal port-detail-modal">
+    <div class="pdm-img" id="pdmImg">
+      <svg width="60" height="48" viewBox="0 0 60 48" fill="none"><rect x="4" y="4" width="52" height="40" rx="6" stroke="rgba(255,255,255,.2)" stroke-width="1.5"/><path d="M20 24L30 12L40 24" stroke="rgba(255,255,255,.4)" stroke-width="2" stroke-linecap="round"/></svg>
+    </div>
+    <div class="pdm-body">
+      <div class="pdm-title" id="pdmTitle"></div>
+      <div class="pdm-desc" id="pdmDesc"></div>
+      <div class="pdm-tags" id="pdmTags"></div>
+      <div class="pdm-meta" id="pdmMeta"></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <a href="#" target="_blank" class="btn-see-live" id="pdmLiveBtn" style="display:none">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 12L12 2M12 2H6M12 2V8" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Voir le projet live
+        </a>
+        <button type="button" class="btn-prev" onclick="closePortDetailModal()" style="padding:11px 20px;font-size:13px">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ████ MODAL PORTFOLIO AJOUT/EDIT (propriétaire) ████ -->
+<div class="ep-overlay" id="portEditModal">
+  <div class="ep-modal port-edit-modal">
+    <div class="ep-modal-title" id="portEditTitle">Ajouter une réalisation</div>
+    <div class="ep-field">
+      <label class="ep-label">IMAGE PRINCIPALE <span style="color:var(--red)">*</span></label>
+      <div class="port-img-upload" id="portImgUpload" onclick="document.getElementById('portImgFileInput').click()">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" style="stroke:#94a3b8;margin:0 auto 6px;display:block"><path d="M22 18v3a2 2 0 01-2 2H8a2 2 0 01-2-2v-3M19 11l-5-5-5 5M14 6v13" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/></svg>
+        <div style="font-size:13px;color:#64748b">Glissez ou cliquez pour uploader</div>
+        <div style="font-size:11px;color:#94a3b8;margin-top:3px">JPG, PNG — max 5 MB</div>
+      </div>
+      <input type="file" id="portImgFileInput" accept="image/*" style="display:none" onchange="previewPortImg(this)"/>
+      <img id="portImgPreview" class="port-img-preview" alt="preview"/>
+    </div>
+    <div class="ep-field">
+      <label class="ep-label">TITRE DU PROJET <span style="color:var(--red)">*</span></label>
+      <input type="text" class="ep-input" id="portEditTitleInput" placeholder="ex: AgriConnect — Plateforme agriculteurs" maxlength="80"/>
+    </div>
+    <div class="ep-field">
+      <label class="ep-label">DESCRIPTION <span id="portDescCount" style="font-weight:400;color:var(--muted2)">0/200</span></label>
+      <textarea class="ep-textarea" id="portEditDesc" maxlength="200" placeholder="Décrivez le projet, vos contributions, les résultats obtenus…" oninput="document.getElementById('portDescCount').textContent=this.value.length+'/200'"></textarea>
+    </div>
+    <div class="ep-grid2">
+      <div class="ep-field">
+        <label class="ep-label">TECHNOLOGIES</label>
+        <input type="text" class="ep-input" id="portEditTechs" placeholder="React, Node.js, PostgreSQL"/>
+      </div>
+      <div class="ep-field">
+        <label class="ep-label">ANNÉE</label>
+        <select class="ep-select" id="portEditYear">
+          <option value="2025">2025</option><option value="2024" selected>2024</option>
+          <option value="2023">2023</option><option value="2022">2022</option>
+          <option value="2021">2021</option><option value="2020">2020</option>
+        </select>
+      </div>
+    </div>
+    <div class="ep-field">
+      <label class="ep-label">URL DU PROJET (optionnel)</label>
+      <input type="url" class="ep-input" id="portEditUrl" placeholder="https://monprojet.com"/>
+    </div>
+    <div class="ep-field">
+      <label class="ep-label">NOM DU CLIENT (optionnel)</label>
+      <input type="text" class="ep-input" id="portEditClient" placeholder="Nom de l'entreprise ou du client"/>
+      <label style="display:flex;align-items:center;gap:7px;margin-top:7px;font-size:12px;color:var(--muted);cursor:pointer">
+        <input type="checkbox" id="portEditShowClient"/>
+        Autoriser la mention publique du nom du client
+      </label>
+    </div>
+    <input type="hidden" id="portEditId"/>
+    <div class="ep-modal-actions">
+      <button type="button" class="ep-btn-cancel" onclick="closePortEditModal()">Annuler</button>
+      <button type="button" class="ep-btn-save" onclick="savePortfolio()">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 6.5L5 9.5L11 3.5" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg>
+        Enregistrer
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ████ MODAL EXPÉRIENCE ████ -->
+<div class="ep-overlay" id="expModal">
+  <div class="ep-modal" style="max-width:500px">
+    <div class="ep-modal-title" id="expModalTitle">Ajouter une expérience</div>
+    <div class="ep-grid2">
+      <div class="ep-field">
+        <label class="ep-label">POSTE <span style="color:var(--red)">*</span></label>
+        <input type="text" class="ep-input" id="expRole" placeholder="ex: Lead Developer"/>
+      </div>
+      <div class="ep-field">
+        <label class="ep-label">ENTREPRISE <span style="color:var(--red)">*</span></label>
+        <input type="text" class="ep-input" id="expCompany" placeholder="ex: Oriupe Tech"/>
+      </div>
+    </div>
+    <div class="ep-grid2">
+      <div class="ep-field">
+        <label class="ep-label">DATE DE DÉBUT</label>
+        <input type="month" class="ep-input" id="expStart"/>
+      </div>
+      <div class="ep-field">
+        <label class="ep-label">DATE DE FIN</label>
+        <input type="month" class="ep-input" id="expEnd"/>
+        <label style="display:flex;align-items:center;gap:6px;margin-top:6px;font-size:12px;color:var(--muted);cursor:pointer">
+          <input type="checkbox" id="expCurrent" onchange="document.getElementById('expEnd').disabled=this.checked"/>
+          En cours
+        </label>
+      </div>
+    </div>
+    <div class="ep-field">
+      <label class="ep-label">DESCRIPTION DES MISSIONS</label>
+      <textarea class="ep-textarea" id="expDesc" placeholder="Décrivez vos missions, réalisations et impact…" style="min-height:90px"></textarea>
+    </div>
+    <input type="hidden" id="expEditId"/>
+    <div class="ep-modal-actions">
+      <button type="button" class="ep-btn-cancel" onclick="closeExpModal()">Annuler</button>
+      <button type="button" class="ep-btn-save" onclick="saveExp()">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 6.5L5 9.5L11 3.5" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg>
+        Enregistrer
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ████ MODAL CERTIFICATION ████ -->
+<div class="ep-overlay" id="certModal">
+  <div class="ep-modal" style="max-width:420px">
+    <div class="ep-modal-title">Ajouter une certification</div>
+    <div class="ep-field">
+      <label class="ep-label">NOM DE LA CERTIFICATION <span style="color:var(--red)">*</span></label>
+      <input type="text" class="ep-input" id="certName" placeholder="ex: AWS Solutions Architect"/>
+    </div>
+    <div class="ep-grid2">
+      <div class="ep-field">
+        <label class="ep-label">ORGANISME</label>
+        <input type="text" class="ep-input" id="certOrg" placeholder="ex: Amazon Web Services"/>
+      </div>
+      <div class="ep-field">
+        <label class="ep-label">DATE D'OBTENTION</label>
+        <input type="month" class="ep-input" id="certDate"/>
+      </div>
+    </div>
+    <input type="hidden" id="certEditId"/>
+    <div class="ep-modal-actions">
+      <button type="button" class="ep-btn-cancel" onclick="closeCertModal()">Annuler</button>
+      <button type="button" class="ep-btn-save" onclick="saveCert()">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 6.5L5 9.5L11 3.5" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg>
+        Enregistrer
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ████ MODAL IDENTITÉ ████ -->
+<div class="ep-overlay" id="identityModal">
+  <div class="ep-modal identity-modal">
+    <div class="ep-modal-title">Modifier mon profil</div>
+    <div class="id-avatar-preview" id="idAvatarPreview" onclick="document.getElementById('idAvatarFile').click()">
+      KA
+      <div class="id-avatar-overlay">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M2 14V17H5L14.7 7.3L11.7 4.3L2 14ZM16.7 5.3C17.1 4.9 17.1 4.3 16.7 3.9L14.1 1.3C13.7 .9 13.1 .9 12.7 1.3L10.7 3.3L13.7 6.3L16.7 5.3Z" fill="rgba(255,255,255,.9)"/></svg>
+      </div>
+    </div>
+    <input type="file" id="idAvatarFile" accept="image/*" style="display:none"/>
+    <div class="ep-grid2">
+      <div class="ep-field">
+        <label class="ep-label">PRÉNOM</label>
+        <input type="text" class="ep-input" id="idFirstName" placeholder="Kofi"/>
+      </div>
+      <div class="ep-field">
+        <label class="ep-label">NOM</label>
+        <input type="text" class="ep-input" id="idLastName" placeholder="Asante"/>
+      </div>
+    </div>
+    <div class="ep-field">
+      <label class="ep-label">TITRE PROFESSIONNEL</label>
+      <input type="text" class="ep-input" id="idTitle" placeholder="Développeur Full-Stack · React · Node.js" maxlength="80"/>
+    </div>
+    <div class="ep-field">
+      <label class="ep-label">LOCALISATION</label>
+      <input type="text" class="ep-input" id="idLocation" placeholder="Accra, Ghana"/>
+    </div>
+    <div class="ep-field">
+      <label class="ep-label">BIOGRAPHIE COURTE <span id="idBioCount" style="font-weight:400;color:var(--muted2)">0/160</span></label>
+      <textarea class="ep-textarea" id="idBio" maxlength="160" placeholder="Résumé de votre profil en 160 caractères max" style="min-height:70px" oninput="document.getElementById('idBioCount').textContent=this.value.length+'/160'"></textarea>
+    </div>
+    <div class="ep-modal-actions">
+      <button type="button" class="ep-btn-cancel" onclick="closeIdentityModal()">Annuler</button>
+      <button type="button" class="ep-btn-save" onclick="saveIdentity()">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 6.5L5 9.5L11 3.5" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg>
+        Enregistrer
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ████ MODAL CONFIRMATION ████ -->
+<div class="ep-overlay" id="confirmModal">
+  <div class="ep-modal confirm-modal">
+    <div style="font-size:36px;margin-bottom:12px" id="confirmIcon">🗑</div>
+    <h3 id="confirmTitle">Supprimer ?</h3>
+    <p id="confirmText">Cette action est irréversible.</p>
+    <div class="confirm-btns">
+      <button type="button" class="ep-btn-cancel" onclick="closeConfirmModal()">Annuler</button>
+      <button type="button" class="ep-btn-save" style="background:var(--red);box-shadow:none;flex:unset;padding:12px 22px" id="confirmOkBtn">Supprimer</button>
+    </div>
+  </div>
+</div>
+
+<!-- ████ MODAL PRÉVISUALISATION SERVICE ████ -->
+<div class="ep-overlay" id="svcPreviewModal">
+  <div class="ep-modal" style="max-width:500px">
+    <div class="ep-modal-title">Prévisualisation service</div>
+    <div id="svcPreviewContent" style="border:1.5px solid var(--border);border-radius:12px;padding:20px;background:var(--bg);margin-bottom:20px">
+      <div id="svcPreviewTitle" style="font-size:15px;font-weight:700;color:var(--navy2);margin-bottom:8px"></div>
+      <div id="svcPreviewMeta" style="font-size:12px;color:var(--muted)"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
+        <span style="font-size:12px;color:var(--muted)">À partir de</span>
+        <span id="svcPreviewPrice" style="font-size:16px;font-weight:800;color:var(--navy2)"></span>
+      </div>
+      <button type="button" class="btn-contact" style="width:100%;margin-top:14px;justify-content:center">Commander ce service</button>
+    </div>
+    <div class="ep-modal-actions">
+      <button type="button" class="ep-btn-save" onclick="document.getElementById('svcPreviewModal').classList.remove('open')">Fermer</button>
+    </div>
+  </div>
+</div>
+
+<!-- ████ EDIT MODE BAR ████ -->
+<div class="edit-mode-bar" id="editModeBar">
+  <div class="edit-bar-left">
+    <div class="edit-bar-dot"></div>
+    <span class="edit-bar-txt">Mode édition — les modifications ne sont pas encore enregistrées</span>
+  </div>
+  <div class="edit-bar-actions">
+    <button type="button" class="btn-cancel-edit" onclick="document.getElementById('editModeBar').classList.remove('visible')">Annuler</button>
+    <button type="button" class="btn-save-profile" onclick="document.getElementById('editModeBar').classList.remove('visible');_showToast('Modifications enregistrées')">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7L5.5 10L11.5 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Enregistrer les modifications
+    </button>
+  </div>
+</div>
+
+<!-- ████ MODAL SERVICE ████ -->
+<div class="ep-overlay" id="svcModal">
+  <div class="ep-modal">
+    <div class="ep-modal-title" id="svcModalTitle">Ajouter un service</div>
+    <div class="ep-field">
+      <label class="ep-label" for="svcTitleInput">TITRE DU SERVICE</label>
+      <input type="text" class="ep-input" id="svcTitleInput" placeholder="Ex : Création de site web React, responsive & SEO…" maxlength="80"/>
+    </div>
+    <div class="ep-grid2">
+      <div class="ep-field">
+        <label class="ep-label" for="svcPriceInput">PRIX DE DÉPART (FCFA)</label>
+        <input type="text" class="ep-input" id="svcPriceInput" placeholder="Ex : 35 000"/>
+      </div>
+      <div class="ep-field">
+        <label class="ep-label" for="svcDelayInput">DÉLAI DE LIVRAISON</label>
+        <input type="text" class="ep-input" id="svcDelayInput" placeholder="Ex : 3 jours"/>
+      </div>
+    </div>
+    <div class="ep-field">
+      <label class="ep-label" for="svcDescInput">DESCRIPTION COURTE (optionnel)</label>
+      <textarea class="ep-textarea" id="svcDescInput" placeholder="Décrivez brièvement ce que vous livrez…"></textarea>
+    </div>
+    <div class="ep-modal-actions">
+      <button type="button" class="ep-btn-cancel" onclick="closeSvcModal()">Annuler</button>
+      <button type="button" class="ep-btn-save" onclick="saveSvcModal()">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 6.5L5 9.5L11 3.5" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Enregistrer
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ████ MODAL LANGUE ████ -->
+<div class="ep-overlay" id="langModal">
+  <div class="ep-modal" style="max-width:380px">
+    <div class="ep-modal-title">Ajouter une langue</div>
+    <div class="ep-grid2">
+      <div class="ep-field">
+        <label class="ep-label" for="langNameInput">LANGUE</label>
+        <input type="text" class="ep-input" id="langNameInput" placeholder="Ex : Wolof" maxlength="30"/>
+      </div>
+      <div class="ep-field">
+        <label class="ep-label" for="langLevelSelect">NIVEAU</label>
+        <select class="ep-select" id="langLevelSelect">
+          <option value="Natif|100">Natif / Bilingue</option>
+          <option value="Courant|85">Courant (C1/C2)</option>
+          <option value="Intermédiaire|60" selected>Intermédiaire (B1/B2)</option>
+          <option value="Notions|35">Notions (A1/A2)</option>
+        </select>
+      </div>
+    </div>
+    <div class="ep-modal-actions">
+      <button type="button" class="ep-btn-cancel" onclick="closeLangModal()">Annuler</button>
+      <button type="button" class="ep-btn-save" onclick="saveLangModal()">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 6.5L5 9.5L11 3.5" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Ajouter
+      </button>
+    </div>
+  </div>
+</div>
+
 <!-- FOOTER MINIMAL -->
-<footer class="oriupe-footer">
+<footer class="oriupe-footer" data-nav-theme="dark">
   <div class="of-grid"></div>
   <div class="of-z1">
     <div class="of-brand">
@@ -1376,6 +2302,714 @@ document.querySelectorAll('.share-btn').forEach(btn=>{
     });
   }
 });
+
+/* ═══════════════════════════════════════
+   PROFILE PAGE — OWNER / VISITOR SYSTEM
+═══════════════════════════════════════ */
+
+const PROFILE_UID = 'usr_kofi_001';
+const PORT_KEY    = 'oriupe_portfolio_'  + PROFILE_UID;
+const PROF_KEY    = 'oriupe_profile_'    + PROFILE_UID;
+const EXP_KEY     = 'oriupe_experiences_'+ PROFILE_UID;
+const CERT_KEY    = 'oriupe_certs_'      + PROFILE_UID;
+const AVAIL_KEY   = 'oriupe_avail_'      + PROFILE_UID;
+
+/* ── XSS helper ── */
+function _esc(s){
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ── Toast ── */
+function _showToast(msg){
+  const t = document.createElement('div');
+  t.className='ep-toast'; t.textContent=msg;
+  document.body.appendChild(t);
+  requestAnimationFrame(()=>requestAnimationFrame(()=>t.classList.add('show')));
+  setTimeout(()=>{ t.classList.remove('show'); setTimeout(()=>t.remove(),400); }, 3200);
+}
+
+/* ── Preview mode ── */
+function enterPreviewMode(){
+  document.body.classList.add('profile-preview');
+  _showToast('Vous voyez votre profil comme un visiteur');
+}
+function exitPreviewMode(){
+  document.body.classList.remove('profile-preview');
+}
+
+/* ── Availability toggle ── */
+let _availOpen = false;
+
+function toggleAvailDropdown(){
+  _availOpen = !_availOpen;
+  document.getElementById('availDropdownMenu').classList.toggle('open', _availOpen);
+}
+
+function setAvailability(status){
+  const labels = { available:'Disponible', busy:'Occupé', offline:'Indisponible' };
+  const dot = document.getElementById('availDotLive');
+  const label = document.getElementById('availToggleLabel');
+  dot.className = 'avail-dot-live ' + status;
+  label.textContent = labels[status] || 'Disponible';
+  _availOpen = false;
+  document.getElementById('availDropdownMenu').classList.remove('open');
+  try{ localStorage.setItem(AVAIL_KEY, status); }catch(e){}
+  _showToast('Statut mis à jour : ' + (labels[status] || status));
+}
+
+document.addEventListener('click', e=>{
+  const wrap = document.getElementById('availToggleWrap');
+  if(wrap && !wrap.contains(e.target)){
+    _availOpen = false;
+    document.getElementById('availDropdownMenu').classList.remove('open');
+  }
+});
+
+/* ── Identity modal ── */
+function openIdentityModal(){
+  const profData = _loadProfData();
+  document.getElementById('idFirstName').value  = profData.firstName || 'Kofi';
+  document.getElementById('idLastName').value   = profData.lastName  || 'Asante';
+  document.getElementById('idTitle').value      = profData.title     || document.getElementById('profileTitle').textContent.trim();
+  document.getElementById('idLocation').value   = profData.location  || 'Accra, Ghana';
+  const bio = profData.bio || document.getElementById('aboutText').textContent.trim().slice(0,160);
+  document.getElementById('idBio').value = bio;
+  document.getElementById('idBioCount').textContent = bio.length + '/160';
+  document.getElementById('identityModal').classList.add('open');
+  setTimeout(()=>document.getElementById('idFirstName').focus(), 50);
+}
+function closeIdentityModal(){
+  document.getElementById('identityModal').classList.remove('open');
+}
+function saveIdentity(){
+  const first    = document.getElementById('idFirstName').value.trim();
+  const last     = document.getElementById('idLastName').value.trim();
+  const title    = document.getElementById('idTitle').value.trim();
+  const location = document.getElementById('idLocation').value.trim();
+  const bio      = document.getElementById('idBio').value.trim();
+  if(!first && !last) return;
+
+  if(first || last){
+    const nameEl = document.getElementById('profileName');
+    if(nameEl) nameEl.textContent = [first,last].filter(Boolean).join(' ');
+  }
+  if(title){
+    const titleEl = document.getElementById('profileTitle');
+    if(titleEl) titleEl.textContent = title;
+  }
+  if(location){
+    const locEl = document.getElementById('profileLocation');
+    if(locEl) locEl.textContent = location;
+  }
+
+  const profData = { firstName:first, lastName:last, title, location, bio };
+  try{ localStorage.setItem(PROF_KEY, JSON.stringify(profData)); }catch(e){}
+  closeIdentityModal();
+  _showToast('Profil mis à jour');
+  updateCompletionCard();
+}
+
+function _loadProfData(){
+  try{ return JSON.parse(localStorage.getItem(PROF_KEY)||'{}'); }catch(e){ return {}; }
+}
+
+/* ── Compétences ── */
+function editAbout(){ openIdentityModal(); }
+function closeSvcModal(){ document.getElementById('svcModal').classList.remove('open'); }
+function saveSvcModal(){ closeSvcModal(); }
+function editSkillsMode(){
+  const input = document.getElementById('newSkillInput');
+  if(input){ input.focus(); input.scrollIntoView({behavior:'smooth',block:'nearest'}); }
+}
+function editLangsMode(){ openLangModal(); }
+
+function addSkill(){
+  const input = document.getElementById('newSkillInput');
+  const val = input.value.trim();
+  if(!val) return;
+  const wrap  = document.getElementById('skillsWrap');
+  const addRow= document.getElementById('addSkillRow');
+  const tag   = document.createElement('span');
+  tag.className = 'skill-tag';
+  tag.textContent = val;
+  const rm = document.createElement('button');
+  rm.type='button'; rm.className='skill-rm'; rm.innerHTML='&times;'; rm.title='Supprimer';
+  rm.onclick=()=>tag.remove();
+  tag.appendChild(rm);
+  wrap.insertBefore(tag, addRow);
+  input.value='';
+  input.focus();
+}
+document.getElementById('newSkillInput').addEventListener('keydown',e=>{
+  if(e.key==='Enter'){ e.preventDefault(); addSkill(); }
+});
+
+/* ── Langues ── */
+function deleteLang(btn){ btn.closest('.lang-row').remove(); }
+
+function openLangModal(){
+  document.getElementById('langNameInput').value='';
+  document.getElementById('langModal').classList.add('open');
+  setTimeout(()=>document.getElementById('langNameInput').focus(),50);
+}
+function closeLangModal(){ document.getElementById('langModal').classList.remove('open'); }
+
+function saveLangModal(){
+  const name = document.getElementById('langNameInput').value.trim();
+  if(!name) return;
+  const selVal = document.getElementById('langLevelSelect').value;
+  const [levelTxt, pct] = selVal.split('|');
+  const grid = document.getElementById('langGrid');
+  const row  = document.createElement('div');
+  row.className = 'lang-row';
+  row.innerHTML = `
+    <span class="lang-name">${_esc(name)}</span>
+    <div class="lang-bar-wrap"><div class="lang-bar" style="width:${pct}%"></div></div>
+    <span class="lang-level">${_esc(levelTxt)}</span>
+    <button type="button" class="lang-del-btn owner-only" onclick="deleteLang(this)" title="Supprimer">×</button>`;
+  grid.appendChild(row);
+  closeLangModal();
+}
+
+/* ══════════════════════════════════════
+   PORTFOLIO
+══════════════════════════════════════ */
+
+const DEFAULT_PORTFOLIO = [
+  { id:'p1', title:'AgriConnect — Plateforme agriculteurs', desc:'Application web connectant agriculteurs et acheteurs en Afrique de l\'Ouest. 12k utilisateurs actifs, +40% de revenus pour les exploitants.', techs:'React · Node.js · PostgreSQL', year:'2024', url:'', client:'', gradient:'linear-gradient(135deg,#0F2535,#1A4A6A)' },
+  { id:'p2', title:'FinoPay — Wallet Mobile Money', desc:'Super-app de paiement mobile intégrant Orange Money, MTN et Wave. 50k transactions/jour en pointe.', techs:'Flutter · Firebase · Stripe', year:'2024', url:'', client:'', gradient:'linear-gradient(135deg,#0A3020,#1A5A38)' },
+  { id:'p3', title:'EduAfrique — E-learning multilingue', desc:'Plateforme d\'apprentissage en ligne avec contenu en français, anglais et langues locales. 8k élèves inscrits.', techs:'Next.js · Supabase · Tailwind', year:'2023', url:'', client:'', gradient:'linear-gradient(135deg,#0C304A,#1A5A7A)' },
+  { id:'p4', title:'LogiTrack — Suivi livraisons temps réel', desc:'Système de tracking de livraisons pour 3 opérateurs logistiques avec carte temps réel et notifications SMS.', techs:'Vue.js · Python · Redis', year:'2023', url:'', client:'', gradient:'linear-gradient(135deg,#1A1240,#2D1E78)' },
+  { id:'p5', title:'SantéConnect — Télémédecine', desc:'Solution de téléconsultation pour cliniques et patients ruraux. Interface adaptée aux connexions lentes.', techs:'React · WebRTC · Node.js', year:'2022', url:'', client:'', gradient:'linear-gradient(135deg,#1A3010,#2A5020)' },
+  { id:'p6', title:'MarketPlace Artisanat CI', desc:'Boutique en ligne pour artisans ivoiriens, avec paiement Wave/OM et livraison nationale.', techs:'Shopify · React · Stripe', year:'2022', url:'', client:'', gradient:'linear-gradient(135deg,#2A1A10,#4A3020)' },
+  { id:'p7', title:'DataViz Dashboard RH', desc:'Tableau de bord analytique RH pour grand groupe bancaire ivoirien — suivi KPIs et reporting automatisé.', techs:'D3.js · Python · FastAPI', year:'2021', url:'', client:'', gradient:'linear-gradient(135deg,#0F1A30,#1A2A4A)' },
+  { id:'p8', title:'API Paiement Cross-Border', desc:'Passerelle de paiement inter-pays CEDEAO permettant des transferts en temps réel entre 8 monnaies locales.', techs:'Node.js · Kafka · PostgreSQL', year:'2021', url:'', client:'', gradient:'linear-gradient(135deg,#1A0A20,#3A1A40)' },
+];
+
+let _portfolioItems = [];
+let _portShown = 6;
+const PORT_PAGE = 6;
+
+function _loadPortfolio(){
+  try{
+    const saved = localStorage.getItem(PORT_KEY);
+    if(saved){ _portfolioItems = JSON.parse(saved); return; }
+  }catch(e){}
+  _portfolioItems = DEFAULT_PORTFOLIO.map(p=>({...p}));
+}
+
+function _savePortfolioLS(){
+  try{ localStorage.setItem(PORT_KEY, JSON.stringify(_portfolioItems)); }catch(e){}
+}
+
+function renderPortfolio(showCount){
+  const grid = document.getElementById('portfolioGrid');
+  if(!grid) return;
+  const isOwner = document.body.classList.contains('profile-owner');
+  const items   = _portfolioItems.slice(0, showCount);
+
+  grid.innerHTML = items.map(item=>{
+    const imgHTML = item.imgData
+      ? `<img src="${_esc(item.imgData)}" style="width:100%;height:100%;object-fit:cover;border-radius:0" alt="${_esc(item.title)}"/>`
+      : `<svg width="44" height="36" viewBox="0 0 44 36" fill="none"><rect x="3" y="3" width="38" height="30" rx="5" stroke="rgba(255,255,255,.15)" stroke-width="1.2"/><path d="M14 18L22 9L30 18" stroke="rgba(255,255,255,.3)" stroke-width="1.6" stroke-linecap="round"/><circle cx="30" cy="13" r="3" stroke="rgba(255,255,255,.3)" stroke-width="1.2"/></svg>`;
+    return `<div class="port-card r vis" data-pid="${_esc(item.id)}" style="background:${item.gradient||'linear-gradient(135deg,#0F2535,#1A4A6A)'}">
+      <div class="port-img" style="background:${item.gradient||'linear-gradient(135deg,#0F2535,#1A4A6A)'}">
+        ${imgHTML}
+        <div class="port-overlay">
+          ${isOwner
+            ? `<button type="button" class="port-btn" onclick="openPortEdit(_portfolioItems.find(p=>p.id==='${_esc(item.id)}'))">Modifier</button>
+               <button type="button" class="port-btn" onclick="_portDeleteConfirm('${_esc(item.id)}')">Supprimer</button>`
+            : `<button type="button" class="port-btn" onclick="openPortDetailModal(_portfolioItems.find(p=>p.id==='${_esc(item.id)}'))">Voir détails</button>`
+          }
+        </div>
+      </div>
+      <div class="port-body">
+        <div class="port-title">${_esc(item.title)}</div>
+        <div class="port-meta">${_esc(item.techs)}${item.year?' · '+_esc(item.year):''}</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  const total   = _portfolioItems.length;
+  const wrap    = document.getElementById('portVoirPlusWrap');
+  const txtEl   = document.getElementById('portVoirPlusTxt');
+  if(wrap){
+    const remaining = total - showCount;
+    if(remaining > 0){
+      wrap.style.display='flex';
+      if(txtEl) txtEl.textContent = 'Voir plus (' + remaining + ' restant' + (remaining>1?'s':'') + ')';
+    } else {
+      wrap.style.display='none';
+    }
+  }
+}
+
+function loadMorePortfolio(){
+  _portShown += PORT_PAGE;
+  renderPortfolio(_portShown);
+}
+
+function openPortDetailModal(item){
+  if(!item) return;
+  const bg = item.gradient || 'linear-gradient(135deg,#0F2535,#1A4A6A)';
+  const pdmImg = document.getElementById('pdmImg');
+  pdmImg.style.background = bg;
+  if(item.imgData){
+    pdmImg.innerHTML = `<img src="${_esc(item.imgData)}" style="width:100%;height:100%;object-fit:cover" alt="${_esc(item.title)}"/>`;
+  } else {
+    pdmImg.innerHTML = `<svg width="60" height="48" viewBox="0 0 60 48" fill="none"><rect x="4" y="4" width="52" height="40" rx="6" stroke="rgba(255,255,255,.2)" stroke-width="1.5"/><path d="M20 24L30 12L40 24" stroke="rgba(255,255,255,.4)" stroke-width="2" stroke-linecap="round"/></svg>`;
+  }
+  document.getElementById('pdmTitle').textContent = item.title || '';
+  document.getElementById('pdmDesc').textContent  = item.desc  || '';
+  const tagsEl = document.getElementById('pdmTags');
+  tagsEl.innerHTML = item.techs ? item.techs.split('·').map(t=>`<span class="pdm-tag">${_esc(t.trim())}</span>`).join('') : '';
+  let meta = '';
+  if(item.year)   meta += item.year;
+  if(item.client) meta += (meta?' · ':'')+item.client;
+  document.getElementById('pdmMeta').textContent = meta;
+  const liveBtn = document.getElementById('pdmLiveBtn');
+  if(item.url){ liveBtn.href=item.url; liveBtn.style.display='flex'; }
+  else { liveBtn.style.display='none'; }
+  document.getElementById('portDetailModal').classList.add('open');
+}
+function closePortDetailModal(){
+  document.getElementById('portDetailModal').classList.remove('open');
+}
+
+let _portEditItem = null;
+function openPortEdit(item){
+  _portEditItem = item || null;
+  const isEdit = !!item;
+  document.getElementById('portEditTitle').textContent = isEdit ? 'Modifier la réalisation' : 'Ajouter une réalisation';
+  document.getElementById('portEditTitleInput').value = item ? item.title  : '';
+  document.getElementById('portEditDesc').value        = item ? item.desc   : '';
+  document.getElementById('portEditTechs').value       = item ? item.techs  : '';
+  document.getElementById('portEditUrl').value         = item ? item.url    : '';
+  document.getElementById('portEditClient').value      = item ? item.client : '';
+  document.getElementById('portEditId').value          = item ? item.id     : '';
+  document.getElementById('portDescCount').textContent = (item&&item.desc ? item.desc.length : 0)+'/200';
+  const yr = document.getElementById('portEditYear');
+  if(item&&item.year) yr.value=item.year;
+  const preview = document.getElementById('portImgPreview');
+  const upload  = document.getElementById('portImgUpload');
+  if(item&&item.imgData){
+    preview.src=item.imgData; preview.style.display='block'; upload.style.display='none';
+  } else {
+    preview.src=''; preview.style.display='none'; upload.style.display='flex';
+  }
+  document.getElementById('portEditModal').classList.add('open');
+  setTimeout(()=>document.getElementById('portEditTitleInput').focus(),50);
+}
+function closePortEditModal(){
+  document.getElementById('portEditModal').classList.remove('open');
+  _portEditItem = null;
+}
+function previewPortImg(input){
+  const file = input.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e=>{
+    const preview = document.getElementById('portImgPreview');
+    const upload  = document.getElementById('portImgUpload');
+    preview.src = e.target.result;
+    preview.style.display='block';
+    upload.style.display='none';
+  };
+  reader.readAsDataURL(file);
+}
+function savePortfolio(){
+  const title = document.getElementById('portEditTitleInput').value.trim();
+  if(!title){ _showToast('Le titre est obligatoire'); return; }
+  const id     = document.getElementById('portEditId').value || ('p'+Date.now());
+  const desc   = document.getElementById('portEditDesc').value.trim();
+  const techs  = document.getElementById('portEditTechs').value.trim();
+  const year   = document.getElementById('portEditYear').value;
+  const url    = document.getElementById('portEditUrl').value.trim();
+  const client = document.getElementById('portEditClient').value.trim();
+  const preview= document.getElementById('portImgPreview');
+  const imgData= (preview.style.display!=='none' && preview.src && !preview.src.endsWith('#')) ? preview.src : '';
+
+  const gradients = [
+    'linear-gradient(135deg,#0F2535,#1A4A6A)','linear-gradient(135deg,#0A3020,#1A5A38)',
+    'linear-gradient(135deg,#0C304A,#1A5A7A)','linear-gradient(135deg,#1A1240,#2D1E78)',
+    'linear-gradient(135deg,#1A3010,#2A5020)','linear-gradient(135deg,#2A1A10,#4A3020)',
+  ];
+  const existingIdx = _portfolioItems.findIndex(p=>p.id===id);
+  if(existingIdx >= 0){
+    const old = _portfolioItems[existingIdx];
+    _portfolioItems[existingIdx] = { id, title, desc, techs, year, url, client, imgData: imgData||old.imgData||'', gradient: old.gradient };
+  } else {
+    _portfolioItems.unshift({ id, title, desc, techs, year, url, client, imgData, gradient: gradients[_portfolioItems.length % gradients.length] });
+    _portShown = Math.min(_portShown+1, _portfolioItems.length);
+  }
+  _savePortfolioLS();
+  renderPortfolio(_portShown);
+  closePortEditModal();
+  _showToast(existingIdx>=0 ? 'Réalisation mise à jour' : 'Réalisation ajoutée');
+  updateCompletionCard();
+}
+function _portDeleteConfirm(id){
+  openConfirmModal('Supprimer cette réalisation ?','Cette action est irréversible.',()=>{
+    _portfolioItems = _portfolioItems.filter(p=>p.id!==id);
+    if(_portShown > _portfolioItems.length) _portShown = _portfolioItems.length;
+    _savePortfolioLS();
+    renderPortfolio(_portShown);
+    updateCompletionCard();
+  });
+}
+
+/* ══════════════════════════════════════
+   SERVICES
+══════════════════════════════════════ */
+
+function _injectPendingServices(){
+  const list = document.getElementById('servicesList');
+  if (!list) return;
+  try {
+    const pending = JSON.parse(localStorage.getItem('oriupe_pending_services')||'[]');
+    pending.forEach(svc => {
+      if (list.querySelector('[data-svc-id="'+svc.id+'"]')) return; // déjà affiché
+      const price = svc.price ? svc.price.toLocaleString('fr-FR').replace(/ |\xa0/g,' ')+ ' FCFA' : '—';
+      const row = document.createElement('div');
+      row.className = 'svc-row r';
+      row.dataset.svcStatus = 'pending';
+      row.dataset.svcId = svc.id;
+      row.innerHTML = `
+        <div class="svc-thumb" style="background:linear-gradient(135deg,#2a2a2a,#3a3a3a);opacity:.7">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="rgba(245,158,11,.7)" stroke-width="1.8" stroke-dasharray="4 3"/></svg>
+        </div>
+        <div class="svc-info">
+          <div class="svc-row-title">${svc.title||'Service sans titre'}</div>
+          <div class="svc-row-meta" style="color:var(--muted)">En attente de modération — sous 24h</div>
+          <div class="svc-status-badge" style="background:rgba(245,158,11,.1);color:var(--gold-d);border:1px solid rgba(245,158,11,.3);padding:2px 8px;border-radius:6px;font-size:10px;font-weight:700;display:inline-block;margin-top:4px">⏳ En modération</div>
+        </div>
+        <div class="svc-row-price"><span class="svc-price-from">À partir de</span>${price}</div>
+        <div class="svc-pro-overlay owner-only">
+          <span style="font-size:11px;color:var(--muted);padding:6px 10px;font-style:italic">Disponible après validation</span>
+        </div>`;
+      list.appendChild(row);
+    });
+  } catch {}
+}
+
+function renderSvcCounter(){
+  const n   = document.querySelectorAll('#servicesList .svc-row').length;
+  const el  = document.getElementById('svcCounter');
+  const ttl = document.getElementById('svcTitle');
+  if(el)  el.textContent  = n + ' service' + (n>1?'s':'') + ' actif' + (n>1?'s':'');
+  if(ttl) ttl.textContent = 'Mes services (' + n + ')';
+}
+
+function toggleSvcPause(row){
+  if(!row) return;
+  const btn    = row.querySelector('.pause-btn');
+  const badge  = row.querySelector('.svc-status-badge');
+  const paused = btn && btn.dataset.paused === '1';
+  if(btn){ btn.dataset.paused = paused ? '0' : '1'; btn.title = paused ? 'Mettre en pause' : 'Reprendre'; }
+  if(badge){
+    badge.className = paused ? 'svc-status-badge active owner-only' : 'svc-status-badge paused owner-only';
+    badge.textContent = paused ? '● Actif' : '⏸ En pause';
+  }
+  row.dataset.svcStatus = paused ? 'active' : 'paused';
+  _showToast(paused ? 'Service réactivé' : 'Service mis en pause');
+}
+
+function previewService(row){
+  if(!row) return;
+  document.getElementById('svcPreviewTitle').textContent = row.querySelector('.svc-row-title')?.textContent || '';
+  document.getElementById('svcPreviewMeta').textContent  = row.querySelector('.svc-row-meta')?.textContent  || '';
+  const priceNode = row.querySelector('.svc-row-price');
+  const priceText = priceNode ? [...priceNode.childNodes].filter(n=>n.nodeType===3).map(n=>n.textContent).join('').trim() : '';
+  document.getElementById('svcPreviewPrice').textContent = priceText || '—';
+  document.getElementById('svcPreviewModal').classList.add('open');
+}
+
+/* ══════════════════════════════════════
+   EXPÉRIENCES
+══════════════════════════════════════ */
+
+let _experiences = [];
+
+function _loadExperiences(){
+  try{ _experiences = JSON.parse(localStorage.getItem(EXP_KEY)||'[]'); }catch(e){ _experiences=[]; }
+  if(!_experiences.length){
+    _experiences = [
+      { id:'e1', role:'Lead Developer Full-Stack', company:'Oriupe Technologies', start:'2022-03', end:'', current:true, desc:'Conception et développement de la plateforme Oriupe. Architecture microservices, API REST, intégration Mobile Money, interface React.' },
+      { id:'e2', role:'Développeur Senior React/Node', company:'FinTech Abidjan', start:'2020-01', end:'2022-02', current:false, desc:'Développement de solutions de paiement mobile pour l\'Afrique de l\'Ouest. Integration Wave, Orange Money, MTN MoMo.' },
+      { id:'e3', role:'Développeur Full-Stack', company:'Agency Digital CI', start:'2018-06', end:'2019-12', current:false, desc:'Développement web et mobile pour clients locaux et internationaux. React, Angular, Node.js, PHP Laravel.' },
+    ];
+  }
+}
+
+function renderExperiences(){
+  const el = document.getElementById('expList');
+  if(!el) return;
+  const isOwner = document.body.classList.contains('profile-owner');
+  if(!_experiences.length){
+    el.innerHTML = isOwner ? '<p style="color:var(--muted);font-size:13px">Aucune expérience ajoutée.</p>' : '';
+    return;
+  }
+  el.innerHTML = _experiences.map((exp,i)=>{
+    const startFmt = exp.start ? exp.start.replace('-','/') : '';
+    const endFmt   = exp.current ? 'Présent' : (exp.end ? exp.end.replace('-','/') : '');
+    const period   = [startFmt, endFmt].filter(Boolean).join(' → ');
+    const isLast   = i === _experiences.length - 1;
+    return `<div class="exp-item"${isLast?' style="border-bottom:none"':''}>
+      <div class="exp-timeline">
+        <div class="exp-dot"></div>
+        ${!isLast?'<div class="exp-line"></div>':''}
+      </div>
+      <div class="exp-content" style="flex:1;min-width:0">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
+          <div style="flex:1;min-width:0">
+            <div class="exp-role">${_esc(exp.role)}</div>
+            <div class="exp-company">${_esc(exp.company)}</div>
+            ${period?`<div class="exp-dates">${_esc(period)}</div>`:''}
+          </div>
+          ${isOwner?`<div style="display:flex;gap:5px;flex-shrink:0">
+            <button type="button" class="sec-pencil" title="Modifier" onclick="openExpModal(_experiences.find(x=>x.id==='${_esc(exp.id)}'))">
+              <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M7.5 1.5L9.5 3.5L4 9H2V7L7.5 1.5Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
+            </button>
+            <button type="button" class="sec-pencil" style="color:rgba(239,68,68,.7)" title="Supprimer" onclick="_expDeleteConfirm('${_esc(exp.id)}')">
+              <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M1.5 3H9.5M3.5 3V2H7.5V3M8.5 3L8 9.5H3L2.5 3" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>`:''}
+        </div>
+        ${exp.desc?`<div class="exp-desc" style="margin-top:6px">${_esc(exp.desc)}</div>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+let _expEditId = null;
+function openExpModal(item){
+  _expEditId = item ? item.id : null;
+  document.getElementById('expModalTitle').textContent = item ? 'Modifier l\'expérience' : 'Ajouter une expérience';
+  document.getElementById('expRole').value    = item ? item.role    : '';
+  document.getElementById('expCompany').value = item ? item.company : '';
+  document.getElementById('expStart').value   = item ? item.start   : '';
+  document.getElementById('expEnd').value     = item ? item.end     : '';
+  document.getElementById('expCurrent').checked = item ? !!item.current : false;
+  document.getElementById('expEnd').disabled    = item ? !!item.current : false;
+  document.getElementById('expDesc').value    = item ? item.desc    : '';
+  document.getElementById('expEditId').value  = item ? item.id      : '';
+  document.getElementById('expModal').classList.add('open');
+  setTimeout(()=>document.getElementById('expRole').focus(), 50);
+}
+function closeExpModal(){ document.getElementById('expModal').classList.remove('open'); _expEditId=null; }
+function saveExp(){
+  const role    = document.getElementById('expRole').value.trim();
+  const company = document.getElementById('expCompany').value.trim();
+  if(!role||!company){ _showToast('Poste et entreprise sont obligatoires'); return; }
+  const id      = document.getElementById('expEditId').value || ('e'+Date.now());
+  const start   = document.getElementById('expStart').value;
+  const current = document.getElementById('expCurrent').checked;
+  const end     = current ? '' : document.getElementById('expEnd').value;
+  const desc    = document.getElementById('expDesc').value.trim();
+  const idx = _experiences.findIndex(x=>x.id===id);
+  const item = { id, role, company, start, end, current, desc };
+  if(idx>=0) _experiences[idx]=item;
+  else _experiences.unshift(item);
+  try{ localStorage.setItem(EXP_KEY, JSON.stringify(_experiences)); }catch(e){}
+  renderExperiences();
+  closeExpModal();
+  _showToast('Expérience enregistrée');
+  updateCompletionCard();
+}
+function _expDeleteConfirm(id){
+  openConfirmModal('Supprimer cette expérience ?','Cette action est irréversible.',()=>{
+    _experiences = _experiences.filter(x=>x.id!==id);
+    try{ localStorage.setItem(EXP_KEY, JSON.stringify(_experiences)); }catch(e){}
+    renderExperiences();
+    updateCompletionCard();
+  });
+}
+
+/* ══════════════════════════════════════
+   CERTIFICATIONS
+══════════════════════════════════════ */
+
+let _certs = [];
+
+function _loadCerts(){
+  try{ _certs = JSON.parse(localStorage.getItem(CERT_KEY)||'[]'); }catch(e){ _certs=[]; }
+  if(!_certs.length){
+    _certs = [
+      { id:'c1', name:'AWS Solutions Architect Associate', org:'Amazon Web Services', date:'2023-11' },
+      { id:'c2', name:'Google Professional Cloud Developer', org:'Google Cloud', date:'2023-04' },
+      { id:'c3', name:'Meta React Developer', org:'Meta / Coursera', date:'2022-09' },
+    ];
+  }
+}
+
+function renderCerts(){
+  const el = document.getElementById('certGrid');
+  if(!el) return;
+  const isOwner = document.body.classList.contains('profile-owner');
+  if(!_certs.length){
+    el.innerHTML = isOwner ? '<p style="color:var(--muted);font-size:13px">Aucune certification ajoutée.</p>' : '';
+    return;
+  }
+  el.innerHTML = _certs.map(cert=>{
+    const dateFmt = cert.date ? cert.date.replace('-','/') : '';
+    return `<div class="cert-item">
+      <div class="cert-icon">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" stroke="#fff" stroke-width="1.3" opacity=".7"/><path d="M5.5 9L7.5 11L12.5 6.5" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="cert-info">
+        <div class="cert-name">${_esc(cert.name)}</div>
+        <div class="cert-org">${_esc(cert.org)}</div>
+        ${dateFmt?`<div class="cert-date">${_esc(dateFmt)}</div>`:''}
+      </div>
+      ${isOwner?`<button type="button" class="cert-del" title="Supprimer" onclick="_certDeleteConfirm('${_esc(cert.id)}')">×</button>
+      <button type="button" class="sec-pencil" style="position:absolute;top:8px;right:28px;opacity:0;transition:opacity .2s" title="Modifier" onclick="openCertModal(_certs.find(c=>c.id==='${_esc(cert.id)}'))">
+        <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M7.5 1.5L9.5 3.5L4 9H2V7L7.5 1.5Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
+      </button>`:''}
+    </div>`;
+  }).join('');
+  if(isOwner){
+    el.querySelectorAll('.cert-item').forEach(item=>{
+      item.addEventListener('mouseenter',()=>{ const b=item.querySelector('.sec-pencil'); if(b) b.style.opacity='1'; });
+      item.addEventListener('mouseleave',()=>{ const b=item.querySelector('.sec-pencil'); if(b) b.style.opacity='0'; });
+    });
+  }
+}
+
+function openCertModal(item){
+  document.getElementById('certName').value  = item ? item.name : '';
+  document.getElementById('certOrg').value   = item ? item.org  : '';
+  document.getElementById('certDate').value  = item ? item.date : '';
+  document.getElementById('certEditId').value= item ? item.id   : '';
+  document.getElementById('certModal').classList.add('open');
+  setTimeout(()=>document.getElementById('certName').focus(), 50);
+}
+function closeCertModal(){ document.getElementById('certModal').classList.remove('open'); }
+function saveCert(){
+  const name = document.getElementById('certName').value.trim();
+  if(!name){ _showToast('Le nom de la certification est obligatoire'); return; }
+  const id   = document.getElementById('certEditId').value || ('c'+Date.now());
+  const org  = document.getElementById('certOrg').value.trim();
+  const date = document.getElementById('certDate').value;
+  const idx  = _certs.findIndex(c=>c.id===id);
+  const item = { id, name, org, date };
+  if(idx>=0) _certs[idx]=item;
+  else _certs.push(item);
+  try{ localStorage.setItem(CERT_KEY, JSON.stringify(_certs)); }catch(e){}
+  renderCerts();
+  closeCertModal();
+  _showToast('Certification enregistrée');
+  updateCompletionCard();
+}
+function _certDeleteConfirm(id){
+  openConfirmModal('Supprimer cette certification ?','Cette action est irréversible.',()=>{
+    _certs = _certs.filter(c=>c.id!==id);
+    try{ localStorage.setItem(CERT_KEY, JSON.stringify(_certs)); }catch(e){}
+    renderCerts();
+    updateCompletionCard();
+  });
+}
+
+/* ══════════════════════════════════════
+   CONFIRM MODAL (générique)
+══════════════════════════════════════ */
+
+let _confirmCb = null;
+function openConfirmModal(title, text, cb){
+  document.getElementById('confirmTitle').textContent = title || 'Supprimer ?';
+  document.getElementById('confirmText').textContent  = text  || '';
+  _confirmCb = cb;
+  document.getElementById('confirmModal').classList.add('open');
+}
+function closeConfirmModal(){
+  document.getElementById('confirmModal').classList.remove('open');
+  _confirmCb = null;
+}
+document.getElementById('confirmOkBtn').addEventListener('click',()=>{
+  if(typeof _confirmCb === 'function') _confirmCb();
+  closeConfirmModal();
+});
+
+/* ══════════════════════════════════════
+   COMPLETION CARD
+══════════════════════════════════════ */
+
+function updateCompletionCard(){
+  const labels = [
+    ['Photo de profil',         false],
+    ['Nom et titre',            !!(document.getElementById('profileName')?.textContent.trim() && document.getElementById('profileTitle')?.textContent.trim())],
+    ['Compétences',             document.querySelectorAll('#skillsWrap .skill-tag').length > 0],
+    ['Portfolio (≥ 1 projet)',  _portfolioItems.length > 0],
+    ['Expériences',             _experiences.length > 0],
+    ['Certifications',          _certs.length > 0],
+  ];
+  const done = labels.filter(l=>l[1]).length;
+  const pct  = Math.round(done / labels.length * 100);
+  const bar  = document.getElementById('complBar');
+  const pctEl= document.getElementById('complPct');
+  if(bar)   bar.style.width = pct + '%';
+  if(pctEl) pctEl.textContent = pct + '%';
+  const items = document.getElementById('complItems');
+  if(items){
+    items.innerHTML = labels.map(([lbl,ok])=>`
+      <div class="compl-item">
+        <div class="compl-dot ${ok?'done':'todo'}">${ok?'✓':'·'}</div>
+        <span style="${ok?'color:var(--navy2)':'color:var(--muted)'}">${_esc(lbl)}</span>
+      </div>`).join('');
+  }
+}
+
+/* ══════════════════════════════════════
+   CLOSE MODALS — overlay click / Esc
+══════════════════════════════════════ */
+
+['portDetailModal','portEditModal','expModal','certModal','identityModal','confirmModal','svcPreviewModal','svcModal','langModal'].forEach(id=>{
+  const el = document.getElementById(id);
+  if(el) el.addEventListener('click', e=>{ if(e.target===el) el.classList.remove('open'); });
+});
+
+document.addEventListener('keydown', e=>{
+  if(e.key !== 'Escape') return;
+  ['portDetailModal','portEditModal','expModal','certModal','identityModal','svcPreviewModal','svcModal','langModal'].forEach(id=>{
+    document.getElementById(id)?.classList.remove('open');
+  });
+  closeConfirmModal();
+});
+
+/* ══════════════════════════════════════
+   INIT
+══════════════════════════════════════ */
+
+function initProfilePage(){
+  /* Restore availability */
+  try{
+    const saved = localStorage.getItem(AVAIL_KEY);
+    if(saved) setAvailability(saved);
+  }catch(e){}
+
+  /* Portfolio */
+  _loadPortfolio();
+  _portShown = PORT_PAGE;
+  renderPortfolio(_portShown);
+
+  /* Experiences */
+  _loadExperiences();
+  renderExperiences();
+
+  /* Certifications */
+  _loadCerts();
+  renderCerts();
+
+  /* Pending services from create-service flow */
+  _injectPendingServices();
+
+  /* Services counter */
+  renderSvcCounter();
+
+  /* Completion */
+  updateCompletionCard();
+}
+
+document.addEventListener('DOMContentLoaded', initProfilePage);
 </script>
   <script type="module" src="/src/scripts/main.js"></script>
 <script>
@@ -1421,6 +3055,112 @@ document.querySelectorAll('.share-btn').forEach(btn=>{
   btn.addEventListener('click',sub);
   inp.addEventListener('keydown',function(e){if(e.key==='Enter')sub();});
 })();
+</script>
+
+<script type="module">
+// ── Avis Supabase + localStorage ──────────────────────────────────────────────
+import { supabase } from '/src/shared/supabase.js'
+
+const FREELANCE_UUID = 'b2c3d4e5-0002-0002-0002-000000000002'
+const STAR_SVG = n => Array.from({length:5},(_,i)=>
+  `<svg width="12" height="12" viewBox="0 0 12 12" fill="${i<n?'#F59E0B':'none'}" stroke="#F59E0B" stroke-width="1.3"><path d="M6 1L7.3 4.2H11L8.2 6.2L9.2 10L6 7.8L2.8 10L3.8 6.2L1 4.2H4.7Z"/></svg>`
+).join('')
+
+function _timeAgo(iso) {
+  const d = Date.now() - new Date(iso).getTime()
+  const min = Math.floor(d/60000), h = Math.floor(d/3600000), day = Math.floor(d/86400000)
+  if (day > 30) return new Date(iso).toLocaleDateString('fr-FR',{day:'numeric',month:'short',year:'numeric'})
+  if (day > 0) return `Il y a ${day} jour${day>1?'s':''}`
+  if (h > 0)   return `Il y a ${h}h`
+  if (min > 0) return `Il y a ${min} min`
+  return 'À l\'instant'
+}
+
+function _insertReviewItem(container, rv, prepend = true) {
+  const initials = (rv.reviewerName||'').split(' ').map(w=>w[0]||'').join('').toUpperCase().slice(0,2) || '?'
+  const colors = ['linear-gradient(135deg,#3CB878,#8DC63F)','linear-gradient(135deg,#29ABE2,#7DD6F0)','linear-gradient(135deg,#F59E0B,#FCD34D)','linear-gradient(135deg,#EF4444,#FCA5A5)']
+  const color = colors[initials.charCodeAt(0) % colors.length]
+  const el = document.createElement('div')
+  el.className = 'review-item'
+  el.innerHTML = `
+    <div class="ri-top">
+      <div class="ri-author">
+        <div class="ri-av" style="background:${color};color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800">${initials}</div>
+        <div>
+          <div class="ri-name">${rv.reviewerName||'Client Oriupe'}</div>
+          <div class="ri-loc">🌍 Client vérifié</div>
+        </div>
+      </div>
+      <div class="ri-date">${_timeAgo(rv.createdAt||rv.created_at||new Date().toISOString())}</div>
+    </div>
+    <div class="ri-stars">${STAR_SVG(rv.rating)}</div>
+    ${rv.comment ? `<div class="ri-text">${rv.comment.replace(/</g,'&lt;')}</div>` : ''}
+  `
+  if (prepend && container.firstChild) container.insertBefore(el, container.firstChild)
+  else container.appendChild(el)
+}
+
+async function loadReviews() {
+  // Cherche le conteneur des avis (après .rating-summary)
+  const ratingSummary = document.querySelector('.rating-summary')
+  if (!ratingSummary) return
+  const container = ratingSummary.parentElement
+
+  // 1. Avis en localStorage (soumis dans la session courante)
+  try {
+    const pending = JSON.parse(localStorage.getItem('oriupe_pending_reviews') || '[]')
+    pending.forEach(rv => _insertReviewItem(container, rv, true))
+  } catch {}
+
+  // 2. Avis depuis Supabase
+  if (!supabase) return
+  try {
+    const { data: rows } = await supabase
+      .from('reviews')
+      .select('id, rating, comment, created_at, reviewer_id')
+      .eq('reviewed_id', FREELANCE_UUID)
+      .eq('is_public', true)
+      .order('created_at', { ascending: false })
+      .limit(10)
+
+    if (!rows?.length) return
+
+    // Récupère les profils des reviewers
+    const reviewerIds = [...new Set(rows.map(r => r.reviewer_id))]
+    const { data: profiles } = await supabase
+      .from('profiles')
+      .select('id, first_name, last_name')
+      .in('id', reviewerIds)
+
+    const profileMap = Object.fromEntries((profiles||[]).map(p=>[p.id, `${p.first_name||''} ${p.last_name||''}`.trim()]))
+
+    rows.forEach(rv => {
+      _insertReviewItem(container, {
+        ...rv,
+        reviewerName: profileMap[rv.reviewer_id] || 'Client Oriupe',
+        createdAt: rv.created_at,
+      }, true)
+    })
+
+    // Met à jour la note globale si on a des données
+    const { data: agg } = await supabase
+      .from('freelance_rating')
+      .select('avg_rating, review_count')
+      .eq('freelance_id', FREELANCE_UUID)
+      .maybeSingle()
+
+    if (agg?.avg_rating) {
+      const bigNum = document.querySelector('.rating-big-num')
+      const countTxt = document.querySelector('.rating-count-txt')
+      if (bigNum) bigNum.textContent = Number(agg.avg_rating).toFixed(1).replace('.',',')
+      if (countTxt) countTxt.textContent = `Note sur 5 · ${agg.review_count} avis vérifiés`
+    }
+  } catch (e) {
+    console.warn('[Oriupe] load reviews:', e.message)
+  }
+}
+
+document.addEventListener('DOMContentLoaded', loadReviews)
 </script>
 </body>
 </html>

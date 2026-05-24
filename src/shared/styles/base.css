@@ -43,6 +43,12 @@
   --border:  rgba(27,58,74,.10);
   --border2: rgba(27,58,74,.06);
 
+  /* Amber foncé (contraste sur fonds clairs) */
+  --gold-d:  #D97706;
+
+  /* Hauteur de navigation unifiée */
+  --nav-h:   68px;
+
   /* Texte atténué */
   --muted:   rgba(27,58,74,.52);
   --muted2:  rgba(27,58,74,.32);
@@ -90,6 +96,7 @@ body {
   color: var(--navy2);
   background: var(--white);
   line-height: 1.6;
+  overflow-x: hidden;
 }
 
 a {
@@ -100,6 +107,16 @@ a {
 button, input, select, textarea {
   font-family: inherit;
   cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
 }
 
 img, svg {
@@ -429,12 +446,13 @@ nav.at-top .hamburger span { background: #fff; }
   display: inline-flex; align-items: center; gap: 5px;
   font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px;
 }
-.badge-top  { background: linear-gradient(135deg,#FFF7E6,#FEF3C7); color: #B45309; }
-.badge-hot  { background: linear-gradient(135deg,#FFF1F1,#FFE4E4); color: #DC2626; }
-.badge-new  { background: linear-gradient(135deg,#F0FBF5,#E4F7EE); color: var(--green-d); }
-.badge-exp  { background: linear-gradient(135deg,#EEF2FF,#E0E7FF); color: #3730A3; }
+/* Badges solides avec gradient — cohérents sur toutes les pages */
+.badge-top  { background: linear-gradient(135deg,var(--green),var(--lime)); color: #fff; box-shadow: 0 2px 8px rgba(60,184,120,.3); }
+.badge-hot  { background: linear-gradient(135deg,#FF6B35,#F7C59F); color: #fff; }
+.badge-new  { background: linear-gradient(135deg,var(--blue),#7DD6F0); color: #fff; }
+.badge-exp  { background: linear-gradient(135deg,var(--lime),#C5E17A); color: #2D5016; }
 .badge-blue { background: var(--blue-l); color: var(--blue-d); }
-.badge-gold { background: #FEF3C7; color: #B45309; }
+.badge-gold { background: linear-gradient(135deg,var(--gold),#FBBF24); color: #fff; box-shadow: 0 2px 8px rgba(245,158,11,.3); }
 
 /* ── 9. CARDS ───────────────────────────────────────────────────────────────── */
 .card {
@@ -684,3 +702,182 @@ nav.at-top .hamburger span { background: #fff; }
   .hero-ctas { flex-direction: column; }
   .btn-cta-green, .btn-cta-white, .btn-outline { width: 100%; justify-content: center; }
 }
+
+/* ── 15. SYSTÈME TOAST ───────────────────────────────────────────────────────── */
+#toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.toast {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px 16px;
+  min-width: 300px;
+  max-width: 400px;
+  box-shadow: 0 8px 32px rgba(15,37,53,.14), 0 2px 8px rgba(15,37,53,.08);
+  pointer-events: all;
+  animation: toastIn .32s cubic-bezier(.34,1.56,.64,1) both;
+  position: relative;
+  overflow: hidden;
+}
+
+.toast.toast-leaving {
+  animation: toastOut .25s var(--ease) both;
+}
+
+@keyframes toastIn  { from { opacity: 0; transform: translateX(40px) scale(.94); } to { opacity: 1; transform: none; } }
+@keyframes toastOut { to   { opacity: 0; transform: translateX(40px) scale(.94); } }
+
+.toast::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 4px;
+  border-radius: 14px 0 0 14px;
+}
+
+.toast.toast-success::before { background: var(--green); }
+.toast.toast-error::before   { background: var(--red); }
+.toast.toast-warning::before { background: var(--gold); }
+.toast.toast-info::before    { background: var(--blue); }
+
+.toast-icon {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+.toast-success .toast-icon { background: var(--green-l); color: var(--green-d); }
+.toast-error   .toast-icon { background: var(--red-l);   color: var(--red); }
+.toast-warning .toast-icon { background: var(--gold-l);  color: var(--gold-d); }
+.toast-info    .toast-icon { background: var(--blue-l);  color: var(--blue-d); }
+
+.toast-body { flex: 1; min-width: 0; }
+.toast-title { font-size: 13px; font-weight: 700; color: var(--navy2); margin-bottom: 2px; }
+.toast-msg   { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+.toast-close {
+  width: 24px; height: 24px;
+  border: none; background: transparent;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: var(--muted2);
+  transition: background .15s, color .15s;
+  flex-shrink: 0; padding: 0;
+  font-size: 16px; line-height: 1;
+}
+.toast-close:hover { background: var(--bg2); color: var(--navy2); }
+
+.toast-progress {
+  position: absolute;
+  bottom: 0; left: 0;
+  height: 2px;
+  background: currentColor;
+  opacity: .25;
+  border-radius: 0 0 14px 14px;
+  animation: toastProgress linear both;
+}
+.toast-success .toast-progress { color: var(--green); }
+.toast-error   .toast-progress { color: var(--red); }
+.toast-warning .toast-progress { color: var(--gold); }
+.toast-info    .toast-progress { color: var(--blue); }
+
+@keyframes toastProgress { from { width: 100%; } to { width: 0%; } }
+
+@media (max-width: 480px) {
+  #toast-container { left: 16px; right: 16px; bottom: 16px; }
+  .toast { min-width: unset; max-width: 100%; }
+}
+
+/* ── 16. SKELETON LOADERS ────────────────────────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -600px 0; }
+  100% { background-position:  600px 0; }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, var(--bg2) 25%, var(--bg) 50%, var(--bg2) 75%);
+  background-size: 600px 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+  border-radius: 6px;
+  color: transparent !important;
+  pointer-events: none;
+  user-select: none;
+}
+
+.skeleton-text  { height: 14px; border-radius: 4px; }
+.skeleton-title { height: 22px; border-radius: 6px; }
+.skeleton-h1    { height: 32px; border-radius: 8px; }
+.skeleton-avatar { border-radius: 50% !important; }
+.skeleton-thumb  { border-radius: 12px !important; }
+.skeleton-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.svc-card-skeleton .svc-img-sk {
+  height: 148px;
+  width: 100%;
+}
+.svc-card-skeleton .svc-body-sk {
+  padding: 14px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+
+/* ── 17. EMPTY STATES ────────────────────────────────────────────────────────── */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 56px 24px;
+  gap: 12px;
+}
+
+.empty-state-icon {
+  width: 72px; height: 72px;
+  border-radius: 20px;
+  background: var(--bg2);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 4px;
+  color: var(--muted2);
+}
+
+.empty-state-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 16px; font-weight: 800;
+  color: var(--navy2);
+}
+
+.empty-state-desc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.65;
+  max-width: 280px;
+}
+
+.empty-state-cta {
+  margin-top: 8px;
+  display: inline-flex; align-items: center; gap: 7px;
+  background: var(--green); color: #fff;
+  font-size: 13px; font-weight: 700;
+  padding: 10px 22px; border-radius: 10px; border: none;
+  cursor: pointer; transition: all .2s var(--spring);
+  box-shadow: 0 3px 12px rgba(60,184,120,.28);
+}
+.empty-state-cta:hover { background: var(--green-d); transform: translateY(-1px); box-shadow: var(--shadow-green); }

@@ -15,6 +15,7 @@
   <meta name="twitter:image" content="https://oriupe.com/og-dashboard.png"/>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="/src/shared/styles/base.css"/>
+  <script src="/src/shared/oriupe-session.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-font-smoothing:antialiased}
@@ -33,14 +34,14 @@ button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:p
 .sb-user{padding:16px 20px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:11px}
 .sb-av{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--lime));display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0}
 .sb-name{font-size:13px;font-weight:700;color:#fff;line-height:1.3}
-.sb-role{font-size:10px;color:rgba(255,255,255,.4)}
+.sb-role{font-size:11px;color:rgba(255,255,255,.4)}
 .sb-nav{flex:1;padding:10px 0}
-.sb-grp{font-size:9px;font-weight:700;color:rgba(255,255,255,.22);letter-spacing:1.4px;padding:12px 20px 5px}
+.sb-grp{font-size:11px;font-weight:700;color:rgba(255,255,255,.22);letter-spacing:1.4px;padding:12px 20px 5px}
 .sb-item{display:flex;align-items:center;gap:11px;padding:10px 20px;font-size:13px;font-weight:500;color:rgba(255,255,255,.5);cursor:pointer;transition:all .15s;position:relative}
 .sb-item:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.85)}
-.sb-item.active{background:rgba(41,171,226,.15);color:var(--blue);font-weight:700}
-.sb-item.active::before{content:'';position:absolute;left:0;top:20%;height:60%;width:3px;background:var(--blue);border-radius:0 3px 3px 0}
-.sb-badge{margin-left:auto;background:var(--blue);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px}
+.sb-item.active{background:rgba(60,184,120,.13);color:#fff;font-weight:700}
+.sb-item.active::before{content:'';position:absolute;left:0;top:20%;height:60%;width:3px;background:var(--green);border-radius:0 3px 3px 0}
+.sb-badge{margin-left:auto;background:var(--blue);color:#fff;font-size:11px;font-weight:700;padding:2px 7px;border-radius:10px}
 .sb-badge.green{background:var(--green)}
 .sb-bottom{padding:16px 20px;border-top:1px solid rgba(255,255,255,.07)}
 .sb-switch{font-size:12px;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:8px;padding:10px 12px;background:rgba(255,255,255,.05);border-radius:9px;cursor:pointer;transition:background .2s}
@@ -94,7 +95,7 @@ button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:p
 .escrow-icon{width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:20px}
 .escrow-brand-text{}
 .escrow-title{font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;color:#fff;letter-spacing:.5px}
-.escrow-subtitle{font-size:10px;color:rgba(255,255,255,.35);font-weight:600;letter-spacing:1px;margin-top:2px}
+.escrow-subtitle{font-size:11px;color:rgba(255,255,255,.35);font-weight:600;letter-spacing:1px;margin-top:2px}
 .escrow-code-wrap{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:9px;padding:8px 12px;cursor:pointer;transition:background .2s;flex-shrink:0}
 .escrow-code-wrap:hover{background:rgba(255,255,255,.12)}
 .escrow-code{font-family:'Courier New',Courier,monospace;font-size:12px;font-weight:700;color:rgba(255,255,255,.9);letter-spacing:.5px}
@@ -107,7 +108,7 @@ button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:p
 .escrow-amounts{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.07);border-radius:14px;overflow:hidden;margin-bottom:20px;position:relative;z-index:1}
 .amount-cell{padding:16px 18px;background:rgba(255,255,255,.04)}
 .amount-cell:hover{background:rgba(255,255,255,.07)}
-.amount-lbl{font-size:10px;font-weight:600;color:rgba(255,255,255,.4);letter-spacing:.5px;margin-bottom:6px;text-transform:uppercase}
+.amount-lbl{font-size:11px;font-weight:600;color:rgba(255,255,255,.4);letter-spacing:.5px;margin-bottom:6px;text-transform:uppercase}
 .amount-val{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:-.5px}
 .amount-val.green-val{color:#6EE7B7}
 .amount-val.blue-val{color:#7DD3FC}
@@ -125,17 +126,17 @@ button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:p
 .tl-dot.done{background:var(--green);box-shadow:0 0 0 4px rgba(60,184,120,.2);color:#fff}
 .tl-dot.active{background:rgba(41,171,226,.15);border:2px solid var(--blue);color:var(--blue);box-shadow:0 0 0 4px rgba(41,171,226,.15)}
 .tl-dot.pending{background:rgba(255,255,255,.07);border:2px solid rgba(255,255,255,.15);color:rgba(255,255,255,.25)}
-.tl-label{font-size:10px;font-weight:600;color:rgba(255,255,255,.5);margin-top:8px;text-align:center;line-height:1.4;max-width:72px}
+.tl-label{font-size:11px;font-weight:600;color:rgba(255,255,255,.5);margin-top:8px;text-align:center;line-height:1.4;max-width:72px}
 .tl-label.done-lbl{color:rgba(60,184,120,.8)}
 .tl-label.active-lbl{color:rgba(41,171,226,.9)}
-.tl-time{font-size:9px;color:rgba(255,255,255,.3);text-align:center;margin-top:3px}
+.tl-time{font-size:11px;color:rgba(255,255,255,.3);text-align:center;margin-top:3px}
 
 /* ── MESSAGING ── */
 .messaging-card{background:#fff;border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:var(--shadow)}
 .msg-header{padding:18px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
 .msg-header-left{display:flex;align-items:center;gap:10px}
 .msg-header-title{font-size:14px;font-weight:700;color:var(--navy2)}
-.msg-secure-badge{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:700;color:var(--green-d);background:var(--green-l);border-radius:20px;padding:3px 9px}
+.msg-secure-badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--green-d);background:var(--green-l);border-radius:20px;padding:3px 9px}
 .msg-list{height:340px;overflow-y:auto;padding:20px 24px;display:flex;flex-direction:column;gap:16px}
 .msg-list::-webkit-scrollbar{width:3px}.msg-list::-webkit-scrollbar-thumb{background:var(--bg2);border-radius:2px}
 .msg-row{display:flex;align-items:flex-end;gap:10px}
@@ -146,27 +147,27 @@ button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:p
 .msg-bubble{padding:11px 15px;border-radius:14px;font-size:13px;line-height:1.6;color:var(--navy2)}
 .msg-row.recv .msg-bubble{background:var(--bg);border-radius:14px 14px 14px 4px}
 .msg-row.sent .msg-bubble{background:var(--navy2);color:#fff;border-radius:14px 14px 4px 14px}
-.msg-sender{font-size:10px;font-weight:700;color:var(--muted);margin-bottom:2px}
-.msg-time{font-size:10px;color:var(--muted2)}
+.msg-sender{font-size:11px;font-weight:700;color:var(--muted);margin-bottom:2px}
+.msg-time{font-size:11px;color:var(--muted2)}
 .msg-input-area{padding:16px 24px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:10px}
 .msg-input-row{display:flex;align-items:flex-end;gap:10px}
 .msg-textarea{flex:1;background:var(--bg);border:1.5px solid var(--border);border-radius:12px;padding:11px 14px;font-size:13px;color:var(--navy2);outline:none;resize:none;min-height:44px;max-height:120px;transition:border-color .2s;font-family:'Plus Jakarta Sans',sans-serif;line-height:1.5}
 .msg-textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(41,171,226,.08)}
 .msg-actions{display:flex;align-items:center;gap:8px}
-.msg-action-btn{width:38px;height:38px;border:1.5px solid var(--border);border-radius:9px;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;flex-shrink:0;font-size:15px}
+.msg-action-btn{width:38px;height:38px;border:1.5px solid var(--border);border-radius:12px;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;flex-shrink:0;font-size:15px}
 .msg-action-btn:hover{border-color:var(--blue);background:var(--blue-l)}
-.msg-send-btn{height:38px;background:var(--blue);border:none;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s var(--spring);padding:0 16px;gap:7px;color:#fff;font-size:13px;font-weight:700;white-space:nowrap}
+.msg-send-btn{height:38px;background:var(--blue);border:none;border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s var(--spring);padding:0 16px;gap:7px;color:#fff;font-size:13px;font-weight:700;white-space:nowrap}
 .msg-send-btn:hover{background:var(--blue-d);transform:translateY(-1px)}
 
 /* ── RIGHT COLUMN CARDS ── */
 .action-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:22px;box-shadow:var(--shadow)}
 .action-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
 .action-card-title{font-size:13px;font-weight:700;color:var(--navy2)}
-.btn-green-big{width:100%;background:var(--green);color:#fff;border:none;border-radius:11px;padding:14px 20px;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:9px;cursor:pointer;transition:all .2s var(--spring);box-shadow:0 4px 16px rgba(60,184,120,.3);font-family:'Plus Jakarta Sans',sans-serif;margin-bottom:10px}
+.btn-green-big{width:100%;background:var(--green);color:#fff;border:none;border-radius:12px;padding:14px 20px;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:9px;cursor:pointer;transition:all .2s var(--spring);box-shadow:0 4px 16px rgba(60,184,120,.3);font-family:'Plus Jakarta Sans',sans-serif;margin-bottom:10px}
 .btn-green-big:hover{background:var(--green-d);transform:translateY(-2px);box-shadow:0 8px 24px rgba(60,184,120,.35)}
-.btn-orange-big{width:100%;background:#EA580C;color:#fff;border:none;border-radius:11px;padding:14px 20px;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:9px;cursor:pointer;transition:all .2s var(--spring);box-shadow:0 4px 16px rgba(234,88,12,.3);font-family:'Plus Jakarta Sans',sans-serif;margin-bottom:10px}
+.btn-orange-big{width:100%;background:#EA580C;color:#fff;border:none;border-radius:12px;padding:14px 20px;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:9px;cursor:pointer;transition:all .2s var(--spring);box-shadow:0 4px 16px rgba(234,88,12,.3);font-family:'Plus Jakarta Sans',sans-serif;margin-bottom:10px}
 .btn-orange-big:hover{background:#C2410C;transform:translateY(-2px)}
-.btn-ghost{width:100%;background:transparent;color:var(--muted);border:1.5px solid var(--border);border-radius:9px;padding:10px;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif}
+.btn-ghost{width:100%;background:transparent;color:var(--muted);border:1.5px solid var(--border);border-radius:12px;padding:10px;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif}
 .btn-ghost:hover{border-color:var(--blue);color:var(--blue)}
 .action-note{font-size:11px;color:var(--muted);text-align:center;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:5px}
 
@@ -174,20 +175,20 @@ button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:p
 .files-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:20px;box-shadow:var(--shadow)}
 .file-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border2)}
 .file-item:last-of-type{border-bottom:none;margin-bottom:4px}
-.file-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex-shrink:0;letter-spacing:.3px}
+.file-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0;letter-spacing:.3px}
 .file-icon.pdf{background:#FEE2E2;color:#B91C1C}
 .file-icon.ai{background:#FEF3C7;color:#92400E}
 .file-icon.zip{background:var(--blue-l);color:var(--blue-d)}
 .file-icon.img{background:var(--green-l);color:var(--green-d)}
 .file-info{flex:1;min-width:0}
 .file-name{font-size:12px;font-weight:700;color:var(--navy2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.file-meta{font-size:10px;color:var(--muted);margin-top:2px}
+.file-meta{font-size:11px;color:var(--muted);margin-top:2px}
 .file-dl{width:28px;height:28px;border:1.5px solid var(--border);border-radius:7px;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;flex-shrink:0}
 .file-dl:hover{border-color:var(--blue);background:var(--blue-l)}
 .upload-zone{border:2px dashed rgba(27,58,74,.15);border-radius:10px;padding:16px;text-align:center;cursor:pointer;transition:all .2s;margin-top:4px}
 .upload-zone:hover{border-color:var(--blue);background:var(--blue-l)}
 .upload-zone-text{font-size:12px;color:var(--muted);font-weight:600}
-.upload-zone-sub{font-size:10px;color:var(--muted2);margin-top:3px}
+.upload-zone-sub{font-size:11px;color:var(--muted2);margin-top:3px}
 
 /* ── ORDER DETAILS CARD ── */
 .detail-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:20px;box-shadow:var(--shadow)}
@@ -203,7 +204,7 @@ button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:p
 .user-mini-av{width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,var(--blue),#7DD6F0);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800;color:#fff}
 
 /* ── DISPUTE CARD ── */
-.dispute-btn{width:100%;background:transparent;color:#DC2626;border:1.5px solid rgba(220,38,38,.25);border-radius:9px;padding:10px;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:6px}
+.dispute-btn{width:100%;background:transparent;color:#DC2626;border:1.5px solid rgba(220,38,38,.25);border-radius:12px;padding:10px;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:6px}
 .dispute-btn:hover{background:#FEE2E2;border-color:#DC2626}
 
 /* ── TOAST ── */
@@ -227,14 +228,10 @@ button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:p
 <!-- ██ SIDEBAR ██ -->
 <aside class="sidebar">
   <div class="sb-top">
-    <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
-      <circle cx="7.5" cy="7.5" r="6" fill="#8DC63F" opacity=".9"/>
-      <circle cx="18.5" cy="7.5" r="6" fill="#29ABE2" opacity=".9"/>
-      <circle cx="7.5" cy="18.5" r="6" fill="#3CB878" opacity=".9"/>
-      <circle cx="18.5" cy="18.5" r="6" fill="rgba(255,255,255,.1)"/>
-      <rect x="7" y="7" width="12" height="12" rx="1" fill="rgba(60,184,120,.4)"/>
-    </svg>
-    <span class="sb-logo-t">Oriupe</span>
+    <a href="/src/pages/home/index.html" aria-label="Oriupe — Retour à l'accueil" style="display:flex;align-items:center;gap:10px;text-decoration:none;transition:opacity .2s,transform .28s cubic-bezier(.34,1.56,.64,1)" onmouseover="this.style.opacity='.82';this.style.transform='scale(1.04)'" onmouseout="this.style.opacity='1';this.style.transform='scale(1)'">
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" role="img" aria-label="Logo Oriupe"><circle cx="10" cy="10" r="8.5" fill="#8DC63F" opacity=".9"/><circle cx="22" cy="10" r="8.5" fill="#29ABE2" opacity=".9"/><circle cx="10" cy="22" r="8.5" fill="#3CB878" opacity=".9"/><circle cx="22" cy="22" r="8.5" fill="rgba(255,255,255,.1)"/><rect x="9.5" y="9.5" width="13" height="13" rx="1.5" fill="rgba(60,184,120,.45)"/></svg>
+      <span class="sb-logo-t">Oriupe</span>
+    </a>
   </div>
   <div class="sb-user" id="sbUserBlock">
     <div class="sb-av" id="sbAvatar">KA</div>
@@ -351,13 +348,13 @@ button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:p
               <div style="font-size:11px;color:rgba(255,255,255,.35);margin-top:3px;font-weight:600">FCFA</div>
             </div>
             <div class="amount-cell">
-              <div class="amount-lbl">Commission Oriupe 12%</div>
-              <div class="amount-val blue-val">7 800</div>
+              <div class="amount-lbl">Commission Oriupe 15%</div>
+              <div class="amount-val blue-val">9 750</div>
               <div style="font-size:11px;color:rgba(125,211,252,.3);margin-top:3px;font-weight:600">FCFA</div>
             </div>
             <div class="amount-cell">
               <div class="amount-lbl">Net freelance</div>
-              <div class="amount-val green-val">57 200</div>
+              <div class="amount-val green-val">55 250</div>
               <div style="font-size:11px;color:rgba(110,231,183,.3);margin-top:3px;font-weight:600">FCFA</div>
             </div>
           </div>
@@ -463,10 +460,10 @@ button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:p
                 <div class="msg-bubble">
                   Compris ! Voici la première proposition (3 directions créatives). Dites-moi laquelle vous correspond le mieux.
                   <div style="display:flex;align-items:center;gap:9px;background:rgba(255,255,255,.1);border-radius:9px;padding:9px 12px;margin-top:10px;cursor:pointer">
-                    <div style="width:28px;height:28px;border-radius:7px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:rgba(255,255,255,.8)">AI</div>
+                    <div style="width:28px;height:28px;border-radius:7px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:rgba(255,255,255,.8)">AI</div>
                     <div>
                       <div style="font-size:12px;font-weight:700;color:rgba(255,255,255,.9)">logo_v1.ai</div>
-                      <div style="font-size:10px;color:rgba(255,255,255,.5)">15.8 Mo · Illustrator</div>
+                      <div style="font-size:11px;color:rgba(255,255,255,.5)">15.8 Mo · Illustrator</div>
                     </div>
                   </div>
                 </div>
@@ -495,7 +492,7 @@ button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:p
               <div style="display:flex;gap:8px">
                 <button class="msg-action-btn" title="Appel audio" onclick="showToast('📞 Appel audio en cours de lancement…')">📞</button>
                 <button class="msg-action-btn" title="Appel vidéo" onclick="showToast('📹 Appel vidéo en cours de lancement…')">📹</button>
-                <span style="font-size:10px;color:var(--muted2);align-self:center;padding-left:4px">Conversations chiffrées</span>
+                <span style="font-size:11px;color:var(--muted2);align-self:center;padding-left:4px">Conversations chiffrées</span>
               </div>
               <button class="msg-send-btn" onclick="sendMessage()">
                 <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M1 6.5L12 1L6.5 12L5.5 7L1 6.5Z" fill="#fff"/></svg>
@@ -643,7 +640,7 @@ button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:p
           </div>
           <div class="detail-row">
             <span class="detail-lbl">Délai</span>
-            <span class="detail-val" style="color:#92400E">31 jan 2025 <span style="font-size:10px;background:#FEF3C7;padding:2px 6px;border-radius:5px">J-3</span></span>
+            <span class="detail-val" style="color:#92400E">31 jan 2025 <span style="font-size:11px;background:#FEF3C7;padding:2px 6px;border-radius:5px">J-3</span></span>
           </div>
           <div class="detail-row">
             <span class="detail-lbl">Révisions</span>
@@ -810,6 +807,8 @@ function escapeHtml(str) {
 
 /* ── MARK DELIVERED ── */
 function markDelivered() {
+  const btn = event.currentTarget;
+  if (btn) { btn.disabled = true; btn.textContent = 'Livraison en cours…'; }
   showToast('✅ Livraison marquée ! Le client est notifié.');
   // Update escrow status badge
   document.querySelector('.escrow-status-badge').innerHTML = `
@@ -833,7 +832,59 @@ function markDelivered() {
 
 /* ── DISPUTE ── */
 function openDisputeFlow() {
-  showToast('⚠️ Ouverture du formulaire de litige… Votre dossier sera traité sous 24h.');
+  if (document.getElementById('disputeModal')) return;
+  const overlay = document.createElement('div');
+  overlay.id = 'disputeModal';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px';
+  overlay.innerHTML = `
+    <div style="background:var(--surface,#1a2235);border:1px solid var(--border,rgba(255,255,255,.08));border-radius:16px;padding:28px;width:100%;max-width:440px;box-shadow:0 24px 64px rgba(0,0,0,.5)">
+      <div style="font-size:16px;font-weight:700;color:var(--navy2,#fff);margin-bottom:6px">Ouvrir un litige</div>
+      <div style="font-size:12px;color:var(--muted,#8fa0b8);margin-bottom:20px">Votre dossier sera traité sous 24 heures ouvrées.</div>
+      <div style="margin-bottom:14px">
+        <label style="font-size:12px;font-weight:600;color:var(--navy2,#fff);display:block;margin-bottom:6px">Motif <span style="color:#DC2626">*</span></label>
+        <select id="disputeReason" style="width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--border,rgba(255,255,255,.1));background:var(--bg,#111827);color:var(--navy2,#fff);font-size:13px;font-family:inherit">
+          <option value="">Sélectionner...</option>
+          <option value="non_livraison">Non-livraison</option>
+          <option value="qualite_insuffisante">Qualité insuffisante</option>
+          <option value="non_respect_brief">Non-respect du brief</option>
+          <option value="delai_depasse">Délai non respecté</option>
+          <option value="autre">Autre</option>
+        </select>
+      </div>
+      <div style="margin-bottom:20px">
+        <label style="font-size:12px;font-weight:600;color:var(--navy2,#fff);display:block;margin-bottom:6px">Description <span style="color:#DC2626">*</span></label>
+        <textarea id="disputeDesc" rows="4" placeholder="Décrivez précisément le problème rencontré…" style="width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--border,rgba(255,255,255,.1));background:var(--bg,#111827);color:var(--navy2,#fff);font-size:13px;font-family:inherit;resize:vertical;box-sizing:border-box"></textarea>
+      </div>
+      <div style="display:flex;gap:10px">
+        <button id="disputeCancel" style="flex:1;padding:10px;border-radius:10px;border:1px solid var(--border,rgba(255,255,255,.15));background:transparent;color:var(--muted,#8fa0b8);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">Annuler</button>
+        <button id="disputeSubmit" style="flex:2;padding:10px;border-radius:10px;border:none;background:#DC2626;color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">Soumettre le litige</button>
+      </div>
+      <div id="disputeErr" style="display:none;font-size:12px;color:#DC2626;margin-top:10px"></div>
+    </div>`;
+  document.body.appendChild(overlay);
+  document.getElementById('disputeCancel').onclick = () => overlay.remove();
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
+  document.getElementById('disputeSubmit').onclick = async () => {
+    const reason = document.getElementById('disputeReason').value;
+    const desc   = document.getElementById('disputeDesc').value.trim();
+    const errEl  = document.getElementById('disputeErr');
+    if (!reason) { errEl.textContent = 'Veuillez sélectionner un motif.'; errEl.style.display = 'block'; return; }
+    if (desc.length < 20) { errEl.textContent = 'Description trop courte (min. 20 caractères).'; errEl.style.display = 'block'; return; }
+    errEl.style.display = 'none';
+    const submitBtn = document.getElementById('disputeSubmit');
+    submitBtn.disabled = true; submitBtn.textContent = 'Envoi en cours…';
+    try {
+      if (window._openDispute) {
+        const params = new URLSearchParams(window.location.search);
+        await window._openDispute(params.get('order') || 'unknown', { reason, category: reason, evidenceUrls: [] });
+      }
+      overlay.remove();
+      showToast('✅ Litige ouvert — notre équipe vous contactera sous 24h.');
+    } catch (err) {
+      submitBtn.disabled = false; submitBtn.textContent = 'Soumettre le litige';
+      errEl.textContent = 'Erreur lors de l\'envoi. Réessayez.'; errEl.style.display = 'block';
+    }
+  };
 }
 
 /* ── TOAST ── */
@@ -857,9 +908,124 @@ document.getElementById('msgInput').addEventListener('input', function() {
   const list = document.getElementById('msgList');
   list.scrollTop = list.scrollHeight;
 })();
+
+/* ── INIT : auth + session + order dynamique ── */
+(function() {
+  // 1. Protection de route
+  requireAuth(['client', 'freelance', 'admin']);
+
+  const s = getSession();
+  const role = s?.role || 'freelance';
+  const name = (s?.firstName || '') + ' ' + (s?.lastName || '');
+  const initials = ((s?.firstName||'?')[0] + (s?.lastName||'?')[0]).toUpperCase();
+  const avatarBg = role === 'client'
+    ? 'linear-gradient(135deg,var(--blue),#7DD6F0)'
+    : 'linear-gradient(135deg,var(--green),var(--lime))';
+
+  // 2. Sync sidebar user info
+  const sbAv = document.getElementById('sbAvatar');
+  const sbN  = document.getElementById('sbName');
+  const sbR  = document.getElementById('sbRole');
+  const tbAv = document.getElementById('topbarAvatar');
+  if (sbAv) { sbAv.textContent = initials; sbAv.style.background = avatarBg; }
+  if (sbN)  sbN.textContent = name.trim() || 'Utilisateur';
+  if (sbR)  sbR.textContent = role === 'client' ? 'Compte Client' : 'Compte Freelance';
+  if (tbAv) { tbAv.textContent = initials; tbAv.style.background = avatarBg; }
+
+  // 3. Cacher le toggle de vue (inutile en mode réel — on connaît le rôle)
+  const viewToggle = document.querySelector('.view-toggle');
+  if (viewToggle) viewToggle.style.display = 'none';
+
+  // 4. Afficher les bonnes actions selon le rôle
+  setView(role === 'client' ? 'client' : 'freelance');
+
+  // 5. Charger l'ordre depuis URL param + localStorage
+  const params  = new URLSearchParams(window.location.search);
+  const orderId = params.get('order');
+  const convId  = params.get('conv');
+
+  let order = null;
+  try {
+    const convs = JSON.parse(localStorage.getItem('oriupe_pending_convs') || '[]');
+    if (orderId) {
+      const conv = convs.find(c => c.orderId === orderId || c.order?.ref === orderId);
+      order = conv?.order || null;
+    } else if (convId) {
+      const conv = convs.find(c => c.id === convId);
+      order = conv?.order || null;
+    }
+  } catch {}
+
+  if (!order) return; // garde les données demo si pas de param
+
+  // 6. Mettre à jour la topbar
+  const tbTitle = document.querySelector('.tb-order-title');
+  const tbSub   = document.querySelector('.tb-order-sub');
+  if (tbTitle) tbTitle.textContent = order.service || 'Commande';
+  if (tbSub)   tbSub.textContent   = (order.ref || orderId || '') + ' · Escrow actif';
+
+  // 7. Mettre à jour le code escrow
+  const codeEl = document.getElementById('escrowCode');
+  if (codeEl) codeEl.textContent = 'ORU-ESC-' + (order.ref||'').replace('#','');
+
+  // 8. Montants
+  const fmt = n => Number(n).toLocaleString('fr-FR').replace(/ |\xa0/g, ' ');
+  const amountCells = document.querySelectorAll('.amount-val');
+  if (amountCells[0]) amountCells[0].textContent = fmt(order.amount || 0);
+  if (amountCells[1]) amountCells[1].textContent = fmt(order.commission || 0);
+  if (amountCells[2]) amountCells[2].textContent = fmt(order.net || 0);
+
+  // Commission rate chip
+  const commChip = document.querySelector('.amount-cell:nth-child(2) .amount-lbl');
+  if (commChip && order.commissionRate) commChip.textContent = 'Commission Oriupe ' + order.commissionRate + '%';
+
+  // 9. Status badge + timeline
+  const STATUS_MAP = {
+    AWAITING_PAYMENT: { label: 'En attente de paiement', progress: '0%',  step: 0 },
+    FUNDS_SECURED:    { label: 'Fonds sécurisés',         progress: '25%', step: 1 },
+    IN_PROGRESS:      { label: 'Travaux en cours',        progress: '60%', step: 2 },
+    DELIVERED:        { label: 'Livraison disponible',    progress: '80%', step: 3 },
+    VALIDATED:        { label: 'Validé par le client',    progress: '95%', step: 4 },
+    COMPLETED:        { label: 'Clôturé',                 progress: '100%',step: 5 },
+  };
+  const st = STATUS_MAP[order.status] || STATUS_MAP.IN_PROGRESS;
+
+  const badge = document.querySelector('.escrow-status-badge');
+  if (badge) badge.innerHTML = `<span class="escrow-status-dot"></span>${st.label} · ${st.progress}`;
+
+  const topBadge = document.querySelector('.tb-right .status');
+  if (topBadge) topBadge.innerHTML = `<span style="width:6px;height:6px;border-radius:50%;background:#F59E0B;display:inline-block"></span> ${st.label}`;
+
+  // 10. Timeline steps
+  const dots   = document.querySelectorAll('.tl-dot');
+  const labels = document.querySelectorAll('.tl-label');
+  const times  = document.querySelectorAll('.tl-time');
+  const now    = new Date().toLocaleDateString('fr-FR', { day:'numeric', month:'short' });
+  dots.forEach((dot, i) => {
+    if (i < st.step) {
+      dot.className = 'tl-dot done';
+      dot.innerHTML = `<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 4" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+      if (labels[i]) labels[i].className = 'tl-label done-lbl';
+      if (times[i])  times[i].textContent = now;
+    } else if (i === st.step) {
+      dot.className = 'tl-dot active';
+      dot.textContent = '◐';
+      if (labels[i]) labels[i].className = 'tl-label active-lbl';
+      if (times[i])  times[i].textContent = 'En cours';
+    } else {
+      dot.className = 'tl-dot pending';
+      dot.textContent = '○';
+      if (labels[i]) labels[i].className = 'tl-label';
+      if (times[i])  times[i].textContent = '—';
+    }
+  });
+})();
 </script>
   <script type="module" src="/src/scripts/main.js"></script>
-  <script src="/src/shared/oriupe-session.js"></script>
   <script type="module" src="/src/shared/realtime.js"></script>
+  <script type="module">
+    import { openDispute } from '/src/shared/supabase.js'
+    window._openDispute = openDispute
+  </script>
 </body>
 </html>

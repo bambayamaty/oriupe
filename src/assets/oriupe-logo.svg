@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none" role="img" aria-label="Logo Oriupe">
+  <title>Oriupe</title>
+  <desc>Logo de la plateforme Oriupe — marketplace de talents africains</desc>
+  <circle cx="10" cy="10" r="8.5" fill="#8DC63F" opacity=".9"/>
+  <circle cx="22" cy="10" r="8.5" fill="#29ABE2" opacity=".9"/>
+  <circle cx="10" cy="22" r="8.5" fill="#3CB878" opacity=".9"/>
+  <circle cx="22" cy="22" r="8.5" fill="#1B3A4A"/>
+  <rect x="9.5" y="9.5" width="13" height="13" rx="1.5" fill="rgba(60,184,120,.45)"/>
+</svg>

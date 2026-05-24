@@ -248,6 +248,8 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
 @media(max-width:480px){.of-z1{grid-template-columns:1fr}}
 </style>
   <script type="module" src="/src/components/nav.js"></script>
+  <script src="/src/shared/oriupe-session.js"></script>
+  <script>requireAuth(['client','freelance','admin']);</script>
 </head>
 <body>
 
@@ -622,7 +624,13 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
 <script>
 function submitDispute(){
   var consent=document.getElementById('consent');
-  if(!consent.checked){alert('Veuillez cocher la case de consentement.');return;}
+  if(!consent.checked){
+    const msg='Veuillez cocher la case de consentement pour continuer.';
+    let b=document.getElementById('dispute-err');
+    if(!b){b=document.createElement('div');b.id='dispute-err';b.style.cssText='background:#FEE2E2;border:1px solid rgba(239,68,68,.25);border-radius:10px;padding:10px 14px;font-size:13px;font-weight:600;color:#B91C1C;margin-bottom:14px';consent.closest('form,div')?.prepend(b);}
+    b.textContent=msg;setTimeout(()=>{if(b)b.style.display='none';},4000);
+    return;
+  }
   document.getElementById('formContent').style.display='none';
   document.getElementById('successState').style.display='block';
 }
