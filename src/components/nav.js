@@ -232,6 +232,52 @@ const CSS = `
 #oriupe-nav[data-theme="vivid"] .on-logo svg .lc3 { fill:rgba(255,255,255,.52); opacity:1; }
 #oriupe-nav[data-theme="vivid"] .on-logo svg .lc4 { fill:rgba(255,255,255,.18); }
 #oriupe-nav[data-theme="vivid"] .on-logo svg .lr  { fill:rgba(255,255,255,.07); }
+
+/* ── Avatar dropdown ──────────────────── */
+.on-avatar-wrap { position:relative; }
+#oriupe-nav .on-account {
+  display:flex; align-items:center; gap:8px; text-decoration:none;
+  font-size:13px; font-weight:600; background:rgba(255,255,255,.1);
+  border:1.5px solid rgba(255,255,255,.2); padding:6px 12px 6px 8px;
+  border-radius:30px; transition:all .2s; color:rgba(255,255,255,.9);
+  cursor:pointer; font-family:'Plus Jakarta Sans',sans-serif;
+}
+#oriupe-nav .on-account:hover { background:rgba(255,255,255,.18); border-color:rgba(255,255,255,.35); }
+#oriupe-nav[data-theme="light"] .on-account { color:#1B3A4A; background:rgba(27,58,74,.07); border-color:rgba(27,58,74,.15); }
+#oriupe-nav[data-theme="light"] .on-account:hover { background:rgba(27,58,74,.12); }
+.on-account-caret { transition:transform .22s; opacity:.65; flex-shrink:0; }
+.on-avatar-wrap.on-open .on-account-caret { transform:rotate(180deg); }
+.on-dropdown {
+  position:absolute; top:calc(100% + 10px); right:0; min-width:224px;
+  background:#fff; border-radius:16px;
+  box-shadow:0 8px 40px rgba(15,37,53,.18),0 2px 8px rgba(15,37,53,.08);
+  border:1px solid rgba(27,58,74,.09); overflow:hidden;
+  opacity:0; transform:translateY(-8px) scale(.97); pointer-events:none;
+  transition:opacity .2s ease, transform .22s cubic-bezier(.34,1.56,.64,1);
+  z-index:9999;
+}
+.on-avatar-wrap.on-open .on-dropdown { opacity:1; transform:none; pointer-events:auto; }
+.on-dd-header { padding:16px 16px 12px; display:flex; align-items:center; gap:12px; }
+.on-dd-av { width:38px; height:38px; border-radius:50%; background:linear-gradient(135deg,#3CB878,#8DC63F); display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:800; color:#fff; flex-shrink:0; }
+.on-dd-name { font-size:13px; font-weight:700; color:#1B3A4A; line-height:1.3; }
+.on-dd-role { font-size:11px; color:rgba(27,58,74,.45); font-weight:500; margin-top:2px; }
+.on-dd-divider { height:1px; background:rgba(27,58,74,.08); margin:2px 0; }
+.on-dd-item {
+  display:flex; align-items:center; gap:10px; padding:10px 16px;
+  font-size:13px; font-weight:600; color:#1B3A4A; text-decoration:none;
+  transition:background .15s,color .15s; cursor:pointer;
+  border:none; background:transparent; width:100%;
+  font-family:'Plus Jakarta Sans',sans-serif; text-align:left;
+}
+.on-dd-item:hover { background:#F4F6F9; }
+.on-dd-item svg { flex-shrink:0; opacity:.55; }
+.on-dd-badge {
+  margin-left:auto; background:#EF4444; color:#fff; border-radius:10px;
+  font-size:10px; font-weight:800; padding:2px 6px; min-width:18px; text-align:center;
+}
+.on-dd-logout { color:#EF4444; }
+.on-dd-logout:hover { background:#FEF2F2; }
+.on-dd-logout svg { opacity:1; }
 `;
 
 /* ─── PAGES ──────────────────────────────────────── */
@@ -390,11 +436,48 @@ function buildNavHTML() {
   const dashUrl = s?.role === 'freelance'
     ? '/src/pages/dashboard/freelance/index.html'
     : '/src/pages/dashboard/client/index.html';
+  const initial  = (s?.firstName||'U')[0].toUpperCase();
+  const fullName = loggedIn ? `${s.firstName||''} ${s.lastName||''}`.trim() : '';
+  const roleLabels = { freelance:'Freelance', client:'Client', admin:'Administrateur' };
+  const roleLabel  = loggedIn ? (roleLabels[s.role]||'Membre') : '';
+  const unreadBadge = (loggedIn && s.unreadMessages > 0)
+    ? `<span class="on-dd-badge">${s.unreadMessages}</span>` : '';
+
   const authSlot = loggedIn
-    ? `<a href="${dashUrl}" class="on-account" aria-label="Mon espace">
-         <span class="on-account-av">${(s.firstName||'U')[0].toUpperCase()}</span>
-         <span class="on-account-name">${s.firstName||'Mon compte'}</span>
-       </a>`
+    ? `<div class="on-avatar-wrap" id="on-avatar-wrap">
+         <button class="on-account" id="on-account-btn" aria-haspopup="true" aria-expanded="false" aria-label="Mon espace">
+           <span class="on-account-av">${initial}</span>
+           <span class="on-account-name">${s.firstName||'Mon compte'}</span>
+           <svg class="on-account-caret" width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+         </button>
+         <div class="on-dropdown" id="on-dropdown" role="menu">
+           <div class="on-dd-header">
+             <div class="on-dd-av">${initial}</div>
+             <div>
+               <div class="on-dd-name">${fullName||s.firstName||'Mon compte'}</div>
+               <div class="on-dd-role">${roleLabel}</div>
+             </div>
+           </div>
+           <div class="on-dd-divider"></div>
+           <a class="on-dd-item" href="${dashUrl}" role="menuitem">
+             <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="1.5" y="1.5" width="5" height="5" rx="1.2" stroke="currentColor" stroke-width="1.3"/><rect x="8.5" y="1.5" width="5" height="5" rx="1.2" stroke="currentColor" stroke-width="1.3"/><rect x="1.5" y="8.5" width="5" height="5" rx="1.2" stroke="currentColor" stroke-width="1.3"/><rect x="8.5" y="8.5" width="5" height="5" rx="1.2" stroke="currentColor" stroke-width="1.3"/></svg>
+             Mon tableau de bord
+           </a>
+           <a class="on-dd-item" href="/src/pages/messagerie/index.html" role="menuitem">
+             <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M13 2H2a1 1 0 00-1 1v7a1 1 0 001 1h3l2 2.5L9 11h4a1 1 0 001-1V3a1 1 0 00-1-1z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+             Mes messages ${unreadBadge}
+           </a>
+           <a class="on-dd-item" href="/src/pages/profile/index.html" role="menuitem">
+             <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="4.5" r="2.5" stroke="currentColor" stroke-width="1.3"/><path d="M2 13c0-3.038 2.462-5.5 5.5-5.5S13 9.962 13 13" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+             Mon profil
+           </a>
+           <div class="on-dd-divider"></div>
+           <button class="on-dd-item on-dd-logout" id="on-dd-logout" role="menuitem">
+             <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M6 13H3a1 1 0 01-1-1V3a1 1 0 011-1h3M10 10.5L13.5 7.5 10 4.5M5.5 7.5H13" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+             Se déconnecter
+           </button>
+         </div>
+       </div>`
     : `<button class="on-ghost" id="on-btn-login">Se connecter</button>
        <button class="on-cta"   id="on-btn-signup">S'inscrire</button>`;
 
@@ -474,10 +557,14 @@ async function init() {
     const mobLinks = PAGES.map(p =>
       `<a href="${p.href}"${p.key===active2?' class="on-active"':''}>${p.label}</a>`
     ).join('');
+    const dashUrl2 = s2?.role === 'freelance'
+      ? '/src/pages/dashboard/freelance/index.html'
+      : '/src/pages/dashboard/client/index.html';
     const mobAuth = loggedIn2
-      ? `<a href="${s2.role==='freelance'?'/src/pages/dashboard/freelance/index.html':'/src/pages/dashboard/client/index.html'}" style="color:#3CB878;font-weight:700">
-           Mon espace (${s2.firstName||'Compte'})
-         </a>`
+      ? `<a href="${dashUrl2}" style="color:#3CB878;font-weight:700">Tableau de bord (${s2.firstName||'Compte'})</a>
+         <a href="/src/pages/messagerie/index.html">Mes messages</a>
+         <a href="/src/pages/profile/index.html">Mon profil</a>
+         <a href="#" id="on-mob-logout" style="color:#EF4444">Se déconnecter</a>`
       : `<div class="on-mob-btns">
            <button class="on-mob-login" id="on-mob-login">Se connecter</button>
            <button class="on-mob-signup" id="on-mob-signup">S'inscrire gratuitement</button>
@@ -498,6 +585,11 @@ async function init() {
     if (btn) { btn.classList.add('on-open'); btn.setAttribute('aria-expanded','true'); }
     mob.querySelector('#on-mob-login')?.addEventListener('click', () => { window.location.href='/src/pages/auth/index.html'; });
     mob.querySelector('#on-mob-signup')?.addEventListener('click', () => { window.location.href='/src/pages/auth/index.html?register=1'; });
+    mob.querySelector('#on-mob-logout')?.addEventListener('click', (e) => {
+      e.preventDefault(); closeMob();
+      if (typeof logout === 'function') logout();
+      else { localStorage.removeItem('oriupe_session'); window.location.href='/src/pages/home/index.html'; }
+    });
   }
 
   nav.querySelector('#on-hamburger')?.addEventListener('click', () => {
@@ -511,6 +603,35 @@ async function init() {
   /* Boutons auth desktop (uniquement si non connecté) */
   nav.querySelector('#on-btn-login')?.addEventListener('click',()=>{ window.location.href='/src/pages/auth/index.html'; });
   nav.querySelector('#on-btn-signup')?.addEventListener('click',()=>{ window.location.href='/src/pages/auth/index.html?register=1'; });
+
+  /* ── Avatar dropdown ── */
+  const avatarWrap = nav.querySelector('#on-avatar-wrap');
+  if (avatarWrap) {
+    const btn      = avatarWrap.querySelector('#on-account-btn');
+    const dropdown = avatarWrap.querySelector('#on-dropdown');
+    const logoutBtn= avatarWrap.querySelector('#on-dd-logout');
+
+    function openDD()  { avatarWrap.classList.add('on-open');    btn.setAttribute('aria-expanded','true'); }
+    function closeDD() { avatarWrap.classList.remove('on-open'); btn.setAttribute('aria-expanded','false'); }
+    function toggleDD(){ avatarWrap.classList.contains('on-open') ? closeDD() : openDD(); }
+
+    btn.addEventListener('click', (e) => { e.stopPropagation(); toggleDD(); });
+    document.addEventListener('click', (e) => {
+      if (!avatarWrap.contains(e.target)) closeDD();
+    });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeDD(); });
+    // Close dropdown when navigating via a link inside it
+    dropdown.querySelectorAll('a').forEach(a => a.addEventListener('click', closeDD));
+
+    logoutBtn?.addEventListener('click', () => {
+      closeDD();
+      if (typeof logout === 'function') logout();
+      else {
+        localStorage.removeItem('oriupe_session');
+        window.location.href = '/src/pages/home/index.html';
+      }
+    });
+  }
 
   /* Widget devise */
   const rightSlot = nav.querySelector('#on-right-slot');

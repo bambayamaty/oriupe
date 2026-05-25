@@ -1290,11 +1290,11 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
             </div>
           </div>
           <!-- VISITOR: contact + save buttons -->
-          <button class="btn-contact visitor-only" onclick="window.location.href='/src/pages/messagerie/index.html'">
+          <button class="btn-contact visitor-only" onclick="contactFreelance()">
             <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2 3H13V10H8L5 13V10H2V3Z" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></svg>
             Contacter Kofi
           </button>
-          <button class="btn-contact">
+          <button class="btn-contact" onclick="contactFreelance()">
             <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2 3H13V10H8L5 13V10H2V3Z" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></svg>
             Contacter Kofi
           </button>
@@ -2271,6 +2271,21 @@ function toggleBio(){
   txt.style.maxHeight=bioOpen?'600px':'160px';
   btn.textContent=bioOpen?'Réduire':'Lire la suite';
   arrow.style.transform=bioOpen?'rotate(180deg)':'rotate(0)';
+}
+
+/* Contact — redirige vers auth si non connecté, messagerie sinon */
+function contactFreelance(){
+  try {
+    const s = JSON.parse(localStorage.getItem('oriupe_session')||'{}');
+    if (s && s.isLoggedIn) {
+      window.location.href = '/src/pages/messagerie/index.html';
+    } else {
+      window.location.href = '/src/pages/auth/index.html?next=' +
+        encodeURIComponent('/src/pages/messagerie/index.html');
+    }
+  } catch(e) {
+    window.location.href = '/src/pages/auth/index.html';
+  }
 }
 
 /* Save toggle */
