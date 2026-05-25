@@ -852,10 +852,10 @@ document.addEventListener('DOMContentLoaded',()=>{
 
   initSectionToggles();
 
-  // read URL params
+  // read URL params — accepts both ?category= and ?cat= (legacy)
   const params=new URLSearchParams(location.search);
   const qParam=params.get('q');
-  const catParam=params.get('category');
+  const catParam=params.get('category')||params.get('cat');
   if(qParam){state.q=qParam;document.getElementById('searchInput').value=qParam;}
   if(catParam&&CAT_LABELS[catParam]){
     state.cats=[catParam];

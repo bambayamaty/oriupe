@@ -50,8 +50,13 @@ export default defineConfig({
         adminSupport:        resolve(__dirname, 'src/pages/admin/support.html'),
         adminFinance:        resolve(__dirname, 'src/pages/admin/finance.html'),
 
+        // ── CRÉATION / PUBLICATION ──
+        createService:       resolve(__dirname, 'src/pages/create-service/index.html'),
+        publishProject:      resolve(__dirname, 'src/pages/publish-project/index.html'),
+
         // ── AUTRES ──
         disputes:            resolve(__dirname, 'src/pages/disputes/index.html'),
+        notFound:            resolve(__dirname, 'src/pages/404/index.html'),
       },
     },
   },

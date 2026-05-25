@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Page introuvable — Oriupe</title>
+<meta name="description" content="Cette page n'existe pas ou a été déplacée."/>
+<meta name="robots" content="noindex"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="/src/shared/styles/base.css"/>
+<script src="/src/shared/oriupe-session.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+/* ── PAGE ── */
+.page-404{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  background:var(--bg);
+}
+
+/* ── HERO ── */
+.hero-404{
+  flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:80px 24px 64px;
+}
+.hero-inner{
+  max-width:680px;
+  width:100%;
+  text-align:center;
+}
+
+/* ── ILLUSTRATION SVG ── */
+.illus-wrap{
+  width:260px;
+  height:220px;
+  margin:0 auto 48px;
+  position:relative;
+}
+.illus-wrap svg{width:100%;height:100%}
+
+/* ── BADGE ── */
+.err-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  background:rgba(239,68,68,.09);
+  color:var(--red);
+  border:1px solid rgba(239,68,68,.18);
+  border-radius:20px;
+  font-size:12px;
+  font-weight:700;
+  padding:5px 14px;
+  letter-spacing:.4px;
+  margin-bottom:24px;
+}
+.err-badge svg{flex-shrink:0}
+
+/* ── TEXTE ── */
+.err-code{
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:clamp(72px,12vw,120px);
+  font-weight:800;
+  color:var(--navy2);
+  line-height:1;
+  letter-spacing:-4px;
+  margin-bottom:16px;
+  background:linear-gradient(135deg,var(--navy2) 30%,var(--blue));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.err-title{
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:clamp(22px,4vw,32px);
+  font-weight:800;
+  color:var(--navy2);
+  margin-bottom:14px;
+  line-height:1.25;
+}
+.err-desc{
+  font-size:15px;
+  color:rgba(27,58,74,.58);
+  line-height:1.75;
+  max-width:480px;
+  margin:0 auto 40px;
+}
+
+/* ── CTA BUTTONS ── */
+.err-cta{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-bottom:48px;
+}
+.btn-home{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  height:52px;
+  padding:0 28px;
+  background:var(--green);
+  color:#fff;
+  border-radius:12px;
+  font-size:14px;
+  font-weight:700;
+  text-decoration:none;
+  transition:.2s ease;
+  border:none;
+  cursor:pointer;
+}
+.btn-home:hover{background:var(--green-d);transform:translateY(-2px);box-shadow:0 8px 24px rgba(60,184,120,.28)}
+.btn-back{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  height:52px;
+  padding:0 24px;
+  background:#fff;
+  color:var(--navy2);
+  border-radius:12px;
+  font-size:14px;
+  font-weight:600;
+  text-decoration:none;
+  border:1.5px solid var(--border);
+  transition:.2s ease;
+  cursor:pointer;
+}
+.btn-back:hover{border-color:var(--navy2);transform:translateY(-2px);box-shadow:0 4px 16px rgba(15,37,53,.1)}
+
+/* ── SUGGESTIONS ── */
+.suggestions{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:28px 32px;
+  text-align:left;
+  box-shadow:var(--shadow);
+}
+.sugg-title{
+  font-size:13px;
+  font-weight:700;
+  color:rgba(27,58,74,.45);
+  letter-spacing:.6px;
+  text-transform:uppercase;
+  margin-bottom:16px;
+}
+.sugg-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:8px;
+}
+.sugg-link{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:12px 14px;
+  border-radius:10px;
+  background:var(--bg);
+  text-decoration:none;
+  transition:.18s ease;
+  border:1px solid transparent;
+}
+.sugg-link:hover{background:#fff;border-color:var(--border);box-shadow:0 2px 8px rgba(15,37,53,.07);transform:translateX(2px)}
+.sugg-icon{
+  width:32px;height:32px;border-radius:9px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;font-size:15px;
+}
+.sugg-icon.green{background:var(--green-l)}
+.sugg-icon.blue{background:rgba(41,171,226,.1)}
+.sugg-icon.gold{background:rgba(245,158,11,.1)}
+.sugg-icon.navy{background:rgba(15,37,53,.06)}
+.sugg-text{}
+.sugg-name{font-size:13px;font-weight:700;color:var(--navy2);display:block;line-height:1.3}
+.sugg-sub{font-size:11px;color:rgba(27,58,74,.45);display:block;margin-top:2px}
+
+/* ── FOOTER simple ── */
+.footer-simple{
+  border-top:1px solid var(--border);
+  padding:20px 24px;
+  text-align:center;
+  font-size:12px;
+  color:rgba(27,58,74,.4);
+  font-weight:500;
+}
+.footer-simple a{color:var(--green);text-decoration:none;font-weight:600}
+.footer-simple a:hover{text-decoration:underline}
+
+/* ── RESPONSIVE ── */
+@media(max-width:580px){
+  .sugg-grid{grid-template-columns:1fr}
+  .illus-wrap{width:200px;height:170px;margin-bottom:36px}
+  .suggestions{padding:20px}
+}
+</style>
+<script type="module" src="/src/components/nav.js"></script>
+</head>
+<body>
+<div class="page-404">
+
+  <!-- NAV -->
+  <nav id="oriupe-nav" data-nav-theme="light"></nav>
+
+  <!-- HERO -->
+  <section class="hero-404">
+    <div class="hero-inner">
+
+      <!-- Illustration -->
+      <div class="illus-wrap">
+        <svg viewBox="0 0 260 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Fond cercle décoratif -->
+          <circle cx="130" cy="110" r="90" fill="rgba(60,184,120,.05)"/>
+          <circle cx="130" cy="110" r="65" fill="rgba(60,184,120,.07)"/>
+          <!-- Carte cassée / page vide -->
+          <rect x="68" y="42" width="124" height="160" rx="12" fill="#fff" stroke="#E2EBF0" stroke-width="1.5"/>
+          <!-- Lignes de contenu grises (page vide) -->
+          <rect x="84" y="68" width="92" height="7" rx="3.5" fill="#E8EDF2"/>
+          <rect x="84" y="83" width="72" height="5" rx="2.5" fill="#EEF2F6"/>
+          <rect x="84" y="95" width="84" height="5" rx="2.5" fill="#EEF2F6"/>
+          <rect x="84" y="107" width="60" height="5" rx="2.5" fill="#EEF2F6"/>
+          <!-- Illustration 404 stylisée sur la carte -->
+          <text x="130" y="160" text-anchor="middle" font-family="'Bricolage Grotesque', sans-serif" font-size="44" font-weight="800" fill="rgba(15,37,53,.06)">404</text>
+          <!-- Icône cassée au centre -->
+          <circle cx="130" cy="138" r="22" fill="rgba(239,68,68,.07)" stroke="rgba(239,68,68,.15)" stroke-width="1.2"/>
+          <path d="M122 130L138 146M138 130L122 146" stroke="#EF4444" stroke-width="2" stroke-linecap="round"/>
+          <!-- Éléments décoratifs extérieurs -->
+          <circle cx="52" cy="60" r="12" fill="rgba(141,198,63,.12)" stroke="rgba(141,198,63,.2)" stroke-width="1"/>
+          <path d="M46 60h12M52 54v12" stroke="#8DC63F" stroke-width="1.5" stroke-linecap="round" opacity=".6"/>
+          <circle cx="208" cy="88" r="10" fill="rgba(41,171,226,.1)" stroke="rgba(41,171,226,.18)" stroke-width="1"/>
+          <path d="M204 88h8M208 84v8" stroke="#29ABE2" stroke-width="1.4" stroke-linecap="round" opacity=".6"/>
+          <circle cx="196" cy="168" r="8" fill="rgba(245,158,11,.1)" stroke="rgba(245,158,11,.2)" stroke-width="1"/>
+          <circle cx="64" cy="158" r="6" fill="rgba(60,184,120,.1)" stroke="rgba(60,184,120,.2)" stroke-width="1"/>
+          <!-- Points décoratifs -->
+          <circle cx="86" cy="48" r="3" fill="rgba(60,184,120,.25)"/>
+          <circle cx="176" cy="48" r="3" fill="rgba(41,171,226,.25)"/>
+          <circle cx="174" cy="176" r="3" fill="rgba(245,158,11,.3)"/>
+        </svg>
+      </div>
+
+      <!-- Badge -->
+      <div class="err-badge">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" stroke-width="1.2"/><path d="M6.5 4v3.5M6.5 9v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Erreur 404 — Page introuvable
+      </div>
+
+      <!-- Titre -->
+      <div class="err-code">404</div>
+      <h1 class="err-title">Cette page n'existe pas</h1>
+      <p class="err-desc">
+        L'URL que vous avez demandée a peut-être été déplacée, renommée ou n'a jamais existé. Pas de panique — tout le reste d'Oriupe est là.
+      </p>
+
+      <!-- CTA -->
+      <div class="err-cta">
+        <a class="btn-home" href="/src/pages/home/index.html">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 7.5L8 2L14 7.5V14H10.5V10.5H5.5V14H2V7.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+          Retour à l'accueil
+        </a>
+        <button class="btn-back" onclick="history.back()">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M9 3L5 7.5L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Page précédente
+        </button>
+      </div>
+
+      <!-- Suggestions -->
+      <div class="suggestions">
+        <div class="sugg-title">Où vouliez-vous aller ?</div>
+        <div class="sugg-grid">
+          <a class="sugg-link" href="/src/pages/catalog/index.html">
+            <div class="sugg-icon green">🔍</div>
+            <div class="sugg-text">
+              <span class="sugg-name">Explorer les services</span>
+              <span class="sugg-sub">Trouvez un freelance qualifié</span>
+            </div>
+          </a>
+          <a class="sugg-link" href="/src/pages/offers/index.html">
+            <div class="sugg-icon blue">📋</div>
+            <div class="sugg-text">
+              <span class="sugg-name">Appels d'offres</span>
+              <span class="sugg-sub">Publiez votre projet</span>
+            </div>
+          </a>
+          <a class="sugg-link" href="/src/pages/auth/index.html">
+            <div class="sugg-icon gold">✨</div>
+            <div class="sugg-text">
+              <span class="sugg-name">Créer un compte</span>
+              <span class="sugg-sub">Rejoindre la communauté</span>
+            </div>
+          </a>
+          <a class="sugg-link" href="/src/pages/help/index.html">
+            <div class="sugg-icon navy">💬</div>
+            <div class="sugg-text">
+              <span class="sugg-name">Centre d'aide</span>
+              <span class="sugg-sub">Besoin d'assistance ?</span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER SIMPLIFIÉ -->
+  <div class="footer-simple">
+    &copy; 2025 <strong>Oriupe SAS</strong> &mdash; Abidjan 🇨🇮 &nbsp;·&nbsp;
+    <a href="/src/pages/home/index.html">Accueil</a> &nbsp;·&nbsp;
+    <a href="/src/pages/contact/index.html">Contact</a> &nbsp;·&nbsp;
+    <a href="/src/pages/help/index.html">Aide</a>
+  </div>
+
+</div>
+</body>
+</html>

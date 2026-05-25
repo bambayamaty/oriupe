@@ -622,8 +622,9 @@ function toggleAcc(item) {
 
 function filterCat(cat, btn) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('faq-search').value = '';
+  if (btn) btn.classList.add('active');
+  const searchEl = document.getElementById('faq-search');
+  if (searchEl) searchEl.value = '';
 
   const items = document.querySelectorAll('.acc-item');
   let count = 0;
@@ -639,6 +640,14 @@ function filterCat(cat, btn) {
   });
   document.getElementById('no-results').style.display = count === 0 ? 'block' : 'none';
 }
+
+/* ── URL param ?cat= — ouvre directement la bonne catégorie ── */
+(function() {
+  const cat = new URLSearchParams(location.search).get('cat');
+  if (!cat || cat === 'tous') return;
+  const btn = document.querySelector(`.tab[onclick*="filterCat('${cat}'"]`);
+  if (btn) { filterCat(cat, btn); btn.scrollIntoView({behavior:'smooth',block:'nearest'}); }
+})();
 
 function filterFaq(query) {
   const q = query.toLowerCase().trim();
