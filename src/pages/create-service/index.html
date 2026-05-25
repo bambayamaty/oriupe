@@ -865,6 +865,43 @@ window.addEventListener('DOMContentLoaded', () => {
     el.textContent = n+' / 2000 caractères';
     el.className = 'cs-desc-counter' + (n>=150?' ok':n>=100?' warn':'');
     updateCompletion();
+    // Real-time desc validation (only after user has typed something)
+    if (n > 0) {
+      const errEl = document.getElementById('err-desc');
+      if (errEl) errEl.classList.toggle('show', n < 150);
+      de.classList.toggle('error', n < 150);
+      de.classList.toggle('success', n >= 150);
+    }
+  });
+
+  // Real-time title validation
+  const titleInp = document.getElementById('f-title');
+  titleInp?.addEventListener('blur', () => {
+    const v = titleInp.value.trim();
+    if (!v) return;
+    const ok = v.length >= 10 && v.toLowerCase().startsWith('je vais');
+    const errEl = document.getElementById('err-title');
+    if (errEl) errEl.classList.toggle('show', !ok);
+    titleInp.classList.toggle('error', !ok);
+    titleInp.classList.toggle('success', ok);
+  });
+  titleInp?.addEventListener('input', () => {
+    const v = titleInp.value.trim();
+    if (!v) { titleInp.classList.remove('error','success'); document.getElementById('err-title')?.classList.remove('show'); return; }
+    if (titleInp.classList.contains('error') || titleInp.classList.contains('success')) {
+      const ok = v.length >= 10 && v.toLowerCase().startsWith('je vais');
+      const errEl = document.getElementById('err-title');
+      if (errEl) errEl.classList.toggle('show', !ok);
+      titleInp.classList.toggle('error', !ok);
+      titleInp.classList.toggle('success', ok);
+    }
+  });
+
+  // Real-time category validation
+  document.getElementById('f-category')?.addEventListener('change', () => {
+    const v = document.getElementById('f-category').value;
+    const errEl = document.getElementById('err-category');
+    if (errEl) errEl.classList.toggle('show', !v);
   });
 
   // Tag inputs

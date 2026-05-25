@@ -995,6 +995,96 @@ window.addEventListener('DOMContentLoaded',()=>{
 const _s=document.createElement('style');
 _s.textContent='@keyframes spin{to{transform:rotate(360deg)}}';
 document.head.appendChild(_s);
+
+/* ── VALIDATION TEMPS RÉEL ─────────────────────────── */
+document.addEventListener('DOMContentLoaded', function() {
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const PHONE_RE = /^\d{8,15}$/;
+
+  function getErr(inp) {
+    const anchor = inp.closest('.inp-icon') || inp.closest('.phone-wrap') || inp;
+    let err = anchor.nextElementSibling;
+    if (!err || !err.classList.contains('rt-err')) {
+      err = document.createElement('div');
+      err.className = 'rt-err';
+      err.style.cssText = 'font-size:11px;color:#EF4444;margin-top:4px;display:none;font-weight:600;line-height:1.4';
+      anchor.insertAdjacentElement('afterend', err);
+    }
+    return err;
+  }
+
+  function applyState(inp, ok, msg, dirty) {
+    if (!dirty && !inp.value) {
+      inp.classList.remove('success', 'error');
+      const err = inp.closest('.inp-icon, .phone-wrap')?.nextElementSibling;
+      if (err?.classList.contains('rt-err')) err.style.display = 'none';
+      return;
+    }
+    inp.classList.toggle('success', ok);
+    inp.classList.toggle('error', !ok);
+    const err = getErr(inp);
+    err.textContent = msg;
+    err.style.display = (!ok && msg) ? 'block' : 'none';
+  }
+
+  function wire(id, validator, errMsg) {
+    const inp = document.getElementById(id);
+    if (!inp) return;
+    let dirty = false;
+    const run = (force) => {
+      if (!force && !dirty && !inp.value) return;
+      applyState(inp, validator(inp.value), errMsg, dirty || !!inp.value);
+    };
+    inp.addEventListener('input', () => run(false));
+    inp.addEventListener('blur',  () => { dirty = true; run(true); });
+  }
+
+  // Email — tous les panels
+  ['cp-em','fp-em','ce-em','fe-em'].forEach(id =>
+    wire(id, v => EMAIL_RE.test(v.trim()), 'Adresse email invalide')
+  );
+  // Noms — min 2 car
+  ['cp-fn','cp-ln','fp-fn','fp-ln','ce-fn','ce-ln','fe-fn','fe-ln'].forEach(id =>
+    wire(id, v => v.trim().length >= 2, 'Au moins 2 caractères requis')
+  );
+  // Téléphones
+  ['cp-tel','fp-tel','ce-tel','fe-tel'].forEach(id =>
+    wire(id, v => PHONE_RE.test(v.replace(/\s/g, '')), 'Numéro invalide (8 à 15 chiffres)')
+  );
+
+  // Confirmation mot de passe
+  function wirePwdConfirm(pwdId, confId) {
+    const conf = document.getElementById(confId);
+    const pwd  = document.getElementById(pwdId);
+    if (!conf || !pwd) return;
+    let dirty = false;
+    const run = (force) => {
+      if (!force && !dirty && !conf.value) return;
+      const ok = conf.value.length >= 8 && conf.value === pwd.value;
+      applyState(conf, ok, 'Les mots de passe ne correspondent pas', dirty || !!conf.value);
+    };
+    conf.addEventListener('input', () => run(false));
+    conf.addEventListener('blur',  () => { dirty = true; run(true); });
+    pwd.addEventListener('input',  () => { if (conf.value) run(false); });
+  }
+  wirePwdConfirm('cp-pwd', 'cp-pwd2');
+  wirePwdConfirm('fp-pwd', 'fp-pwd2');
+
+  // Mot de passe : marquer vert quand assez fort (score ≥ 3)
+  const _origChkStr = window.chkStr;
+  if (typeof _origChkStr === 'function') {
+    window.chkStr = function(inp) {
+      _origChkStr(inp);
+      if (!inp.value) { inp.classList.remove('success','error'); return; }
+      const s = (inp.value.length >= 8 ? 1 : 0) +
+                (/[A-Z]/.test(inp.value) ? 1 : 0) +
+                (/\d/.test(inp.value)    ? 1 : 0) +
+                (/[^A-Za-z0-9]/.test(inp.value) ? 1 : 0);
+      inp.classList.toggle('success', s >= 3);
+      inp.classList.toggle('error',   s < 2 && inp.value.length > 0);
+    };
+  }
+});
 </script>
   <script type="module">
     import { supabase } from '/src/shared/supabase.js'

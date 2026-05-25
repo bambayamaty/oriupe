@@ -1314,8 +1314,101 @@
     if (typeof window._ppSbInsert === 'function') window._ppSbInsert(project);
 
     isDirty = false;
+    localStorage.removeItem(PP_DRAFT_KEY);
     window.location.href = '/src/pages/dashboard/client/index.html?project_submitted=1';
   }
+
+  /* ─────────────────────────────────────────────────────────
+     AUTOSAVE / DRAFT
+  ───────────────────────────────────────────────────────── */
+  const PP_DRAFT_KEY = 'oriupe_pp_draft';
+
+  function saveDraft(silent) {
+    if (!isDirty) return;
+    const budgetType = document.querySelector('input[name="budgetType"]:checked')?.value || 'fixed';
+    const vis = document.querySelector('.pp-vis-card.selected')?.dataset.vis || 'public';
+    const draft = {
+      mode:        currentMode,
+      title:       document.getElementById('ppTitle')?.value || '',
+      category:    document.getElementById('ppCategory')?.value || '',
+      subcategory: document.getElementById('ppSubcategory')?.value || '',
+      desc:        document.getElementById('ppDesc')?.value || '',
+      skills:      [...skills],
+      budgetType,
+      budgetMin:   document.getElementById('ppBudgetMin')?.value || '',
+      budgetMax:   document.getElementById('ppBudgetMax')?.value || '',
+      rateMin:     document.getElementById('ppRateMin')?.value || '',
+      rateMax:     document.getElementById('ppRateMax')?.value || '',
+      duration:    document.getElementById('ppDuration')?.value || '',
+      deadline:    document.getElementById('ppDeadline')?.value || '',
+      level:       document.getElementById('ppLevel')?.value || '',
+      refUrl:      document.getElementById('ppRefUrl')?.value || '',
+      context:     document.getElementById('ppContext')?.value || '',
+      nda:         document.getElementById('ppNda')?.checked || false,
+      hideBudget:  document.getElementById('ppHideBudget')?.checked || false,
+      hideName:    document.getElementById('ppHideName')?.checked || false,
+      visibility:  vis,
+      savedAt:     new Date().toISOString(),
+    };
+    try {
+      localStorage.setItem(PP_DRAFT_KEY, JSON.stringify(draft));
+      if (!silent) showToast('Brouillon sauvegardé');
+    } catch(e) {}
+  }
+
+  function loadDraft() {
+    try {
+      const raw = localStorage.getItem(PP_DRAFT_KEY);
+      if (!raw) return;
+      const d = JSON.parse(raw);
+      if (!d.title && !d.desc) return;
+
+      if (d.mode) { currentMode = d.mode; selectMode(d.mode); startForm(); }
+      if (d.title)    document.getElementById('ppTitle').value = d.title;
+      if (d.category) {
+        document.getElementById('ppCategory').value = d.category;
+        onCategoryChange();
+        if (d.subcategory) document.getElementById('ppSubcategory').value = d.subcategory;
+      }
+      if (d.desc)     document.getElementById('ppDesc').value = d.desc;
+      if (d.skills?.length) { skills = [...d.skills]; renderSkills(); }
+      if (d.budgetType) selectBudgetType(d.budgetType);
+      if (d.budgetMin)  document.getElementById('ppBudgetMin').value = d.budgetMin;
+      if (d.budgetMax)  document.getElementById('ppBudgetMax').value = d.budgetMax;
+      if (d.rateMin)    document.getElementById('ppRateMin').value = d.rateMin;
+      if (d.rateMax)    document.getElementById('ppRateMax').value = d.rateMax;
+      if (d.duration)   document.getElementById('ppDuration').value = d.duration;
+      if (d.deadline)   document.getElementById('ppDeadline').value = d.deadline;
+      if (d.level)      document.getElementById('ppLevel').value = d.level;
+      if (d.refUrl)     document.getElementById('ppRefUrl').value = d.refUrl;
+      if (d.context)    document.getElementById('ppContext').value = d.context;
+      if (d.nda)        document.getElementById('ppNda').checked = d.nda;
+      if (d.hideBudget) document.getElementById('ppHideBudget').checked = d.hideBudget;
+      if (d.hideName)   document.getElementById('ppHideName').checked = d.hideName;
+      if (d.visibility) selectVisibility(d.visibility);
+
+      updatePreview();
+      isDirty = false;
+      showDraftBanner(d.savedAt);
+    } catch(e) {}
+  }
+
+  function showDraftBanner(savedAt) {
+    const existing = document.getElementById('pp-draft-banner');
+    if (existing) return;
+    const banner = document.createElement('div');
+    banner.id = 'pp-draft-banner';
+    banner.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--navy2);color:#fff;padding:12px 20px;border-radius:10px;font-size:13px;font-weight:600;z-index:9999;display:flex;align-items:center;gap:12px;box-shadow:0 4px 20px rgba(0,0,0,.25);max-width:90vw';
+    const when = savedAt ? new Date(savedAt).toLocaleTimeString('fr-FR', {hour:'2-digit',minute:'2-digit'}) : '';
+    banner.innerHTML = `<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg><span>Brouillon récupéré${when ? ` · ${when}` : ''}</span><button onclick="document.getElementById('pp-draft-banner').remove()" style="background:rgba(255,255,255,.15);border:none;color:#fff;border-radius:6px;padding:4px 10px;cursor:pointer;font-size:12px;margin-left:4px">OK</button>`;
+    document.body.appendChild(banner);
+    setTimeout(() => banner?.remove(), 6000);
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    loadDraft();
+    setInterval(() => saveDraft(true), 30000);
+  });
 
   /* ─────────────────────────────────────────────────────────
      UTILS
