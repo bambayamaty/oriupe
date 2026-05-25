@@ -3,12 +3,12 @@
    Import: <script type="module" src="/src/shared/realtime.js"></script>
 ═══════════════════════════════════════════════════════ */
 
-import { supabase } from '/src/shared/supabase.js'
+import { supabase, isSupabaseConfigured } from '/src/shared/supabase.js'
 
 // ── Helpers UI ────────────────────────────────────────────────────────────────
 
 function fmtFCFA(n) {
-  return Number(n).toLocaleString('fr-FR') + ' FCFA'
+  return Number(n).toLocaleString('fr-FR').replace(/ | /g, ' ') + ' FCFA'
 }
 
 function getSession() {
@@ -152,47 +152,44 @@ function updateChatEscrow(order) {
 let _channels = []
 
 function destroyChannels() {
+  if (!supabase) { _channels = []; return }
   _channels.forEach(ch => supabase.removeChannel(ch))
   _channels = []
 }
 
 async function subscribeMessages(userId, role) {
-  // Compter les messages non lus au démarrage
+  if (_channels.some(c => c.topic?.includes('rt-messages-' + userId))) return
+  // Compter les messages non lus au démarrage (table messages DM)
   const { count } = await supabase
-    .from('collaboration_messages')
+    .from('messages')
     .select('id', { count: 'exact', head: true })
     .neq('sender_id', userId)
-    .is('read_at', null)
 
   if (count > 0) updateUnreadBadge(count)
 
-  // Écouter les nouveaux messages en temps réel
+  const handleNewMsg = async (payload) => {
+    const msg = payload.new
+    if (msg.sender_id === userId) return
+    const { count: newCount } = await supabase
+      .from('messages')
+      .select('id', { count: 'exact', head: true })
+      .neq('sender_id', userId)
+    updateUnreadBadge(newCount || 1)
+    showToast('💬 Nouveau message reçu', 'info')
+  }
+
+  // Écoute les DM (table messages) et les messages de collaboration
   const ch = supabase.channel('rt-messages-' + userId)
-    .on('postgres_changes', {
-      event: 'INSERT',
-      schema: 'public',
-      table: 'collaboration_messages',
-      filter: `sender_id=neq.${userId}`
-    }, async (payload) => {
-      const msg = payload.new
-      if (msg.sender_id === userId) return
-
-      // Compter les non lus
-      const { count: newCount } = await supabase
-        .from('collaboration_messages')
-        .select('id', { count: 'exact', head: true })
-        .neq('sender_id', userId)
-        .is('read_at', null)
-
-      updateUnreadBadge(newCount || 1)
-      showToast('💬 Nouveau message reçu', 'info')
-    })
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, handleNewMsg)
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'collaboration_messages',
+      filter: `sender_id=neq.${userId}` }, handleNewMsg)
     .subscribe()
 
   _channels.push(ch)
 }
 
 async function subscribeOrders(userId, role) {
+  if (_channels.some(c => c.topic?.includes('rt-orders-' + userId))) return
   // Abonnement aux mises à jour de statut des commandes
   const ch = supabase.channel('rt-orders-' + userId)
     .on('postgres_changes', {
@@ -214,15 +211,15 @@ async function subscribeOrders(userId, role) {
       // Notifications selon le statut et le rôle
       const notifs = {
         client: {
-          FUNDS_SECURED:  { msg: '🔐 Paiement confirmé — fonds sécurisés dans l\'escrow', type: 'success', panel: 'escrow' },
+          FUNDS_SECURED:  { msg: '🔐 Paiement confirme par le prestataire — fonds securises', type: 'success', panel: 'escrow' },
           DELIVERED:      { msg: '📦 Livraison disponible — validez pour libérer les fonds', type: 'info', panel: 'orders' },
           COMPLETED:      { msg: '✅ Commande clôturée avec succès !', type: 'success', panel: 'payments' },
           DISPUTED:       { msg: '⚠️ Litige ouvert sur une commande', type: 'warning', panel: 'orders' },
           REFUNDED:       { msg: '💸 Remboursement effectué', type: 'info', panel: 'payments' },
         },
         freelance: {
-          FUNDS_SECURED:  { msg: '🔐 Client a payé — fonds sécurisés. Démarrez les travaux !', type: 'success', panel: 'orders' },
-          VALIDATED:      { msg: '✓ Livraison validée par le client — virement en cours', type: 'success', panel: 'revenue' },
+          FUNDS_SECURED:  { msg: '🔐 Paiement client confirme par le prestataire. Demarrez les travaux !', type: 'success', panel: 'orders' },
+          VALIDATED:      { msg: '✓ Livraison validee par le client — payout en attente serveur', type: 'success', panel: 'revenue' },
           COMPLETED:      { msg: `✅ Virement reçu — ${fmtFCFA(order.amount_net)} dans votre compte`, type: 'success', panel: 'revenue' },
           DISPUTED:       { msg: '⚠️ Litige ouvert — un admin va intervenir', type: 'warning', panel: 'orders' },
         }
@@ -256,19 +253,7 @@ function startDemoRealtime(role) {
     showToast(`💬 ${names[role] || 'Contact'} : nouveau message`, 'info')
   }, 8000)
 
-  // Simule une mise à jour escrow après 20 secondes (démo)
-  const escrowTimer = setTimeout(() => {
-    if (role === 'client') {
-      injectNotifBanner(
-        '<strong>Livraison disponible</strong> — Kofi a livré votre commande. Validez pour libérer les fonds.',
-        'success',
-        'orders'
-      )
-      showToast('📦 Nouvelle livraison reçue !', 'success')
-    }
-  }, 20000)
-
-  return () => { clearTimeout(demoTimer); clearTimeout(escrowTimer) }
+  return () => { clearTimeout(demoTimer) }
 }
 
 // ── Point d'entrée ────────────────────────────────────────────────────────────
@@ -278,6 +263,12 @@ async function initRealtime() {
   if (!s || !s.isLoggedIn) return
 
   const role = s.role || 'client'
+
+  if (!isSupabaseConfigured || !supabase) {
+    updateUnreadBadge(s.unreadMessages || 0)
+    console.warn('[Oriupe Realtime] Supabase non configure : notifications financieres desactivees')
+    return
+  }
 
   // Tenter de récupérer le vrai user Supabase
   const { data: { user } } = await supabase.auth.getUser()

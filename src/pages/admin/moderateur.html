@@ -1,17 +1,11 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<script>
-  (function(){
-    try{
-      var s=JSON.parse(localStorage.getItem('oriupe_admin_session')||'null');
-      if(!s||!s.isAdmin) throw new Error();
-      // Session expires after 8h
-      if(Date.now()-s.loginAt > 8*60*60*1000){localStorage.removeItem('oriupe_admin_session');throw new Error();}
-    }catch(e){
-      window.location.replace('/src/pages/admin/login.html');
-    }
-  })();
+<script>document.documentElement.classList.add('admin-guard-pending')</script>
+<style>html.admin-guard-pending body{visibility:hidden}</style>
+<script type="module">
+  import { protectAdminPage } from '/src/shared/admin-auth.js'
+  protectAdminPage({ allowedRoles: ['super_admin', 'admin', 'moderator'] })
 </script>
 <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Oriupe Admin — Espace Modérateur</title>
@@ -25,9 +19,9 @@ body{font-family:"Plus Jakarta Sans",sans-serif;background:#060F1E;color:#E2E8F0
 a{text-decoration:none;color:inherit}button{font-family:"Plus Jakarta Sans",sans-serif;cursor:pointer}
 .sidebar{width:var(--sidebar-w);flex-shrink:0;background:var(--navy2);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100vh;overflow-y:auto;position:fixed;left:0;top:0;z-index:100}
 .sidebar::-webkit-scrollbar{width:3px}.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
-.sb-logo{padding:22px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.sb-logo{padding:22px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;text-decoration:none;cursor:pointer;transition:opacity .2s,transform .28s cubic-bezier(.34,1.56,.64,1)}.sb-logo:hover{opacity:.82;transform:scale(1.03)}.sb-logo:hover svg{filter:drop-shadow(0 2px 8px rgba(60,184,120,.45))}.sb-logo:focus-visible{outline:2px solid #3CB878;outline-offset:3px;border-radius:6px}
 .sb-logo-t{font-family:"Bricolage Grotesque",sans-serif;font-size:18px;font-weight:800;color:#fff}
-.sb-logo-badge{font-size:9px;font-weight:700;color:#fff;padding:2px 7px;border-radius:4px;letter-spacing:.5px}
+.sb-logo-badge{font-size:11px;font-weight:700;color:#fff;padding:2px 7px;border-radius:4px;letter-spacing:.5px}
 .sb-admin-info{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
 .sb-av{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0}
 .sb-name{font-size:13px;font-weight:700;color:#fff}.sb-role-tag{font-size:10px;font-weight:600}
@@ -106,11 +100,11 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.02)
 </head>
 <body>
 <aside class="sidebar">
-  <div class="sb-logo">
+  <a class="sb-logo" href="/src/pages/home/index.html" aria-label="Oriupe — Accueil">
     <svg width="26" height="26" viewBox="0 0 28 28" fill="none"><circle cx="8.5" cy="8.5" r="7" fill="#8DC63F" opacity=".9"/><circle cx="19.5" cy="8.5" r="7" fill="#29ABE2" opacity=".9"/><circle cx="8.5" cy="19.5" r="7" fill="#3CB878" opacity=".9"/><circle cx="19.5" cy="19.5" r="7" fill="rgba(255,255,255,.1)"/><rect x="8" y="8" width="12" height="12" rx="1.2" fill="rgba(60,184,120,.42)"/></svg>
     <span class="sb-logo-t">Oriupe</span>
     <span class="sb-logo-badge" style="background:var(--blue)">MODO</span>
-  </div>
+  </a>
   <div class="sb-admin-info">
     <div class="sb-av" style="background:linear-gradient(135deg,var(--blue),#7DD6F0)">MO</div>
     <div><div class="sb-name">Marie Ouédraogo</div><div class="sb-role-tag" style="color:var(--blue)">Modératrice</div></div>
@@ -128,7 +122,7 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.02)
   <div class="sb-bottom">
     <div class="sb-nav">
       <div class="sb-item" style="color:rgba(255,255,255,.4)" onclick="location.href='/src/pages/admin/index.html'"><i class="sb-ic fa-solid fa-arrow-left"></i><span>Admin principal</span></div>
-      <div class="sb-item" style="color:var(--red)" onclick="localStorage.removeItem('oriupe_admin_session');location.href='/src/pages/admin/login.html'"><i class="sb-ic fa-solid fa-right-from-bracket"></i><span>Déconnexion</span></div>
+      <div class="sb-item" style="color:var(--red)" onclick="window.OriupeAdminAuth?.signOutAdmin()"><i class="sb-ic fa-solid fa-right-from-bracket"></i><span>Déconnexion</span></div>
     </div>
   </div>
 </aside>
@@ -182,7 +176,7 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.02)
             <div class="kyc-doc"><svg class="kyc-doc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg><div class="kyc-doc-label">Selfie + doc</div></div>
           </div>
           <div class="kyc-checklist"><div class="kc-item kc-ok"><i class="fa-solid fa-check"></i> Document lisible</div><div class="kc-item kc-ok"><i class="fa-solid fa-check"></i> Non expiré</div><div class="kc-item kc-ok"><i class="fa-solid fa-check"></i> Selfie conforme</div><div class="kc-item kc-ok"><i class="fa-solid fa-check"></i> Mobile Money OK</div><div class="kc-item kc-ok"><i class="fa-solid fa-check"></i> Smile Identity OK</div><div class="kc-item" style="color:var(--muted)"><i class="fa-regular fa-circle"></i> Cohérence nom/photo</div></div>
-          <div class="kyc-actions"><button class="btn btn-green btn-sm" onclick="openModal('kyc-approve')"><i class="fa-solid fa-circle-check"></i> Certifier</button><button class="btn btn-outline btn-sm" onclick="openModal('kyc-complement')"><i class="fa-solid fa-plus"></i> Complément</button><button class="btn btn-red btn-sm" onclick="openModal('kyc-reject')"><i class="fa-solid fa-xmark"></i> Rejeter</button><button class="btn btn-outline btn-sm" style="margin-left:auto"><i class="fa-solid fa-envelope"></i> Contacter</button></div>
+          <div class="kyc-actions"><button class="btn btn-green btn-sm" onclick="_openKycApprove(this)"><i class="fa-solid fa-circle-check"></i> Certifier</button><button class="btn btn-outline btn-sm" onclick="openModal('kyc-complement')"><i class="fa-solid fa-plus"></i> Complément</button><button class="btn btn-red btn-sm" onclick="_openKycReject(this)"><i class="fa-solid fa-xmark"></i> Rejeter</button><button class="btn btn-outline btn-sm" style="margin-left:auto"><i class="fa-solid fa-envelope"></i> Contacter</button></div>
         </div>
         <div class="kyc-card">
           <div class="kyc-head"><div class="u-av" style="width:38px;height:38px;background:linear-gradient(135deg,var(--green),var(--lime))">OD</div><div class="kyc-info"><div class="kyc-name">Ousmane Diallo <span style="color:var(--gold);font-weight:500">· Freelance Entreprise</span></div><div class="kyc-meta">ousmane@agence.sn · +221 76 000 0000 · Dakar, Sénégal</div><div class="kyc-meta" style="margin-top:3px">Soumis le 23 Jan · <strong style="color:var(--gold)">18h30 écoulées — 5h30 restantes</strong></div></div><div class="kyc-sla sla-warn">5h30 restantes</div></div>
@@ -191,7 +185,7 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.02)
             <div class="kyc-doc"><svg class="kyc-doc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="8" cy="12" r="2"/><path d="M14 10h4M14 13h3"/></svg><div class="kyc-doc-label">CNI Représentant</div></div>
             <div class="kyc-doc"><svg class="kyc-doc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg><div class="kyc-doc-label">Selfie + doc</div></div>
           </div>
-          <div class="kyc-actions"><button class="btn btn-green btn-sm" onclick="openModal('kyc-approve')"><i class="fa-solid fa-circle-check"></i> Certifier</button><button class="btn btn-outline btn-sm" onclick="openModal('kyc-complement')"><i class="fa-solid fa-plus"></i> Complément</button><button class="btn btn-red btn-sm" onclick="openModal('kyc-reject')"><i class="fa-solid fa-xmark"></i> Rejeter</button></div>
+          <div class="kyc-actions"><button class="btn btn-green btn-sm" onclick="_openKycApprove(this)"><i class="fa-solid fa-circle-check"></i> Certifier</button><button class="btn btn-outline btn-sm" onclick="openModal('kyc-complement')"><i class="fa-solid fa-plus"></i> Complément</button><button class="btn btn-red btn-sm" onclick="_openKycReject(this)"><i class="fa-solid fa-xmark"></i> Rejeter</button></div>
         </div>
         <div class="kyc-card">
           <div class="kyc-head"><div class="u-av" style="width:38px;height:38px;background:linear-gradient(135deg,var(--purple),#A78BFA)">FT</div><div class="kyc-info"><div class="kyc-name">Fatou Traoré <span style="color:var(--blue);font-weight:500">· Freelance Particulier</span></div><div class="kyc-meta">fatou@design.ci · +225 07 000 0000 · Abidjan, Côte d'Ivoire</div><div class="kyc-meta" style="margin-top:3px">Soumis le 24 Jan · <strong style="color:var(--green)">4h10 écoulées — dans les délais</strong></div></div><div class="kyc-sla sla-ok">Dans les délais</div></div>
@@ -200,7 +194,7 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.02)
             <div class="kyc-doc"><svg class="kyc-doc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="8" cy="12" r="2"/><path d="M14 10h4M14 13h3"/></svg><div class="kyc-doc-label">CNI Verso</div></div>
             <div class="kyc-doc"><svg class="kyc-doc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg><div class="kyc-doc-label">Selfie + doc</div></div>
           </div>
-          <div class="kyc-actions"><button class="btn btn-green btn-sm" onclick="openModal('kyc-approve')"><i class="fa-solid fa-circle-check"></i> Certifier</button><button class="btn btn-outline btn-sm" onclick="openModal('kyc-complement')"><i class="fa-solid fa-plus"></i> Complément</button><button class="btn btn-red btn-sm" onclick="openModal('kyc-reject')"><i class="fa-solid fa-xmark"></i> Rejeter</button></div>
+          <div class="kyc-actions"><button class="btn btn-green btn-sm" onclick="_openKycApprove(this)"><i class="fa-solid fa-circle-check"></i> Certifier</button><button class="btn btn-outline btn-sm" onclick="openModal('kyc-complement')"><i class="fa-solid fa-plus"></i> Complément</button><button class="btn btn-red btn-sm" onclick="_openKycReject(this)"><i class="fa-solid fa-xmark"></i> Rejeter</button></div>
         </div>
       </div>
     </div>
@@ -272,7 +266,7 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.02)
       <label class="modal-lbl">Note interne</label>
       <textarea class="modal-inp" rows="3" placeholder="Observation pour l'audit trail..."></textarea>
     </div>
-    <div class="modal-foot"><button class="btn btn-outline" onclick="closeModal('kyc-approve')">Annuler</button><button class="btn btn-green" onclick="closeModal('kyc-approve')"><i class="fa-solid fa-circle-check"></i> Confirmer la certification</button></div>
+    <div class="modal-foot"><button class="btn btn-outline" onclick="closeModal('kyc-approve')">Annuler</button><button class="btn btn-green" onclick="_kycApprove()"><i class="fa-solid fa-circle-check"></i> Confirmer la certification</button></div>
   </div>
 </div>
 <div class="modal-bg" id="modal-kyc-reject">
@@ -285,7 +279,7 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.02)
       <label class="modal-lbl">Message au freelance</label>
       <textarea class="modal-inp" rows="3" placeholder="Indiquez précisément ce qui doit être corrigé..."></textarea>
     </div>
-    <div class="modal-foot"><button class="btn btn-outline" onclick="closeModal('kyc-reject')">Annuler</button><button class="btn btn-red" onclick="closeModal('kyc-reject')"><i class="fa-solid fa-xmark"></i> Rejeter le dossier</button></div>
+    <div class="modal-foot"><button class="btn btn-outline" onclick="closeModal('kyc-reject')">Annuler</button><button class="btn btn-red" onclick="_kycReject()"><i class="fa-solid fa-xmark"></i> Rejeter le dossier</button></div>
   </div>
 </div>
 <div class="modal-bg" id="modal-kyc-complement">
@@ -320,6 +314,39 @@ function showPanel(id){
 }
 function openModal(id){var m=document.getElementById("modal-"+id);if(m)m.classList.add("open");}
 function closeModal(id){var m=document.getElementById("modal-"+id);if(m)m.classList.remove("open");}
+
+window._kycTargetId=null;
+function _openKycApprove(btn){
+  var card=btn.closest('.kyc-card');
+  window._kycTargetId=card?card.dataset.profileId:null;
+  openModal('kyc-approve');
+}
+function _openKycReject(btn){
+  var card=btn.closest('.kyc-card');
+  window._kycTargetId=card?card.dataset.profileId:null;
+  openModal('kyc-reject');
+}
+// Default stubs — overridden by module script when Supabase available
+window._kycApprove=function(){
+  closeModal('kyc-approve');
+  _adminModoToast('✓ KYC certifié (mode démo)','green');
+  var id=window._kycTargetId;
+  if(id){var c=document.querySelector('.kyc-card[data-profile-id="'+id+'"]');if(c)c.remove();}
+};
+window._kycReject=function(){
+  closeModal('kyc-reject');
+  _adminModoToast('Dossier rejeté (mode démo)','orange');
+  var id=window._kycTargetId;
+  if(id){var c=document.querySelector('.kyc-card[data-profile-id="'+id+'"]');if(c)c.remove();}
+};
+function _adminModoToast(msg,color){
+  var t=document.createElement('div');
+  var cols={green:'#27965D',red:'#DC2626',orange:'#D97706',blue:'#1B3A4A'};
+  t.style.cssText='position:fixed;bottom:24px;right:24px;z-index:99999;background:'+(cols[color]||cols.blue)+';color:#fff;font-size:13px;font-weight:700;padding:12px 20px;border-radius:12px;box-shadow:0 8px 28px rgba(0,0,0,.3);animation:rtToastIn .35s ease both;font-family:Plus Jakarta Sans,sans-serif';
+  t.textContent=msg;
+  document.body.appendChild(t);
+  setTimeout(function(){t.style.opacity='0';t.style.transform='translateX(20px)';t.style.transition='all .3s';setTimeout(function(){t.remove();},350);},3500);
+}
 document.addEventListener("DOMContentLoaded",function(){
   document.querySelectorAll(".modal-bg").forEach(function(bg){
     bg.addEventListener("click",function(e){if(e.target===bg)bg.classList.remove("open");});
@@ -373,5 +400,140 @@ PANELS_META={
   academy:{title:"Academy",sub:"Validation des formations"},
   audit:{title:"Mes actions",sub:"Journal de modération"}
 };
+</script>
+<script type="module">
+/* ── Admin KYC + Services — Supabase ── */
+import { supabase, isSupabaseConfigured } from '/src/shared/supabase.js'
+
+// Assign demo IDs to hardcoded KYC cards (no data-profile-id yet)
+document.querySelectorAll('#kyc-list-modo .kyc-card:not([data-profile-id])').forEach(function(c,i){
+  c.dataset.profileId='demo-kyc-'+(i+1);
+});
+
+function _fmtDate(iso){
+  try{return new Date(iso).toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'});}catch{return '—';}
+}
+
+/* ── KYC actions Supabase ── */
+async function _kycApproveSb(){
+  closeModal('kyc-approve');
+  const id=window._kycTargetId;
+  const noteEl=document.querySelector('#modal-kyc-approve textarea');
+  if(!id||id.startsWith('demo-')||!isSupabaseConfigured||!supabase){
+    _adminModoToast('✓ KYC certifié (mode démo)','green');
+    if(id){const c=document.querySelector('.kyc-card[data-profile-id="'+id+'"]');if(c)c.remove();}
+    return;
+  }
+  const{error}=await supabase.from('profiles').update({is_verified:true,updated_at:new Date().toISOString()}).eq('id',id);
+  if(error){_adminModoToast('Erreur: '+error.message,'red');return;}
+  _adminModoToast('✓ Profil certifié avec succès','green');
+  const card=document.querySelector('.kyc-card[data-profile-id="'+id+'"]');
+  if(card){card.style.transition='opacity .4s,transform .4s';card.style.opacity='0';card.style.transform='translateX(20px)';setTimeout(function(){card.remove();},450);}
+  if(noteEl)noteEl.value='';
+}
+window._kycApprove=_kycApproveSb;
+
+async function _kycRejectSb(){
+  closeModal('kyc-reject');
+  const id=window._kycTargetId;
+  if(!id||id.startsWith('demo-')||!isSupabaseConfigured||!supabase){
+    _adminModoToast('Dossier rejeté (mode démo)','orange');
+    if(id){const c=document.querySelector('.kyc-card[data-profile-id="'+id+'"]');if(c)c.remove();}
+    return;
+  }
+  // profiles has no reject status yet — remove from view
+  _adminModoToast('Dossier KYC rejeté','orange');
+  const card=document.querySelector('.kyc-card[data-profile-id="'+id+'"]');
+  if(card){card.style.transition='opacity .4s';card.style.opacity='0';setTimeout(function(){card.remove();},450);}
+}
+window._kycReject=_kycRejectSb;
+
+/* ── Load real KYC queue ── */
+async function _loadKycQueue(){
+  if(!isSupabaseConfigured||!supabase)return;
+  const{data:{user}}=await supabase.auth.getUser();
+  if(!user)return;
+  const{data,error}=await supabase.from('profiles')
+    .select('id,first_name,last_name,email,country,created_at')
+    .eq('role','freelance').eq('is_verified',false)
+    .order('created_at',{ascending:true}).limit(20);
+  if(error||!data?.length)return;
+  const list=document.getElementById('kyc-list-modo');
+  if(!list)return;
+  const html=data.map(function(p){
+    const name=[p.first_name,p.last_name].filter(Boolean).join(' ')||'Freelance';
+    const ini=((p.first_name?.[0]||'')+(p.last_name?.[0]||'')).toUpperCase()||'U';
+    return`<div class="kyc-card" data-profile-id="${p.id}" style="border-color:rgba(60,184,120,.35)">
+      <div class="kyc-head">
+        <div class="u-av" style="width:38px;height:38px;background:linear-gradient(135deg,var(--green),var(--lime))">${ini}</div>
+        <div class="kyc-info">
+          <div class="kyc-name">${name} <span style="color:var(--green);font-weight:500">· Freelance</span></div>
+          <div class="kyc-meta">${p.email||'—'} · ${p.country||'—'}</div>
+          <div class="kyc-meta" style="margin-top:3px">Inscrit le ${_fmtDate(p.created_at)}</div>
+        </div>
+        <div class="kyc-sla sla-ok">Nouveau</div>
+      </div>
+      <div class="kyc-actions">
+        <button type="button" class="btn btn-green btn-sm" onclick="_openKycApprove(this)"><i class="fa-solid fa-circle-check"></i> Certifier</button>
+        <button type="button" class="btn btn-outline btn-sm" onclick="openModal('kyc-complement')"><i class="fa-solid fa-plus"></i> Complément</button>
+        <button type="button" class="btn btn-red btn-sm" onclick="_openKycReject(this)"><i class="fa-solid fa-xmark"></i> Rejeter</button>
+      </div>
+    </div>`;
+  }).join('');
+  list.insertAdjacentHTML('afterbegin',html);
+  const badge=document.querySelector('.sb-item[onclick*="kyc"] .sb-badge');
+  if(badge)badge.textContent=data.length;
+}
+
+/* ── Load pending services ── */
+async function _loadPendingServices(){
+  if(!isSupabaseConfigured||!supabase)return;
+  const{data:{user}}=await supabase.auth.getUser();
+  if(!user)return;
+  const{data,error}=await supabase.from('services')
+    .select('id,title,category,price_basic,created_at,profiles!services_freelance_id_fkey(first_name,last_name)')
+    .eq('status','pending')
+    .order('created_at',{ascending:true}).limit(30);
+  if(error||!data?.length)return;
+  const tbody=document.getElementById('services-tbody-modo');
+  if(!tbody)return;
+  const html=data.map(function(s){
+    const p=s.profiles||{};
+    const fn=[p.first_name,p.last_name].filter(Boolean).join(' ')||'Freelance';
+    const ini=((p.first_name?.[0]||'')+(p.last_name?.[0]||'')).toUpperCase()||'U';
+    return`<tr data-service-id="${s.id}" data-tags="attente">
+      <td style="max-width:200px"><div style="font-size:13px;font-weight:600;color:#fff">${s.title||'Sans titre'}</div><div style="font-size:11px;color:var(--muted)">Soumis le ${_fmtDate(s.created_at)}</div></td>
+      <td><div class="user-cell"><div class="u-av" style="background:linear-gradient(135deg,var(--green),var(--lime))">${ini}</div><div class="u-name">${fn}</div></div></td>
+      <td><span class="badge b-blue">${s.category||'—'}</span></td>
+      <td style="font-weight:700;color:var(--green)">${(s.price_basic||0).toLocaleString('fr-FR')} FCFA</td>
+      <td><span class="badge b-orange">En attente</span></td>
+      <td><div style="display:flex;gap:5px">
+        <button type="button" class="btn btn-green btn-sm" onclick="_svcApprove('${s.id}',this)"><i class="fa-solid fa-check"></i> Approuver</button>
+        <button type="button" class="btn btn-red btn-sm" onclick="_svcReject('${s.id}',this)"><i class="fa-solid fa-xmark"></i></button>
+      </div></td>
+    </tr>`;
+  }).join('');
+  tbody.insertAdjacentHTML('afterbegin',html);
+}
+
+async function _svcApprove(id,btn){
+  if(!isSupabaseConfigured||!supabase){_adminModoToast('✓ Service approuvé (démo)','green');btn.closest('tr')?.remove();return;}
+  const{error}=await supabase.from('services').update({status:'active',updated_at:new Date().toISOString()}).eq('id',id);
+  if(error){_adminModoToast('Erreur: '+error.message,'red');return;}
+  _adminModoToast('✓ Service publié','green');
+  btn.closest('tr')?.remove();
+}
+async function _svcReject(id,btn){
+  if(!isSupabaseConfigured||!supabase){_adminModoToast('Service rejeté (démo)','orange');btn.closest('tr')?.remove();return;}
+  const{error}=await supabase.from('services').update({status:'rejected',updated_at:new Date().toISOString()}).eq('id',id);
+  if(error){_adminModoToast('Erreur: '+error.message,'red');return;}
+  _adminModoToast('Service rejeté','orange');
+  btn.closest('tr')?.remove();
+}
+window._svcApprove=_svcApprove;
+window._svcReject=_svcReject;
+
+_loadKycQueue();
+_loadPendingServices();
 </script>
 </body></html>

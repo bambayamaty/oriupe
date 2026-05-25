@@ -51,7 +51,7 @@ CREATE TABLE orders (
 
   -- Montants (en FCFA, entiers)
   amount_total      INTEGER       NOT NULL CHECK (amount_total > 0),
-  commission_rate   NUMERIC(5,4)  NOT NULL DEFAULT 0.12 CHECK (commission_rate BETWEEN 0 AND 1),
+  commission_rate   NUMERIC(5,4)  NOT NULL DEFAULT 0.15 CHECK (commission_rate BETWEEN 0 AND 1),
   commission_amount INTEGER       GENERATED ALWAYS AS (ROUND(amount_total * commission_rate)) STORED,
   amount_net        INTEGER       GENERATED ALWAYS AS (amount_total - ROUND(amount_total * commission_rate)) STORED,
 
@@ -495,9 +495,9 @@ Récupère le statut escrow complet d'une commande.
   "escrow_code": "ORU-ESC-2025-CI-00892-KA",
   "status": "IN_PROGRESS",
   "amount_total": 65000,
-  "commission_rate": 0.12,
-  "commission_amount": 7800,
-  "amount_net": 57200,
+  "commission_rate": 0.15,
+  "commission_amount": 9750,
+  "amount_net": 55250,
   "payment_method": "ORANGE_MONEY",
   "paid_at": "2025-01-24T14:32:00Z",
   "delivered_at": null,
@@ -768,7 +768,7 @@ $$ LANGUAGE plpgsql;
 
 ```
 amount_total      = montant payé par le client (FCFA, entier)
-commission_rate   = 0.12 (12%, peut varier selon le forfait freelance)
+commission_rate   = snapshot du plan freelance (15%, 10% ou 7%)
 commission_amount = ROUND(amount_total × commission_rate)
 amount_net        = amount_total − commission_amount
 ```
@@ -777,22 +777,21 @@ Ces valeurs sont calculées automatiquement par PostgreSQL via des colonnes `GEN
 
 ### Exemples
 
-| Montant total | Commission 12% | Net freelance |
+| Montant total | Commission 15% | Net freelance |
 |---------------|----------------|---------------|
-| 10 000 FCFA   | 1 200 FCFA     | 8 800 FCFA    |
-| 25 000 FCFA   | 3 000 FCFA     | 22 000 FCFA   |
-| 65 000 FCFA   | 7 800 FCFA     | 57 200 FCFA   |
-| 150 000 FCFA  | 18 000 FCFA    | 132 000 FCFA  |
-| 500 000 FCFA  | 60 000 FCFA    | 440 000 FCFA  |
+| 10 000 FCFA   | 1 500 FCFA     | 8 500 FCFA    |
+| 25 000 FCFA   | 3 750 FCFA     | 21 250 FCFA   |
+| 65 000 FCFA   | 9 750 FCFA     | 55 250 FCFA   |
+| 150 000 FCFA  | 22 500 FCFA    | 127 500 FCFA  |
+| 500 000 FCFA  | 75 000 FCFA    | 425 000 FCFA  |
 
-### Taux variables selon niveau freelance (évolution future)
+### Taux variables selon plan freelance
 
 | Niveau         | Taux commission | Condition                              |
 |----------------|-----------------|----------------------------------------|
-| Standard       | 12%             | < 50 commandes validées                |
-| Niveau 2       | 10%             | ≥ 50 commandes, note ≥ 4,5/5          |
-| Top Oriupe     | 8%              | ≥ 200 commandes, note ≥ 4,8/5         |
-| Partenaire Pro | 6%              | Contrat négocié, volume garanti        |
+| Gratuit        | 15%             | Plan par défaut                        |
+| Pro            | 10%             | Abonnement Pro actif                   |
+| Business       | 7%              | Abonnement Business actif              |
 
 Stocker `commission_rate` directement dans la commande (snapshot au moment de la création) pour qu'une évolution du taux n'affecte pas les commandes en cours.
 

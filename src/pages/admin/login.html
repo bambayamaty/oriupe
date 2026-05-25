@@ -83,6 +83,10 @@ body{font-family:'Plus Jakarta Sans',sans-serif;display:flex;min-height:100vh}
 .tcc-role{font-size:10px;color:rgba(255,255,255,.35);margin-top:1px}
 .tcc-arrow{font-size:11px;color:rgba(255,255,255,.25)}
 </style>
+<script type="module">
+  import { redirectIfAdminSession } from '/src/shared/admin-auth.js'
+  redirectIfAdminSession()
+</script>
 </head>
 <body>
 
@@ -90,11 +94,11 @@ body{font-family:'Plus Jakarta Sans',sans-serif;display:flex;min-height:100vh}
   <div class="al-orb al-orb1"></div>
   <div class="al-orb al-orb2"></div>
   <div class="al-grid"></div>
-  <div class="al-logo">
-    <svg width="30" height="30" viewBox="0 0 32 32" fill="none"><circle cx="10" cy="10" r="8.5" fill="#8DC63F" opacity=".9"/><circle cx="22" cy="10" r="8.5" fill="#29ABE2" opacity=".9"/><circle cx="10" cy="22" r="8.5" fill="#3CB878" opacity=".9"/><circle cx="22" cy="22" r="8.5" fill="#1B3A4A"/><rect x="9.5" y="9.5" width="13" height="13" rx="1.5" fill="rgba(60,184,120,.45)"/></svg>
+  <a class="al-logo" href="/src/pages/home/index.html" aria-label="Oriupe — Retour à l'accueil">
+    <svg width="32" height="30" viewBox="0 0 32 32" fill="none"><circle cx="10" cy="10" r="8.5" fill="#8DC63F" opacity=".9"/><circle cx="22" cy="10" r="8.5" fill="#29ABE2" opacity=".9"/><circle cx="10" cy="22" r="8.5" fill="#3CB878" opacity=".9"/><circle cx="22" cy="22" r="8.5" fill="#1B3A4A"/><rect x="9.5" y="9.5" width="13" height="13" rx="1.5" fill="rgba(60,184,120,.45)"/></svg>
     <span class="al-logo-t">Oriupe</span>
     <span class="al-admin-tag">ADMIN</span>
-  </div>
+  </a>
   <div class="al-body">
     <div class="al-icon">
       <svg width="34" height="34" viewBox="0 0 34 34" fill="none"><path d="M17 3L5 9V18C5 24.63 10.24 30.84 17 32C23.76 30.84 29 24.63 29 18V9L17 3Z" stroke="#3CB878" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 17L15.5 20.5L22 14" stroke="#3CB878" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -102,40 +106,11 @@ body{font-family:'Plus Jakarta Sans',sans-serif;display:flex;min-height:100vh}
     <h1 class="al-title">Espace Administrateur</h1>
     <p class="al-sub">Accès réservé à l'équipe interne Oriupe. Toutes les connexions et actions sont enregistrées, horodatées et tracées en permanence.</p>
     <div class="al-badges">
-      <div class="al-badge"><div class="al-badge-dot"></div><span>Chiffrement TLS 256-bit</span></div>
-      <div class="al-badge"><div class="al-badge-dot"></div><span>Authentification TOTP obligatoire</span></div>
-      <div class="al-badge"><div class="al-badge-dot"></div><span>Session expirée après 2h d'inactivité</span></div>
+      <div class="al-badge"><div class="al-badge-dot"></div><span>Chiffrement TLS requis</span></div>
+      <div class="al-badge"><div class="al-badge-dot"></div><span>Role serveur obligatoire</span></div>
+      <div class="al-badge"><div class="al-badge-dot"></div><span>MFA a activer cote fournisseur</span></div>
     </div>
-    <div class="test-creds-title">Accès de démonstration</div>
-    <div class="test-cred-card" onclick="fillCreds('admin@oriupe.com','Admin2025!')">
-      <div class="tcc-left">
-        <div class="tcc-av" style="background:linear-gradient(135deg,#3CB878,#27965D)">SA</div>
-        <div><div class="tcc-email">admin@oriupe.com</div><div class="tcc-role">Super Admin · Accès total</div></div>
-      </div>
-      <span class="tcc-arrow">→</span>
-    </div>
-    <div class="test-cred-card" onclick="fillCreds('moderateur@oriupe.com','Modo2025!')">
-      <div class="tcc-left">
-        <div class="tcc-av" style="background:linear-gradient(135deg,#7C3AED,#5B21B6)">MO</div>
-        <div><div class="tcc-email">moderateur@oriupe.com</div><div class="tcc-role">Modérateur · KYC & Services</div></div>
-      </div>
-      <span class="tcc-arrow">→</span>
-    </div>
-    <div class="test-cred-card" onclick="fillCreds('support@oriupe.com','Support2025!')">
-      <div class="tcc-left">
-        <div class="tcc-av" style="background:linear-gradient(135deg,#29ABE2,#1A7FAD)">SP</div>
-        <div><div class="tcc-email">support@oriupe.com</div><div class="tcc-role">Support · Litiges & Comms</div></div>
-      </div>
-      <span class="tcc-arrow">→</span>
-    </div>
-    <div class="test-cred-card" onclick="fillCreds('finance@oriupe.com','Finance2025!')">
-      <div class="tcc-left">
-        <div class="tcc-av" style="background:linear-gradient(135deg,#F59E0B,#D97706)">FN</div>
-        <div><div class="tcc-email">finance@oriupe.com</div><div class="tcc-role">Finance · Escrow & Paiements</div></div>
-      </div>
-      <span class="tcc-arrow">→</span>
-    </div>
-    <p class="al-copy">© 2025 Oriupe SAS — TOTP demo: tapez <strong style="color:rgba(255,255,255,.4)">123456</strong></p>
+    <p class="al-copy">© 2026 Oriupe SAS — Acces interne uniquement</p>
   </div>
 </div>
 
@@ -185,7 +160,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;display:flex;min-height:100vh}
         Continuer
         <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M3 7.5H12M12 7.5L8.5 4M12 7.5L8.5 11" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
-      <p style="font-size:11px;color:var(--muted);text-align:center;margin-top:16px">Cliquez sur un rôle à gauche pour remplir automatiquement</p>
+      <p style="font-size:11px;color:var(--muted);text-align:center;margin-top:16px">Les droits admin sont lus depuis les metadonnees serveur du compte.</p>
     </div>
 
     <!-- STEP 2 -->
@@ -216,10 +191,10 @@ body{font-family:'Plus Jakarta Sans',sans-serif;display:flex;min-height:100vh}
       </div>
       <div id="recovery-wrap" style="display:none;margin-top:14px;padding:16px;background:#F4F6F9;border-radius:12px;border:1px solid var(--border)">
         <label class="inp-label">Code de secours</label>
-        <input class="inp" id="rec-inp" type="text" placeholder="A1B2-C3D4" style="padding-left:14px"/>
+        <input class="inp" id="rec-inp" type="text" placeholder="Code fourni par le fournisseur d'identite" style="padding-left:14px"/>
         <button class="btn btn-green" onclick="useRecovery()" style="margin-top:10px">Utiliser</button>
       </div>
-      <p style="font-size:11px;color:var(--muted);text-align:center;margin-top:14px">Demo : tapez 123456</p>
+      <p style="font-size:11px;color:var(--muted);text-align:center;margin-top:14px">La MFA doit etre configuree cote fournisseur d'identite avant production.</p>
     </div>
 
     <!-- STEP 3: SUCCESS -->
@@ -252,21 +227,17 @@ body{font-family:'Plus Jakarta Sans',sans-serif;display:flex;min-height:100vh}
 </div>
 
 <script>
-let attempts=0,totpTries=0,timerIv,lockIv,timerSec=30,redirectUrl='/src/pages/admin/index.html',currentRole='Super Admin';
-
-const ROLES={
-  'admin@oriupe.com':    {pwd:'Admin2025!',  url:'/src/pages/admin/index.html',       label:'Super Admin Oriupe'},
-  'moderateur@oriupe.com':{pwd:'Modo2025!',  url:'/src/pages/admin/moderateur.html',  label:'Modérateur Oriupe'},
-  'support@oriupe.com':  {pwd:'Support2025!',url:'/src/pages/admin/support.html',     label:'Agent Support Oriupe'},
-  'finance@oriupe.com':  {pwd:'Finance2025!',url:'/src/pages/admin/finance.html',     label:'Analyste Finance Oriupe'},
-};
+let attempts=0,totpTries=0,timerIv,lockIv,timerSec=30,redirectUrl='/src/pages/admin/index.html',currentRole='Admin Oriupe';
 
 const totpInputs=document.querySelectorAll('.totp-inp');
 
-function fillCreds(email,pwd){
-  document.getElementById('email').value=email;
-  document.getElementById('pwd').value=pwd;
-  document.getElementById('email').focus();
+function fillCreds(email, pwd) {
+  const eInp = document.getElementById('email');
+  const pInp = document.getElementById('pwd');
+  if (eInp) { eInp.value = email; eInp.dispatchEvent(new Event('input', {bubbles:true})); }
+  if (pInp) { pInp.value = pwd;   pInp.dispatchEvent(new Event('input', {bubbles:true})); }
+  hideErr('err1');
+  document.getElementById('btn1')?.focus();
 }
 
 function goStep(n){
@@ -280,7 +251,7 @@ function goStep(n){
   });
 }
 
-function step1Submit(){
+async function step1Submit(){
   const email=document.getElementById('email').value.trim().toLowerCase();
   const pwd=document.getElementById('pwd').value;
   const btn=document.getElementById('btn1');
@@ -289,23 +260,27 @@ function step1Submit(){
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){showErr('err1','Email invalide.');return;}
   btn.disabled=true;
   btn.innerHTML='<svg width="18" height="18" viewBox="0 0 18 18" fill="none" style="animation:spin .7s linear infinite"><path d="M9 2C5.13 2 2 5.13 2 9" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg> Vérification...';
-  setTimeout(()=>{
+  try{
+    const auth=window.OriupeAdminAuth;
+    if(!auth?.loginAdmin) throw new Error('Module admin indisponible. Verifiez la configuration Supabase.');
+    const result=await auth.loginAdmin({email,password:pwd});
+    redirectUrl=result.redirectUrl;
+    currentRole=result.role.replace('_',' ');
+    goStep(3);
+    document.querySelector('.success-sub').innerHTML=`Bienvenue, <strong>${currentRole}</strong>.<br>Redirection vers le tableau de bord...`;
+    setTimeout(()=>{document.getElementById('pfill').style.width='100%';},80);
+    setTimeout(()=>location.href=redirectUrl,900);
+  }catch(e){
+    attempts++;
     btn.disabled=false;
     btn.innerHTML='Continuer <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M3 7.5H12M12 7.5L8.5 4M12 7.5L8.5 11" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-    const role=ROLES[email];
-    if(role&&pwd===role.pwd){
-      redirectUrl=role.url;currentRole=role.label;
-      goStep(2);startTotpTimer();
-    } else {
-      attempts++;
-      if(attempts>=5){lockAccount();return;}
-      showErr('err1',`Identifiants incorrects. Tentative ${attempts}/5.`);
-      ['email','pwd'].forEach(id=>{
-        document.getElementById(id).classList.add('err');
-        setTimeout(()=>document.getElementById(id).classList.remove('err'),1500);
-      });
-    }
-  },1500);
+    if(attempts>=5){lockAccount();return;}
+    showErr('err1',`${e.message||'Identifiants incorrects.'} Tentative ${attempts}/5.`);
+    ['email','pwd'].forEach(id=>{
+      document.getElementById(id).classList.add('err');
+      setTimeout(()=>document.getElementById(id).classList.remove('err'),1500);
+    });
+  }
 }
 
 totpInputs.forEach((inp,i)=>{
@@ -335,27 +310,11 @@ function getCode(){return Array.from(totpInputs).map(i=>i.value).join('');}
 function checkTotp(){document.getElementById('btn2').disabled=getCode().length<6;}
 
 function step2Submit(){
-  const code=getCode();
   const btn=document.getElementById('btn2');
   hideErr('err2');
-  btn.disabled=true;
-  btn.innerHTML='<svg width="18" height="18" viewBox="0 0 18 18" fill="none" style="animation:spin .7s linear infinite"><path d="M9 2C5.13 2 2 5.13 2 9" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>';
-  setTimeout(()=>{
-    if(code==='123456'){
-      clearInterval(timerIv);goStep(3);
-      document.querySelector('.success-sub').innerHTML=`Bienvenue, <strong>${currentRole}</strong>.<br>Redirection vers le tableau de bord...`;
-      localStorage.setItem('oriupe_admin_session', JSON.stringify({isAdmin:true,role:currentRole,email:document.getElementById('email').value.trim(),loginAt:Date.now()}));
-      setTimeout(()=>{document.getElementById('pfill').style.width='100%';},80);
-      setTimeout(()=>location.href=redirectUrl,2200);
-    } else {
-      totpTries++;
-      btn.disabled=false;btn.innerHTML='Vérifier';
-      if(totpTries>=3){lockAccount();return;}
-      showErr('err2',`Code incorrect. ${3-totpTries} tentative(s) restante(s).`);
-      totpInputs.forEach(x=>{x.value='';x.classList.remove('filled');});
-      totpInputs[0].focus();checkTotp();
-    }
-  },1200);
+  btn.disabled=false;
+  btn.innerHTML='Vérifier';
+  showErr('err2','La MFA de demo a ete supprimee. Activez la MFA via Supabase/Auth provider avant production.');
 }
 
 function startTotpTimer(){
@@ -373,14 +332,7 @@ function toggleRecovery(){
   w.style.display=w.style.display==='none'?'block':'none';
 }
 function useRecovery(){
-  const v=document.getElementById('rec-inp').value.trim();
-  if(v==='A1B2-C3D4'){
-    clearInterval(timerIv);goStep(3);
-    document.querySelector('.success-sub').innerHTML=`Bienvenue, <strong>${currentRole}</strong>.<br>Redirection vers le tableau de bord...`;
-    localStorage.setItem('oriupe_admin_session', JSON.stringify({isAdmin:true,role:currentRole,email:document.getElementById('email').value.trim(),loginAt:Date.now()}));
-    setTimeout(()=>document.getElementById('pfill').style.width='100%',80);
-    setTimeout(()=>location.href=redirectUrl,2200);
-  } else { alert('Code de secours invalide.'); }
+  showErr('err2','Les codes de secours de demo ont ete retires. Utilisez la procedure de recovery du fournisseur d identite.');
 }
 
 function lockAccount(){

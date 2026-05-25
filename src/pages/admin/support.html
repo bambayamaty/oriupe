@@ -1,17 +1,11 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<script>
-  (function(){
-    try{
-      var s=JSON.parse(localStorage.getItem('oriupe_admin_session')||'null');
-      if(!s||!s.isAdmin) throw new Error();
-      // Session expires after 8h
-      if(Date.now()-s.loginAt > 8*60*60*1000){localStorage.removeItem('oriupe_admin_session');throw new Error();}
-    }catch(e){
-      window.location.replace('/src/pages/admin/login.html');
-    }
-  })();
+<script>document.documentElement.classList.add('admin-guard-pending')</script>
+<style>html.admin-guard-pending body{visibility:hidden}</style>
+<script type="module">
+  import { protectAdminPage } from '/src/shared/admin-auth.js'
+  protectAdminPage({ allowedRoles: ['super_admin', 'admin', 'support'] })
 </script>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Oriupe Admin — Espace Support</title>
@@ -26,9 +20,9 @@ body{font-family:"Plus Jakarta Sans",sans-serif;background:#060F1E;color:#E2E8F0
 a{text-decoration:none;color:inherit}button{font-family:"Plus Jakarta Sans",sans-serif;cursor:pointer}
 .sidebar{width:var(--sidebar-w);flex-shrink:0;background:var(--navy2);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100vh;overflow-y:auto;position:fixed;left:0;top:0;z-index:100}
 .sidebar::-webkit-scrollbar{width:3px}.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
-.sb-logo{padding:22px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.sb-logo{padding:22px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;text-decoration:none;cursor:pointer;transition:opacity .2s,transform .28s cubic-bezier(.34,1.56,.64,1)}.sb-logo:hover{opacity:.82;transform:scale(1.03)}.sb-logo:hover svg{filter:drop-shadow(0 2px 8px rgba(60,184,120,.45))}.sb-logo:focus-visible{outline:2px solid #3CB878;outline-offset:3px;border-radius:6px}
 .sb-logo-t{font-family:"Bricolage Grotesque",sans-serif;font-size:18px;font-weight:800;color:#fff}
-.sb-logo-badge{font-size:9px;font-weight:700;color:#fff;padding:2px 7px;border-radius:4px;letter-spacing:.5px}
+.sb-logo-badge{font-size:11px;font-weight:700;color:#fff;padding:2px 7px;border-radius:4px;letter-spacing:.5px}
 .sb-admin-info{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
 .sb-av{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0}
 .sb-name{font-size:13px;font-weight:700;color:#fff}.sb-role-tag{font-size:10px;font-weight:600}
@@ -113,11 +107,11 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.02)
 
 <!-- SIDEBAR -->
 <aside class="sidebar">
-  <div class="sb-logo">
+  <a class="sb-logo" href="/src/pages/home/index.html" aria-label="Oriupe — Accueil">
     <svg width="26" height="26" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="9" fill="#3CB878"/><path d="M8 22l6-12 4 8 3-5 3 9" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
     <span class="sb-logo-t">Oriupe</span>
     <span class="sb-logo-badge" style="background:var(--blue)">SUPPORT</span>
-  </div>
+  </a>
   <div class="sb-admin-info">
     <div class="sb-av" style="background:linear-gradient(135deg,#29ABE2,#1A7FAD)">SP</div>
     <div>
@@ -153,7 +147,7 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.02)
     <div class="sb-item" style="color:rgba(255,255,255,.4)" onclick="window.location.href='/src/pages/admin/index.html'">
       <span class="sb-ic"><i class="fa-solid fa-arrow-left"></i></span> Admin principal
     </div>
-    <div class="sb-item" style="color:var(--red)" onclick="localStorage.removeItem('oriupe_admin_session');window.location.href='/src/pages/admin/login.html'">
+    <div class="sb-item" style="color:var(--red)" onclick="window.OriupeAdminAuth?.signOutAdmin()">
       <span class="sb-ic"><i class="fa-solid fa-right-from-bracket"></i></span> Déconnexion
     </div>
   </div>

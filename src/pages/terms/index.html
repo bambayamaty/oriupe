@@ -211,6 +211,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
 @media(max-width:480px){.of-z1{grid-template-columns:1fr}}
 </style>
   <script type="module" src="/src/components/nav.js"></script>
+  <script src="/src/shared/oriupe-session.js"></script>
 </head>
 <body>
 
@@ -218,7 +219,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
 
 
 <!-- HERO -->
-<section class="hero">
+<section class="hero" data-nav-theme="dark">
   <div class="hero-meta">
     <span class="hero-badge">📄 Document légal</span>
     <span class="hero-date">Dernière mise à jour : 15 janvier 2025</span>
@@ -240,7 +241,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
   </aside>
 
   <!-- CONTENT -->
-  <main class="content">
+  <main class="content" data-nav-theme="light">
     <div class="content-top">
       <div class="content-top-info">
         <h2>CGU &amp; CGV — Oriupe</h2>
@@ -496,7 +497,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
 </div>
 
 <!-- FOOTER -->
-<footer class="oriupe-footer">
+<footer class="oriupe-footer" data-nav-theme="dark">
   <div class="of-grid"></div>
   <div class="of-z1">
     <div class="of-brand">

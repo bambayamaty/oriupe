@@ -257,6 +257,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
 @media(max-width:480px){.of-z1{grid-template-columns:1fr}}
 </style>
   <script type="module" src="/src/components/nav.js"></script>
+  <script src="/src/shared/oriupe-session.js"></script>
 </head>
 <body>
 
@@ -264,7 +265,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
 
 
 <!-- HERO -->
-<section class="hero">
+<section class="hero" data-nav-theme="dark">
   <div class="hero-meta">
     <span class="hero-badge">🔒 Données protégées</span>
     <span class="hero-badge-rgpd">✓ RGPD &amp; Loi ivoirienne</span>
@@ -292,7 +293,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
   </aside>
 
   <!-- CONTENT -->
-  <main class="content">
+  <main class="content" data-nav-theme="light">
     <div class="content-top">
       <div class="content-top-info">
         <h2>Politique de Confidentialité</h2>
@@ -610,7 +611,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
 </div>
 
 <!-- FOOTER -->
-<footer class="oriupe-footer">
+<footer class="oriupe-footer" data-nav-theme="dark">
   <div class="of-grid"></div>
   <div class="of-z1">
     <div class="of-brand">
