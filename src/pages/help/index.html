@@ -23,7 +23,7 @@ html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
 body{font-family:'Plus Jakarta Sans',sans-serif;background:#F4F6F9;color:#1B3A4A;overflow-x:hidden}
 /* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
-.nav-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:24px;height:64px;padding:0 32px}
+.nav-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:24px;height:var(--nav-h);padding:0 32px}
 .logo{display:flex;align-items:center;gap:10px;text-decoration:none}
 .logo-text{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:var(--navy)}
 .nav-links{display:flex;gap:4px;margin-left:32px}
@@ -243,6 +243,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
 @media(max-width:480px){.of-z1{grid-template-columns:1fr}}
 </style>
   <script type="module" src="/src/components/nav.js"></script>
+  <script src="/src/shared/oriupe-session.js"></script>
 </head>
 <body>
 
@@ -250,7 +251,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
 
 
 <!-- HERO -->
-<section class="hero">
+<section class="hero" data-nav-theme="dark">
   <div class="hero-orb hero-orb-1"></div>
   <div class="hero-orb hero-orb-2"></div>
   <div class="hero-orb hero-orb-3"></div>
@@ -271,7 +272,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
 </section>
 
 <!-- MAIN -->
-<main class="main">
+<main class="main" data-nav-theme="light">
 
   <!-- CATEGORIES -->
   <div class="section-title">Parcourir par catégorie</div>
@@ -525,7 +526,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
 </main>
 
 <!-- FOOTER -->
-<footer class="oriupe-footer">
+<footer class="oriupe-footer" data-nav-theme="dark">
   <div class="of-grid"></div>
   <div class="of-z1">
     <div class="of-brand">

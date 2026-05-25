@@ -5,1290 +5,2303 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Oriupe — Messagerie</title>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="/src/shared/styles/base.css"/>
+<link rel="stylesheet" href="/src/shared/styles/base.css"/>
 <script src="/src/shared/oriupe-session.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-font-smoothing:antialiased;height:100%}
-body{font-family:'Plus Jakarta Sans',sans-serif;background:#F4F6F9;color:#1B3A4A;height:100vh;display:flex;overflow:hidden}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#0F2535;color:#1B3A4A;height:100vh;display:flex;flex-direction:column;overflow:hidden}
 a{text-decoration:none;color:inherit}
 button,input,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer}
-/* ═══ LAYOUT ═══ */
-.app{display:flex;height:100vh;overflow:hidden;width:100%}
 
-/* ═══ LEFT SIDEBAR — CONVERSATIONS ═══ */
+/* ── APP SHELL ── */
+.msg-app{display:flex;height:calc(100vh - 56px);overflow:hidden}
+
+/* ── LEFT SIDEBAR ── */
 .sidebar{
   width:300px;flex-shrink:0;
-  background:var(--navy);
+  background:#0F2535;
   display:flex;flex-direction:column;
-  height:100vh;overflow:hidden;
-  border-right:1px solid rgba(255,255,255,.04)
+  border-right:1px solid rgba(255,255,255,.06);
+  height:100%;overflow:hidden;
+  transition:transform .25s ease
 }
-
-/* Sidebar top — brand + back */
 .sb-top{
-  padding:16px 18px;
-  border-bottom:1px solid rgba(255,255,255,.07);
-  display:flex;align-items:center;gap:12px
+  padding:14px 16px;
+  border-bottom:1px solid rgba(255,255,255,.06);
+  display:flex;align-items:center;gap:10px
 }
 .sb-back{
-  width:30px;height:30px;border-radius:8px;
-  border:1.5px solid rgba(255,255,255,.12);
-  background:transparent;color:rgba(255,255,255,.5);
-  display:flex;align-items:center;justify-content:center;
-  cursor:pointer;transition:all .2s;flex-shrink:0
-}
-.sb-back:hover{border-color:var(--green);color:var(--green)}
-.sb-brand{display:flex;align-items:center;gap:8px;flex:1}
-.sb-logo-mark{
   width:28px;height:28px;border-radius:7px;
-  background:linear-gradient(135deg,var(--blue),var(--green));
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Bricolage Grotesque',sans-serif;font-size:13px;font-weight:800;color:#fff
-}
-.sb-brand-name{font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;color:#fff}
-.sb-compose{
-  width:30px;height:30px;border-radius:8px;
-  border:1.5px solid rgba(255,255,255,.12);
-  background:transparent;color:rgba(255,255,255,.5);
+  border:1.5px solid rgba(255,255,255,.1);
+  background:transparent;color:rgba(255,255,255,.45);
   display:flex;align-items:center;justify-content:center;
   cursor:pointer;transition:all .2s;flex-shrink:0
 }
-.sb-compose:hover{border-color:var(--blue);color:var(--blue);background:rgba(41,171,226,.1)}
+.sb-back:hover{border-color:#3CB878;color:#3CB878}
+.sb-brand{display:flex;align-items:center;gap:8px;flex:1;min-width:0}
+.sb-logo{width:26px;height:26px;border-radius:6px;background:linear-gradient(135deg,#29ABE2,#3CB878);display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-size:12px;font-weight:800;color:#fff;flex-shrink:0}
+.sb-title{font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:800;color:#fff}
+.sb-compose{
+  width:28px;height:28px;border-radius:7px;
+  border:1.5px solid rgba(255,255,255,.1);
+  background:transparent;color:rgba(255,255,255,.45);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .2s;flex-shrink:0
+}
+.sb-compose:hover{border-color:#29ABE2;color:#29ABE2;background:rgba(41,171,226,.08)}
 
 /* Role toggle */
-.sb-role-toggle{
-  padding:10px 16px;
-  border-bottom:1px solid rgba(255,255,255,.06)
-}
-.role-pill{
-  display:flex;background:rgba(255,255,255,.06);
-  border-radius:8px;padding:3px;gap:2px
-}
-.role-btn{
-  flex:1;padding:5px 8px;border-radius:6px;
-  border:none;font-size:11px;font-weight:700;
-  cursor:pointer;transition:all .2s;
-  background:transparent;color:rgba(255,255,255,.4);
-  font-family:'Plus Jakarta Sans',sans-serif
-}
-.role-btn.active{background:#fff;color:var(--navy2);box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.sb-role{padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.05)}
+.role-pill{display:flex;background:rgba(255,255,255,.05);border-radius:7px;padding:2px;gap:2px}
+.role-btn{flex:1;padding:5px 8px;border-radius:5px;border:none;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s;background:transparent;color:rgba(255,255,255,.35);letter-spacing:.3px}
+.role-btn.active{background:#fff;color:#0F2535;box-shadow:0 2px 6px rgba(0,0,0,.2)}
 
 /* Search */
 .sb-search{padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.04)}
 .search-wrap{position:relative}
-.search-ico{position:absolute;left:10px;top:50%;transform:translateY(-50%);pointer-events:none;opacity:.3}
-.search-inp{
-  width:100%;background:rgba(255,255,255,.06);
-  border:1.5px solid transparent;border-radius:9px;
-  padding:8px 12px 8px 32px;font-size:12px;
-  color:rgba(255,255,255,.7);outline:none;
-  transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif
+.search-ico{position:absolute;left:9px;top:50%;transform:translateY(-50%);pointer-events:none;color:rgba(255,255,255,.25)}
+.search-input{
+  width:100%;padding:7px 10px 7px 30px;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);
+  border-radius:8px;color:#fff;font-size:13px;
+  outline:none;transition:border-color .2s
 }
-.search-inp:focus{background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.12)}
-.search-inp::placeholder{color:rgba(255,255,255,.2)}
+.search-input::placeholder{color:rgba(255,255,255,.25)}
+.search-input:focus{border-color:rgba(41,171,226,.4)}
 
-/* Channel sections */
-.sb-channel-list{flex:1;overflow-y:auto}
-.sb-channel-list::-webkit-scrollbar{width:3px}
-.sb-channel-list::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:2px}
+/* Tab filters */
+.sb-tabs{display:flex;gap:2px;padding:8px 12px 6px;border-bottom:1px solid rgba(255,255,255,.04)}
+.sb-tab{padding:4px 10px;border-radius:20px;border:none;font-size:11px;font-weight:600;cursor:pointer;transition:all .2s;background:transparent;color:rgba(255,255,255,.3)}
+.sb-tab.active{background:rgba(60,184,120,.15);color:#3CB878}
 
-.channel-section{margin-bottom:4px}
-.channel-lbl{
-  padding:10px 16px 5px;
-  font-size:9px;font-weight:800;
-  color:rgba(255,255,255,.22);letter-spacing:1.8px
-}
-
-/* Oriupe Official channel item */
-.oriupe-channel-item{
-  display:flex;align-items:center;gap:10px;
-  padding:11px 14px;cursor:pointer;
-  transition:background .15s;position:relative
-}
-.oriupe-channel-item:hover{background:rgba(255,255,255,.05)}
-.oriupe-channel-item.active{background:rgba(41,171,226,.16)}
-.oriupe-channel-item.active::before{content:'';position:absolute;left:0;top:20%;height:60%;width:3px;background:var(--blue);border-radius:0 3px 3px 0}
-
-.oriupe-av{
-  width:40px;height:40px;border-radius:12px;
-  background:linear-gradient(135deg,#1565C0,#0288D1,#29ABE2);
-  display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;position:relative
-}
-.oriupe-av-badge{
-  position:absolute;bottom:-3px;right:-3px;
-  width:16px;height:16px;border-radius:50%;
-  background:var(--blue);border:2px solid var(--navy);
-  display:flex;align-items:center;justify-content:center
-}
-.oriupe-info{flex:1;min-width:0}
-.oriupe-name-row{display:flex;align-items:center;gap:5px;margin-bottom:3px}
-.oriupe-name{font-size:12px;font-weight:800;color:#fff}
-.official-badge{
-  padding:1px 5px;border-radius:4px;
-  background:var(--blue);color:#fff;
-  font-size:8px;font-weight:800;letter-spacing:.3px
-}
-.oriupe-preview{font-size:10px;color:rgba(255,255,255,.35);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.oriupe-meta{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0}
-.oriupe-time{font-size:9px;color:rgba(255,255,255,.2)}
-.unread-badge{
-  min-width:18px;height:18px;
-  background:var(--blue);color:#fff;
-  border-radius:18px;font-size:9px;font-weight:800;
-  display:flex;align-items:center;justify-content:center;padding:0 4px
-}
-.unread-badge.red{background:var(--red)}
-.unread-badge.green{background:var(--green)}
-
-/* Conversation items */
+/* Conversation list */
+.conv-list{flex:1;overflow-y:auto;padding:6px 0}
+.conv-list::-webkit-scrollbar{width:4px}
+.conv-list::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:4px}
 .conv-item{
   display:flex;align-items:center;gap:10px;
-  padding:11px 14px;cursor:pointer;
-  border-bottom:1px solid rgba(255,255,255,.03);
-  transition:background .15s;position:relative
+  padding:10px 14px;cursor:pointer;
+  transition:background .15s;position:relative;
+  border-left:2px solid transparent
 }
 .conv-item:hover{background:rgba(255,255,255,.04)}
-.conv-item.active{background:rgba(60,184,120,.16)}
-.conv-item.active::before{content:'';position:absolute;left:0;top:20%;height:60%;width:3px;background:var(--green);border-radius:0 3px 3px 0}
-.cav{
+.conv-item.active{background:rgba(41,171,226,.1);border-left-color:#29ABE2}
+.conv-item.unread .conv-preview{color:rgba(255,255,255,.7)}
+.conv-item.unread .conv-name{color:#fff;font-weight:700}
+.conv-avatar{position:relative;flex-shrink:0}
+.av{
   width:40px;height:40px;border-radius:50%;
   display:flex;align-items:center;justify-content:center;
-  font-size:13px;font-weight:800;color:#fff;flex-shrink:0;position:relative
+  font-size:14px;font-weight:700;color:#fff;flex-shrink:0
 }
-.cav-dot{position:absolute;bottom:1px;right:1px;width:10px;height:10px;border-radius:50%;border:2px solid var(--navy)}
-.cav-online{background:#22C55E}
-.cav-offline{background:rgba(255,255,255,.2)}
+.av-green{background:linear-gradient(135deg,#3CB878,#29ABE2)}
+.av-blue{background:linear-gradient(135deg,#29ABE2,#1B3A4A)}
+.av-orange{background:linear-gradient(135deg,#F5A623,#E84393)}
+.av-purple{background:linear-gradient(135deg,#9B59B6,#29ABE2)}
+.av-system{background:linear-gradient(135deg,#0F2535,#29ABE2);border:1.5px solid rgba(41,171,226,.3)}
+.online-dot{position:absolute;bottom:1px;right:1px;width:9px;height:9px;border-radius:50%;background:#3CB878;border:1.5px solid #0F2535}
+.badge{
+  position:absolute;top:-3px;right:-3px;
+  min-width:16px;height:16px;border-radius:8px;
+  background:#E84393;color:#fff;font-size:9px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;padding:0 4px;
+  border:1.5px solid #0F2535
+}
 .conv-info{flex:1;min-width:0}
-.conv-name{font-size:12px;font-weight:700;color:rgba(255,255,255,.85);margin-bottom:3px}
-.conv-preview{font-size:10px;color:rgba(255,255,255,.32);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.conv-preview.unread-text{color:rgba(255,255,255,.6);font-weight:600}
-.conv-meta-col{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0}
-.conv-time{font-size:9px;color:rgba(255,255,255,.2)}
+.conv-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:2px}
+.conv-name{font-size:13px;font-weight:600;color:rgba(255,255,255,.75);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.conv-time{font-size:10px;color:rgba(255,255,255,.25);flex-shrink:0;margin-left:6px}
+.conv-preview{font-size:11.5px;color:rgba(255,255,255,.35);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.conv-tag{display:inline-flex;align-items:center;gap:3px;padding:1px 6px;border-radius:4px;font-size:9px;font-weight:700;margin-left:4px}
+.tag-order{background:rgba(245,166,35,.15);color:#F5A623}
+.tag-system{background:rgba(41,171,226,.15);color:#29ABE2}
 
-/* Notification items */
-.notif-item{
-  display:flex;align-items:flex-start;gap:10px;
-  padding:11px 14px;cursor:pointer;
-  border-bottom:1px solid rgba(255,255,255,.03);
-  transition:background .15s;position:relative
+/* ── CENTER — CHAT AREA ── */
+.chat-area{
+  flex:1;display:flex;flex-direction:column;
+  background:#F0F4F8;min-width:0;height:100%;
+  position:relative;
 }
-.notif-item:hover{background:rgba(255,255,255,.04)}
-.notif-item.active{background:rgba(245,158,11,.12)}
-.notif-item.active::before{content:'';position:absolute;left:0;top:20%;height:60%;width:3px;background:var(--gold);border-radius:0 3px 3px 0}
-.notif-ico-wrap{
-  width:38px;height:38px;border-radius:10px;
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px
+.chat-empty{
+  flex:1;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:12px;
+  color:rgba(15,37,53,.35)
 }
-.notif-text-col{flex:1;min-width:0}
-.notif-title{font-size:11px;font-weight:700;color:rgba(255,255,255,.8);margin-bottom:2px}
-.notif-sub{font-size:10px;color:rgba(255,255,255,.32);line-height:1.4}
-.notif-time{font-size:9px;color:rgba(255,255,255,.2);flex-shrink:0;margin-top:1px;white-space:nowrap}
-
-/* Sidebar bottom — user */
-.sb-bottom{
-  padding:12px 14px;
-  border-top:1px solid rgba(255,255,255,.07);
-  display:flex;align-items:center;gap:10px
-}
-.sb-user-av{
-  width:32px;height:32px;border-radius:50%;
-  background:linear-gradient(135deg,#F59E0B,#F97316);
-  display:flex;align-items:center;justify-content:center;
-  font-size:10px;font-weight:800;color:#fff;flex-shrink:0
-}
-.sb-user-info{flex:1;min-width:0}
-.sb-user-name{font-size:11px;font-weight:700;color:rgba(255,255,255,.8)}
-.sb-user-role{font-size:9px;color:rgba(255,255,255,.35)}
-.sb-user-dot{width:8px;height:8px;border-radius:50%;background:#22C55E;flex-shrink:0}
-
-/* ═══ MAIN AREA ═══ */
-.chat-main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;background:var(--bg)}
-
-/* ── ORIUPE OFFICIAL THREAD ── */
-#thread-oriupe{display:flex;flex-direction:column;height:100%;overflow:hidden}
-
-/* Official header */
-.official-header{
-  background:#fff;
-  border-bottom:1px solid var(--border);
-  padding:14px 22px;
-  display:flex;align-items:center;gap:14px;
-  flex-shrink:0;box-shadow:var(--shadow)
-}
-.oh-av{
-  width:44px;height:44px;border-radius:12px;
-  background:linear-gradient(135deg,#1565C0,#0288D1,#29ABE2);
-  display:flex;align-items:center;justify-content:center;
-  position:relative;flex-shrink:0
-}
-.oh-badge{
-  position:absolute;bottom:-4px;right:-4px;
-  background:var(--blue);border:2px solid #fff;
-  border-radius:50%;width:18px;height:18px;
-  display:flex;align-items:center;justify-content:center
-}
-.oh-info{flex:1}
-.oh-name-row{display:flex;align-items:center;gap:8px;margin-bottom:2px}
-.oh-name{font-size:15px;font-weight:800;color:var(--navy2);font-family:'Bricolage Grotesque',sans-serif}
-.oh-official-tag{
-  padding:2px 8px;border-radius:5px;
-  background:rgba(41,171,226,.12);
-  color:var(--blue);font-size:9px;font-weight:800;letter-spacing:.4px;
-  border:1px solid rgba(41,171,226,.2)
-}
-.oh-sub{font-size:11px;color:var(--muted)}
-.oh-actions{display:flex;gap:6px}
-.oh-btn{
-  width:34px;height:34px;border:1.5px solid var(--border);border-radius:8px;
-  background:#fff;display:flex;align-items:center;justify-content:center;
-  cursor:pointer;transition:all .2s;color:var(--muted)
-}
-.oh-btn:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-l)}
-
-/* Oriupe messages stream */
-.official-stream{
-  flex:1;overflow-y:auto;padding:20px 24px;
-  display:flex;flex-direction:column;gap:14px
-}
-.official-stream::-webkit-scrollbar{width:4px}
-.official-stream::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
-
-/* Date separator */
-.date-sep{
-  display:flex;align-items:center;gap:12px;
-  margin:8px 0;
-}
-.date-sep-line{flex:1;height:1px;background:var(--border2)}
-.date-sep-lbl{font-size:10px;font-weight:700;color:var(--muted2);white-space:nowrap}
-
-/* Official message card */
-.omsg{border-radius:14px;overflow:hidden;box-shadow:var(--shadow);border:1.5px solid transparent}
-.omsg-head{display:flex;align-items:center;gap:10px;padding:12px 16px;position:relative;overflow:hidden}
-.omsg-head-ico{
-  width:36px;height:36px;border-radius:10px;
-  display:flex;align-items:center;justify-content:center;flex-shrink:0
-}
-.omsg-head-info{flex:1}
-.omsg-head-type{font-size:9px;font-weight:800;letter-spacing:1.2px}
-.omsg-head-title{font-size:13px;font-weight:800;color:var(--navy2);margin-top:1px}
-.omsg-head-time{font-size:10px;color:var(--muted2);flex-shrink:0}
-.omsg-head-bg{position:absolute;top:-20px;right:-20px;width:100px;height:100px;border-radius:50%;opacity:.08;pointer-events:none}
-.omsg-body{padding:0 16px 14px;background:#fff}
-.omsg-text{font-size:12px;color:var(--muted);line-height:1.65}
-.omsg-action{
-  margin-top:12px;
-  display:flex;gap:8px;align-items:center
-}
-.omsg-btn{
-  padding:7px 16px;border-radius:9px;
-  font-size:11px;font-weight:700;cursor:pointer;
-  transition:all .2s;border:1.5px solid transparent
-}
-
-/* Type — ANNONCE (blue) */
-.omsg.annonce{border-color:rgba(41,171,226,.2)}
-.omsg.annonce .omsg-head{background:linear-gradient(135deg,rgba(41,171,226,.08),rgba(41,171,226,.04))}
-.omsg.annonce .omsg-head-ico{background:rgba(41,171,226,.12)}
-.omsg.annonce .omsg-head-type{color:var(--blue)}
-.omsg.annonce .omsg-head-bg{background:var(--blue)}
-.omsg.annonce .omsg-btn.primary{background:var(--blue);color:#fff;border-color:var(--blue)}
-.omsg.annonce .omsg-btn.primary:hover{background:var(--blue-d)}
-.omsg.annonce .omsg-btn.secondary{border-color:var(--blue);color:var(--blue)}
-
-/* Type — VALIDATION (green) */
-.omsg.validation{border-color:rgba(60,184,120,.25)}
-.omsg.validation .omsg-head{background:linear-gradient(135deg,rgba(60,184,120,.1),rgba(60,184,120,.04))}
-.omsg.validation .omsg-head-ico{background:rgba(60,184,120,.15)}
-.omsg.validation .omsg-head-type{color:var(--green-d)}
-.omsg.validation .omsg-head-bg{background:var(--green)}
-.omsg.validation .omsg-btn.primary{background:var(--green);color:#fff;border-color:var(--green)}
-.omsg.validation .omsg-btn.primary:hover{background:var(--green-d)}
-
-/* Type — AVERTISSEMENT (orange) */
-.omsg.avertissement{border-color:rgba(245,158,11,.25)}
-.omsg.avertissement .omsg-head{background:linear-gradient(135deg,rgba(245,158,11,.1),rgba(245,158,11,.04))}
-.omsg.avertissement .omsg-head-ico{background:rgba(245,158,11,.15)}
-.omsg.avertissement .omsg-head-type{color:#D97706}
-.omsg.avertissement .omsg-head-bg{background:var(--gold)}
-.omsg.avertissement .omsg-btn.primary{background:var(--gold);color:#fff;border-color:var(--gold)}
-
-/* Type — ALERTE (red) */
-.omsg.alerte{border-color:rgba(239,68,68,.25)}
-.omsg.alerte .omsg-head{background:linear-gradient(135deg,rgba(239,68,68,.1),rgba(239,68,68,.04))}
-.omsg.alerte .omsg-head-ico{background:rgba(239,68,68,.12)}
-.omsg.alerte .omsg-head-type{color:var(--red)}
-.omsg.alerte .omsg-head-bg{background:var(--red)}
-.omsg.alerte .omsg-btn.primary{background:var(--red);color:#fff;border-color:var(--red)}
-
-/* Type — RAPPEL (gray-blue) */
-.omsg.rappel{border-color:rgba(27,58,74,.12)}
-.omsg.rappel .omsg-head{background:linear-gradient(135deg,rgba(27,58,74,.05),rgba(27,58,74,.02))}
-.omsg.rappel .omsg-head-ico{background:rgba(27,58,74,.07)}
-.omsg.rappel .omsg-head-type{color:var(--muted)}
-.omsg.rappel .omsg-head-bg{background:var(--navy2)}
-.omsg.rappel .omsg-btn.primary{background:var(--navy2);color:#fff;border-color:var(--navy2)}
-
-/* Oriupe sender tag */
-.oriupe-sender{
-  display:flex;align-items:center;gap:6px;margin-bottom:8px
-}
-.oriupe-sender-av{
-  width:22px;height:22px;border-radius:6px;
-  background:linear-gradient(135deg,#0288D1,var(--blue));
-  display:flex;align-items:center;justify-content:center;flex-shrink:0
-}
-.oriupe-sender-name{font-size:10px;font-weight:800;color:var(--blue)}
-.oriupe-sender-badge{
-  padding:1px 5px;border-radius:3px;
-  background:rgba(41,171,226,.12);color:var(--blue);
-  font-size:8px;font-weight:800;border:1px solid rgba(41,171,226,.2)
-}
-
-/* ── DIRECT MESSAGE THREAD ── */
-#thread-direct{display:flex;flex-direction:column;height:100%;overflow:hidden}
-
-/* Escrow block */
-.escrow-block{
-  flex-shrink:0;
-  background:linear-gradient(135deg,#0F2535 0%,#1A3A52 50%,#0F2E45 100%);
-  border-bottom:1px solid rgba(255,255,255,.06);position:relative;overflow:hidden
-}
-.escrow-block::before{content:'';position:absolute;top:-50px;right:-50px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(60,184,120,.12) 0%,transparent 70%)}
-.escrow-block::after{content:'';position:absolute;bottom:-30px;left:-30px;width:130px;height:130px;border-radius:50%;background:radial-gradient(circle,rgba(41,171,226,.1) 0%,transparent 70%)}
-.esc-inner{padding:12px 20px;position:relative;z-index:1}
-.esc-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
-.esc-lbl{font-size:9px;font-weight:800;color:rgba(255,255,255,.4);letter-spacing:1.8px}
-.esc-code{font-family:monospace;font-size:11px;color:rgba(255,255,255,.55);background:rgba(255,255,255,.06);padding:3px 8px;border-radius:5px}
-.esc-pill{padding:3px 9px;border-radius:20px;font-size:9px;font-weight:800;letter-spacing:.4px}
-.ep-progress{background:rgba(41,171,226,.15);color:var(--blue);border:1px solid rgba(41,171,226,.25)}
-.ep-secured{background:rgba(60,184,120,.15);color:var(--green);border:1px solid rgba(60,184,120,.25)}
-.ep-delivered{background:rgba(124,58,237,.15);color:#A78BFA;border:1px solid rgba(124,58,237,.25)}
-.esc-amounts{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:rgba(255,255,255,.06);border-radius:8px;overflow:hidden}
-.esc-amt{padding:8px 10px;background:#0F2A3F;text-align:center}
-.esc-amt-lbl{font-size:8px;color:rgba(255,255,255,.3);font-weight:700;letter-spacing:.5px;margin-bottom:2px}
-.esc-amt-val{font-size:13px;font-weight:800;color:#fff;font-family:'Bricolage Grotesque',sans-serif}
-.esc-amt-val.green{color:var(--green)}
-.esc-amt-val.muted{color:rgba(255,255,255,.4)}
+.chat-empty svg{opacity:.25}
+.chat-empty p{font-size:14px}
 
 /* Chat header */
-.chat-head{background:#fff;border-bottom:1px solid var(--border);padding:10px 20px;display:flex;align-items:center;gap:12px;flex-shrink:0;box-shadow:var(--shadow)}
-.ch-av{position:relative;flex-shrink:0}
-.ch-cav{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff}
-.ch-online-dot{position:absolute;bottom:1px;right:1px;width:10px;height:10px;background:#22C55E;border-radius:50%;border:2px solid #fff}
-.ch-info{flex:1}
-.ch-name{font-size:14px;font-weight:700;color:var(--navy2)}
-.ch-meta{font-size:11px;color:var(--muted);margin-top:1px;display:flex;align-items:center;gap:6px}
-.ch-meta-badge{padding:2px 7px;border-radius:5px;font-size:9px;font-weight:800}
-.ch-actions{display:flex;gap:6px}
-.ch-btn{width:34px;height:34px;border:1.5px solid var(--border);border-radius:8px;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;color:var(--muted)}
-.ch-btn:hover{border-color:var(--green);color:var(--green);background:var(--green-l)}
-.ch-btn-escrow{display:flex;align-items:center;gap:4px;font-size:10px;font-weight:700;padding:4px 8px;border-radius:7px;background:var(--green-l);color:var(--green-d);border:none;width:auto;height:auto}
-
-/* Messages area */
-.messages{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:12px}
-.messages::-webkit-scrollbar{width:4px}
-.messages::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
-
-.msg-group{display:flex;flex-direction:column;gap:4px}
-.msg{display:flex;gap:8px;max-width:72%}
-.msg.sent{align-self:flex-end;flex-direction:row-reverse}
-.msg-av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:#fff;flex-shrink:0;margin-top:2px}
-.bubble{
-  padding:10px 14px;border-radius:14px;
-  font-size:12px;line-height:1.6;color:var(--navy2);
-  background:#fff;box-shadow:var(--shadow);
-  border:1.5px solid var(--border2)
+.chat-header{
+  background:#fff;border-bottom:1px solid #E8EDF2;
+  padding:12px 18px;display:flex;align-items:center;gap:12px;
+  flex-shrink:0;box-shadow:0 1px 4px rgba(0,0,0,.04)
 }
-.msg.sent .bubble{
-  background:var(--green);color:#fff;
-  border-color:var(--green);
-  border-radius:14px 14px 4px 14px
-}
-.msg.recv .bubble{border-radius:14px 14px 14px 4px}
-.bubble-time{font-size:9px;color:var(--muted2);margin-top:5px;text-align:right}
-.msg.recv .bubble-time{text-align:left}
-.msg.sent .bubble-time{color:rgba(255,255,255,.55)}
-
-/* Status delivery card in chat */
-.delivery-card{
-  background:linear-gradient(135deg,rgba(60,184,120,.08),rgba(60,184,120,.03));
-  border:1.5px solid rgba(60,184,120,.2);border-radius:12px;
-  padding:14px 16px;max-width:65%;
-  box-shadow:var(--shadow)
-}
-.dc-head{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.dc-ico{width:36px;height:36px;border-radius:9px;background:rgba(60,184,120,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.dc-title{font-size:12px;font-weight:800;color:var(--navy2)}
-.dc-sub{font-size:10px;color:var(--muted)}
-.dc-actions{display:flex;gap:6px}
-.dc-btn{padding:6px 12px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;border:1.5px solid;transition:all .2s}
-.dc-btn.green{background:var(--green);color:#fff;border-color:var(--green)}
-.dc-btn.green:hover{background:var(--green-d)}
-.dc-btn.ghost{background:#fff;color:var(--muted);border-color:var(--border)}
-.dc-btn.ghost:hover{border-color:var(--green);color:var(--green)}
-
-/* Input area */
-.input-area{
-  background:#fff;border-top:1px solid var(--border);
-  padding:12px 18px;display:flex;align-items:center;gap:10px;flex-shrink:0
-}
-.input-actions{display:flex;gap:4px}
-.inp-btn{
-  width:34px;height:34px;border-radius:9px;
-  border:1.5px solid var(--border);background:#fff;
-  color:var(--muted);display:flex;align-items:center;justify-content:center;
-  cursor:pointer;transition:all .2s;flex-shrink:0
-}
-.inp-btn:hover{border-color:var(--green);color:var(--green);background:var(--green-l)}
-.msg-inp{
-  flex:1;padding:10px 14px;border-radius:12px;
-  border:1.5px solid var(--border);background:var(--bg);
-  font-size:13px;color:var(--navy2);outline:none;
-  transition:border-color .2s;font-family:'Plus Jakarta Sans',sans-serif;resize:none
-}
-.msg-inp:focus{border-color:var(--green);background:#fff}
-.msg-inp::placeholder{color:var(--muted2)}
-.send-btn{
-  width:40px;height:40px;border-radius:11px;
-  background:var(--green);border:none;color:#fff;
-  display:flex;align-items:center;justify-content:center;
-  cursor:pointer;transition:all .2s;flex-shrink:0
-}
-.send-btn:hover{background:var(--green-d);transform:scale(1.05)}
-
-/* ── NOTIFICATION THREAD ── */
-#thread-notifs{flex:1;overflow:hidden;display:flex;flex-direction:column}
-.notifs-head{background:#fff;border-bottom:1px solid var(--border);padding:14px 22px;display:flex;align-items:center;gap:12px;flex-shrink:0;box-shadow:var(--shadow)}
-.notifs-title{font-size:16px;font-weight:800;color:var(--navy2);font-family:'Bricolage Grotesque',sans-serif;flex:1}
-.notifs-mark{padding:7px 14px;border-radius:8px;border:1.5px solid var(--border);background:#fff;font-size:11px;font-weight:700;color:var(--muted);cursor:pointer;transition:all .2s}
-.notifs-mark:hover{border-color:var(--blue);color:var(--blue)}
-.notifs-stream{flex:1;overflow-y:auto;padding:20px}
-.notifs-stream::-webkit-scrollbar{width:4px}
-.notifs-stream::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
-.notif-card{
-  background:#fff;border-radius:14px;padding:14px 16px;
-  border:1.5px solid var(--border2);box-shadow:var(--shadow);
-  margin-bottom:10px;display:flex;align-items:flex-start;gap:12px;
+.chat-hdr-av{flex-shrink:0}
+.chat-hdr-info{flex:1;min-width:0}
+.chat-hdr-name{font-size:14px;font-weight:700;color:#0F2535;display:flex;align-items:center;gap:6px}
+.chat-hdr-sub{font-size:11.5px;color:#8A9AAA;margin-top:1px}
+.online-pill{display:inline-flex;align-items:center;gap:4px;font-size:10px;color:#3CB878;font-weight:600}
+.online-pill::before{content:'';width:6px;height:6px;border-radius:50%;background:#3CB878;display:inline-block}
+.chat-hdr-actions{display:flex;align-items:center;gap:6px}
+.hdr-btn{
+  width:32px;height:32px;border-radius:8px;border:1.5px solid #E8EDF2;
+  background:#fff;color:#8A9AAA;display:flex;align-items:center;justify-content:center;
   cursor:pointer;transition:all .2s
 }
-.notif-card:hover{box-shadow:var(--shadow-md);border-color:var(--border)}
-.notif-card.unread{border-color:rgba(41,171,226,.2);background:linear-gradient(90deg,rgba(41,171,226,.03),#fff)}
-.nc-ico{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.nc-body{flex:1}
-.nc-title{font-size:12px;font-weight:800;color:var(--navy2);margin-bottom:3px}
-.nc-sub{font-size:11px;color:var(--muted);line-height:1.5}
-.nc-time{font-size:10px;color:var(--muted2);margin-top:5px}
-.nc-dot{width:8px;height:8px;border-radius:50%;background:var(--blue);flex-shrink:0;margin-top:4px}
+.hdr-btn:hover{border-color:#29ABE2;color:#29ABE2;background:rgba(41,171,226,.05)}
 
-/* Hidden threads */
-.thread{display:none;height:100%}
-.thread.active{display:flex;flex-direction:column}
-
-/* ── RIGHT PANEL (detail / profile) ── */
-.detail-panel{
-  width:280px;flex-shrink:0;
-  background:#fff;border-left:1px solid var(--border);
-  display:flex;flex-direction:column;overflow-y:auto
+/* Escrow banner (in chat header for order convs) */
+.escrow-banner{
+  background:linear-gradient(135deg,rgba(245,166,35,.08),rgba(60,184,120,.08));
+  border-bottom:1px solid rgba(245,166,35,.2);
+  padding:8px 18px;display:flex;align-items:center;gap:10px;flex-shrink:0
 }
-.detail-panel::-webkit-scrollbar{width:3px}
-.detail-panel::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
-.dp-head{padding:16px 16px 12px;border-bottom:1px solid var(--border2);font-size:10px;font-weight:800;color:var(--muted2);letter-spacing:1.2px}
-.dp-profile{padding:16px;border-bottom:1px solid var(--border2);text-align:center}
-.dp-av{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:#fff;margin:0 auto 10px}
-.dp-name{font-size:14px;font-weight:800;color:var(--navy2);font-family:'Bricolage Grotesque',sans-serif;margin-bottom:2px}
-.dp-role{font-size:11px;color:var(--muted)}
-.dp-badges{display:flex;gap:4px;justify-content:center;flex-wrap:wrap;margin-top:8px}
-.dp-badge{padding:2px 8px;border-radius:5px;font-size:9px;font-weight:800}
-.db-kyc{background:var(--green-l);color:var(--green-d)}
-.db-top{background:rgba(245,158,11,.12);color:#D97706}
-.dp-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:14px 16px;border-bottom:1px solid var(--border2)}
-.dp-stat{text-align:center}
-.dp-stat-val{font-size:16px;font-weight:800;color:var(--navy2);font-family:'Bricolage Grotesque',sans-serif}
-.dp-stat-lbl{font-size:9px;color:var(--muted);font-weight:600}
-.dp-order-info{padding:14px 16px;border-bottom:1px solid var(--border2)}
-.dp-order-title{font-size:11px;font-weight:800;color:var(--navy2);margin-bottom:10px}
-.dp-order-row{display:flex;justify-content:space-between;font-size:11px;padding:5px 0;border-bottom:1px solid var(--border2)}
-.dp-order-row:last-child{border-bottom:none}
-.dp-order-lbl{color:var(--muted)}
-.dp-order-val{font-weight:700;color:var(--navy2)}
-.dp-actions{padding:14px 16px;display:flex;flex-direction:column;gap:8px}
-.dp-btn{width:100%;padding:9px;border-radius:10px;border:none;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;text-align:center}
-.dp-btn.primary{background:var(--green);color:#fff}
-.dp-btn.primary:hover{background:var(--green-d)}
-.dp-btn.secondary{background:var(--bg);border:1.5px solid var(--border);color:var(--muted)}
-.dp-btn.secondary:hover{border-color:var(--green);color:var(--green)}
-.dp-btn.danger{background:rgba(239,68,68,.06);border:1.5px solid rgba(239,68,68,.2);color:var(--red)}
+.escrow-icon{width:28px;height:28px;border-radius:7px;background:linear-gradient(135deg,#F5A623,#E8A000);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.escrow-text{flex:1;min-width:0}
+.escrow-label{font-size:11px;font-weight:700;color:#B37A00}
+.escrow-status{font-size:12px;font-weight:600;color:#1B3A4A}
+.escrow-amount{font-size:13px;font-weight:800;color:#3CB878;flex-shrink:0}
+.escrow-actions{display:flex;gap:6px;margin-left:8px}
+.escrow-btn{padding:5px 12px;border-radius:6px;border:none;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s}
+.escrow-btn-primary{background:#3CB878;color:#fff}
+.escrow-btn-primary:hover{background:#2EA866}
+.escrow-btn-secondary{background:rgba(245,166,35,.15);color:#B37A00;border:1px solid rgba(245,166,35,.3)}
 
-/* ── EMPTY STATE ── */
-.empty-state{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px}
-.empty-ico{font-size:52px;margin-bottom:14px}
-.empty-title{font-size:16px;font-weight:800;color:var(--navy2);font-family:'Bricolage Grotesque',sans-serif;margin-bottom:6px}
-.empty-sub{font-size:12px;color:var(--muted);text-align:center;max-width:280px}
+/* Messages container */
+.messages{flex:1;overflow-y:auto;padding:16px 18px;display:flex;flex-direction:column;gap:6px}
+.messages::-webkit-scrollbar{width:4px}
+.messages::-webkit-scrollbar-thumb{background:rgba(0,0,0,.1);border-radius:4px}
 
-@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-.thread.active{animation:fadeIn .2s var(--ease)}
+/* Date divider */
+.date-divider{text-align:center;margin:10px 0;position:relative}
+.date-divider span{background:#F0F4F8;padding:0 10px;font-size:10px;font-weight:600;color:#8A9AAA;position:relative;z-index:1}
+.date-divider::before{content:'';position:absolute;top:50%;left:0;right:0;height:1px;background:#DDE3EB}
+
+/* Message rows */
+.msg-row{display:flex;align-items:flex-end;gap:8px;max-width:72%;position:relative}
+.msg-row.sent{align-self:flex-end;flex-direction:row-reverse}
+.msg-row.recv{align-self:flex-start}
+.msg-row.system-row{align-self:center;max-width:80%}
+.msg-av{width:28px;height:28px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff}
+
+/* Bubble */
+.bubble{
+  padding:9px 13px;border-radius:14px;
+  font-size:13.5px;line-height:1.5;
+  position:relative;
+  max-width:100%;word-break:break-word
+}
+.sent .bubble{
+  background:#3CB878;color:#fff;
+  border-bottom-right-radius:4px
+}
+.recv .bubble{
+  background:#fff;color:#1B3A4A;
+  border-bottom-left-radius:4px;
+  box-shadow:0 1px 3px rgba(0,0,0,.07)
+}
+.bubble .reply-ref{
+  background:rgba(0,0,0,.08);border-left:3px solid rgba(255,255,255,.5);
+  border-radius:6px;padding:4px 8px;margin-bottom:6px;font-size:11px;opacity:.8
+}
+.recv .bubble .reply-ref{background:rgba(0,0,0,.05);border-left-color:#3CB878}
+
+/* System message */
+.system-bubble{
+  background:rgba(15,37,53,.06);color:#4A6572;font-size:12px;
+  padding:7px 14px;border-radius:20px;text-align:center;display:inline-block
+}
+
+/* Special: Oriupe Official */
+.official-bubble{
+  background:linear-gradient(135deg,#0F2535,#1B3A4A);
+  color:#fff;border-radius:14px;padding:12px 16px;
+  border-bottom-left-radius:4px;box-shadow:0 2px 8px rgba(15,37,53,.2)
+}
+.official-bubble .official-type{
+  font-size:9px;font-weight:800;letter-spacing:1px;
+  text-transform:uppercase;margin-bottom:6px;display:flex;align-items:center;gap:5px
+}
+.official-bubble .official-type.rappel{color:#29ABE2}
+.official-bubble .official-type.alerte{color:#F5A623}
+.official-bubble .official-type.validation{color:#3CB878}
+.official-bubble .official-type.annonce{color:#E84393}
+.official-bubble .official-body{font-size:13px;line-height:1.5}
+
+/* Delivery card */
+.delivery-card{
+  background:#fff;border:1.5px solid #3CB878;border-radius:12px;
+  padding:14px 16px;box-shadow:0 2px 10px rgba(60,184,120,.12)
+}
+.delivery-card .dc-top{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.delivery-card .dc-icon{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#3CB878,#29ABE2);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.delivery-card .dc-title{font-size:13px;font-weight:700;color:#0F2535}
+.delivery-card .dc-sub{font-size:11px;color:#8A9AAA}
+.delivery-card .dc-files{display:flex;flex-direction:column;gap:6px;margin:8px 0}
+.delivery-card .dc-file{display:flex;align-items:center;gap:8px;padding:7px 10px;background:#F4F6F9;border-radius:8px;font-size:12px;color:#1B3A4A;cursor:pointer}
+.delivery-card .dc-actions{display:flex;gap:8px;margin-top:10px}
+.delivery-card .dc-btn{flex:1;padding:8px;border-radius:8px;border:none;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s}
+.delivery-card .dc-accept{background:#3CB878;color:#fff}
+.delivery-card .dc-accept:hover{background:#2EA866}
+.delivery-card .dc-revision{background:rgba(245,166,35,.12);color:#B37A00;border:1px solid rgba(245,166,35,.25)}
+
+/* Reactions */
+.reactions{display:flex;gap:3px;margin-top:4px;flex-wrap:wrap}
+.reaction-chip{
+  display:flex;align-items:center;gap:3px;
+  padding:2px 6px;border-radius:10px;border:1px solid #DDE3EB;
+  background:#fff;font-size:11px;cursor:pointer;transition:all .15s;
+  color:#4A6572
+}
+.reaction-chip:hover,.reaction-chip.mine{background:rgba(60,184,120,.1);border-color:rgba(60,184,120,.3);color:#2EA866}
+.sent .reaction-chip{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.25);color:rgba(255,255,255,.8)}
+.sent .reaction-chip:hover,.sent .reaction-chip.mine{background:rgba(255,255,255,.25);border-color:rgba(255,255,255,.5)}
+
+/* Message meta */
+.msg-meta{display:flex;align-items:center;gap:5px;margin-top:3px}
+.msg-time{font-size:10px;color:#9AABB5}
+.sent .msg-time{color:rgba(255,255,255,.6)}
+.read-icon{display:flex;align-items:center}
+
+/* Emoji picker row */
+.emoji-row{
+  position:absolute;bottom:calc(100% + 4px);
+  background:#fff;border:1px solid #E8EDF2;border-radius:10px;
+  padding:6px;display:flex;gap:3px;box-shadow:0 4px 16px rgba(0,0,0,.1);
+  z-index:20;opacity:0;pointer-events:none;transition:opacity .15s
+}
+.msg-row:hover .emoji-row{opacity:1;pointer-events:auto}
+.emoji-row.sent{right:0}
+.emoji-row.recv{left:0}
+.emo-btn{
+  width:28px;height:28px;border-radius:6px;border:none;background:transparent;
+  font-size:15px;cursor:pointer;transition:background .15s;display:flex;align-items:center;justify-content:center
+}
+.emo-btn:hover{background:#F0F4F8}
+
+/* Typing indicator */
+.typing-row{display:flex;align-items:center;gap:8px;padding:0 0 6px;align-self:flex-start}
+.typing-dots{display:flex;gap:3px;align-items:center;background:#fff;border-radius:14px;border-bottom-left-radius:4px;padding:9px 14px;box-shadow:0 1px 3px rgba(0,0,0,.07)}
+.typing-dots span{width:6px;height:6px;border-radius:50%;background:#C4D0D8;animation:tdot 1.2s infinite}
+.typing-dots span:nth-child(2){animation-delay:.2s}
+.typing-dots span:nth-child(3){animation-delay:.4s}
+@keyframes tdot{0%,60%,100%{opacity:.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-4px)}}
+
+/* Attachment preview strip */
+.attach-strip{
+  display:flex;flex-wrap:wrap;gap:6px;
+  padding:8px 14px;background:#fff;
+  border-top:1px solid #EDF0F3;flex-shrink:0
+}
+.attach-preview{
+  display:flex;align-items:center;gap:6px;
+  background:#F4F6F9;border-radius:8px;padding:5px 8px;
+  font-size:11px;color:#4A6572;max-width:180px
+}
+.attach-preview-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1}
+.attach-rm{background:none;border:none;color:#8A9AAA;cursor:pointer;padding:0;line-height:1;display:flex}
+.attach-rm:hover{color:#E84393}
+
+/* Input area */
+.input-wrap{
+  background:#fff;border-top:1px solid #E8EDF2;
+  padding:10px 14px;flex-shrink:0
+}
+
+/* Templates bar */
+.templates-bar{
+  display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;
+}
+.templates-bar::-webkit-scrollbar{display:none}
+.tmpl-chip{
+  white-space:nowrap;padding:5px 10px;border-radius:20px;
+  border:1.5px solid #DDE3EB;background:#fff;
+  font-size:11px;font-weight:600;color:#4A6572;
+  cursor:pointer;transition:all .2s;flex-shrink:0
+}
+.tmpl-chip:hover{border-color:#3CB878;color:#3CB878;background:rgba(60,184,120,.05)}
+
+/* Toolbar + composer */
+.composer-row{display:flex;align-items:flex-end;gap:8px;margin-top:6px}
+.composer{
+  flex:1;display:flex;align-items:flex-end;gap:0;
+  background:#F4F6F9;border:1.5px solid #E0E8EF;
+  border-radius:12px;overflow:hidden;transition:border-color .2s
+}
+.composer:focus-within{border-color:#29ABE2}
+.composer-actions{display:flex;align-items:center;padding:6px 8px 6px 10px;gap:2px}
+.ca-btn{
+  width:28px;height:28px;border:none;background:transparent;
+  color:#8A9AAA;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;border-radius:6px;transition:all .2s
+}
+.ca-btn:hover{background:#E8EDF2;color:#1B3A4A}
+.composer textarea{
+  flex:1;padding:9px 10px 9px 0;background:transparent;
+  border:none;resize:none;outline:none;font-size:13.5px;
+  color:#1B3A4A;line-height:1.5;max-height:120px;min-height:38px
+}
+.composer textarea::placeholder{color:#9AABB5}
+.send-btn{
+  width:38px;height:38px;border-radius:10px;border:none;
+  background:#3CB878;color:#fff;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .2s;flex-shrink:0
+}
+.send-btn:hover{background:#2EA866;transform:scale(1.04)}
+.send-btn:disabled{background:#C4D0D8;cursor:not-allowed;transform:none}
+
+/* ── RIGHT PANEL ── */
+.right-panel{
+  width:270px;flex-shrink:0;
+  background:#fff;border-left:1px solid #E8EDF2;
+  display:flex;flex-direction:column;
+  height:100%;overflow:hidden;
+  transition:transform .25s ease
+}
+.rp-head{
+  padding:16px;border-bottom:1px solid #E8EDF2;
+  text-align:center
+}
+.rp-big-av{
+  width:56px;height:56px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;font-weight:700;color:#fff;margin:0 auto 8px
+}
+.rp-name{font-size:14px;font-weight:700;color:#0F2535}
+.rp-role{font-size:11px;color:#8A9AAA;margin-top:2px}
+.rp-cta{margin-top:10px;display:flex;gap:6px;justify-content:center}
+.rp-btn{padding:6px 14px;border-radius:8px;border:none;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s}
+.rp-btn-green{background:#3CB878;color:#fff}
+.rp-btn-green:hover{background:#2EA866}
+.rp-btn-outline{background:transparent;border:1.5px solid #DDE3EB;color:#4A6572}
+.rp-btn-outline:hover{border-color:#29ABE2;color:#29ABE2}
+
+/* Right panel sections */
+.rp-section{border-bottom:1px solid #EDF0F3;padding:14px 16px}
+.rp-section-title{font-size:10px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:#9AABB5;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
+.rp-section-title a{font-size:10px;font-weight:600;color:#29ABE2;text-transform:none;letter-spacing:0}
+
+/* Escrow card in right panel */
+.escrow-card{
+  background:linear-gradient(135deg,#0F2535,#1B3A4A);
+  border-radius:10px;padding:14px
+}
+.escrow-card .ec-label{font-size:10px;font-weight:700;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.escrow-card .ec-status{font-size:12px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.escrow-card .ec-amount{font-size:22px;font-weight:800;color:#fff;margin-bottom:12px}
+.escrow-card .ec-amount span{font-size:12px;color:rgba(255,255,255,.5);margin-left:4px}
+.escrow-card .ec-line{display:flex;justify-content:space-between;margin-bottom:4px}
+.escrow-card .ec-line .k{font-size:11px;color:rgba(255,255,255,.45)}
+.escrow-card .ec-line .v{font-size:11px;color:rgba(255,255,255,.7);font-weight:600}
+.escrow-card .ec-divider{height:1px;background:rgba(255,255,255,.06);margin:8px 0}
+.escrow-card .ec-net{display:flex;justify-content:space-between;align-items:center}
+.escrow-card .ec-net .k{font-size:11px;color:rgba(255,255,255,.45)}
+.escrow-card .ec-net .v{font-size:14px;font-weight:800;color:#3CB878}
+.status-pill{display:inline-flex;align-items:center;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700}
+.sp-secured{background:rgba(60,184,120,.2);color:#3CB878}
+.sp-progress{background:rgba(41,171,226,.2);color:#29ABE2}
+.sp-await{background:rgba(245,166,35,.2);color:#F5A623}
+.sp-dispute{background:rgba(232,67,147,.2);color:#E84393}
+.ec-actions{display:flex;gap:6px;margin-top:12px}
+.ec-action-btn{flex:1;padding:8px 6px;border-radius:8px;border:none;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s}
+.ec-a-primary{background:#3CB878;color:#fff}
+.ec-a-primary:hover{background:#2EA866}
+.ec-a-secondary{background:rgba(255,255,255,.08);color:rgba(255,255,255,.7)}
+.ec-a-secondary:hover{background:rgba(255,255,255,.14)}
+
+/* Shared files */
+.shared-file{display:flex;align-items:center;gap:8px;padding:6px 0;cursor:pointer}
+.shared-file:hover .sf-name{color:#29ABE2}
+.sf-icon{width:30px;height:30px;border-radius:7px;background:#F0F4F8;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px}
+.sf-info{min-width:0;flex:1}
+.sf-name{font-size:12px;font-weight:600;color:#1B3A4A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .15s}
+.sf-size{font-size:10px;color:#9AABB5}
+
+/* Stats mini */
+.mini-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mini-stat{background:#F4F6F9;border-radius:8px;padding:8px 10px}
+.ms-val{font-size:16px;font-weight:800;color:#0F2535}
+.ms-lab{font-size:10px;color:#8A9AAA;margin-top:1px}
+
+/* ── MOBILE ── */
+@media(max-width:768px){
+  .sidebar{position:absolute;left:0;top:0;bottom:0;z-index:30;transform:translateX(-100%)}
+  .sidebar.mobile-open{transform:translateX(0)}
+  .right-panel{display:none}
+  .chat-area{width:100%}
+  .mobile-back{display:flex!important}
+}
+.mobile-back{display:none;align-items:center;gap:8px;background:none;border:none;color:#8A9AAA;cursor:pointer;font-size:13px;padding:0}
+
+/* Utility */
+.hidden{display:none!important}
+.chat-content{display:flex;flex-direction:column;height:100%}
+.typing-row--padded{padding:0 18px 8px}
+.av-typing{background:linear-gradient(135deg,#29ABE2,#1B3A4A)}
+
+/* File bubble inside chat */
+.file-bubble{display:flex;align-items:center;gap:8px;padding:4px 0}
+.file-bubble-icon{width:32px;height:32px;border-radius:7px;background:#F0F4F8;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.file-bubble-icon--sent{background:rgba(255,255,255,.15)}
+.file-bubble-info{min-width:0;flex:1}
+.file-bubble-name{font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px}
+.file-bubble-size{font-size:10px;opacity:.6}
+.file-bubble-dl{margin-left:4px;opacity:.7;display:flex}
+
+/* Delivery card extras */
+.dc-filename{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dc-filesize{font-size:10px;color:#8A9AAA;margin-left:6px;flex-shrink:0}
+.dc-wrapper{max-width:320px}
+.dc-wrapper--recv{margin-left:36px}
+.msg-meta--top{margin-top:4px}
+
+/* Escrow panel extras */
+.ec-v-service{font-size:11px;max-width:130px;text-align:right}
+.ec-deadline-row{margin-top:8px}
+
+/* Avatar size variants */
+.av-sm{width:40px;height:40px;font-size:13px}
+.av-hdr{width:36px;height:36px;font-size:13px}
+
+/* Attach icon */
+.attach-icon{font-size:14px;line-height:1;flex-shrink:0}
+
+/* Toast */
+.toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(60px);
+  background:#1B3A4A;color:#fff;padding:10px 20px;border-radius:10px;
+  font-size:13px;font-weight:600;z-index:1000;
+  transition:transform .3s ease;pointer-events:none;box-shadow:0 4px 16px rgba(0,0,0,.2)
+}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+/* Emoji picker popup */
+.emoji-popup{
+  position:absolute;z-index:100;background:#fff;border:1px solid #E8EDF2;
+  border-radius:12px;padding:8px;box-shadow:0 8px 24px rgba(0,0,0,.12);
+  display:grid;grid-template-columns:repeat(6,1fr);gap:2px;
+  width:200px
+}
+.ep-btn{width:28px;height:28px;border:none;background:transparent;font-size:16px;cursor:pointer;border-radius:5px;transition:background .15s}
+.ep-btn:hover{background:#F0F4F8}
+
+/* ── ESCROW ACTION BAR ── */
+.escrow-action-bar{background:linear-gradient(135deg,#0D2030,#162A3A);border-top:1px solid rgba(255,255,255,.07);flex-shrink:0}
+.eab-inner{padding:11px 18px 10px}
+.eab-toggle-row{display:flex;align-items:center;justify-content:space-between;cursor:pointer;margin-bottom:10px;user-select:none}
+.eab-toggle-label{font-size:10px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:rgba(255,255,255,.45);display:flex;align-items:center;gap:6px}
+.eab-chevron{color:rgba(255,255,255,.3);transition:transform .2s;flex-shrink:0}
+.eab-chevron.collapsed{transform:rotate(180deg)}
+.eab-pipeline{display:flex;align-items:flex-start;margin-bottom:12px}
+.eab-step{display:flex;flex-direction:column;align-items:center;flex:1;position:relative}
+.eab-step::after{content:'';position:absolute;top:11px;left:50%;width:100%;height:2px;background:rgba(255,255,255,.07);z-index:0}
+.eab-step:last-child::after{display:none}
+.eab-step-dot{width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;z-index:1;position:relative;color:rgba(255,255,255,.25);flex-shrink:0;transition:all .25s}
+.eab-step.done .eab-step-dot{background:#3CB878;border-color:#3CB878;color:#fff}
+.eab-step.done::after{background:#3CB878}
+.eab-step.active .eab-step-dot{background:#29ABE2;border-color:#29ABE2;color:#fff;box-shadow:0 0 0 3px rgba(41,171,226,.18)}
+.eab-step-label{font-size:8.5px;color:rgba(255,255,255,.2);margin-top:4px;text-align:center;line-height:1.2;max-width:50px}
+.eab-step.done .eab-step-label,.eab-step.active .eab-step-label{color:rgba(255,255,255,.5)}
+.eab-amounts{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:rgba(255,255,255,.05);border-radius:8px;overflow:hidden;margin-bottom:10px}
+.eab-amt{padding:7px 8px;background:#0F1E2B;text-align:center}
+.eab-amt-val{font-size:12px;font-weight:800;color:#fff}
+.eab-amt-val.net{color:#3CB878}
+.eab-amt-val.comm{color:rgba(255,100,130,.7)}
+.eab-amt-lab{font-size:8px;color:rgba(255,255,255,.28);margin-top:1px;line-height:1.3}
+.eab-actions{display:flex;gap:6px}
+.eab-btn{flex:1;padding:8px 10px;border-radius:7px;border:none;font-size:11.5px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:5px}
+.eab-btn-pay{background:#F5A623;color:#fff}
+.eab-btn-pay:hover{background:#E8961A}
+.eab-btn-start{background:#29ABE2;color:#fff}
+.eab-btn-start:hover{background:#1A95C8}
+.eab-btn-deliver{background:#3CB878;color:#fff}
+.eab-btn-deliver:hover{background:#2EA866}
+.eab-btn-validate{background:#3CB878;color:#fff}
+.eab-btn-validate:hover{background:#2EA866}
+.eab-btn-ghost{flex:0!important;padding:8px 12px;background:rgba(255,255,255,.05);color:rgba(255,255,255,.45);border:1px solid rgba(255,255,255,.1)}
+.eab-btn-ghost:hover{background:rgba(255,255,255,.1)}
+.eab-btn-dispute{flex:0!important;padding:8px 12px;background:rgba(232,67,147,.08);color:#E84393;border:1px solid rgba(232,67,147,.18)}
+.eab-btn-dispute:hover{background:rgba(232,67,147,.16)}
+.eab-done-badge{font-size:11px;font-weight:700;color:rgba(255,255,255,.35);display:flex;align-items:center;gap:6px;padding:4px 0}
+
+/* ── INLINE ESCROW CARD ── */
+.escrow-inline-card{background:linear-gradient(135deg,#0F2535,#1B3A4A);border-radius:14px;border-bottom-left-radius:4px;padding:14px 16px;min-width:270px;max-width:360px;box-shadow:0 4px 20px rgba(15,37,53,.4);border:1px solid rgba(255,255,255,.07)}
+.eic-hdr{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.eic-icon{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.eic-icon-await{background:linear-gradient(135deg,#F5A623,#D97706)}
+.eic-icon-secure{background:linear-gradient(135deg,#3CB878,#27965D)}
+.eic-icon-progress{background:linear-gradient(135deg,#29ABE2,#1A95C8)}
+.eic-icon-deliver{background:linear-gradient(135deg,#9B59B6,#7D3C98)}
+.eic-icon-done{background:linear-gradient(135deg,#3CB878,#27965D)}
+.eic-icon-dispute{background:linear-gradient(135deg,#E84393,#C0392B)}
+.eic-title{font-size:13px;font-weight:800;color:#fff}
+.eic-sub{font-size:10px;color:rgba(255,255,255,.38);margin-top:1px}
+.eic-ref{margin-left:auto;font-size:9px;font-weight:700;color:rgba(255,255,255,.28);text-align:right;line-height:1.5;flex-shrink:0}
+.eic-service{font-size:11px;color:rgba(255,255,255,.48);padding:6px 10px;background:rgba(255,255,255,.04);border-radius:6px;margin-bottom:10px}
+.eic-rows{display:flex;flex-direction:column;gap:5px;margin-bottom:8px}
+.eic-row{display:flex;justify-content:space-between;align-items:center}
+.eic-row .k{font-size:11px;color:rgba(255,255,255,.38)}
+.eic-row .v{font-size:11px;font-weight:600;color:rgba(255,255,255,.7)}
+.eic-row .v.minus{color:rgba(240,90,130,.8)}
+.eic-sep{height:1px;background:rgba(255,255,255,.06);margin:5px 0}
+.eic-net-row{display:flex;justify-content:space-between;align-items:center}
+.eic-net-row .k{font-size:11px;color:rgba(255,255,255,.38)}
+.eic-net-row .v{font-size:17px;font-weight:800;color:#3CB878}
+.eic-btns{display:flex;gap:6px;margin-top:12px}
+.eic-btn{flex:1;padding:9px 10px;border-radius:8px;border:none;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s}
+.eic-btn-pay{background:#F5A623;color:#fff}
+.eic-btn-pay:hover{background:#E8961A}
+.eic-btn-ok{background:#3CB878;color:#fff}
+.eic-btn-ok:hover{background:#2EA866}
+.eic-btn-rev{background:rgba(255,255,255,.07);color:rgba(255,255,255,.55)}
+.eic-btn-rev:hover{background:rgba(255,255,255,.12)}
+.eic-btn-dis{background:rgba(232,67,147,.08);color:#E84393;border:1px solid rgba(232,67,147,.18)}
+.eic-btn-dis:hover{background:rgba(232,67,147,.16)}
+.eic-footer{margin-top:9px;padding-top:8px;border-top:1px solid rgba(255,255,255,.06);font-size:10px;color:rgba(255,255,255,.25);text-align:center}
+.msg-row.escrow-row{align-self:center;max-width:88%;width:100%;justify-content:center}
 </style>
 </head>
 <body>
-<div class="app">
-
-<!-- ═══════════════════ LEFT SIDEBAR ═══════════════════ -->
-<div class="sidebar">
-  <div class="sb-top">
-    <button class="sb-back" onclick="window.location.href='/src/pages/dashboard/client/index.html'" title="Retour au tableau de bord">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-    </button>
-    <div class="sb-brand">
-      <div class="sb-logo-mark">O</div>
-      <span class="sb-brand-name">Messagerie</span>
-    </div>
-    <button class="sb-compose" title="Nouveau message">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-    </button>
-  </div>
-
-  <div class="sb-role-toggle">
-    <div class="role-pill">
-      <button class="role-btn active" onclick="switchRole('client',this)">Vue Client</button>
-      <button class="role-btn" onclick="switchRole('freelance',this)">Vue Freelance</button>
-    </div>
-  </div>
-
-  <div class="sb-search">
-    <div class="search-wrap">
-      <svg class="search-ico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      <input class="search-inp" placeholder="Rechercher…"/>
-    </div>
-  </div>
-
-  <div class="sb-channel-list">
-
-    <!-- ── CANAL ORIUPE OFFICIEL ── -->
-    <div class="channel-section">
-      <div class="channel-lbl">ORIUPE OFFICIEL</div>
-      <div class="oriupe-channel-item active" onclick="showThread('oriupe')">
-        <div class="oriupe-av">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          <div class="oriupe-av-badge">
-            <svg width="8" height="8" viewBox="0 0 24 24" fill="#fff"><polyline points="20 6 9 17 4 12" stroke="#fff" stroke-width="4" stroke-linecap="round" fill="none"/></svg>
-          </div>
-        </div>
-        <div class="oriupe-info">
-          <div class="oriupe-name-row">
-            <span class="oriupe-name">Oriupe Officiel</span>
-            <span class="official-badge">OFFICIEL</span>
-          </div>
-          <div class="oriupe-preview">✓ Votre identité a été vérifiée…</div>
-        </div>
-        <div class="oriupe-meta">
-          <span class="oriupe-time">Auj.</span>
-          <div class="unread-badge">3</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── CANAL CONVERSATIONS ── -->
-    <div class="channel-section">
-      <div class="channel-lbl">CONVERSATIONS</div>
-
-      <div class="conv-item" id="ci-kofi" onclick="showThread('kofi')">
-        <div class="cav" style="background:linear-gradient(135deg,#29ABE2,#1A8BC0)">KA
-          <div class="cav-dot cav-online"></div>
-        </div>
-        <div class="conv-info">
-          <div class="conv-name">Kofi Asante</div>
-          <div class="conv-preview unread-text">✓ Livraison disponible — les fichiers sont prêts</div>
-        </div>
-        <div class="conv-meta-col">
-          <span class="conv-time">14:32</span>
-          <div class="unread-badge">2</div>
-        </div>
-      </div>
-
-      <div class="conv-item" id="ci-ada" onclick="showThread('ada')">
-        <div class="cav" style="background:linear-gradient(135deg,#3CB878,#27965D)">AO
-          <div class="cav-dot cav-online"></div>
-        </div>
-        <div class="conv-info">
-          <div class="conv-name">Ada Osei</div>
-          <div class="conv-preview">Le site avance bien, voici la homepage en wireframe…</div>
-        </div>
-        <div class="conv-meta-col">
-          <span class="conv-time">Hier</span>
-        </div>
-      </div>
-
-      <div class="conv-item" id="ci-sam" onclick="showThread('sam')">
-        <div class="cav" style="background:linear-gradient(135deg,#F59E0B,#D97706)">SB
-          <div class="cav-dot cav-offline"></div>
-        </div>
-        <div class="conv-info">
-          <div class="conv-name">Samira Ben</div>
-          <div class="conv-preview">Merci pour votre confiance, c'était un plaisir !</div>
-        </div>
-        <div class="conv-meta-col">
-          <span class="conv-time">10 mai</span>
-        </div>
-      </div>
-
-      <div class="conv-item" id="ci-mk" onclick="showThread('mk')">
-        <div class="cav" style="background:linear-gradient(135deg,#7C3AED,#5B21B6)">MK
-          <div class="cav-dot cav-online"></div>
-        </div>
-        <div class="conv-info">
-          <div class="conv-name">Mariama Kouyaté</div>
-          <div class="conv-preview">Voici le plan de contenu pour mai et juin…</div>
-        </div>
-        <div class="conv-meta-col">
-          <span class="conv-time">8 mai</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── CANAL NOTIFICATIONS ── -->
-    <div class="channel-section">
-      <div class="channel-lbl">NOTIFICATIONS</div>
-
-      <div class="notif-item active" id="ni-escrow" onclick="showThread('notifs')">
-        <div class="notif-ico-wrap" style="background:rgba(60,184,120,.12)">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        </div>
-        <div class="notif-text-col">
-          <div class="notif-title">Escrow sécurisé</div>
-          <div class="notif-sub">120 000 FCFA déposés pour #ORD-2025-001</div>
-        </div>
-        <span class="notif-time">Auj.</span>
-      </div>
-
-      <div class="notif-item" onclick="showThread('notifs')">
-        <div class="notif-ico-wrap" style="background:rgba(41,171,226,.1)">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-        </div>
-        <div class="notif-text-col">
-          <div class="notif-title">Nouvel avis reçu</div>
-          <div class="notif-sub">Kofi a laissé ★★★★★ sur votre commande</div>
-        </div>
-        <span class="notif-time">Hier</span>
-      </div>
-
-      <div class="notif-item" onclick="showThread('notifs')">
-        <div class="notif-ico-wrap" style="background:rgba(245,158,11,.1)">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        </div>
-        <div class="notif-text-col">
-          <div class="notif-title">Rappel livraison</div>
-          <div class="notif-sub">#ORD-1821 attendu depuis hier</div>
-        </div>
-        <span class="notif-time">Hier</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="sb-bottom">
-    <div class="sb-user-av">AM</div>
-    <div class="sb-user-info">
-      <div class="sb-user-name">Awa Mbaye</div>
-      <div class="sb-user-role">Client</div>
-    </div>
-    <div class="sb-user-dot"></div>
-  </div>
-</div>
-
-<!-- ═══════════════════ MAIN AREA ═══════════════════ -->
-<div class="chat-main">
-
-  <!-- ── THREAD: ORIUPE OFFICIEL ── -->
-  <div class="thread active" id="thread-oriupe">
-    <div class="official-header">
-      <div class="oh-av">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        <div class="oh-badge">
-          <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-        </div>
-      </div>
-      <div class="oh-info">
-        <div class="oh-name-row">
-          <span class="oh-name">Oriupe Officiel</span>
-          <span class="oh-official-tag">COMPTE VÉRIFIÉ</span>
-        </div>
-        <div class="oh-sub">Messages officiels de la plateforme · Impossible à usurper</div>
-      </div>
-      <div class="oh-actions">
-        <button class="oh-btn" title="Archiver tout">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
-        </button>
-        <button class="oh-btn" title="Paramètres notifications" onclick="window.location.href='/src/pages/dashboard/client/index.html'">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
-        </button>
-      </div>
-    </div>
-
-    <div class="official-stream">
-      <!-- Date sep -->
-      <div class="date-sep"><div class="date-sep-line"></div><span class="date-sep-lbl">8 mai 2025</span><div class="date-sep-line"></div></div>
-
-      <!-- RAPPEL -->
-      <div class="omsg rappel">
-        <div class="omsg-head">
-          <div class="omsg-head-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1B3A4A" stroke-width="2" opacity=".5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-          <div class="omsg-head-info">
-            <div class="omsg-head-type">RAPPEL</div>
-            <div class="omsg-head-title">Dossier KYC en cours d'examen</div>
-          </div>
-          <span class="omsg-head-time">8 mai · 10:00</span>
-          <div class="omsg-head-bg" style="background:#1B3A4A"></div>
-        </div>
-        <div class="omsg-body">
-          <div class="oriupe-sender">
-            <div class="oriupe-sender-av"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-            <span class="oriupe-sender-name">Oriupe Officiel</span>
-            <span class="oriupe-sender-badge">OFFICIEL</span>
-          </div>
-          <div class="omsg-text">Votre dossier de vérification d'identité soumis le 6 mai est actuellement en cours d'examen par notre équipe. Le délai moyen de traitement est de 24 à 48 heures. Vous recevrez une notification dès que la vérification sera terminée.</div>
-        </div>
-      </div>
-
-      <!-- Date sep -->
-      <div class="date-sep"><div class="date-sep-line"></div><span class="date-sep-lbl">12 mai 2025</span><div class="date-sep-line"></div></div>
-
-      <!-- VALIDATION -->
-      <div class="omsg validation">
-        <div class="omsg-head">
-          <div class="omsg-head-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--green-d)" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
-          <div class="omsg-head-info">
-            <div class="omsg-head-type">VALIDATION</div>
-            <div class="omsg-head-title">Identité vérifiée avec succès !</div>
-          </div>
-          <span class="omsg-head-time">12 mai · 09:18</span>
-          <div class="omsg-head-bg" style="background:var(--green)"></div>
-        </div>
-        <div class="omsg-body">
-          <div class="oriupe-sender">
-            <div class="oriupe-sender-av"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-            <span class="oriupe-sender-name">Oriupe Officiel</span>
-            <span class="oriupe-sender-badge">OFFICIEL</span>
-          </div>
-          <div class="omsg-text">Bonne nouvelle ! Votre identité a été vérifiée avec succès par notre équipe. Le badge <strong>« Compte certifié »</strong> est maintenant actif sur votre profil. Vous pouvez désormais effectuer des transactions jusqu'à 2 000 000 FCFA par mois et accéder à toutes les fonctionnalités premium de la plateforme.</div>
-          <div class="omsg-action">
-            <button class="omsg-btn primary" onclick="window.location.href='/src/pages/dashboard/client/index.html'">Voir mon profil</button>
-            <button class="omsg-btn secondary" style="border:1.5px solid rgba(60,184,120,.3);color:var(--green-d)">En savoir plus</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- ANNONCE -->
-      <div class="omsg annonce">
-        <div class="omsg-head">
-          <div class="omsg-head-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><path d="M22 17H2a3 3 0 000 6h20M22 17v-5.5a7.5 7.5 0 10-15 0V17M22 17H7"/></svg></div>
-          <div class="omsg-head-info">
-            <div class="omsg-head-type">ANNONCE</div>
-            <div class="omsg-head-title">Nouvelle fonctionnalité — Contrats numériques</div>
-          </div>
-          <span class="omsg-head-time">14 mai · 11:00</span>
-          <div class="omsg-head-bg" style="background:var(--blue)"></div>
-        </div>
-        <div class="omsg-body">
-          <div class="oriupe-sender">
-            <div class="oriupe-sender-av"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-            <span class="oriupe-sender-name">Oriupe Officiel</span>
-            <span class="oriupe-sender-badge">OFFICIEL</span>
-          </div>
-          <div class="omsg-text">Les <strong>contrats numériques Oriupe</strong> sont maintenant disponibles sur votre compte. Pour chaque commande, un contrat généré automatiquement définit les livrables, les délais et les conditions de paiement. Les deux parties signent électroniquement avant le démarrage. En cas de litige, ce contrat fait foi auprès de notre équipe de médiation.<br><br>Cette fonctionnalité est activée automatiquement sur toutes les nouvelles commandes à partir d'aujourd'hui.</div>
-          <div class="omsg-action">
-            <button class="omsg-btn primary">Découvrir les contrats</button>
-            <button class="omsg-btn secondary" style="border:1.5px solid rgba(41,171,226,.3);color:var(--blue)">Pas maintenant</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Date sep -->
-      <div class="date-sep"><div class="date-sep-line"></div><span class="date-sep-lbl">Aujourd'hui — 17 mai 2025</span><div class="date-sep-line"></div></div>
-
-      <!-- ALERTE -->
-      <div class="omsg alerte">
-        <div class="omsg-head">
-          <div class="omsg-head-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
-          <div class="omsg-head-info">
-            <div class="omsg-head-type">ALERTE SÉCURITÉ</div>
-            <div class="omsg-head-title">Connexion depuis un nouvel appareil</div>
-          </div>
-          <span class="omsg-head-time">08:44</span>
-          <div class="omsg-head-bg" style="background:var(--red)"></div>
-        </div>
-        <div class="omsg-body">
-          <div class="oriupe-sender">
-            <div class="oriupe-sender-av"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-            <span class="oriupe-sender-name">Oriupe Officiel</span>
-            <span class="oriupe-sender-badge">OFFICIEL</span>
-          </div>
-          <div class="omsg-text">Une connexion a été effectuée sur votre compte depuis un <strong>nouvel appareil</strong> :<br><br>📍 Localisation : Abidjan, Côte d'Ivoire<br>🖥️ Appareil : Chrome sur Windows<br>⏰ Heure : 08:44 WAT<br><br>Si c'est vous, ignorez ce message. Si vous ne reconnaissez pas cette connexion, changez immédiatement votre mot de passe et déconnectez toutes les sessions actives.</div>
-          <div class="omsg-action">
-            <button class="omsg-btn primary">Sécuriser mon compte</button>
-            <button class="omsg-btn secondary" style="border:1.5px solid rgba(239,68,68,.25);color:var(--red)" onclick="this.textContent='✓ Signalé';this.disabled=true;if(typeof showToast==='function')showToast('Connexion suspecte signalée — notre équipe de sécurité a été notifiée.','warning')">Signaler comme suspect</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- AVERTISSEMENT -->
-      <div class="omsg avertissement">
-        <div class="omsg-head">
-          <div class="omsg-head-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
-          <div class="omsg-head-info">
-            <div class="omsg-head-type">AVERTISSEMENT</div>
-            <div class="omsg-head-title">Commande en attente de validation</div>
-          </div>
-          <span class="omsg-head-time">11:20</span>
-          <div class="omsg-head-bg" style="background:var(--gold)"></div>
-        </div>
-        <div class="omsg-body">
-          <div class="oriupe-sender">
-            <div class="oriupe-sender-av"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-            <span class="oriupe-sender-name">Oriupe Officiel</span>
-            <span class="oriupe-sender-badge">OFFICIEL</span>
-          </div>
-          <div class="omsg-text">La commande <strong>#ORD-2025-001</strong> (Logo + Charte graphique) a été livrée par Kofi Asante il y a <strong>48 heures</strong>. Selon nos conditions générales, si vous ne validez pas ou ne signalez pas de problème dans les <strong>72 heures suivant la livraison</strong>, les fonds seront automatiquement libérés au freelance.<br><br>Il vous reste <strong>24 heures</strong> pour agir.</div>
-          <div class="omsg-action">
-            <button class="omsg-btn primary" onclick="window.location.href='/src/pages/dashboard/client/index.html'">Valider la livraison</button>
-            <button class="omsg-btn secondary" style="border:1.5px solid rgba(245,158,11,.3);color:#D97706">Signaler un problème</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ── THREAD: KOFI ── -->
-  <div class="thread" id="thread-kofi">
-    <div class="escrow-block">
-      <div class="esc-inner">
-        <div class="esc-row">
-          <span class="esc-lbl">ESCROW</span>
-          <span class="esc-code">#ESC-0025-KA01</span>
-          <span class="esc-pill ep-delivered">Livré — validation en attente</span>
-          <div style="flex:1"></div>
-          <button onclick="window.location.href='/src/pages/dashboard/client/index.html'" style="padding:4px 10px;border-radius:7px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.07);color:rgba(255,255,255,.7);font-size:10px;font-weight:700;cursor:pointer">Gérer ›</button>
-        </div>
-        <div class="esc-amounts">
-          <div class="esc-amt"><div class="esc-amt-lbl">MONTANT</div><div class="esc-amt-val">120 000 FCFA</div></div>
-          <div class="esc-amt"><div class="esc-amt-lbl">SÉCURISÉ</div><div class="esc-amt-val green">120 000 FCFA</div></div>
-          <div class="esc-amt"><div class="esc-amt-lbl">LIBÉRÉ</div><div class="esc-amt-val muted">0 FCFA</div></div>
-        </div>
-      </div>
-    </div>
-    <div class="chat-head">
-      <div class="ch-av">
-        <div class="ch-cav" style="background:linear-gradient(135deg,#29ABE2,#1A8BC0)">KA</div>
-        <div class="ch-online-dot"></div>
-      </div>
-      <div class="ch-info">
-        <div class="ch-name">Kofi Asante</div>
-        <div class="ch-meta">
-          <span style="color:#22C55E;font-weight:600">En ligne</span>
-          <span class="ch-meta-badge" style="background:var(--green-l);color:var(--green-d)">&#10003; KYC vérifié</span>
-          <span class="ch-meta-badge" style="background:rgba(245,158,11,.1);color:#D97706">&#9733; 4.9</span>
-        </div>
-      </div>
-      <div class="ch-actions">
-        <button class="ch-btn" title="Profil public" onclick="window.location.href='/src/pages/profile/index.html'"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></button>
-        <button class="ch-btn ch-btn-escrow" title="Ouvrir l'espace commande complet (escrow + fichiers)" onclick="window.location.href='/src/pages/chat/index.html?order_id=ORD-2025-001'"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg> Escrow</button>
-        <button class="ch-btn" title="Signaler"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg></button>
-      </div>
-    </div>
-    <div class="messages" id="msgs-kofi">
-      <div class="date-sep"><div class="date-sep-line"></div><span class="date-sep-lbl">14 mai 2025</span><div class="date-sep-line"></div></div>
-      <div class="msg recv">
-        <div class="msg-av" style="background:linear-gradient(135deg,#29ABE2,#1A8BC0)">KA</div>
-        <div><div class="bubble">Bonjour Awa ! J'ai bien reçu votre brief et les références visuelles. Je commence les premières esquisses de logo aujourd'hui. Comptez 2-3 jours pour les premières propositions.</div><div class="bubble-time">09:15</div></div>
-      </div>
-      <div class="msg sent">
-        <div class="msg-av" style="background:linear-gradient(135deg,#F59E0B,#F97316)">AM</div>
-        <div><div class="bubble">Parfait, merci ! Je suis disponible pour un appel si vous avez des questions sur le brief.</div><div class="bubble-time">10:30</div></div>
-      </div>
-      <div class="msg recv">
-        <div class="msg-av" style="background:linear-gradient(135deg,#29ABE2,#1A8BC0)">KA</div>
-        <div><div class="bubble">Voici 3 directions créatives pour votre logo :<br><br>🎨 <strong>Direction A</strong> — Minimaliste moderne, trait épuré<br>🎨 <strong>Direction B</strong> — Emblème avec initiales stylisées<br>🎨 <strong>Direction C</strong> — Wordmark avec accent africain<br><br>Laquelle vous parle le plus ?</div><div class="bubble-time">15:48</div></div>
-      </div>
-      <div class="msg sent">
-        <div class="msg-av" style="background:linear-gradient(135deg,#F59E0B,#F97316)">AM</div>
-        <div><div class="bubble">J'aime beaucoup la Direction B ! L'emblème avec les initiales est exactement ce que j'imaginais. Pouvez-vous proposer une version en bleu marine et une en doré ?</div><div class="bubble-time">16:22</div></div>
-      </div>
-      <div class="date-sep" style="margin-top:8px"><div class="date-sep-line"></div><span class="date-sep-lbl">Aujourd'hui — 17 mai 2025</span><div class="date-sep-line"></div></div>
-      <!-- Delivery card -->
-      <div class="delivery-card">
-        <div class="dc-head">
-          <div class="dc-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
-          <div><div class="dc-title">Livraison soumise</div><div class="dc-sub">Kofi a livré la commande #ORD-2025-001</div></div>
-        </div>
-        <div style="font-size:11px;color:var(--muted);margin-bottom:10px;line-height:1.5">📁 Logo_Awa_Mbaye_Final.ai<br>📁 Logo_Awa_Mbaye_PNG_transparent.png<br>📁 Charte_graphique_v2.pdf<br>📁 Déclinaisons_couleur_blanc.zip</div>
-        <div class="dc-actions">
-          <button class="dc-btn green">✓ Valider et libérer les fonds</button>
-          <button class="dc-btn ghost">Demander une révision</button>
-        </div>
-      </div>
-      <div class="msg recv">
-        <div class="msg-av" style="background:linear-gradient(135deg,#29ABE2,#1A8BC0)">KA</div>
-        <div><div class="bubble">Voici la livraison finale avec toutes vos corrections ! J'ai inclus le logo en version bleu marine et doré, ainsi que le blanc pour les fonds sombres. Dites-moi si vous souhaitez des ajustements. 🎨</div><div class="bubble-time">14:32</div></div>
-      </div>
-    </div>
-    <div class="input-area">
-      <div class="input-actions">
-        <button class="inp-btn" title="Pièce jointe"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg></button>
-        <button class="inp-btn" title="Emoji">😊</button>
-      </div>
-      <input class="msg-inp" id="inp-kofi" placeholder="Écrire à Kofi…" onkeydown="if(event.key==='Enter')sendDirect('kofi')"/>
-      <button class="send-btn" onclick="sendDirect('kofi')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
-    </div>
-  </div>
-
-  <!-- ── THREAD: NOTIFICATIONS ── -->
-  <div class="thread" id="thread-notifs">
-    <div class="notifs-head">
-      <span class="notifs-title">Notifications système</span>
-      <button class="notifs-mark">Tout marquer lu</button>
-    </div>
-    <div class="notifs-stream">
-      <div class="notif-card unread">
-        <div class="nc-ico" style="background:var(--green-l)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-        <div class="nc-body">
-          <div class="nc-title">Escrow sécurisé — 120 000 FCFA</div>
-          <div class="nc-sub">Le paiement pour la commande #ORD-2025-001 (Logo + Charte graphique) a été sécurisé dans l'escrow Oriupe. Kofi Asante a été notifié et peut commencer le travail.</div>
-          <div class="nc-time">Aujourd'hui à 09:00</div>
-        </div>
-        <div class="nc-dot"></div>
-      </div>
-      <div class="notif-card unread">
-        <div class="nc-ico" style="background:rgba(124,58,237,.1)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="2.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
-        <div class="nc-body">
-          <div class="nc-title">Nouveau message de Kofi Asante</div>
-          <div class="nc-sub">Kofi a envoyé un message dans la commande #ORD-2025-001 avec des fichiers de livraison en pièce jointe.</div>
-          <div class="nc-time">Aujourd'hui à 14:32</div>
-        </div>
-        <div class="nc-dot"></div>
-      </div>
-      <div class="notif-card">
-        <div class="nc-ico" style="background:rgba(245,158,11,.1)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
-        <div class="nc-body">
-          <div class="nc-title">Avis laissé sur votre commande</div>
-          <div class="nc-sub">Vous avez laissé une note ★★★★★ sur la commande #ORD-2025-003 complétée avec Samira Ben.</div>
-          <div class="nc-time">10 mai à 16:00</div>
-        </div>
-      </div>
-      <div class="notif-card">
-        <div class="nc-ico" style="background:var(--blue-l)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><path d="M1 10h22"/></svg></div>
-        <div class="nc-body">
-          <div class="nc-title">Paiement confirmé — 55 000 FCFA</div>
-          <div class="nc-sub">Votre paiement par Wave pour la commande #ORD-2025-003 (Campagne réseaux sociaux) a été confirmé.</div>
-          <div class="nc-time">10 mai à 09:30</div>
-        </div>
-      </div>
-      <div class="notif-card">
-        <div class="nc-ico" style="background:var(--green-l)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
-        <div class="nc-body">
-          <div class="nc-title">Commande complétée</div>
-          <div class="nc-sub">La commande #ORD-2025-003 avec Samira Ben a été complétée avec succès. Les fonds ont été libérés.</div>
-          <div class="nc-time">10 mai à 09:25</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ── OTHER THREADS (simple placeholders) ── -->
-  <div class="thread" id="thread-ada">
-    <div class="chat-head">
-      <div class="ch-av"><div class="ch-cav" style="background:linear-gradient(135deg,#3CB878,#27965D)">AO</div><div class="ch-online-dot"></div></div>
-      <div class="ch-info"><div class="ch-name">Ada Osei</div><div class="ch-meta"><span style="color:#22C55E;font-weight:600">En ligne</span><span class="ch-meta-badge" style="background:var(--green-l);color:var(--green-d)">&#10003; KYC vérifié</span></div></div>
-      <div class="ch-actions"><button class="ch-btn" onclick="window.location.href='/src/pages/dashboard/client/index.html'"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg></button></div>
-    </div>
-    <div class="messages" id="msgs-ada">
-      <div class="date-sep"><div class="date-sep-line"></div><span class="date-sep-lbl">Hier</span><div class="date-sep-line"></div></div>
-      <div class="msg recv"><div class="msg-av" style="background:linear-gradient(135deg,#3CB878,#27965D)">AO</div><div><div class="bubble">Bonjour Awa ! Je travaille activement sur votre site. La homepage est finalisée en wireframe, je vous envoie un aperçu dans la journée.</div><div class="bubble-time">10:15</div></div></div>
-      <div class="msg sent"><div class="msg-av" style="background:linear-gradient(135deg,#F59E0B,#F97316)">AM</div><div><div class="bubble">Très bien, j'attends votre aperçu ! N'oubliez pas d'intégrer le formulaire de contact avec validation côté serveur.</div><div class="bubble-time">11:00</div></div></div>
-      <div class="msg recv"><div class="msg-av" style="background:linear-gradient(135deg,#3CB878,#27965D)">AO</div><div><div class="bubble">Le site avance bien, voici la homepage en wireframe haute fidélité. Le formulaire de contact avec validation serveur est déjà prévu dans la structure.</div><div class="bubble-time">17:30</div></div></div>
-    </div>
-    <div class="input-area">
-      <input class="msg-inp" id="inp-ada" placeholder="Écrire à Ada…" onkeydown="if(event.key==='Enter')sendDirect('ada')"/>
-      <button class="send-btn" onclick="sendDirect('ada')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
-    </div>
-  </div>
-
-  <div class="thread" id="thread-sam">
-    <div class="chat-head">
-      <div class="ch-av"><div class="ch-cav" style="background:linear-gradient(135deg,#F59E0B,#D97706)">SB</div></div>
-      <div class="ch-info"><div class="ch-name">Samira Ben</div><div class="ch-meta"><span style="color:var(--muted);font-weight:600">Hors ligne</span><span class="ch-meta-badge" style="background:var(--green-l);color:var(--green-d)">&#10003; KYC vérifié</span></div></div>
-    </div>
-    <div class="messages" id="msgs-sam">
-      <div class="date-sep"><div class="date-sep-line"></div><span class="date-sep-lbl">10 mai 2025</span><div class="date-sep-line"></div></div>
-      <div class="msg recv"><div class="msg-av" style="background:linear-gradient(135deg,#F59E0B,#D97706)">SB</div><div><div class="bubble">La campagne est terminée ! J'ai livré tous les visuels pour Instagram, Facebook et LinkedIn. Merci pour votre confiance, c'était un plaisir de travailler avec vous.</div><div class="bubble-time">09:20</div></div></div>
-      <div class="msg sent"><div class="msg-av" style="background:linear-gradient(135deg,#F59E0B,#F97316)">AM</div><div><div class="bubble">Merci Samira, le travail est vraiment excellent ! Je vous recontacterai pour la prochaine campagne.</div><div class="bubble-time">10:05</div></div></div>
-    </div>
-    <div class="input-area">
-      <input class="msg-inp" id="inp-sam" placeholder="Écrire à Samira…" onkeydown="if(event.key==='Enter')sendDirect('sam')"/>
-      <button class="send-btn" onclick="sendDirect('sam')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
-    </div>
-  </div>
-
-  <div class="thread" id="thread-mk">
-    <div class="chat-head">
-      <div class="ch-av"><div class="ch-cav" style="background:linear-gradient(135deg,#7C3AED,#5B21B6)">MK</div><div class="ch-online-dot"></div></div>
-      <div class="ch-info"><div class="ch-name">Mariama Kouyaté</div><div class="ch-meta"><span style="color:#22C55E;font-weight:600">En ligne</span></div></div>
-    </div>
-    <div class="messages" id="msgs-mk">
-      <div class="date-sep"><div class="date-sep-line"></div><span class="date-sep-lbl">8 mai 2025</span><div class="date-sep-line"></div></div>
-      <div class="msg recv"><div class="msg-av" style="background:linear-gradient(135deg,#7C3AED,#5B21B6)">MK</div><div><div class="bubble">Bonjour ! Voici le plan de contenu pour mai et juin. J'ai prévu 12 posts par mois avec une répartition thématique : 40% éducatif, 30% engageant, 30% promotionnel.</div><div class="bubble-time">14:00</div></div></div>
-    </div>
-    <div class="input-area">
-      <input class="msg-inp" id="inp-mk" placeholder="Écrire à Mariama…" onkeydown="if(event.key==='Enter')sendDirect('mk')"/>
-      <button class="send-btn" onclick="sendDirect('mk')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
-    </div>
-  </div>
-</div>
-
-<!-- ═══════════════════ RIGHT PANEL ═══════════════════ -->
-<div class="detail-panel" id="right-panel">
-  <div class="dp-head">PROFIL FREELANCE</div>
-  <div class="dp-profile">
-    <div class="dp-av" style="background:linear-gradient(135deg,#29ABE2,#1A8BC0)">KA</div>
-    <div class="dp-name">Kofi Asante</div>
-    <div class="dp-role">Designer Graphique · Accra</div>
-    <div class="dp-badges">
-      <span class="dp-badge db-kyc">✓ Identité vérifiée</span>
-      <span class="dp-badge db-top">★ Top Oriupe</span>
-    </div>
-  </div>
-  <div class="dp-stats">
-    <div class="dp-stat"><div class="dp-stat-val">4.9</div><div class="dp-stat-lbl">Note</div></div>
-    <div class="dp-stat"><div class="dp-stat-val">24</div><div class="dp-stat-lbl">Commandes</div></div>
-    <div class="dp-stat"><div class="dp-stat-val">96%</div><div class="dp-stat-lbl">Complétion</div></div>
-    <div class="dp-stat"><div class="dp-stat-val">&lt;1h</div><div class="dp-stat-lbl">Réponse</div></div>
-  </div>
-  <div class="dp-order-info">
-    <div class="dp-order-title">Commande en cours</div>
-    <div class="dp-order-row"><span class="dp-order-lbl">Référence</span><span class="dp-order-val">#ORD-2025-001</span></div>
-    <div class="dp-order-row"><span class="dp-order-lbl">Service</span><span class="dp-order-val">Logo + Charte</span></div>
-    <div class="dp-order-row"><span class="dp-order-lbl">Montant</span><span class="dp-order-val" style="color:var(--green)">120 000 FCFA</span></div>
-    <div class="dp-order-row"><span class="dp-order-lbl">Statut</span><span class="dp-order-val" style="color:var(--purple)">À valider</span></div>
-    <div class="dp-order-row"><span class="dp-order-lbl">Escrow</span><span class="dp-order-val" style="color:var(--blue)">Sécurisé</span></div>
-  </div>
-  <div class="dp-actions">
-    <button class="dp-btn primary" onclick="window.location.href='/src/pages/dashboard/client/index.html'">Valider la livraison</button>
-    <button class="dp-btn secondary" onclick="window.location.href='/src/pages/profile/index.html'">Voir le profil public</button>
-    <button class="dp-btn danger">Signaler un problème</button>
-  </div>
-</div>
-
-</div>
-
+<script src="/src/shared/oriupe-session.js"></script>
 <script>
-/* ── THREAD NAVIGATION ── */
-let activeThread = 'oriupe';
-
-function showThread(id) {
-  // Deactivate all threads
-  document.querySelectorAll('.thread').forEach(t => t.classList.remove('active'));
-  // Deactivate all sidebar items
-  document.querySelectorAll('.oriupe-channel-item, .conv-item, .notif-item').forEach(i => i.classList.remove('active'));
-
-  // Activate thread
-  const thread = document.getElementById('thread-' + id);
-  if (thread) thread.classList.add('active');
-
-  // Activate sidebar item
-  if (id === 'oriupe') {
-    document.querySelector('.oriupe-channel-item').classList.add('active');
-    updateRightPanel('oriupe');
-  } else if (id === 'notifs') {
-    document.querySelector('#ni-escrow').classList.add('active');
-    updateRightPanel('notifs');
-  } else {
-    const ci = document.getElementById('ci-' + id);
-    if (ci) ci.classList.add('active');
-    updateRightPanel(id);
-
-    // Remove unread badge on sidebar item
-    const badge = ci ? ci.querySelector('.unread-badge') : null;
-    if (badge) badge.remove();
-  }
-
-  activeThread = id;
-
-  // Scroll to bottom
-  const msgs = document.getElementById('msgs-' + id);
-  if (msgs) setTimeout(() => { msgs.scrollTop = msgs.scrollHeight; }, 50);
-}
-
-/* ── RIGHT PANEL ── */
-const PROFILES = {
-  oriupe: { type: 'oriupe' },
-  kofi: {
-    type: 'freelance', name: 'Kofi Asante', initials: 'KA',
-    color: 'linear-gradient(135deg,#29ABE2,#1A8BC0)',
-    role: 'Designer Graphique · Accra', rating: '4.9', orders: '24',
-    completion: '96%', response: '<1h',
-    orderRef: '#ORD-2025-001', orderService: 'Logo + Charte',
-    orderAmount: '120 000 FCFA', orderStatus: 'À valider'
-  },
-  ada: {
-    type: 'freelance', name: 'Ada Osei', initials: 'AO',
-    color: 'linear-gradient(135deg,#3CB878,#27965D)',
-    role: 'Développeuse Web · Lagos', rating: '5.0', orders: '18',
-    completion: '100%', response: '2h',
-    orderRef: '#ORD-2025-002', orderService: 'Site vitrine',
-    orderAmount: '350 000 FCFA', orderStatus: 'En cours'
-  },
-  sam: {
-    type: 'freelance', name: 'Samira Ben', initials: 'SB',
-    color: 'linear-gradient(135deg,#F59E0B,#D97706)',
-    role: 'Social Media · Tunis', rating: '4.8', orders: '31',
-    completion: '97%', response: '3h',
-    orderRef: '#ORD-2025-003', orderService: 'Campagne réseaux',
-    orderAmount: '55 000 FCFA', orderStatus: 'Complétée'
-  },
-  mk: {
-    type: 'freelance', name: 'Mariama Kouyaté', initials: 'MK',
-    color: 'linear-gradient(135deg,#7C3AED,#5B21B6)',
-    role: 'Rédactrice SEO · Bamako', rating: '4.7', orders: '12',
-    completion: '92%', response: '<2h',
-    orderRef: '#ORD-2025-004', orderService: 'Contenu digital',
-    orderAmount: '42 000 FCFA', orderStatus: 'En cours'
-  },
-  notifs: { type: 'notifs' }
-};
-
-function updateRightPanel(id) {
-  const p = PROFILES[id];
-  if (!p) return;
-
-  if (p.type === 'oriupe') {
-    document.getElementById('right-panel').innerHTML = `
-      <div class="dp-head">ORIUPE OFFICIEL</div>
-      <div class="dp-profile">
-        <div class="dp-av" style="background:linear-gradient(135deg,#1565C0,#0288D1,#29ABE2);border-radius:14px">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        </div>
-        <div class="dp-name">Oriupe Officiel</div>
-        <div class="dp-role">Messagerie officielle de la plateforme</div>
-        <div class="dp-badges"><span class="dp-badge" style="background:rgba(41,171,226,.12);color:var(--blue);border:1px solid rgba(41,171,226,.2)">✓ COMPTE VÉRIFIÉ</span></div>
-      </div>
-      <div style="padding:16px;font-size:12px;color:var(--muted);line-height:1.6;border-bottom:1px solid var(--border2)">
-        Ces messages proviennent directement d'Oriupe. Ils ne peuvent pas être usurpés par d'autres utilisateurs. Oriupe ne vous demandera jamais votre mot de passe par message.
-      </div>
-      <div class="dp-actions">
-        <button class="dp-btn secondary" onclick="window.location.href='/src/pages/dashboard/client/index.html'">Mon tableau de bord</button>
-        <button class="dp-btn secondary" onclick="window.location.href='/src/pages/home/index.html'">Accueil Oriupe</button>
-      </div>`;
-    return;
-  }
-
-  if (p.type === 'notifs') {
-    document.getElementById('right-panel').innerHTML = `
-      <div class="dp-head">NOTIFICATIONS</div>
-      <div style="padding:20px;text-align:center">
-        <div style="font-size:40px;margin-bottom:12px">🔔</div>
-        <div style="font-size:13px;font-weight:800;color:var(--navy2);margin-bottom:6px">Notifications système</div>
-        <div style="font-size:11px;color:var(--muted)">Ces notifications sont générées automatiquement par la plateforme.</div>
-      </div>
-      <div class="dp-actions">
-        <button class="dp-btn secondary" onclick="document.querySelectorAll('.notif-card.unread').forEach(c=>c.classList.remove('unread'))">Tout marquer lu</button>
-      </div>`;
-    return;
-  }
-
-  document.getElementById('right-panel').innerHTML = `
-    <div class="dp-head">PROFIL FREELANCE</div>
-    <div class="dp-profile">
-      <div class="dp-av" style="background:${p.color}">${p.initials}</div>
-      <div class="dp-name">${p.name}</div>
-      <div class="dp-role">${p.role}</div>
-      <div class="dp-badges">
-        <span class="dp-badge db-kyc">✓ Identité vérifiée</span>
-        <span class="dp-badge db-top">★ Top Oriupe</span>
-      </div>
-    </div>
-    <div class="dp-stats">
-      <div class="dp-stat"><div class="dp-stat-val">${p.rating}</div><div class="dp-stat-lbl">Note</div></div>
-      <div class="dp-stat"><div class="dp-stat-val">${p.orders}</div><div class="dp-stat-lbl">Commandes</div></div>
-      <div class="dp-stat"><div class="dp-stat-val">${p.completion}</div><div class="dp-stat-lbl">Complétion</div></div>
-      <div class="dp-stat"><div class="dp-stat-val">${p.response}</div><div class="dp-stat-lbl">Réponse</div></div>
-    </div>
-    <div class="dp-order-info">
-      <div class="dp-order-title">Commande liée</div>
-      <div class="dp-order-row"><span class="dp-order-lbl">Référence</span><span class="dp-order-val">${p.orderRef}</span></div>
-      <div class="dp-order-row"><span class="dp-order-lbl">Service</span><span class="dp-order-val">${p.orderService}</span></div>
-      <div class="dp-order-row"><span class="dp-order-lbl">Montant</span><span class="dp-order-val" style="color:var(--green)">${p.orderAmount}</span></div>
-      <div class="dp-order-row"><span class="dp-order-lbl">Statut</span><span class="dp-order-val">${p.orderStatus}</span></div>
-    </div>
-    <div class="dp-actions">
-      <button class="dp-btn primary" onclick="window.location.href='/src/pages/dashboard/client/index.html'">Tableau de bord</button>
-      <button class="dp-btn secondary" onclick="window.location.href='/src/pages/profile/index.html'">Profil public</button>
-      <button class="dp-btn danger">Signaler</button>
-    </div>`;
-}
-
-/* ── ROLE TOGGLE ── */
-function switchRole(role, btn) {
-  document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  // Update user avatar & name
-  const avEl = document.querySelector('.sb-user-av');
-  const nameEl = document.querySelector('.sb-user-name');
-  const roleEl = document.querySelector('.sb-user-role');
-  if (role === 'freelance') {
-    avEl.textContent = 'KA';
-    avEl.style.background = 'linear-gradient(135deg,#3CB878,#8DC63F)';
-    nameEl.textContent = 'Kofi Asante';
-    roleEl.textContent = 'Freelance';
-  } else {
-    avEl.textContent = 'AM';
-    avEl.style.background = 'linear-gradient(135deg,#F59E0B,#F97316)';
-    nameEl.textContent = 'Awa Mbaye';
-    roleEl.textContent = 'Client';
-  }
-}
-
-/* ── SEND MESSAGE ── */
-const AI_REPLIES = {
-  kofi: ["Je mets à jour les fichiers immédiatement.", "C'est noté, je prends en compte votre retour.", "Parfait, je vous envoie une version mise à jour.", "Bien reçu ! 🎨"],
-  ada: ["Je travaille dessus, livraison d'ici 2 jours.", "Bien reçu, je vais intégrer ça.", "C'est prévu dans la prochaine version."],
-  sam: ["Avec plaisir ! Je suis disponible pour votre prochaine campagne.", "Merci pour votre confiance !", "Je vous envoie mon planning de disponibilité."],
-  mk: ["Je vous prépare un nouveau plan de contenu.", "C'est noté, j'ajuste la stratégie.", "Bien reçu ! 📝"]
-};
-
-function sendDirect(id) {
-  const inp = document.getElementById('inp-' + id);
-  const text = (inp ? inp.value : '').trim();
-  if (!text) return;
-
-  const msgs = document.getElementById('msgs-' + id);
-  if (!msgs) return;
-
-  // My message
-  const myMsg = document.createElement('div');
-  myMsg.className = 'msg sent';
-  myMsg.innerHTML = '<div class="msg-av" style="background:linear-gradient(135deg,#F59E0B,#F97316)">AM</div><div><div class="bubble">' + text.replace(/</g,'&lt;') + '</div><div class="bubble-time">Maintenant</div></div>';
-  msgs.appendChild(myMsg);
-  inp.value = '';
-  msgs.scrollTop = msgs.scrollHeight;
-
-  // Auto reply
-  const p = PROFILES[id];
-  const replies = AI_REPLIES[id] || ["Bien reçu, merci !"];
-  setTimeout(() => {
-    const replyMsg = document.createElement('div');
-    replyMsg.className = 'msg recv';
-    replyMsg.innerHTML = '<div class="msg-av" style="background:' + (p ? p.color : '#29ABE2') + '">' + (p ? p.initials : '?') + '</div><div><div class="bubble">' + replies[Math.floor(Math.random() * replies.length)] + '</div><div class="bubble-time">Maintenant</div></div>';
-    msgs.appendChild(replyMsg);
-    msgs.scrollTop = msgs.scrollHeight;
-  }, 1200 + Math.random() * 800);
-}
-
-// Init
-showThread('oriupe');
-setTimeout(() => {
-  const msgs = document.getElementById('msgs-kofi');
-  if (msgs) msgs.scrollTop = msgs.scrollHeight;
-}, 100);
+// Protection de route — authentification obligatoire
+requireAuth(['client','freelance','admin']);
 </script>
-<script type="module" src="/src/shared/realtime.js"></script>
+
+<div id="nav-placeholder"></div>
+
+<div class="msg-app" id="msgApp">
+
+  <!-- LEFT SIDEBAR -->
+  <div class="sidebar" id="sidebar">
+    <div class="sb-top">
+      <button type="button" class="sb-back" onclick="history.back()" title="Retour">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="sb-brand">
+        <div class="sb-logo">O</div>
+        <span class="sb-title">Messages</span>
+      </div>
+      <button type="button" class="sb-compose" title="Nouveau message" onclick="openNewConv()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+      </button>
+    </div>
+
+    <div class="sb-role">
+      <div class="role-pill">
+        <button type="button" class="role-btn active" id="roleFreelance" onclick="switchRole('freelance', this)">🎨 Freelance</button>
+        <button type="button" class="role-btn" id="roleClient" onclick="switchRole('client', this)">💼 Client</button>
+      </div>
+    </div>
+
+    <div class="sb-search">
+      <div class="search-wrap">
+        <svg class="search-ico" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input class="search-input" type="text" placeholder="Rechercher…" id="searchInput" oninput="filterConvs(this.value)"/>
+      </div>
+    </div>
+
+    <div class="sb-tabs">
+      <button type="button" class="sb-tab active" onclick="filterTab('all', this)">Tous</button>
+      <button type="button" class="sb-tab" onclick="filterTab('direct', this)">Directs</button>
+      <button type="button" class="sb-tab" onclick="filterTab('order', this)">Commandes</button>
+    </div>
+
+    <div class="conv-list" id="convList"></div>
+  </div>
+
+  <!-- CENTER CHAT -->
+  <div class="chat-area" id="chatArea">
+    <div class="chat-empty" id="chatEmpty">
+      <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+      <p>Sélectionnez une conversation</p>
+    </div>
+
+    <div id="chatContent" class="chat-content hidden">
+      <!-- Escrow banner (for order convs) -->
+      <div class="escrow-banner hidden" id="escrowBanner">
+        <div class="escrow-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        </div>
+        <div class="escrow-text">
+          <div class="escrow-label">🔒 FONDS SÉCURISÉS · ORIUPE ESCROW</div>
+          <div class="escrow-status" id="escrowStatusText">Paiement verrouillé — en attente de livraison</div>
+        </div>
+        <div class="escrow-amount" id="escrowAmountText">75 000 FCFA</div>
+        <div class="escrow-actions" id="escrowBannerActions"></div>
+      </div>
+
+      <!-- Header -->
+      <div class="chat-header" id="chatHeader">
+        <button type="button" class="mobile-back" onclick="closeChatMobile()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+          Retour
+        </button>
+        <div class="chat-hdr-av" id="chatHdrAv"></div>
+        <div class="chat-hdr-info">
+          <div class="chat-hdr-name" id="chatHdrName">—</div>
+          <div class="chat-hdr-sub" id="chatHdrSub"></div>
+        </div>
+        <div class="chat-hdr-actions">
+          <button type="button" class="hdr-btn" title="Voir le profil" onclick="toggleRightPanel()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          </button>
+          <button type="button" class="hdr-btn hidden" title="Appel" id="callBtn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2A19.86 19.86 0 013.09 4.18 2 2 0 015.07 2h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L9.06 9.9a16 16 0 006.86 6.86l1.27-1.26a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Messages -->
+      <div class="messages" id="messages"></div>
+
+      <!-- Typing indicator (hidden by default) -->
+      <div class="typing-row typing-row--padded hidden" id="typingRow">
+        <div class="msg-av av-typing" id="typingAv">A</div>
+        <div class="typing-dots"><span></span><span></span><span></span></div>
+      </div>
+
+      <!-- Attachments preview -->
+      <div class="attach-strip hidden" id="attachStrip"></div>
+
+      <!-- Escrow Action Bar (order convs only, pinned above composer) -->
+      <div id="escrowActionBar" class="escrow-action-bar hidden"></div>
+
+      <!-- Templates bar (freelance only, per conv) -->
+      <div class="input-wrap">
+        <div class="templates-bar hidden" id="templatesBar"></div>
+        <div class="composer-row">
+          <div class="composer">
+            <div class="composer-actions">
+              <label class="ca-btn" title="Joindre un fichier">
+                <input type="file" multiple id="fileInput" class="hidden" onchange="handleFiles(this.files)"/>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
+              </label>
+              <button type="button" class="ca-btn" title="Emoji" onclick="toggleEmojiPopup(event)">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 13s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+              </button>
+            </div>
+            <textarea
+              id="msgInput"
+              placeholder="Écrivez un message…"
+              rows="1"
+              onkeydown="handleKey(event)"
+              oninput="autoResize(this); onTyping()"
+            ></textarea>
+          </div>
+          <button type="button" class="send-btn" onclick="sendMessage()" id="sendBtn" title="Envoyer" aria-label="Envoyer le message">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="right-panel" id="rightPanel">
+    <div id="rpContent"></div>
+  </div>
+</div>
+
+<!-- Emoji popup (global) -->
+<div class="emoji-popup hidden" id="emojiPopup"></div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script type="module" src="/src/components/nav.js"></script>
+<script type="module">
+import {
+  supabase, isSupabaseConfigured,
+  getConversations, getConversationMessages, sendDirectMessage,
+  markConversationRead, addReaction,
+  subscribeToConversation, subscribeToPresence
+} from '/src/shared/supabase.js'
+
+// ── CONSTANTS ──────────────────────────────────────────────────────────────────
+const DEMO_USERS = {
+  kofi: { id: 'usr_kofi_001', name: 'Kofi Mensah', role: 'freelance', av: 'KM', avClass: 'av-green', job: 'Designer UI/UX · Accra, Ghana', rating: 4.9 },
+  awa:  { id: 'usr_awa_002',  name: 'Awa Diallo',  role: 'client',    av: 'AD', avClass: 'av-orange', job: 'Entrepreneur · Dakar, Sénégal', rating: null },
+  ada:  { id: 'usr_ada_003',  name: 'Ada Ngozi',   role: 'client',    av: 'AN', avClass: 'av-purple', job: 'CEO Agenco · Lagos, Nigeria', rating: null },
+  sam:  { id: 'usr_sam_004',  name: 'Sam Diallo',  role: 'client',    av: 'SD', avClass: 'av-blue', job: 'Directeur · Abidjan, CI', rating: null },
+  sys:  { id: 'sys',          name: 'Oriupe Official', role: 'system', av: '🔔', avClass: 'av-system', job: 'Notifications & alertes sécurité', rating: null }
+}
+
+const DEMO_CONVS = [
+  {
+    id: 'conv_sys',
+    type: 'system',
+    with: 'sys',
+    title: 'Oriupe Official',
+    preview: '🎉 Votre compte est vérifié',
+    time: '09:14',
+    unread: 1,
+    online: false
+  },
+  {
+    id: 'conv_awa_dm',
+    type: 'direct',
+    with: 'awa',
+    title: 'Awa Diallo',
+    preview: 'Merci ! Je valide dès ce soir',
+    time: '11:32',
+    unread: 2,
+    online: true
+  },
+  {
+    id: 'conv_awa_order',
+    type: 'order',
+    with: 'awa',
+    orderId: 'ORD-1089',
+    title: 'Commande #1089',
+    preview: '📦 Livraison envoyée',
+    time: '10:47',
+    unread: 0,
+    online: true,
+    order: {
+      ref: '#1089', service: 'Logo + Charte graphique',
+      amount: 75000, commission: 9000, net: 66000,
+      status: 'DELIVERED', deadline: '25 Mai 2026'
+    }
+  },
+  {
+    id: 'conv_ada',
+    type: 'direct',
+    with: 'ada',
+    title: 'Ada Ngozi',
+    preview: 'Can you do a full brand kit?',
+    time: 'Hier',
+    unread: 0,
+    online: false
+  },
+  {
+    id: 'conv_sam',
+    type: 'direct',
+    with: 'sam',
+    title: 'Sam Diallo',
+    preview: 'Super travail, je recommande !',
+    time: 'Lun',
+    unread: 0,
+    online: false
+  }
+]
+
+const DEMO_MSGS = {
+  conv_sys: [
+    { id: 'm_s1', type: 'system', sender: 'sys', body: null, official: { type: 'validation', icon: '✅', text: 'Votre compte Oriupe a été vérifié avec succès. Vous pouvez maintenant recevoir des paiements.' }, time: '09:10' },
+    { id: 'm_s2', type: 'system', sender: 'sys', body: null, official: { type: 'rappel', icon: '⏰', text: 'Rappel : votre commande #1089 arrive à échéance le 25 mai 2026. Assurez-vous de livrer à temps.' }, time: '09:12' },
+    { id: 'm_s3', type: 'system', sender: 'sys', body: null, official: { type: 'annonce', icon: '🎉', text: 'Nouveau ! Oriupe Academy lance ses formations certifiantes. Accédez à 50+ cours en management de projets digitaux africains.' }, time: '09:14' },
+  ],
+  conv_awa_dm: [
+    { id: 'm_d1', sender: 'awa', body: 'Bonjour Kofi ! J\'ai vu vos travaux sur le catalogue, impressionnant 👌', time: '10:02', reactions: {} },
+    { id: 'm_d2', sender: 'kofi', body: 'Merci beaucoup Awa ! Ravi que ça vous plaise. Je suis disponible pour votre projet 😊', time: '10:05', reactions: { '🔥': ['usr_awa_002'] } },
+    { id: 'm_d3', sender: 'awa', body: 'J\'ai besoin d\'une identité visuelle complète pour ma startup fintech. Logo, couleurs, typo. Budget 75 000 FCFA', time: '10:08', reactions: {} },
+    { id: 'm_d4', sender: 'kofi', body: 'Parfait, c\'est exactement mon domaine ! Je peux vous proposer :\n\n• Logo principal + déclinaisons\n• Charte graphique complète (PDF)\n• Guide d\'utilisation\n\nDélai : 7 jours', time: '10:15', reactions: { '❤️': ['usr_awa_002'] } },
+    { id: 'm_d5', sender: 'awa', body: 'Ça me convient ! Comment on procède ?', time: '10:18', reactions: {} },
+    { id: 'm_d6', sender: 'kofi', body: 'Je vous envoie un devis via la plateforme. Dès validation et paiement sécurisé Oriupe, je démarre immédiatement 🚀', time: '10:20', reactions: {} },
+    { id: 'm_d7', sender: 'awa', body: 'Merci ! Je valide dès ce soir', time: '11:32', reactions: {} },
+  ],
+  conv_awa_order: [
+    {
+      id: 'm_o_esc1', type: 'escrow_card', sender: 'sys', time: '08:48',
+      escrow: { status: 'AWAITING_PAYMENT', ref: '#1089', service: 'Logo + Charte graphique', amount: 75000, commission: 9000, commissionRate: 12, net: 66000, deadline: '25 Mai 2026', isActive: false }
+    },
+    { id: 'm_o_sys1', type: 'escrow', sender: 'sys', body: '💳 Paiement de 75 000 FCFA reçu et sécurisé par Oriupe Escrow.', time: '08:55' },
+    {
+      id: 'm_o_esc2', type: 'escrow_card', sender: 'sys', time: '08:55',
+      escrow: { status: 'FUNDS_SECURED', ref: '#1089', service: 'Logo + Charte graphique', amount: 75000, commission: 9000, commissionRate: 12, net: 66000, deadline: '25 Mai 2026', isActive: false }
+    },
+    { id: 'm_o_sys2', type: 'escrow', sender: 'sys', body: '🚀 Kofi Mensah a démarré les travaux.', time: '09:00' },
+    {
+      id: 'm_o_esc3', type: 'escrow_card', sender: 'sys', time: '09:00',
+      escrow: { status: 'IN_PROGRESS', ref: '#1089', service: 'Logo + Charte graphique', amount: 75000, commission: 9000, commissionRate: 12, net: 66000, deadline: '25 Mai 2026', isActive: false }
+    },
+    { id: 'm_o2', sender: 'awa', body: 'Bonjour Kofi, pouvez-vous me partager quelques références pour la direction artistique ?', time: '09:15', reactions: {} },
+    { id: 'm_o3', sender: 'kofi', body: 'Bien sûr ! Voici 3 directions possibles. Dites-moi laquelle vous attire le plus.', time: '09:22', reactions: {} },
+    {
+      id: 'm_o4', sender: 'kofi', type: 'file',
+      body: 'Direction artistique — 3 concepts.pdf',
+      attachment: { name: 'Moodboard_v1.pdf', size: '2.4 MB', icon: '📄' },
+      time: '09:23', reactions: {}
+    },
+    { id: 'm_o5', sender: 'awa', body: 'J\'adore la direction n°2, les tons verts et bleus correspondent à notre ADN. Go ! 🎯', time: '09:45', reactions: { '✅': ['usr_kofi_001'] } },
+    { id: 'm_o6', sender: 'kofi', body: 'Super choix ! Je pars là-dessus. Première révision dans 3 jours.', time: '09:48', reactions: {} },
+    {
+      id: 'm_o7', type: 'delivery', sender: 'kofi',
+      delivery: {
+        title: 'Livraison v1.0 — Logo + Charte',
+        desc: 'Voici la première version complète. J\'ai inclus tous les formats demandés.',
+        files: [
+          { name: 'Logo_Fintech_v1.zip', size: '8.2 MB', icon: '🗜️' },
+          { name: 'Charte_Graphique_v1.pdf', size: '4.1 MB', icon: '📄' }
+        ]
+      },
+      time: '10:47', reactions: {}
+    },
+    {
+      id: 'm_o_esc4', type: 'escrow_card', sender: 'sys', time: '10:47',
+      escrow: { status: 'DELIVERED', ref: '#1089', service: 'Logo + Charte graphique', amount: 75000, commission: 9000, commissionRate: 12, net: 66000, deadline: '25 Mai 2026', isActive: true }
+    },
+  ],
+  conv_ada: [
+    { id: 'm_a1', sender: 'ada', body: 'Hello Kofi! I saw your portfolio on Oriupe. Your branding work is incredible 🔥', time: 'Hier 15:20', reactions: {} },
+    { id: 'm_a2', sender: 'kofi', body: 'Thanks Ada! Really appreciate it. What kind of project do you have in mind?', time: 'Hier 15:35', reactions: { '👍': ['usr_ada_003'] } },
+    { id: 'm_a3', sender: 'ada', body: 'Can you do a full brand kit for my agency? We are expanding to 5 African countries.', time: 'Hier 15:40', reactions: {} },
+    { id: 'm_a4', sender: 'kofi', body: 'Absolutely, that\'s a great project. Let me put together a detailed proposal for you.', time: 'Hier 16:00', reactions: {} },
+    { id: 'm_a5', sender: 'ada', body: 'Can you do a full brand kit?', time: 'Hier 16:02', reactions: {} },
+  ],
+  conv_sam: [
+    { id: 'm_sam1', sender: 'sam', body: 'Kofi, je voulais juste vous remercier pour l\'excellent travail sur notre identité visuelle 🙏', time: 'Lun 14:10', reactions: {} },
+    { id: 'm_sam2', sender: 'kofi', body: 'Merci Sam ! C\'était un plaisir de travailler avec vous. N\'hésitez pas si vous avez de nouveaux besoins.', time: 'Lun 14:25', reactions: { '❤️': ['usr_sam_004'] } },
+    { id: 'm_sam3', sender: 'sam', body: 'Super travail, je recommande !', time: 'Lun 14:30', reactions: {} },
+  ]
+}
+
+const FREELANCE_TEMPLATES = [
+  '👋 Merci pour votre message !',
+  '📅 Je suis disponible à partir de cette semaine',
+  '💼 Je vous envoie un devis sous 24h',
+  '✅ Livraison confirmée, merci de valider',
+  '🔄 Révision prise en compte',
+  '⏱ Délai respecté, projet en cours'
+]
+
+const CLIENT_TEMPLATES = [
+  '👍 Parfait, merci !',
+  '✅ Je valide la livraison',
+  '🔄 Quelques retouches à faire',
+  '📋 Voici mes remarques…',
+  '💰 Prêt à passer commande'
+]
+
+// ── ESCROW PIPELINE ────────────────────────────────────────────────────────────
+const ESC_STEPS = [
+  { key: 'AWAITING_PAYMENT', label: 'Paiement',  num: '1' },
+  { key: 'FUNDS_SECURED',    label: 'Sécurisé',  num: '2' },
+  { key: 'IN_PROGRESS',      label: 'En cours',  num: '3' },
+  { key: 'DELIVERED',        label: 'Livré',     num: '4' },
+  { key: 'VALIDATED',        label: 'Validé',    num: '5' },
+]
+const ESC_ORDER = ['AWAITING_PAYMENT','FUNDS_SECURED','IN_PROGRESS','DELIVERED','VALIDATED','COMPLETED']
+
+// ── STATE ──────────────────────────────────────────────────────────────────────
+let currentRole = 'freelance'
+let currentConvId = null
+let currentConv = null
+let allConvs = [...DEMO_CONVS]
+let _pendingPayOp = 'ORANGE_MONEY'
+let _pendingPayPhone = ''
+
+// Merge conversations created via catalog → detail → order flow
+;(function(){
+  try {
+    const pending     = JSON.parse(localStorage.getItem('oriupe_pending_convs')||'[]')
+    const pendingMsgs = JSON.parse(localStorage.getItem('oriupe_pending_msgs')||'{}')
+    pending.forEach(c => { if (!allConvs.find(x => x.id === c.id)) allConvs.unshift(c) })
+    Object.assign(DEMO_MSGS, pendingMsgs)
+  } catch {}
+})()
+let activeFilter = 'all'
+let searchQuery = ''
+let pendingFiles = []
+let typingTimer = null
+
+// ── SÉCURITÉ : échappement HTML pour éviter XSS ────────────────────────────
+function _esc(str) {
+  return String(str)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#39;')
+}
+let isTyping = false
+let replyingTo = null
+let supaChannel = null
+
+const ME = () => currentRole === 'freelance' ? DEMO_USERS.kofi : DEMO_USERS.awa
+
+// ── SESSION ROLE DETECTION ─────────────────────────────────────────────────────
+function getSessionRole() {
+  try {
+    const s = JSON.parse(localStorage.getItem('oriupe_session') || 'null')
+    if (!s?.role) return 'client' // requireAuth() a déjà garanti une session valide
+    return s.role
+  } catch { return 'client' }
+}
+
+// ── INIT ───────────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  // 1. Auto-detect role from session
+  const sessionRole = getSessionRole()
+  if (sessionRole === 'client') {
+    currentRole = 'client'
+    const btnF = document.getElementById('roleFreelance')
+    const btnC = document.getElementById('roleClient')
+    if (btnF) btnF.classList.remove('active')
+    if (btnC) btnC.classList.add('active')
+  }
+
+  renderConvList()
+
+  // 2. Deep link via URL params: ?conv=conv_id OR ?order=ORD-xxxx
+  const params = new URLSearchParams(window.location.search)
+  const convParam  = params.get('conv')
+  const orderParam = params.get('order')
+
+  let targetConvId = null
+  if (convParam && allConvs.find(c => c.id === convParam)) {
+    targetConvId = convParam
+  } else if (orderParam) {
+    const match = allConvs.find(c => c.type === 'order' && c.orderId === orderParam)
+    targetConvId = match?.id || null
+  }
+
+  // Fallback: for clients, default to first order conversation if no specific target
+  if (!targetConvId && currentRole === 'client') {
+    const firstOrder = allConvs.find(c => c.type === 'order')
+    targetConvId = firstOrder?.id || allConvs[0]?.id
+  }
+
+  if (!targetConvId) targetConvId = allConvs[0]?.id
+  if (targetConvId) openConv(targetConvId)
+})
+
+// ── CONVERSATION LIST ──────────────────────────────────────────────────────────
+function renderConvList() {
+  const list = document.getElementById('convList')
+  let convs = allConvs.filter(c => {
+    if (activeFilter === 'direct' && c.type !== 'direct') return false
+    if (activeFilter === 'order' && c.type !== 'order') return false
+    if (searchQuery) {
+      const q = searchQuery.toLowerCase()
+      return c.title.toLowerCase().includes(q) || (c.preview || '').toLowerCase().includes(q)
+    }
+    return true
+  })
+
+  list.innerHTML = convs.map(c => {
+    const user = DEMO_USERS[c.with] || {}
+    const isActive = c.id === currentConvId
+    const hasUnread = c.unread > 0
+    let tags = ''
+    if (c.type === 'order') tags += `<span class="conv-tag tag-order">📦 Commande</span>`
+    if (c.type === 'system') tags += `<span class="conv-tag tag-system">🔔 Officiel</span>`
+
+    return `
+      <div class="conv-item ${isActive ? 'active' : ''} ${hasUnread ? 'unread' : ''}"
+           onclick="openConv('${c.id}')" id="ci_${c.id}">
+        <div class="conv-avatar">
+          <div class="av av-sm ${user.avClass || 'av-blue'}">${user.av || '?'}</div>
+          ${c.online ? '<div class="online-dot"></div>' : ''}
+          ${hasUnread ? `<div class="badge">${c.unread}</div>` : ''}
+        </div>
+        <div class="conv-info">
+          <div class="conv-meta">
+            <span class="conv-name">${c.title}${tags}</span>
+            <span class="conv-time">${c.time}</span>
+          </div>
+          <div class="conv-preview">${c.preview || ''}</div>
+        </div>
+      </div>`
+  }).join('')
+}
+
+window.filterConvs = function(q) {
+  searchQuery = q
+  renderConvList()
+}
+
+window.filterTab = function(tab, btn) {
+  activeFilter = tab
+  document.querySelectorAll('.sb-tab').forEach(b => b.classList.remove('active'))
+  btn.classList.add('active')
+  renderConvList()
+}
+
+window.switchRole = function(role, btn) {
+  currentRole = role
+  document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'))
+  btn.classList.add('active')
+  if (currentConvId) openConv(currentConvId, true)
+  showToast(`Mode ${role === 'freelance' ? 'Kofi (Freelance)' : 'Awa (Client)'} activé`)
+}
+
+// ── OPEN CONVERSATION ──────────────────────────────────────────────────────────
+window.openConv = function(id, silent = false) {
+  currentConvId = id
+  currentConv = allConvs.find(c => c.id === id)
+  if (!currentConv) return
+
+  // Clear unread + sync badge nav
+  const hadUnread = (currentConv.unread || 0) > 0
+  currentConv.unread = 0
+  if (hadUnread) {
+    try {
+      const _sess = JSON.parse(localStorage.getItem('oriupe_session') || 'null')
+      if (_sess) {
+        _sess.unreadMessages = Math.max(0, (_sess.unreadMessages || 0) - 1)
+        localStorage.setItem('oriupe_session', JSON.stringify(_sess))
+      }
+    } catch {}
+  }
+  renderConvList()
+
+  // Show chat
+  document.getElementById('chatEmpty').classList.add('hidden')
+  document.getElementById('chatContent').classList.remove('hidden')
+
+  // Update header
+  const user = DEMO_USERS[currentConv.with] || {}
+  const av = document.getElementById('chatHdrAv')
+  av.innerHTML = `<div class="av av-hdr ${user.avClass || 'av-blue'}">${user.av}</div>`
+  document.getElementById('chatHdrName').textContent = currentConv.title
+  const sub = document.getElementById('chatHdrSub')
+  if (currentConv.online) {
+    sub.innerHTML = `<span class="online-pill">En ligne</span>`
+  } else if (currentConv.type === 'order') {
+    sub.textContent = currentConv.order?.service || ''
+  } else {
+    sub.textContent = user.job || ''
+  }
+
+  // Escrow banner
+  const banner = document.getElementById('escrowBanner')
+  if (currentConv.type === 'order' && currentConv.order) {
+    banner.classList.remove('hidden')
+    document.getElementById('escrowStatusText').textContent = getOrderStatusText(currentConv.order.status)
+    document.getElementById('escrowAmountText').textContent = fmt(currentConv.order.amount)
+    renderEscrowBannerActions()
+  } else {
+    banner.classList.add('hidden')
+  }
+
+  // Templates
+  renderTemplates()
+
+  // Render messages
+  renderMessages(id)
+
+  // Right panel
+  renderRightPanel()
+
+  // Escrow action bar
+  renderEscrowActionBar()
+
+  // Unsubscribe old channel
+  if (supaChannel && supabase) supabase.removeChannel(supaChannel)
+  // Subscribe to realtime — utilise l'UUID Supabase si dispo, sinon l'ID local
+  if (isSupabaseConfigured && supabase) {
+    const realtimeId = currentConv?.supabaseConvId || id
+    supaChannel = subscribeToConversation(realtimeId, handleRealtimeMsg)
+  }
+}
+
+function getOrderStatusText(status) {
+  return {
+    AWAITING_PAYMENT: 'En attente de paiement',
+    FUNDS_SECURED: 'Fonds sécurisés — commande confirmée',
+    IN_PROGRESS: 'En cours — livraison attendue',
+    DELIVERED: 'Livré — en attente de validation',
+    VALIDATED: 'Validé par le client',
+    COMPLETED: 'Commande terminée',
+    DISPUTED: 'Litige ouvert'
+  }[status] || status
+}
+
+function renderEscrowBannerActions() {
+  const el = document.getElementById('escrowBannerActions')
+  if (!currentConv?.order) return el.innerHTML = ''
+  const { status } = currentConv.order
+  const isClient = currentRole === 'client'
+  const isFreelance = currentRole === 'freelance'
+  if (status === 'IN_PROGRESS' && isFreelance) {
+    el.innerHTML = `<button class="escrow-btn escrow-btn-primary" onclick="sendDelivery()">📦 Livrer</button>`
+  } else if (status === 'DELIVERED' && isClient) {
+    el.innerHTML = `
+      <button class="escrow-btn escrow-btn-primary" onclick="validateDelivery()">✅ Valider</button>
+      <button class="escrow-btn escrow-btn-secondary" onclick="requestRevision()">🔄 Révision</button>`
+  } else {
+    el.innerHTML = ''
+  }
+}
+
+// ── ESCROW ACTION BAR ─────────────────────────────────────────────────────────
+let eabExpanded = true
+
+function renderEscrowActionBar() {
+  const bar = document.getElementById('escrowActionBar')
+  if (!bar) return
+  if (!currentConv?.order) { bar.classList.add('hidden'); return }
+  bar.classList.remove('hidden')
+
+  const o = currentConv.order
+  const stepIdx = ESC_ORDER.indexOf(o.status)
+
+  const LABEL_MAP = {
+    AWAITING_PAYMENT: 'Paiement requis',
+    FUNDS_SECURED:    'Fonds sécurisés',
+    IN_PROGRESS:      'En cours',
+    DELIVERED:        'Livraison reçue',
+    VALIDATED:        'Validé',
+    COMPLETED:        'Clôturé',
+    DISPUTED:         'Litige ouvert'
+  }
+
+  const pipelineHtml = ESC_STEPS.map((s, i) => {
+    const sIdx = ESC_ORDER.indexOf(s.key)
+    const isDone   = sIdx < stepIdx
+    const isActive = sIdx === stepIdx || (o.status === 'COMPLETED' && i === ESC_STEPS.length - 1)
+    return `
+      <div class="eab-step ${isDone ? 'done' : ''} ${isActive ? 'active' : ''}">
+        <div class="eab-step-dot">${isDone ? '✓' : s.num}</div>
+        <div class="eab-step-label">${s.label}</div>
+      </div>`
+  }).join('')
+
+  const amountsHtml = `
+    <div class="eab-amt"><div class="eab-amt-val">${fmt(o.amount)}</div><div class="eab-amt-lab">Montant client (FCFA)</div></div>
+    <div class="eab-amt"><div class="eab-amt-val comm">−${fmt(o.commission)}</div><div class="eab-amt-lab">Commission 12%</div></div>
+    <div class="eab-amt"><div class="eab-amt-val net">${fmt(o.net)}</div><div class="eab-amt-lab">Reversement net</div></div>`
+
+  let actionsHtml = ''
+  const isClient    = currentRole === 'client'
+  const isFreelance = currentRole === 'freelance'
+
+  if (o.status === 'AWAITING_PAYMENT' && isClient)
+    actionsHtml = `<button type="button" class="eab-btn eab-btn-pay" onclick="initiatePayment()">💳 Payer ${fmt(o.amount)} FCFA</button>`
+  else if (o.status === 'FUNDS_SECURED' && isFreelance)
+    actionsHtml = `<button type="button" class="eab-btn eab-btn-start" onclick="startWork()">🚀 Démarrer les travaux</button>`
+  else if (o.status === 'IN_PROGRESS' && isFreelance)
+    actionsHtml = `<button type="button" class="eab-btn eab-btn-deliver" onclick="sendDelivery()">📦 Livrer la commande</button>
+                   <button type="button" class="eab-btn eab-btn-dispute" onclick="openDisputeFlow()" title="Ouvrir un litige">⚠️</button>`
+  else if (o.status === 'DELIVERED' && isClient)
+    actionsHtml = `<button type="button" class="eab-btn eab-btn-validate" onclick="validateDelivery()">✅ Valider & Libérer les fonds</button>
+                   <button type="button" class="eab-btn eab-btn-ghost" onclick="requestRevision()" title="Demander une révision">🔄</button>
+                   <button type="button" class="eab-btn eab-btn-dispute" onclick="openDisputeFlow()" title="Ouvrir un litige">⚠️</button>`
+  else if (o.status === 'DELIVERED' && isFreelance)
+    actionsHtml = `<div class="eab-done-badge">⏳ En attente de validation client</div>`
+  else if (['COMPLETED','VALIDATED'].includes(o.status))
+    actionsHtml = `<div class="eab-done-badge">✅ Commande clôturée · ${fmt(o.net)} FCFA reversés</div>`
+  else if (o.status === 'DISPUTED')
+    actionsHtml = `<div class="eab-done-badge" style="color:#E84393">⚠️ Litige en cours · admin notifié</div>`
+  else if (o.status === 'AWAITING_PAYMENT' && isFreelance)
+    actionsHtml = `<div class="eab-done-badge">⏳ En attente du paiement client</div>`
+  else
+    actionsHtml = `<div class="eab-done-badge">${LABEL_MAP[o.status] || o.status}</div>`
+
+  const bodyStyle = eabExpanded ? '' : 'display:none'
+  bar.innerHTML = `
+    <div class="eab-inner">
+      <div class="eab-toggle-row" onclick="toggleEscrowBar()">
+        <span class="eab-toggle-label">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+          Oriupe Escrow · <span style="color:rgba(255,255,255,.65)">${LABEL_MAP[o.status] || o.status}</span>
+        </span>
+        <svg class="eab-chevron ${eabExpanded ? '' : 'collapsed'}" id="eabChevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+      </div>
+      <div id="eabBody" style="${bodyStyle}">
+        <div class="eab-pipeline">${pipelineHtml}</div>
+        <div class="eab-amounts">${amountsHtml}</div>
+        <div class="eab-actions">${actionsHtml}</div>
+      </div>
+    </div>`
+}
+
+window.toggleEscrowBar = function() {
+  eabExpanded = !eabExpanded
+  const body = document.getElementById('eabBody')
+  const chevron = document.querySelector('.eab-chevron')
+  if (body) body.style.display = eabExpanded ? '' : 'none'
+  if (chevron) chevron.classList.toggle('collapsed', !eabExpanded)
+}
+
+// ── RENDER MESSAGES ────────────────────────────────────────────────────────────
+function renderMessages(convId) {
+  const container = document.getElementById('messages')
+  const msgs = DEMO_MSGS[convId] || []
+  container.innerHTML = ''
+
+  let lastDate = null
+  msgs.forEach(m => {
+    const dateStr = m.time?.split(' ')[0] || 'Aujourd\'hui'
+    if (dateStr !== lastDate) {
+      const div = document.createElement('div')
+      div.className = 'date-divider'
+      div.innerHTML = `<span>${dateStr.match(/^\d/) ? 'Aujourd\'hui' : dateStr}</span>`
+      container.appendChild(div)
+      lastDate = dateStr
+    }
+    container.appendChild(createMsgEl(m))
+  })
+
+  scrollToBottom()
+}
+
+function createMsgEl(m) {
+  const me = ME()
+  const isSent = m.sender === me.id || m.sender === (currentRole === 'freelance' ? 'kofi' : 'awa')
+  const isSys = m.sender === 'sys' || m.type === 'escrow'
+
+  if (m.type === 'escrow_card') return createEscrowCard(m)
+  if (isSys) return createSysMsg(m)
+  if (m.type === 'delivery') return createDeliveryCard(m, isSent)
+
+  const senderUser = Object.values(DEMO_USERS).find(u => u.id === m.sender || (m.sender === 'kofi' && u.id === 'usr_kofi_001') || (m.sender === 'awa' && u.id === 'usr_awa_002') || (m.sender === 'ada' && u.id === 'usr_ada_003') || (m.sender === 'sam' && u.id === 'usr_sam_004'))
+
+  const div = document.createElement('div')
+  div.className = `msg-row ${isSent ? 'sent' : 'recv'}`
+  div.dataset.msgId = m.id
+
+  const reactionHtml = renderReactions(m.reactions || {}, isSent)
+  const readHtml = isSent ? `<div class="read-icon">${m.read ? readDoubleCheck('#3CB878') : readDoubleCheck('#C4D0D8')}</div>` : ''
+
+  let bodyHtml = ''
+  if (m.type === 'file' && m.attachment) {
+    bodyHtml = `
+      <div class="file-bubble">
+        <div class="file-bubble-icon ${isSent ? 'file-bubble-icon--sent' : ''}">${m.attachment.icon}</div>
+        <div class="file-bubble-info">
+          <div class="file-bubble-name">${m.attachment.name}</div>
+          <div class="file-bubble-size">${m.attachment.size}</div>
+        </div>
+        <div class="file-bubble-dl">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        </div>
+      </div>`
+  } else {
+    bodyHtml = _esc(m.body || '').replace(/\n/g, '<br>')
+  }
+
+  div.innerHTML = `
+    <div class="emoji-row ${isSent ? 'sent' : 'recv'}" id="er_${m.id}">
+      ${['❤️','👍','🔥','😂','😮','👏'].map(e => `<button class="emo-btn" onclick="reactTo('${m.id}','${e}')" title="${e}">${e}</button>`).join('')}
+    </div>
+    ${!isSent ? `<div class="msg-av ${senderUser?.avClass || 'av-blue'}">${senderUser?.av || '?'}</div>` : ''}
+    <div>
+      <div class="bubble">${bodyHtml}</div>
+      ${reactionHtml}
+      <div class="msg-meta">${readHtml}<span class="msg-time">${m.time || ''}</span></div>
+    </div>
+    ${isSent ? `<div class="msg-av ${senderUser?.avClass || 'av-green'}">${senderUser?.av || '?'}</div>` : ''}`
+
+  return div
+}
+
+function createSysMsg(m) {
+  const div = document.createElement('div')
+  div.className = 'msg-row system-row'
+  div.dataset.msgId = m.id
+
+  if (m.official) {
+    div.classList.remove('system-row')
+    div.className = 'msg-row recv'
+    div.style.maxWidth = '78%'
+    div.innerHTML = `
+      <div class="msg-av av-system">🔔</div>
+      <div>
+        <div class="official-bubble">
+          <div class="official-type ${m.official.type}">${m.official.icon} ${m.official.type.toUpperCase()}</div>
+          <div class="official-body">${m.official.text}</div>
+        </div>
+        <div class="msg-meta"><span class="msg-time">${m.time}</span></div>
+      </div>`
+  } else {
+    div.innerHTML = `<div class="system-bubble">${_esc(m.body || '')}</div>`
+  }
+  return div
+}
+
+function createDeliveryCard(m, isSent) {
+  const div = document.createElement('div')
+  div.className = `msg-row ${isSent ? 'sent' : 'recv'}`
+  div.dataset.msgId = m.id
+  const d = m.delivery
+  const isClient = currentRole === 'client'
+  const filesHtml = (d.files || []).map(f => `
+    <div class="dc-file">
+      <span>${f.icon}</span>
+      <span class="dc-filename">${f.name}</span>
+      <span class="dc-filesize">${f.size}</span>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8A9AAA" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    </div>`).join('')
+
+  div.innerHTML = `
+    <div class="dc-wrapper ${isSent ? '' : 'dc-wrapper--recv'}">
+      <div class="delivery-card">
+        <div class="dc-top">
+          <div class="dc-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div>
+            <div class="dc-title">${d.title}</div>
+            <div class="dc-sub">${d.desc}</div>
+          </div>
+        </div>
+        <div class="dc-files">${filesHtml}</div>
+        ${isClient && !isSent ? `
+        <div class="dc-actions">
+          <button type="button" class="dc-btn dc-accept" onclick="validateDelivery()">✅ Valider & Payer</button>
+          <button type="button" class="dc-btn dc-revision" onclick="requestRevision()">🔄 Révision</button>
+        </div>` : ''}
+      </div>
+      <div class="msg-meta msg-meta--top"><span class="msg-time">${m.time}</span></div>
+    </div>`
+  return div
+}
+
+function createEscrowCard(m) {
+  const div = document.createElement('div')
+  div.className = 'msg-row escrow-row'
+  div.dataset.msgId = m.id
+
+  const e = m.escrow
+  const isClient = currentRole === 'client'
+  const isFreelance = currentRole === 'freelance'
+
+  const META = {
+    AWAITING_PAYMENT: { iconClass: 'eic-icon-await',    title: 'Paiement requis',       sub: 'En attente du règlement client' },
+    FUNDS_SECURED:    { iconClass: 'eic-icon-secure',   title: 'Paiement sécurisé',     sub: 'Fonds verrouillés par Oriupe Escrow' },
+    IN_PROGRESS:      { iconClass: 'eic-icon-progress', title: 'Commande en cours',     sub: 'Travaux démarrés par le prestataire' },
+    DELIVERED:        { iconClass: 'eic-icon-deliver',  title: 'Livraison disponible',  sub: 'En attente de validation client' },
+    VALIDATED:        { iconClass: 'eic-icon-done',     title: 'Livraison validée',     sub: 'Paiement en cours de virement' },
+    COMPLETED:        { iconClass: 'eic-icon-done',     title: 'Commande clôturée',     sub: 'Virement effectué avec succès' },
+    DISPUTED:         { iconClass: 'eic-icon-dispute',  title: 'Litige ouvert',         sub: 'Un administrateur va intervenir' },
+  }
+  const meta = META[e.status] || META.AWAITING_PAYMENT
+
+  let btnsHtml = ''
+  if (e.isActive) {
+    if (e.status === 'AWAITING_PAYMENT' && isClient)
+      btnsHtml = `<div class="eic-btns"><button type="button" class="eic-btn eic-btn-pay" onclick="initiatePayment()">💳 Payer ${fmt(e.amount)} FCFA maintenant</button></div>`
+    else if (e.status === 'FUNDS_SECURED' && isFreelance)
+      btnsHtml = `<div class="eic-btns"><button type="button" class="eic-btn eic-btn-ok" onclick="startWork()">🚀 Démarrer les travaux</button></div>`
+    else if (e.status === 'IN_PROGRESS' && isFreelance)
+      btnsHtml = `<div class="eic-btns"><button type="button" class="eic-btn eic-btn-ok" onclick="sendDelivery()">📦 Livrer la commande</button></div>`
+    else if (e.status === 'DELIVERED' && isClient)
+      btnsHtml = `<div class="eic-btns"><button type="button" class="eic-btn eic-btn-ok" onclick="validateDelivery()">✅ Valider & Libérer les fonds</button><button type="button" class="eic-btn eic-btn-rev" onclick="requestRevision()">🔄 Révision</button></div>`
+    else if (e.status === 'DELIVERED' && isFreelance)
+      btnsHtml = `<div class="eic-footer">⏳ En attente de validation client</div>`
+    else if (['COMPLETED','VALIDATED'].includes(e.status))
+      btnsHtml = `<div class="eic-footer">✅ Commande terminée — ${fmt(e.net)} FCFA reversés</div>`
+    else if (e.status === 'IN_PROGRESS' && isClient)
+      btnsHtml = `<div class="eic-footer">⚙️ Prestataire en cours de travail — échéance ${e.deadline}</div>`
+  } else {
+    const doneStatuses = ['FUNDS_SECURED','IN_PROGRESS','DELIVERED','VALIDATED','COMPLETED']
+    if (doneStatuses.includes(e.status))
+      btnsHtml = `<div class="eic-footer">✓ Étape complétée</div>`
+  }
+
+  div.innerHTML = `
+    <div>
+      <div class="escrow-inline-card">
+        <div class="eic-hdr">
+          <div class="eic-icon ${meta.iconClass}">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+          </div>
+          <div>
+            <div class="eic-title">${meta.title}</div>
+            <div class="eic-sub">${meta.sub}</div>
+          </div>
+          <div class="eic-ref">Commande ${e.ref}<br>Oriupe Escrow</div>
+        </div>
+        <div class="eic-service">${e.service}</div>
+        <div class="eic-rows">
+          <div class="eic-row"><span class="k">Montant total (client)</span><span class="v">${fmt(e.amount)} FCFA</span></div>
+          <div class="eic-row"><span class="k">Commission Oriupe (${e.commissionRate || 12}%)</span><span class="v minus">−${fmt(e.commission)} FCFA</span></div>
+          <div class="eic-sep"></div>
+          <div class="eic-net-row"><span class="k">Reversement net prestataire</span><span class="v">${fmt(e.net)} FCFA</span></div>
+        </div>
+        ${btnsHtml}
+      </div>
+      <div class="msg-meta" style="justify-content:center;margin-top:5px"><span class="msg-time">${m.time}</span></div>
+    </div>`
+  return div
+}
+
+function renderReactions(reactions, isSent) {
+  if (!reactions || !Object.keys(reactions).length) return ''
+  const me = ME()
+  const chips = Object.entries(reactions).map(([emoji, users]) => {
+    const mine = users.includes(me.id)
+    return `<span class="reaction-chip ${mine ? 'mine' : ''}" onclick="reactTo('',  '${emoji}')">${emoji} ${users.length}</span>`
+  }).join('')
+  return `<div class="reactions">${chips}</div>`
+}
+
+function readDoubleCheck(color) {
+  return `<svg width="14" height="10" viewBox="0 0 20 14" fill="none"><path d="M1 7l5 5L19 1" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 12l5-5" stroke="${color}" stroke-width="2" stroke-linecap="round"/></svg>`
+}
+
+function scrollToBottom() {
+  const c = document.getElementById('messages')
+  c.scrollTop = c.scrollHeight
+}
+
+// ── SEND MESSAGE ───────────────────────────────────────────────────────────────
+window.sendMessage = async function() {
+  const input = document.getElementById('msgInput')
+  const body = input.value.trim()
+  if (!body && !pendingFiles.length) return
+
+  input.value = ''
+  autoResize(input)
+
+  const me = ME()
+  const now = new Date()
+  const timeStr = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`
+
+  const newMsg = {
+    id: 'msg_' + Date.now(),
+    sender: currentRole === 'freelance' ? 'kofi' : 'awa',
+    body,
+    time: timeStr,
+    reactions: {},
+    read: false
+  }
+
+  if (!DEMO_MSGS[currentConvId]) DEMO_MSGS[currentConvId] = []
+  DEMO_MSGS[currentConvId].push(newMsg)
+
+  const conv = allConvs.find(c => c.id === currentConvId)
+  if (conv) {
+    conv.preview = body.slice(0, 50)
+    conv.time = timeStr
+    renderConvList()
+  }
+
+  const container = document.getElementById('messages')
+  container.appendChild(createMsgEl(newMsg))
+  scrollToBottom()
+
+  clearPendingFiles()
+
+  // Supabase save — utilise l'UUID réel si disponible
+  const sbConvId = currentConv?.supabaseConvId
+  if (isSupabaseConfigured && supabase && sbConvId) {
+    try {
+      await sendDirectMessage(sbConvId, body, { type: 'text' })
+    } catch (e) {
+      console.warn('[Oriupe] sendDirectMessage error:', e)
+    }
+  }
+
+  // Simulate reply for demo
+  if (currentConv?.type !== 'order' && currentConv?.type !== 'system') {
+    simulateReply()
+  }
+}
+
+function simulateReply() {
+  const conv = currentConv
+  if (!conv) return
+  const user = DEMO_USERS[conv.with]
+  if (!user || user.role === 'system') return
+
+  // Show typing
+  const typRow = document.getElementById('typingRow')
+  const typAv = document.getElementById('typingAv')
+  typAv.textContent = user.av
+  typAv.className = `msg-av ${user.avClass}`
+  typRow.classList.remove('hidden')
+  scrollToBottom()
+
+  const REPLIES = {
+    awa:  ['Merci pour l\'info !', 'Super, je regarde ça 👍', 'Ok, on fait comme ça alors !', 'Vous pouvez envoyer plus de détails ?'],
+    ada:  ['Great! Looking forward to it.', 'Perfect, thank you!', 'That works for me 👌', 'Send me the proposal when ready.'],
+    sam:  ['Très bien, merci !', 'D\'accord, je valide.', 'Parfait !', 'On se parle demain ?']
+  }
+  const replies = REPLIES[conv.with] || ['👍']
+  const reply = replies[Math.floor(Math.random() * replies.length)]
+
+  setTimeout(() => {
+    typRow.classList.add('hidden')
+    const now = new Date()
+    const timeStr = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`
+    const m = { id: 'auto_'+Date.now(), sender: conv.with, body: reply, time: timeStr, reactions: {} }
+    DEMO_MSGS[currentConvId].push(m)
+    document.getElementById('messages').appendChild(createMsgEl(m))
+    scrollToBottom()
+    conv.preview = reply
+    conv.time = timeStr
+    renderConvList()
+  }, 1200 + Math.random() * 1200)
+}
+
+// ── TYPING INDICATOR ───────────────────────────────────────────────────────────
+window.onTyping = function() {
+  clearTimeout(typingTimer)
+  typingTimer = setTimeout(() => { isTyping = false }, 2000)
+}
+
+// ── FILE HANDLING ──────────────────────────────────────────────────────────────
+window.handleFiles = function(files) {
+  Array.from(files).forEach(f => pendingFiles.push(f))
+  renderAttachStrip()
+}
+
+function renderAttachStrip() {
+  const strip = document.getElementById('attachStrip')
+  if (!pendingFiles.length) { strip.classList.add('hidden'); return }
+  strip.classList.remove('hidden')
+  strip.innerHTML = pendingFiles.map((f, i) => `
+    <div class="attach-preview">
+      <span class="attach-icon">${fileIcon(f.name)}</span>
+      <span class="attach-preview-name">${f.name}</span>
+      <button type="button" class="attach-rm" onclick="removeFile(${i})" aria-label="Retirer le fichier">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>`).join('')
+}
+
+window.removeFile = function(i) {
+  pendingFiles.splice(i, 1)
+  renderAttachStrip()
+}
+
+function clearPendingFiles() {
+  pendingFiles = []
+  renderAttachStrip()
+}
+
+function fileIcon(name) {
+  const ext = name.split('.').pop().toLowerCase()
+  return { pdf: '📄', zip: '🗜️', png: '🖼️', jpg: '🖼️', jpeg: '🖼️', gif: '🖼️', mp4: '🎥', mp3: '🎵', doc: '📝', docx: '📝', xls: '📊', xlsx: '📊' }[ext] || '📎'
+}
+
+// ── TEMPLATES ──────────────────────────────────────────────────────────────────
+function renderTemplates() {
+  const bar = document.getElementById('templatesBar')
+  if (currentConv?.type === 'system') { bar.classList.add('hidden'); return }
+  const templates = currentRole === 'freelance' ? FREELANCE_TEMPLATES : CLIENT_TEMPLATES
+  bar.classList.remove('hidden')
+  bar.innerHTML = templates.map(t => `<button type="button" class="tmpl-chip" onclick="useTemplate('${t.replace(/'/g,"\\'")}')"> ${t}</button>`).join('')
+}
+
+window.useTemplate = function(text) {
+  const input = document.getElementById('msgInput')
+  input.value = text
+  autoResize(input)
+  input.focus()
+}
+
+// ── ORDER ACTIONS ──────────────────────────────────────────────────────────────
+function _timeNow() {
+  const n = new Date()
+  return `${String(n.getHours()).padStart(2,'0')}:${String(n.getMinutes()).padStart(2,'0')}`
+}
+
+function _refreshAll() {
+  renderEscrowActionBar()
+  renderEscrowBannerActions()
+  renderRightPanel()
+  const o = currentConv?.order
+  if (o) {
+    document.getElementById('escrowStatusText').textContent = getOrderStatusText(o.status)
+    document.getElementById('escrowAmountText').textContent = fmt(o.amount)
+  }
+}
+
+function _addMsg(msg) {
+  if (!DEMO_MSGS[currentConvId]) DEMO_MSGS[currentConvId] = []
+  DEMO_MSGS[currentConvId].push(msg)
+  const el = createMsgEl(msg)
+  document.getElementById('messages').appendChild(el)
+}
+
+window.initiatePayment = function() {
+  if (!currentConv?.order) return
+  _showPaymentModal(currentConv.order.amount)
+}
+
+function _showPaymentModal(amount) {
+  if (document.getElementById('pm-modal')) return
+  const fmtAmt = fmt(amount)
+
+  const modal = document.createElement('div')
+  modal.id = 'pm-modal'
+  modal.style.cssText = 'position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(15,37,53,.75);backdrop-filter:blur(8px)'
+  modal.innerHTML = `
+<style>
+@keyframes pm-in{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+#pm-modal .pm-box{background:#fff;border-radius:24px;width:100%;max-width:420px;padding:28px;box-shadow:0 32px 80px rgba(15,37,53,.3);animation:pm-in .28s ease}
+#pm-modal .pm-title{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:#1B3A4A;margin-bottom:4px}
+#pm-modal .pm-sub{font-size:12px;color:rgba(27,58,74,.45);margin-bottom:20px}
+#pm-modal .pm-amount{background:#F0FBF5;border:1.5px solid rgba(60,184,120,.25);border-radius:14px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+#pm-modal .pm-amount-lbl{font-size:12px;color:rgba(27,58,74,.5);font-weight:600}
+#pm-modal .pm-amount-val{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;color:#3CB878}
+#pm-modal .pm-section-lbl{font-size:11px;font-weight:700;color:#1B3A4A;letter-spacing:.7px;text-transform:uppercase;margin-bottom:10px}
+#pm-modal .pm-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px}
+#pm-modal .pm-opt{border:1.5px solid rgba(27,58,74,.1);border-radius:12px;padding:12px 10px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:all .18s;background:#fff}
+#pm-modal .pm-opt:hover{border-color:#3CB878;background:#F8FEFB}
+#pm-modal .pm-opt.sel{border-color:#3CB878;background:#F0FBF5;box-shadow:0 0 0 3px rgba(60,184,120,.1)}
+#pm-modal .pm-opt-ico{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+#pm-modal .pm-opt-name{font-size:13px;font-weight:700;color:#1B3A4A;line-height:1.1}
+#pm-modal .pm-opt-hint{font-size:10px;color:rgba(27,58,74,.4);margin-top:1px}
+#pm-modal .pm-phone{width:100%;border:1.5px solid rgba(27,58,74,.12);border-radius:11px;padding:13px 15px;font-size:14px;font-family:'Plus Jakarta Sans',sans-serif;outline:none;transition:border-color .2s;margin-bottom:16px;color:#1B3A4A}
+#pm-modal .pm-phone:focus{border-color:#3CB878;box-shadow:0 0 0 3px rgba(60,184,120,.1)}
+#pm-modal .pm-phone.error{border-color:#EF4444}
+#pm-modal .pm-cta{width:100%;background:linear-gradient(135deg,#3CB878,#4FD090);color:#fff;border:none;border-radius:12px;padding:15px;font-size:14px;font-weight:800;cursor:pointer;transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px}
+#pm-modal .pm-cta:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(60,184,120,.4)}
+#pm-modal .pm-cta:disabled{opacity:.6;cursor:not-allowed;transform:none}
+#pm-modal .pm-escrow-note{display:flex;align-items:center;gap:7px;margin-top:12px;font-size:11px;color:rgba(27,58,74,.4)}
+#pm-modal .pm-close{position:absolute;top:-8px;right:-8px;width:30px;height:30px;border-radius:50%;background:#fff;border:none;cursor:pointer;font-size:14px;color:rgba(27,58,74,.5);box-shadow:0 2px 10px rgba(15,37,53,.15);display:flex;align-items:center;justify-content:center}
+#pm-modal .pm-loading{text-align:center;padding:20px 0}
+#pm-modal .pm-spinner{width:48px;height:48px;border:3px solid rgba(60,184,120,.2);border-top-color:#3CB878;border-radius:50%;animation:pm-spin 1s linear infinite;margin:0 auto 16px}
+@keyframes pm-spin{to{transform:rotate(360deg)}}
+</style>
+<div class="pm-box" style="position:relative">
+  <button class="pm-close" onclick="document.getElementById('pm-modal').remove()">✕</button>
+  <div id="pm-step-1">
+    <div class="pm-title">Paiement sécurisé</div>
+    <div class="pm-sub">Vos fonds sont bloqués par Oriupe Escrow jusqu'à votre validation</div>
+    <div class="pm-amount">
+      <span class="pm-amount-lbl">Total à payer</span>
+      <span class="pm-amount-val">${fmtAmt} FCFA</span>
+    </div>
+    <div class="pm-section-lbl">Choisissez votre opérateur</div>
+    <div class="pm-grid">
+      <div class="pm-opt sel" data-op="orange" onclick="_pmSelect(this)">
+        <div class="pm-opt-ico" style="background:#FFF0E0">🟠</div>
+        <div><div class="pm-opt-name">Orange Money</div><div class="pm-opt-hint">CI, SN, ML, BF…</div></div>
+      </div>
+      <div class="pm-opt" data-op="mtn" onclick="_pmSelect(this)">
+        <div class="pm-opt-ico" style="background:#FFF9E0">🟡</div>
+        <div><div class="pm-opt-name">MTN MoMo</div><div class="pm-opt-hint">GH, CI, BJ, CMR…</div></div>
+      </div>
+      <div class="pm-opt" data-op="wave" onclick="_pmSelect(this)">
+        <div class="pm-opt-ico" style="background:#E6F3FF">🌊</div>
+        <div><div class="pm-opt-name">Wave</div><div class="pm-opt-hint">CI, SN, Mali…</div></div>
+      </div>
+      <div class="pm-opt" data-op="card" onclick="_pmSelect(this)">
+        <div class="pm-opt-ico" style="background:#F4F6F9">💳</div>
+        <div><div class="pm-opt-name">Carte bancaire</div><div class="pm-opt-hint">Visa, Mastercard</div></div>
+      </div>
+    </div>
+    <div class="pm-section-lbl" id="pm-phone-lbl">Numéro Mobile Money</div>
+    <input class="pm-phone" id="pm-phone" type="tel" placeholder="+225 07 XX XX XX XX" oninput="this.classList.remove('error')"/>
+    <button class="pm-cta" id="pm-cta-btn" onclick="_pmConfirm()">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 2L14 4V9C14 13 10 15 10 15C10 15 6 13 6 9V4L10 2Z" stroke="#fff" stroke-width="1.5" fill="rgba(255,255,255,.15)"/><path d="M7.5 8.5L9 10L12.5 6.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Confirmer le paiement de ${fmtAmt} FCFA
+    </button>
+    <div class="pm-escrow-note">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1.5L11 3.5V7C11 10 7 12.5 7 12.5S3 10 3 7V3.5Z" stroke="#3CB878" stroke-width="1.3" fill="rgba(60,184,120,.08)"/></svg>
+      Argent bloqué — libéré uniquement après votre validation de la livraison
+    </div>
+  </div>
+  <div id="pm-step-2" style="display:none">
+    <div class="pm-loading">
+      <div class="pm-spinner"></div>
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;color:#1B3A4A;margin-bottom:6px">Traitement en cours…</div>
+      <div style="font-size:12px;color:rgba(27,58,74,.45)" id="pm-loading-txt">Connexion à l'opérateur…</div>
+    </div>
+  </div>
+</div>`
+
+  document.body.appendChild(modal)
+  modal.addEventListener('click', e => { if (e.target === modal) modal.remove() })
+}
+
+function _pmSelect(el) {
+  document.querySelectorAll('#pm-modal .pm-opt').forEach(o => o.classList.remove('sel'))
+  el.classList.add('sel')
+  const op = el.dataset.op
+  const lbl = document.getElementById('pm-phone-lbl')
+  const inp = document.getElementById('pm-phone')
+  if (op === 'card') {
+    if (lbl) lbl.textContent = 'Numéro de carte'
+    if (inp) inp.placeholder = '4242 4242 4242 4242'
+  } else {
+    if (lbl) lbl.textContent = 'Numéro Mobile Money'
+    const placeholders = { orange: '+225 07 XX XX XX XX', mtn: '+233 24 XXX XXXX', wave: '+221 77 XXX XX XX' }
+    if (inp) inp.placeholder = placeholders[op] || '+XXX XX XX XX XX'
+  }
+}
+
+function _pmConfirm() {
+  const phone = document.getElementById('pm-phone')?.value?.trim()
+  if (!phone || phone.replace(/\D/g,'').length < 8) {
+    const inp = document.getElementById('pm-phone')
+    if (inp) { inp.classList.add('error'); inp.focus() }
+    return
+  }
+  // Capture pour _pmFinalize
+  const opMap = { orange:'ORANGE_MONEY', mtn:'MTN_MOMO', wave:'WAVE', card:'VISA' }
+  const selOp = document.querySelector('#pm-modal .pm-opt.sel')?.dataset?.op || 'orange'
+  _pendingPayOp = opMap[selOp] || 'ORANGE_MONEY'
+  _pendingPayPhone = phone
+
+  const btn = document.getElementById('pm-cta-btn')
+  if (btn) btn.disabled = true
+
+  document.getElementById('pm-step-1').style.display = 'none'
+  document.getElementById('pm-step-2').style.display = 'block'
+
+  const steps = ['Connexion à l\'opérateur…', 'Vérification du numéro…', 'Sécurisation des fonds…', 'Confirmation Oriupe Escrow…']
+  let i = 0
+  const iv = setInterval(() => {
+    const txt = document.getElementById('pm-loading-txt')
+    if (txt && steps[i]) txt.textContent = steps[i++]
+    if (i >= steps.length) {
+      clearInterval(iv)
+      setTimeout(() => {
+        const modal = document.getElementById('pm-modal')
+        if (modal) modal.remove()
+        _pmFinalize()
+      }, 600)
+    }
+  }, 600)
+}
+
+function _pmFinalize() {
+  if (!currentConv?.order) return
+  currentConv.order.status = 'FUNDS_SECURED'
+  const t = _timeNow()
+  _addMsg({ id: 'sys_pay_'+Date.now(), type: 'escrow', sender: 'sys', body: `💳 Paiement de ${fmt(currentConv.order.amount)} FCFA confirmé et sécurisé par Oriupe Escrow.`, time: t })
+  _addMsg({ id: 'esc_pay_'+Date.now(), type: 'escrow_card', sender: 'sys', time: t,
+    escrow: { ...currentConv.order, status: 'FUNDS_SECURED', isActive: true } })
+  scrollToBottom()
+  _refreshAll()
+  showToast('🔐 Paiement sécurisé !')
+
+  // Persist en Supabase (best-effort, non-bloquant)
+  if (supabase) {
+    _persistOrderToSupabase(currentConv.order, _pendingPayOp, _pendingPayPhone).catch(() => {})
+  }
+}
+
+async function _persistOrderToSupabase(order, payMethod, payPhone) {
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return
+
+  // UUID freelance demo connu
+  const FREELANCE_UUID = 'b2c3d4e5-0002-0002-0002-000000000002'
+
+  // Récupère un service actif du freelance (pour respecter la FK)
+  const { data: svcRows } = await supabase
+    .from('services')
+    .select('id')
+    .eq('freelance_id', FREELANCE_UUID)
+    .eq('status', 'active')
+    .limit(1)
+  const serviceId = svcRows?.[0]?.id
+  if (!serviceId) return
+
+  // Deadline : on prend toujours +7j depuis maintenant (la valeur locale FR ne parse pas en ISO)
+  const deadlineDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+
+  // Crée l'order
+  const { data: sbOrder, error: oErr } = await supabase
+    .from('orders')
+    .insert({
+      client_id:      user.id,
+      freelance_id:   FREELANCE_UUID,
+      service_id:     serviceId,
+      amount_total:   order.amount,
+      commission_rate: 0.12,
+      status:         'FUNDS_SECURED',
+      payment_method: payMethod,
+      payment_phone:  payPhone,
+      paid_at:        new Date().toISOString(),
+      deadline:       deadlineDate.toISOString(),
+    })
+    .select('id, escrow_code')
+    .single()
+
+  if (oErr) { console.warn('[Oriupe] Supabase order insert:', oErr.message); return }
+
+  // Stocke l'ID Supabase dans le conv localStorage pour l'escrow page + Realtime
+  currentConv.supabaseOrderId = sbOrder.id
+  try {
+    const convs = JSON.parse(localStorage.getItem('oriupe_pending_convs') || '[]')
+    const idx = convs.findIndex(c => c.id === currentConv.id)
+    if (idx !== -1) { convs[idx].supabaseOrderId = sbOrder.id; localStorage.setItem('oriupe_pending_convs', JSON.stringify(convs)) }
+  } catch {}
+
+  // Crée la conversation Supabase liée à l'order
+  const { data: sbConv, error: cErr } = await supabase
+    .from('conversations')
+    .insert({
+      type:         'order',
+      order_id:     sbOrder.id,
+      participants: [user.id, FREELANCE_UUID],
+      title:        order.service || 'Commande Oriupe',
+      unread_counts: { [user.id]: 0, [FREELANCE_UUID]: 0 },
+    })
+    .select('id')
+    .single()
+
+  if (cErr) { console.warn('[Oriupe] Supabase conv insert:', cErr.message); return }
+
+  // Stocke l'UUID Supabase du conv pour la souscription Realtime
+  currentConv.supabaseConvId = sbConv.id
+  try {
+    const convs = JSON.parse(localStorage.getItem('oriupe_pending_convs') || '[]')
+    const idx = convs.findIndex(c => c.id === currentConv.id)
+    if (idx !== -1) { convs[idx].supabaseConvId = sbConv.id; localStorage.setItem('oriupe_pending_convs', JSON.stringify(convs)) }
+  } catch {}
+
+  // Resouscrit avec l'UUID Supabase pour le Realtime
+  if (supaChannel) supabase.removeChannel(supaChannel)
+  supaChannel = subscribeToConversation(sbConv.id, handleRealtimeMsg)
+
+  // Message système initial
+  await supabase.from('messages').insert({
+    conversation_id: sbConv.id,
+    sender_id:       user.id,
+    type:            'escrow',
+    body:            `🔐 Paiement de ${order.amount.toLocaleString('fr-FR')} FCFA sécurisé. Commande ${order.ref || ''} démarrée.`,
+    metadata:        { escrow_status: 'FUNDS_SECURED', order_id: sbOrder.id },
+  })
+}
+
+window.startWork = function() {
+  if (!currentConv?.order) return
+  currentConv.order.status = 'IN_PROGRESS'
+  const t = _timeNow()
+  _addMsg({ id: 'sys_start_'+Date.now(), type: 'escrow', sender: 'sys', body: '🚀 Travaux démarrés ! La commande est en cours.', time: t })
+  _addMsg({ id: 'esc_start_'+Date.now(), type: 'escrow_card', sender: 'sys', time: t,
+    escrow: { ...currentConv.order, status: 'IN_PROGRESS', isActive: true } })
+  scrollToBottom()
+  _refreshAll()
+  showToast('🚀 Travaux démarrés !')
+}
+
+window.sendDelivery = function() {
+  if (!currentConv?.order) return
+  currentConv.order.status = 'DELIVERED'
+  const t = _timeNow()
+  const delivMsg = {
+    id: 'del_' + Date.now(), type: 'delivery', sender: 'kofi',
+    delivery: {
+      title: 'Livraison v1.0 — Fichiers finaux',
+      desc: 'Voici les fichiers finaux pour validation.',
+      files: [{ name: 'Livraison_finale.zip', size: '5.8 MB', icon: '🗜️' }]
+    },
+    time: t, reactions: {}
+  }
+  _addMsg(delivMsg)
+  _addMsg({ id: 'esc_del_'+Date.now(), type: 'escrow_card', sender: 'sys', time: t,
+    escrow: { ...currentConv.order, status: 'DELIVERED', isActive: true } })
+  scrollToBottom()
+  _refreshAll()
+  showToast('📦 Livraison envoyée !')
+}
+
+window.validateDelivery = function() {
+  if (!currentConv?.order) return
+  currentConv.order.status = 'COMPLETED'
+  const t = _timeNow()
+  _addMsg({ id: 'esc_done_'+Date.now(), type: 'escrow_card', sender: 'sys', time: t,
+    escrow: { ...currentConv.order, status: 'COMPLETED', isActive: true } })
+  _addMsg({ id: 'sys_done_'+Date.now(), type: 'escrow', sender: 'sys',
+    body: `✅ Livraison validée ! ${fmt(currentConv.order.net)} FCFA transférés à Kofi Mensah.`, time: t })
+  scrollToBottom()
+  _refreshAll()
+  showToast('✅ Paiement libéré — commande clôturée !')
+  // Affiche le modal de notation après 1 seconde
+  setTimeout(() => _showReviewModal(currentConv), 1000)
+}
+
+// ── MODAL NOTATION ─────────────────────────────────────────────────────────────
+function _showReviewModal(conv) {
+  if (document.getElementById('rv-modal')) return
+  const FREELANCE_UUID = 'b2c3d4e5-0002-0002-0002-000000000002'
+  let _selectedRating = 0
+  const cats = [
+    { key: 'communication', label: 'Communication' },
+    { key: 'quality',       label: 'Qualité du travail' },
+    { key: 'deadline',      label: 'Délais respectés' },
+    { key: 'price',         label: 'Rapport qualité/prix' },
+  ]
+  const catRatings = {}
+
+  const modal = document.createElement('div')
+  modal.id = 'rv-modal'
+  modal.style.cssText = 'position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(15,37,53,.7);backdrop-filter:blur(8px)'
+
+  const starsHtml = (n, name) => Array.from({length:5}, (_,i) =>
+    `<svg class="rv-star" data-n="${i+1}" data-cat="${name}" width="28" height="28" viewBox="0 0 24 24" style="cursor:pointer;transition:transform .1s" fill="${i<n?'#F59E0B':'none'}" stroke="#F59E0B" stroke-width="1.5"><path d="M12 2L15.1 8.3L22 9.2L17 14.1L18.2 21L12 17.8L5.8 21L7 14.1L2 9.2L8.9 8.3Z"/></svg>`
+  ).join('')
+
+  modal.innerHTML = `
+<style>
+@keyframes rv-in{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+#rv-modal .rv-box{background:#fff;border-radius:24px;width:100%;max-width:460px;padding:28px;box-shadow:0 32px 80px rgba(15,37,53,.3);animation:rv-in .25s ease}
+#rv-modal .rv-title{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:#1B3A4A;margin-bottom:4px}
+#rv-modal .rv-sub{font-size:12px;color:rgba(27,58,74,.45);margin-bottom:20px}
+#rv-modal .rv-freelance{display:flex;align-items:center;gap:12px;background:#F4F6F9;border-radius:12px;padding:12px 14px;margin-bottom:22px}
+#rv-modal .rv-av{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#3CB878,#8DC63F);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;flex-shrink:0}
+#rv-modal .rv-fname{font-size:14px;font-weight:700;color:#1B3A4A}
+#rv-modal .rv-fmeta{font-size:11px;color:rgba(27,58,74,.45)}
+#rv-modal .rv-global-lbl{font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:#1B3A4A;margin-bottom:10px}
+#rv-modal .rv-stars-row{display:flex;gap:6px;justify-content:center;margin-bottom:6px}
+#rv-modal .rv-stars-lbl{font-size:11px;color:rgba(27,58,74,.4);text-align:center;height:16px;margin-bottom:18px}
+#rv-modal .rv-cats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}
+#rv-modal .rv-cat{background:#F8FAFB;border:1px solid rgba(27,58,74,.08);border-radius:11px;padding:10px 12px}
+#rv-modal .rv-cat-lbl{font-size:11px;color:rgba(27,58,74,.5);margin-bottom:6px}
+#rv-modal .rv-cat-stars{display:flex;gap:3px}
+#rv-modal .rv-textarea{width:100%;border:1.5px solid rgba(27,58,74,.12);border-radius:11px;padding:12px 14px;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;resize:vertical;min-height:90px;outline:none;color:#1B3A4A;transition:border-color .2s;margin-bottom:16px}
+#rv-modal .rv-textarea:focus{border-color:#3CB878}
+#rv-modal .rv-cta{width:100%;background:linear-gradient(135deg,#3CB878,#4FD090);color:#fff;border:none;border-radius:12px;padding:14px;font-size:14px;font-weight:800;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s}
+#rv-modal .rv-cta:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(60,184,120,.35)}
+#rv-modal .rv-cta:disabled{opacity:.6;cursor:not-allowed;transform:none}
+#rv-modal .rv-skip{text-align:center;margin-top:10px;font-size:12px;color:rgba(27,58,74,.35);cursor:pointer}
+#rv-modal .rv-skip:hover{color:#1B3A4A}
+</style>
+<div class="rv-box">
+  <div class="rv-title">Évaluez la prestation 🌟</div>
+  <div class="rv-sub">Votre avis aide la communauté et récompense les meilleurs freelances</div>
+  <div class="rv-freelance">
+    <div class="rv-av">KM</div>
+    <div>
+      <div class="rv-fname">Kofi Mensah</div>
+      <div class="rv-fmeta">Développeur Web · Accra, Ghana</div>
+    </div>
+  </div>
+  <div class="rv-global-lbl">Note globale</div>
+  <div class="rv-stars-row" id="rv-stars-global">
+    ${starsHtml(0, 'global')}
+  </div>
+  <div class="rv-stars-lbl" id="rv-global-txt">Cliquez pour noter</div>
+  <div class="rv-cats" id="rv-cats">
+    ${cats.map(c => `
+    <div class="rv-cat">
+      <div class="rv-cat-lbl">${c.label}</div>
+      <div class="rv-cat-stars" id="rv-stars-${c.key}">${starsHtml(0, c.key)}</div>
+    </div>`).join('')}
+  </div>
+  <textarea class="rv-textarea" id="rv-comment" placeholder="Décrivez votre expérience — ce qui vous a marqué, la qualité de la livraison, la communication…" maxlength="2000"></textarea>
+  <button class="rv-cta" id="rv-submit-btn" onclick="_submitReview()">Publier mon avis</button>
+  <div class="rv-skip" onclick="document.getElementById('rv-modal').remove()">Passer — évaluer plus tard</div>
+</div>`
+
+  document.body.appendChild(modal)
+
+  const LABELS = ['','Très décevant','Décevant','Correct','Bien','Excellent !']
+
+  // Délégation événements étoiles
+  modal.addEventListener('mouseover', e => {
+    const s = e.target.closest('.rv-star')
+    if (!s) return
+    const n = +s.dataset.n, cat = s.dataset.cat
+    const row = document.getElementById('rv-stars-' + (cat === 'global' ? 'global' : cat))
+    if (!row) return
+    row.querySelectorAll('.rv-star').forEach((el,i) => el.setAttribute('fill', i<n?'#F59E0B':'none'))
+  })
+  modal.addEventListener('mouseout', e => {
+    const s = e.target.closest('.rv-star')
+    if (!s) return
+    const cat = s.dataset.cat
+    const cur = cat === 'global' ? _selectedRating : (catRatings[cat] || 0)
+    const row = document.getElementById('rv-stars-' + (cat === 'global' ? 'global' : cat))
+    if (!row) return
+    row.querySelectorAll('.rv-star').forEach((el,i) => el.setAttribute('fill', i<cur?'#F59E0B':'none'))
+  })
+  modal.addEventListener('click', e => {
+    const s = e.target.closest('.rv-star')
+    if (!s) return
+    const n = +s.dataset.n, cat = s.dataset.cat
+    if (cat === 'global') {
+      _selectedRating = n
+      const lbl = document.getElementById('rv-global-txt')
+      if (lbl) lbl.textContent = LABELS[n] || ''
+      document.getElementById('rv-stars-global').querySelectorAll('.rv-star')
+        .forEach((el,i) => el.setAttribute('fill', i<n?'#F59E0B':'none'))
+    } else {
+      catRatings[cat] = n
+      document.getElementById('rv-stars-'+cat).querySelectorAll('.rv-star')
+        .forEach((el,i) => el.setAttribute('fill', i<n?'#F59E0B':'none'))
+    }
+  })
+
+  window._submitReview = async function() {
+    if (!_selectedRating) { showToast('⭐ Choisissez une note globale'); return }
+    const btn = document.getElementById('rv-submit-btn')
+    if (btn) { btn.disabled = true; btn.textContent = 'Publication…' }
+    const comment = document.getElementById('rv-comment')?.value?.trim() || ''
+
+    // Persist en Supabase si JWT dispo
+    if (supabase) {
+      try {
+        const { data: { user } } = await supabase.auth.getUser()
+        if (user) {
+          await supabase.from('reviews').insert({
+            order_id:             conv?.supabaseOrderId || null,
+            reviewer_id:          user.id,
+            reviewed_id:          FREELANCE_UUID,
+            service_id:           null,
+            rating:               _selectedRating,
+            rating_communication: catRatings.communication || _selectedRating,
+            rating_quality:       catRatings.quality       || _selectedRating,
+            rating_deadline:      catRatings.deadline      || _selectedRating,
+            rating_price:         catRatings.price         || _selectedRating,
+            comment,
+            is_public: true,
+          })
+        }
+      } catch(e) { console.warn('[Oriupe] review insert:', e.message) }
+    }
+
+    // Stocke en localStorage (visible même sans JWT)
+    try {
+      const reviews = JSON.parse(localStorage.getItem('oriupe_pending_reviews') || '[]')
+      reviews.unshift({
+        id: 'rv_' + Date.now(),
+        rating: _selectedRating,
+        comment,
+        reviewerName: (function(){ try{ const s=JSON.parse(localStorage.getItem('oriupe_session')||'null'); return s ? s.firstName+' '+s.lastName : 'Client Oriupe' }catch(e){ return 'Client Oriupe' } })(),
+        createdAt: new Date().toISOString(),
+      })
+      localStorage.setItem('oriupe_pending_reviews', JSON.stringify(reviews))
+    } catch {}
+
+    document.getElementById('rv-modal').remove()
+    showToast('🌟 Avis publié — merci !')
+  }
+}
+
+window.requestRevision = function() {
+  const input = document.getElementById('msgInput')
+  input.value = '🔄 Quelques retouches à faire : '
+  autoResize(input)
+  input.focus()
+}
+
+window.openDisputeFlow = function() {
+  showToast('⚠️ Ouverture litige — fonctionnalité bientôt disponible')
+}
+
+// ── REALTIME ───────────────────────────────────────────────────────────────────
+function handleRealtimeMsg(event) {
+  if (event.type === 'new_message') {
+    const m = event.message
+    const me = ME()
+    if (m.sender_id === me.id) return
+    const adapted = {
+      id: m.id, sender: m.sender_id, body: m.body,
+      type: m.type, time: new Date(m.created_at).toLocaleTimeString('fr',{hour:'2-digit',minute:'2-digit'}),
+      reactions: m.reactions || {}
+    }
+    if (!DEMO_MSGS[currentConvId]) DEMO_MSGS[currentConvId] = []
+    DEMO_MSGS[currentConvId].push(adapted)
+    document.getElementById('messages').appendChild(createMsgEl(adapted))
+    scrollToBottom()
+  }
+}
+
+// ── REACTIONS ──────────────────────────────────────────────────────────────────
+window.reactTo = function(msgId, emoji) {
+  const me = ME()
+  const msgs = DEMO_MSGS[currentConvId] || []
+  const msg = msgs.find(m => m.id === msgId)
+  if (!msg) return
+  if (!msg.reactions) msg.reactions = {}
+  if (!msg.reactions[emoji]) msg.reactions[emoji] = []
+  const idx = msg.reactions[emoji].indexOf(me.id)
+  if (idx >= 0) msg.reactions[emoji].splice(idx, 1)
+  else msg.reactions[emoji].push(me.id)
+  if (!msg.reactions[emoji].length) delete msg.reactions[emoji]
+  // Re-render just this message
+  const el = document.querySelector(`[data-msg-id="${msgId}"]`)
+  if (el) {
+    const isSent = el.classList.contains('sent')
+    const newEl = createMsgEl(msg)
+    el.replaceWith(newEl)
+  }
+}
+
+// ── EMOJI POPUP ────────────────────────────────────────────────────────────────
+const EMOJIS = ['😀','😂','❤️','👍','🔥','🎉','👏','😮','🤔','👎','😭','🙏','💯','✅','🚀','⭐']
+window.toggleEmojiPopup = function(e) {
+  e.stopPropagation()
+  const pop = document.getElementById('emojiPopup')
+  const isHidden = pop.classList.contains('hidden')
+  if (isHidden) {
+    pop.innerHTML = EMOJIS.map(em => `<button type="button" class="ep-btn" onclick="insertEmoji('${em}')" aria-label="${em}">${em}</button>`).join('')
+    const rect = e.currentTarget.getBoundingClientRect()
+    pop.style.left = rect.left + 'px'
+    pop.style.top = (rect.top - 220) + 'px'
+    pop.style.position = 'fixed'
+    pop.classList.remove('hidden')
+  } else {
+    pop.classList.add('hidden')
+  }
+}
+document.addEventListener('click', () => {
+  document.getElementById('emojiPopup')?.classList.add('hidden')
+})
+window.insertEmoji = function(em) {
+  const input = document.getElementById('msgInput')
+  input.value += em
+  autoResize(input)
+  input.focus()
+  document.getElementById('emojiPopup').classList.add('hidden')
+}
+
+// ── RIGHT PANEL ────────────────────────────────────────────────────────────────
+function renderRightPanel() {
+  if (!currentConv) return
+  const rp = document.getElementById('rpContent')
+  const user = DEMO_USERS[currentConv.with] || {}
+
+  const STATUSES = {
+    AWAITING_PAYMENT: ['sp-await','En attente'],
+    FUNDS_SECURED:    ['sp-secured','Fonds sécurisés'],
+    IN_PROGRESS:      ['sp-progress','En cours'],
+    DELIVERED:        ['sp-progress','Livré — à valider'],
+    VALIDATED:        ['sp-secured','Validé'],
+    COMPLETED:        ['sp-secured','Terminé'],
+    DISPUTED:         ['sp-dispute','Litige ouvert']
+  }
+
+  let orderSection = ''
+  if (currentConv.type === 'order' && currentConv.order) {
+    const o = currentConv.order
+    const [spClass, spLabel] = STATUSES[o.status] || ['sp-await', o.status]
+    const actions = currentRole === 'client' && o.status === 'DELIVERED'
+      ? `<div class="ec-actions"><button class="ec-action-btn ec-a-primary" onclick="validateDelivery()">✅ Valider & Payer</button><button class="ec-action-btn ec-a-secondary" onclick="requestRevision()">🔄 Révision</button></div>`
+      : currentRole === 'freelance' && o.status === 'IN_PROGRESS'
+      ? `<div class="ec-actions"><button class="ec-action-btn ec-a-primary" onclick="sendDelivery()">📦 Livrer</button></div>`
+      : ''
+    orderSection = `
+      <div class="rp-section">
+        <div class="rp-section-title">Commande</div>
+        <div class="escrow-card">
+          <div class="ec-label">Oriupe Escrow</div>
+          <div class="ec-status"><span class="status-pill ${spClass}">${spLabel}</span></div>
+          <div class="ec-amount">${fmt(o.amount)}<span>FCFA</span></div>
+          <div class="ec-line"><span class="k">Service</span><span class="v" style="font-size:10px;max-width:130px;text-align:right">${o.service}</span></div>
+          <div class="ec-line"><span class="k">Commission (12%)</span><span class="v">-${fmt(o.commission)} FCFA</span></div>
+          <div class="ec-divider"></div>
+          <div class="ec-net"><span class="k">Reversement net</span><span class="v">${fmt(o.net)} FCFA</span></div>
+          <div style="margin-top:6px"><div class="ec-line"><span class="k">Échéance</span><span class="v">${o.deadline}</span></div></div>
+          ${actions}
+        </div>
+      </div>`
+  }
+
+  // DM avec un freelance ayant une commande active → lien vers l'ordre
+  let activeOrderLink = ''
+  if (currentConv.type === 'direct') {
+    const linkedOrder = allConvs.find(c =>
+      c.type === 'order' && c.with === currentConv.with && c.order &&
+      !['COMPLETED','CANCELLED','REFUNDED'].includes(c.order?.status)
+    )
+    if (linkedOrder) {
+      const o = linkedOrder.order
+      const [spClass, spLabel] = STATUSES[o.status] || ['sp-await', o.status]
+      const actionHint = currentRole === 'client' && o.status === 'DELIVERED'
+        ? `<div style="font-size:11px;color:#3CB878;font-weight:700;margin-top:6px">⚡ Livraison disponible — validation requise</div>`
+        : currentRole === 'client' && o.status === 'IN_PROGRESS'
+        ? `<div style="font-size:11px;color:rgba(255,255,255,.45);margin-top:4px">Livraison attendue avant le ${o.deadline}</div>`
+        : ''
+      activeOrderLink = `
+        <div class="rp-section">
+          <div class="rp-section-title">Commande active</div>
+          <div style="background:linear-gradient(135deg,#0F2535,#1B3A4A);border-radius:10px;padding:12px;cursor:pointer" onclick="openConv('${linkedOrder.id}')">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+              <span class="status-pill ${spClass}">${spLabel}</span>
+              <span style="font-size:10px;color:rgba(255,255,255,.35)">${linkedOrder.title}</span>
+            </div>
+            <div style="font-size:20px;font-weight:800;color:#fff;margin-bottom:4px">${fmt(o.amount)} <span style="font-size:11px;color:rgba(255,255,255,.4)">FCFA</span></div>
+            <div style="font-size:11px;color:rgba(255,255,255,.45)">${o.service}</div>
+            ${actionHint}
+            <div style="margin-top:10px;text-align:center;font-size:11px;font-weight:700;color:#29ABE2;padding:6px;background:rgba(41,171,226,.1);border-radius:6px">
+              Voir le fil commande →
+            </div>
+          </div>
+        </div>`
+    }
+  }
+
+  const sharedFiles = (DEMO_MSGS[currentConv.id] || []).filter(m => m.attachment || m.type === 'file')
+  const filesSection = sharedFiles.length ? `
+    <div class="rp-section">
+      <div class="rp-section-title">Fichiers partagés <a href="#">Voir tout</a></div>
+      ${sharedFiles.slice(0, 4).map(m => `
+        <div class="shared-file">
+          <div class="sf-icon">${(m.attachment || {}).icon || '📎'}</div>
+          <div class="sf-info">
+            <div class="sf-name">${(m.attachment || {}).name || m.body}</div>
+            <div class="sf-size">${(m.attachment || {}).size || ''}</div>
+          </div>
+        </div>`).join('')}
+    </div>` : ''
+
+  const statsSection = user.rating ? `
+    <div class="rp-section">
+      <div class="rp-section-title">Statistiques</div>
+      <div class="mini-stats">
+        <div class="mini-stat"><div class="ms-val">⭐ ${user.rating}</div><div class="ms-lab">Note</div></div>
+        <div class="mini-stat"><div class="ms-val">47</div><div class="ms-lab">Commandes</div></div>
+        <div class="mini-stat"><div class="ms-val">98%</div><div class="ms-lab">Satisfaction</div></div>
+        <div class="mini-stat"><div class="ms-val">2j</div><div class="ms-lab">Délai moy.</div></div>
+      </div>
+    </div>` : ''
+
+  rp.innerHTML = `
+    <div class="rp-head">
+      <div class="rp-big-av ${user.avClass || 'av-blue'}">${user.av || '?'}</div>
+      <div class="rp-name">${user.name || currentConv.title}</div>
+      <div class="rp-role">${user.job || ''}</div>
+      ${user.role !== 'system' ? `
+      <div class="rp-cta">
+        <button type="button" class="rp-btn rp-btn-green" onclick="showToast('Commande en cours...')">Commander</button>
+        <button type="button" class="rp-btn rp-btn-outline" onclick="window.open('/src/pages/profile/index.html')">Profil</button>
+      </div>` : ''}
+    </div>
+    ${activeOrderLink}
+    ${orderSection}
+    ${filesSection}
+    ${statsSection}`
+}
+
+window.toggleRightPanel = function() {
+  document.getElementById('rightPanel').classList.toggle('hidden')
+}
+
+// ── HELPERS ────────────────────────────────────────────────────────────────────
+function fmt(n) { return new Intl.NumberFormat('fr-FR').format(n).replace(/ /g, ' ') }
+
+window.autoResize = function(el) {
+  el.style.height = 'auto'
+  el.style.height = Math.min(el.scrollHeight, 120) + 'px'
+}
+
+window.handleKey = function(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault()
+    sendMessage()
+  }
+}
+
+window.openNewConv = function() {
+  showToast('Nouveau message — bientôt disponible')
+}
+
+window.closeChatMobile = function() {
+  document.getElementById('sidebar').classList.add('mobile-open')
+}
+
+function showToast(msg, type = 'info') {
+  if (window.toast) { window.toast(msg, type); return }
+  const t = document.getElementById('toast')
+  if (!t) return
+  t.textContent = msg
+  t.classList.add('show')
+  setTimeout(() => t.classList.remove('show'), 2800)
+}
+window.showToast = showToast
+
+// expose for nav
+window.filterConvs = window.filterConvs
+</script>
+<script type="module">
+  import { toast } from '/src/shared/toast.js'
+  window.toast = toast
+  window.showToast = (msg, type = 'info') => toast(msg, type)
+</script>
 </body>
 </html>

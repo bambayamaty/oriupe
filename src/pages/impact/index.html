@@ -20,7 +20,7 @@
 html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
 body{font-family:'Plus Jakarta Sans',sans-serif;background:#F4F6F9;color:#1B3A4A}
 nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 24px;background:rgba(255,255,255,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
-.nav-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:24px;height:64px}
+.nav-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:24px;height:var(--nav-h)}
 .logo{display:flex;align-items:center;gap:10px;text-decoration:none}
 .logo-text{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:var(--navy)}
 .nav-links{display:flex;gap:4px;margin-left:32px}
@@ -191,11 +191,12 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
 </style>
   <script type="module" src="/src/shared/scroll-reveal.js"></script>
   <script type="module" src="/src/components/nav.js"></script>
+  <script src="/src/shared/oriupe-session.js"></script>
 </head>
 <body>
 
 
-<section class="hero">
+<section class="hero" data-nav-theme="dark">
   <div class="orb" style="width:500px;height:500px;background:radial-gradient(circle,rgba(60,184,120,.2) 0%,transparent 70%);top:-120px;right:-80px"></div>
   <div class="orb" style="width:350px;height:350px;background:radial-gradient(circle,rgba(141,198,63,.12) 0%,transparent 70%);bottom:-80px;left:-60px"></div>
   <div class="hero-grid"></div>
@@ -206,7 +207,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
   </div>
 </section>
 
-<section class="section" style="background:#fff">
+<section class="section" style="background:#fff" data-nav-theme="light">
   <div class="container">
     <div class="section-label">Chiffres 2025</div>
     <h2 class="r section-title">Impact en chiffres</h2>
@@ -315,7 +316,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
   </div>
 </section>
 
-<footer class="oriupe-footer">
+<footer class="oriupe-footer" data-nav-theme="dark">
   <div class="of-grid"></div>
   <div class="of-z1">
     <div class="of-brand">

@@ -25,7 +25,7 @@ button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:p
 #progress{position:fixed;top:0;left:0;height:3px;z-index:9999;width:0;background:linear-gradient(90deg,var(--green),var(--blue));border-radius:0 3px 3px 0}
 
 /* NAV */
-nav{background:rgba(255,255,255,.95);backdrop-filter:blur(16px);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 52px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:200;box-shadow:var(--shadow)}
+nav{background:rgba(255,255,255,.95);backdrop-filter:blur(16px);height:var(--nav-h);display:flex;align-items:center;justify-content:space-between;padding:0 52px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:200;box-shadow:var(--shadow)}
 .logo{display:flex;align-items:center;gap:9px;text-decoration:none}
 .logo-t{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:var(--navy2)}
 .nav-links{display:flex;gap:4px}.nav-links a{font-size:13px;color:var(--muted);font-weight:500;padding:7px 13px;border-radius:8px;transition:color .2s,background .2s}.nav-links a:hover{color:var(--navy2);background:var(--bg)}.nav-links a.active{color:var(--green);font-weight:700}
@@ -160,7 +160,7 @@ nav{background:rgba(255,255,255,.95);backdrop-filter:blur(16px);height:64px;disp
 .oi-row.checked{color:var(--navy2);font-weight:500}
 .oi-check{width:16px;height:16px;border-radius:50%;background:var(--green-l);display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .oi-x{width:16px;height:16px;border-radius:50%;background:var(--bg2);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.btn-order{width:100%;background:linear-gradient(135deg,var(--green),#4FD090);color:#fff;border:none;border-radius:12px;padding:16px;font-size:15px;font-weight:800;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:all .2s var(--spring);box-shadow:0 4px 20px rgba(60,184,120,.35);margin-bottom:10px;letter-spacing:-.2px}
+.btn-order{width:100%;background:linear-gradient(135deg,var(--green),#4FD090);color:#fff;border:none;border-radius:12px;padding:16px;font-size:15px;font-weight:800;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:all .2s var(--spring);box-shadow:0 4px 20px rgba(60,184,120,.35);margin-bottom:10px;letter-spacing:-.2px;display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none}
 .btn-order:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(60,184,120,.45)}
 .btn-order:active{transform:none}
 .btn-contact{width:100%;background:#fff;color:var(--navy2);border:1.5px solid var(--border);border-radius:12px;padding:13px;font-size:14px;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
@@ -223,6 +223,34 @@ nav{background:rgba(255,255,255,.95);backdrop-filter:blur(16px);height:64px;disp
   .gallery-main{height:240px}
   .svc-h1{font-size:20px}
   .similar-grid{grid-template-columns:1fr}
+}
+/* ── MOBILE STICKY CTA ── */
+.mobile-cta{
+  display:none;
+  position:fixed;bottom:0;left:0;right:0;
+  background:#fff;
+  border-top:1px solid var(--border);
+  padding:12px 20px;
+  align-items:center;justify-content:space-between;gap:12px;
+  z-index:190;
+  box-shadow:0 -4px 20px rgba(10,20,30,.1)
+}
+.mobile-cta-price{display:flex;flex-direction:column;gap:1px}
+.mobile-cta-label{font-size:11px;color:var(--muted);font-weight:500}
+.mobile-cta-val{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:var(--navy2);letter-spacing:-.5px}
+.mobile-cta-btn{
+  background:linear-gradient(135deg,var(--green),#4FD090);color:#fff;
+  border:none;border-radius:10px;
+  padding:12px 24px;font-size:14px;font-weight:800;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  cursor:pointer;white-space:nowrap;
+  box-shadow:0 4px 16px rgba(60,184,120,.35);
+  transition:all .2s
+}
+.mobile-cta-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(60,184,120,.45)}
+@media(max-width:900px){
+  .mobile-cta{display:flex}
+  .page{padding-bottom:88px!important}
 }
 footer{background:var(--navy);padding:64px 24px 32px;margin-top:0}
 .footer-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:40px;margin-bottom:48px}
@@ -368,7 +396,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
 
 
 <!-- BREADCRUMB -->
-<div class="bread">
+<div class="bread" data-nav-theme="light">
   <a href="/src/pages/home/index.html">Accueil</a><span class="sep">›</span>
   <a href="/src/pages/catalog/index.html?cat=dev">Développement Web</a><span class="sep">›</span>
   <span class="cur">Création site web React</span>
@@ -748,7 +776,14 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
           <div class="oi-row"><div class="oi-x"><svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1.5 1.5L6.5 6.5M6.5 1.5L1.5 6.5" stroke="var(--muted2)" stroke-width="1.2" stroke-linecap="round"/></svg></div>Dashboard admin</div>
         </div>
 
-        <button class="btn-order" id="btn-order-main">Commander maintenant</button>
+        <button class="btn-order" id="btn-order-main" data-role="client">Commander maintenant</button>
+        <a class="btn-order" data-role="visitor" href="/src/pages/auth/index.html" style="display:none">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1.5" y="1" width="11" height="12" rx="2" stroke="#fff" stroke-width="1.4"/><path d="M4.5 7H9.5M7 4.5V9.5" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/></svg>
+          Se connecter pour commander
+        </a>
+        <div data-role="freelance" style="display:none;padding:12px 14px;background:rgba(60,184,120,.08);border:1.5px solid rgba(60,184,120,.2);border-radius:10px;font-size:13px;color:var(--navy);line-height:1.55">
+          <strong>Vous êtes freelance</strong> — Vous ne pouvez pas commander ce service directement. Pour passer une commande en tant que client, <a href="/src/pages/dashboard/freelance/index.html" style="color:var(--green);font-weight:600;text-decoration:none">basculez en mode client</a> depuis votre espace.
+        </div>
         <button class="btn-contact" id="btn-contact-main">
           <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2 3H13V10H8L5 13V10H2V3Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
           Contacter le freelance
@@ -831,7 +866,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
 </div><!-- /page -->
 
 <!-- FOOTER MINI -->
-<footer class="oriupe-footer">
+<footer class="oriupe-footer" data-nav-theme="dark">
   <div class="of-grid"></div>
   <div class="of-z1">
     <div class="of-brand">
@@ -928,6 +963,7 @@ const offers={
   standard:{price:'65 000 FCFA',desc:'Site 10 pages, animations, formulaires, blog CMS et Mobile Money.',delay:'7 jours',rev:'5 révisions',pages:'10 pages',includes:[true,true,true,true,false]},
   premium:{price:'120 000 FCFA',desc:'Site complet 20 pages, e-commerce, dashboard admin et maintenance 3 mois.',delay:'14 jours',rev:'Illimitées',pages:'20 pages',includes:[true,true,true,true,true]},
 };
+window._dtOffers = offers;
 const offerItems=['Design responsive','SEO on-page','Code source livré','Intégration Mobile Money','Dashboard admin'];
 function setOffer(type){
   const o=offers[type];
@@ -1068,12 +1104,49 @@ function confirmOrder(){
     document.getElementById('om-phone').placeholder='Numéro requis';
     return;
   }
-  const pm=document.querySelector('#order-modal .pm-opt.sel')?.textContent?.trim()||'Mobile Money';
-  const alert=document.getElementById('om-alert');
-  if(alert){
-    alert.innerHTML=`Paiement non lance : aucun prestataire de paiement n'est encore connecte pour ${pm}. Prochaine implementation : creation de commande serveur, redirection PSP, webhook de confirmation, puis statut escrow verifie cote backend.`;
-    alert.classList.add('show');
-  }
+
+  const total       = calcTotal();
+  const plan        = document.querySelector('.offer-tab.active')?.textContent||'Basique';
+  const svcTitle    = document.querySelector('.svc-h1')?.textContent||'Service Oriupe';
+  const _plan = (window.getSession && window.getSession()?.plan) || 'free';
+  const _rates = {free:0.15, pro:0.10, business:0.07};
+  const _rate = _rates[_plan] || 0.15;
+  const commission  = Math.round(total*_rate);
+  const net         = total-commission;
+  const orderId     = 'ORD-'+(1090+Math.floor(Math.random()*9000));
+  const convId      = 'conv_order_'+Date.now();
+  const now         = new Date();
+  const timeStr     = now.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+  const deadline    = new Date(now.getTime()+7*24*60*60*1000)
+    .toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'});
+  const svcLabel    = plan+' — '+svcTitle.substring(0,42);
+  const ref         = orderId.replace('ORD-','#');
+
+  const newConv = {
+    id:convId, type:'order', with:'freelance', orderId,
+    title:'Commande '+orderId,
+    preview:'🔐 En attente de paiement',
+    time:timeStr, unread:0, online:true,
+    order:{ ref, service:svcLabel, amount:total, commission, net, status:'AWAITING_PAYMENT', deadline }
+  };
+  const newMsgs = [
+    { id:'m_new_esc1', type:'escrow_card', sender:'sys', time:timeStr,
+      escrow:{ status:'AWAITING_PAYMENT', ref, service:svcLabel, amount:total,
+               commission, commissionRate:Math.round(_rate*100), net, deadline, isActive:true } },
+    { id:'m_new_sys1', type:'escrow', sender:'sys', time:timeStr,
+      body:'🛒 Commande créée. Procédez au paiement pour démarrer les travaux.' }
+  ];
+
+  try {
+    const convs = JSON.parse(localStorage.getItem('oriupe_pending_convs')||'[]');
+    convs.unshift(newConv);
+    localStorage.setItem('oriupe_pending_convs', JSON.stringify(convs));
+    const msgs = JSON.parse(localStorage.getItem('oriupe_pending_msgs')||'{}');
+    msgs[convId] = newMsgs;
+    localStorage.setItem('oriupe_pending_msgs', JSON.stringify(msgs));
+  } catch {}
+
+  window.location.href = '/src/pages/messagerie/index.html?conv='+convId;
 }
 
 /* ── CONTACT MODAL ── */
@@ -1200,6 +1273,139 @@ document.getElementById('btn-contact-main')?.addEventListener('click',openContac
   btn.addEventListener('click',sub);
   inp.addEventListener('keydown',function(e){if(e.key==='Enter')sub();});
 })();
+</script>
+<script type="module">
+/* ── Page detail — chargement dynamique Supabase (?svc=UUID) ── */
+import { supabase, isSupabaseConfigured } from '/src/shared/supabase.js'
+
+const params = new URLSearchParams(location.search)
+const svcId = params.get('svc')
+if (!svcId || !isSupabaseConfigured || !supabase) {
+  // Pas de ?svc= : page reste en mode démo
+} else {
+  try {
+    const { data: svc, error } = await supabase
+      .from('services')
+      .select(`
+        id, title, description, category, tags,
+        price_basic, price_standard, price_premium, delivery_days, created_at,
+        profiles!services_freelance_id_fkey (
+          first_name, last_name, country, avatar_url, is_verified, created_at
+        )
+      `)
+      .eq('id', svcId)
+      .eq('status', 'active')
+      .single()
+
+    if (!error && svc) {
+      const p = svc.profiles || {}
+      const fullName = [p.first_name, p.last_name].filter(Boolean).join(' ') || 'Freelance'
+      const ini = ((p.first_name?.[0]||'')+(p.last_name?.[0]||'')).toUpperCase() || 'U'
+      const cty = { GH:'🇬🇭 Ghana', CI:"🇨🇮 Côte d'Ivoire", SN:'🇸🇳 Sénégal', NG:'🇳🇬 Nigeria',
+                    ML:'🇲🇱 Mali', BF:'🇧🇫 Burkina Faso', KE:'🇰🇪 Kenya' }
+      const countryLabel = cty[p.country] || p.country || 'Afrique'
+      const memberYear = p.created_at ? new Date(p.created_at).getFullYear() : '2024'
+
+      const fmtFCFA = n => Number(n).toLocaleString('fr-FR') + ' FCFA'
+      const priceB = svc.price_basic || 0
+      const priceS = svc.price_standard || Math.round(priceB * 1.6)
+      const priceP = svc.price_premium || Math.round(priceB * 2.5)
+
+      // Seller info
+      const avEl = document.querySelector('.seller-av')
+      if (avEl) { const tn = [...avEl.childNodes].find(n=>n.nodeType===Node.TEXT_NODE); if(tn) tn.textContent=ini; else avEl.prepend(document.createTextNode(ini)) }
+      const nameEl = document.querySelector('.seller-name')
+      if (nameEl) nameEl.textContent = fullName
+      const titleEl = document.querySelector('.seller-title')
+      if (titleEl) titleEl.textContent = (svc.category||'Freelance') + ' · ' + countryLabel
+      const badgesEl = document.querySelector('.seller-badges')
+      if (badgesEl && p.is_verified) {
+        badgesEl.innerHTML = '<span class="sbadge sbadge-b">Identité vérifiée ✓</span>'
+      }
+
+      // Title + tags
+      const h1 = document.querySelector('.svc-h1')
+      if (h1) h1.textContent = svc.title || 'Service sans titre'
+      const tagsEl = document.querySelector('.svc-tags')
+      if (tagsEl) {
+        const tagSrc = Array.isArray(svc.tags) && svc.tags.length ? svc.tags : [svc.category||'Service'].filter(Boolean)
+        tagsEl.innerHTML = tagSrc.map(t=>`<span class="svc-tag">${t}</span>`).join('')
+      }
+
+      // Member since
+      document.querySelectorAll('.meta-item strong').forEach(el => {
+        if (el.closest('.meta-item')?.textContent?.includes('Membre depuis')) el.textContent = memberYear
+      })
+
+      // Update offers object + re-render
+      const delivDays = svc.delivery_days || 7
+      if (window._dtOffers) {
+        const desc = svc.description || ''
+        window._dtOffers.basic    = { price: fmtFCFA(priceB), desc: desc || 'Offre de base.', delay: delivDays+'j', rev: '2 révisions', pages: '—', includes: [true, true, false, false, false] }
+        window._dtOffers.standard = { price: fmtFCFA(priceS), desc: desc || 'Offre standard.', delay: Math.round(delivDays*1.4)+'j', rev: '5 révisions', pages: '—', includes: [true, true, true, false, false] }
+        window._dtOffers.premium  = { price: fmtFCFA(priceP), desc: desc || 'Offre premium.', delay: Math.round(delivDays*2)+'j', rev: 'Illimitées', pages: '—', includes: [true, true, true, true, true] }
+      }
+      if (typeof setOffer === 'function') setOffer('basic')
+
+      // Description
+      const descEl = document.querySelector('.desc-text p')
+      if (descEl && svc.description) descEl.textContent = svc.description
+
+      // Breadcrumb
+      const bcCur = document.querySelector('.bread .cur')
+      if (bcCur) bcCur.textContent = (svc.title || 'Service').substring(0, 48)
+
+      // Page title
+      document.title = (svc.title || 'Service') + ' — Oriupe'
+
+      console.log('[Detail] Service chargé depuis Supabase:', svc.title)
+    }
+  } catch (e) {
+    console.warn('[Detail] Erreur chargement service:', e)
+  }
+}
+</script>
+
+<!-- Mobile sticky CTA -->
+<div class="mobile-cta" id="mobile-cta">
+  <div class="mobile-cta-price">
+    <span class="mobile-cta-label">À partir de</span>
+    <span class="mobile-cta-val" id="mobile-cta-price">35 000 FCFA</span>
+  </div>
+  <button type="button" class="mobile-cta-btn" id="mobile-cta-btn">Commander maintenant</button>
+</div>
+<script>
+(function(){
+  const mobilePriceEl=document.getElementById('mobile-cta-price');
+  const mobileCta=document.getElementById('mobile-cta');
+  const mobileBtn=document.getElementById('mobile-cta-btn');
+  function syncPrice(){
+    const src=document.getElementById('offer-price');
+    if(src&&mobilePriceEl)mobilePriceEl.textContent=src.textContent;
+  }
+  if(mobileBtn){
+    mobileBtn.addEventListener('click',()=>{
+      const session=window.getSession&&window.getSession();
+      if(session?.role==='freelance'){
+        const infoEl=document.querySelector('[data-role="freelance"]');
+        if(infoEl){infoEl.style.display='block';infoEl.scrollIntoView({behavior:'smooth',block:'center'});}
+        return;
+      }
+      const mainBtn=document.getElementById('btn-order-main');
+      if(mainBtn&&mainBtn.style.display!=='none'){openOrderModal();}
+      else{window.location.href='/src/pages/auth/index.html';}
+    });
+  }
+  const priceEl=document.getElementById('offer-price');
+  if(priceEl){
+    new MutationObserver(syncPrice).observe(priceEl,{childList:true,characterData:true,subtree:true});
+    syncPrice();
+  }
+})();
+</script>
+<script type="module">
+  import { toast } from '/src/shared/toast.js'
+  window.toast = toast
 </script>
 </body>
 </html>

@@ -21,7 +21,7 @@
 html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
 body{font-family:'Plus Jakarta Sans',sans-serif;background:#F4F6F9;color:#1B3A4A}
 nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 24px;background:rgba(255,255,255,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
-.nav-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:24px;height:64px}
+.nav-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:24px;height:var(--nav-h)}
 .logo{display:flex;align-items:center;gap:10px;text-decoration:none}
 .logo-text{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:var(--navy)}
 .nav-links{display:flex;gap:4px;margin-left:32px}
@@ -251,7 +251,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
 
 
 
-<section class="hero">
+<section class="hero" data-nav-theme="dark">
   <div class="orb orb1"></div>
   <div class="orb orb2"></div>
   <div class="hero-grid"></div>
@@ -313,7 +313,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
   </div>
 </div>
 
-<section class="section">
+<section class="section" data-nav-theme="light">
   <div class="container">
     <div style="margin-bottom:48px">
       <div class="section-label">Notre histoire</div>
@@ -460,7 +460,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
   </div>
 </section>
 
-<footer class="oriupe-footer">
+<footer class="oriupe-footer" data-nav-theme="dark">
   <div class="of-grid"></div>
   <div class="of-z1">
     <div class="of-brand">

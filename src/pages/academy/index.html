@@ -28,7 +28,7 @@ button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:p
   border-radius:0 3px 3px 0;transition:width .08s linear}
 
 /* ── NAV ── */
-nav{background:rgba(255,255,255,.96);backdrop-filter:blur(18px);height:64px;
+nav{background:rgba(255,255,255,.96);backdrop-filter:blur(18px);height:var(--nav-h);
   display:flex;align-items:center;justify-content:space-between;
   padding:0 52px;border-bottom:1px solid var(--border);
   position:sticky;top:0;z-index:300;box-shadow:var(--shadow)}
@@ -141,7 +141,7 @@ nav{background:rgba(255,255,255,.96);backdrop-filter:blur(18px);height:64px;
 .path-business .path-icon{background:rgba(245,158,11,.2)}
 
 /* ── FILTER BAR ── */
-.filter-bar{background:#fff;padding:20px 52px;border-bottom:1px solid var(--border);position:sticky;top:64px;z-index:100;box-shadow:var(--shadow)}
+.filter-bar{background:#fff;padding:20px 52px;border-bottom:1px solid var(--border);position:sticky;top:var(--nav-h);z-index:100;box-shadow:var(--shadow)}
 .filter-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 .filter-cats{display:flex;gap:7px;flex-wrap:wrap;flex:1}
 .fcat{font-size:12px;font-weight:600;padding:7px 16px;border-radius:22px;border:1.5px solid var(--border);background:#fff;color:var(--muted);cursor:pointer;transition:all .2s;white-space:nowrap}
@@ -477,6 +477,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
 @media(max-width:480px){.of-z1{grid-template-columns:1fr}}
 </style>
   <script type="module" src="/src/components/nav.js"></script>
+  <script src="/src/shared/oriupe-session.js"></script>
 </head>
 <body>
 <div id="progress"></div>
@@ -485,7 +486,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
 
 
 <!-- ████ HERO ████ -->
-<section class="hero">
+<section class="hero" data-nav-theme="dark">
   <div class="hero-mesh"><div class="mesh-a"></div><div class="mesh-b"></div><div class="mesh-c"></div></div>
   <div class="hero-grid"></div>
   <div class="hero-inner">
@@ -587,7 +588,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
 </section>
 
 <!-- ████ PARCOURS ████ -->
-<section class="paths-section">
+<section class="paths-section" data-nav-theme="light">
   <div class="sec-max">
     <div class="r"><div class="sec-eyebrow">PARCOURS D'APPRENTISSAGE</div></div>
     <div class="r"><div class="sec-title">Choisissez votre voie</div></div>
@@ -1230,7 +1231,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
 </section>
 
 <!-- ████ FOOTER ████ -->
-<footer class="oriupe-footer">
+<footer class="oriupe-footer" data-nav-theme="dark">
   <div class="of-grid"></div>
   <div class="of-z1">
     <div class="of-brand">

@@ -889,8 +889,10 @@ function openDisputeFlow() {
 
 /* ── TOAST ── */
 let toastTimer;
-function showToast(msg) {
+function showToast(msg, type = 'info') {
+  if (window.toast) { window.toast(msg, type); return; }
   const t = document.getElementById('toast');
+  if (!t) return;
   t.textContent = msg;
   t.classList.add('show');
   clearTimeout(toastTimer);
@@ -1026,6 +1028,8 @@ document.getElementById('msgInput').addEventListener('input', function() {
   <script type="module">
     import { openDispute } from '/src/shared/supabase.js'
     window._openDispute = openDispute
+    import { toast } from '/src/shared/toast.js'
+    window.toast = toast
   </script>
 </body>
 </html>

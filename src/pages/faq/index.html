@@ -24,7 +24,7 @@ html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
 body{font-family:'Plus Jakarta Sans',sans-serif;background:#F4F6F9;color:#1B3A4A;overflow-x:hidden}
 /* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
-.nav-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:24px;height:64px;padding:0 32px}
+.nav-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:24px;height:var(--nav-h);padding:0 32px}
 .logo{display:flex;align-items:center;gap:10px;text-decoration:none}
 .logo-text{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:var(--navy)}
 .nav-links{display:flex;gap:4px;margin-left:32px}
@@ -263,7 +263,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
 
 
 <!-- HERO -->
-<section class="hero">
+<section class="hero" data-nav-theme="dark">
   <div class="hero-orb hero-orb-1"></div>
   <div class="hero-orb hero-orb-2"></div>
   <div class="hero-grid"></div>
@@ -282,7 +282,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
 </section>
 
 <!-- MAIN -->
-<main class="main">
+<main class="main" data-nav-theme="light">
 
   <!-- TABS -->
   <div class="tabs" role="tablist">
@@ -400,11 +400,11 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
         <div class="acc-body-inner">
           <p>Les délais de retrait varient selon votre plan d'abonnement :</p>
           <ul>
-            <li><strong>Plan Gratuit :</strong> 5 à 7 jours ouvrés après validation de la commande.</li>
+            <li><strong>Plan Gratuit :</strong> 1 à 3 jours ouvrés après validation de la commande.</li>
             <li><strong>Plan Pro :</strong> Retrait express en 24 heures ouvrées.</li>
-            <li><strong>Plan Business :</strong> Retrait instantané (généralement moins de 2 heures).</li>
+            <li><strong>Plan Business :</strong> Retrait prioritaire (généralement moins de 2 heures ouvrées).</li>
           </ul>
-          <p>Pour les retraits via Mobile Money, le virement est instantané une fois le retrait approuvé. Pour les virements bancaires internationaux, comptez 2 à 3 jours ouvrés supplémentaires selon votre banque.</p>
+          <p>Pour les retraits via Mobile Money, le virement est généralement traité sous 24 heures ouvrées une fois le retrait approuvé. Pour les virements bancaires internationaux, comptez 2 à 3 jours ouvrés supplémentaires selon votre banque.</p>
         </div>
       </div>
     </div>
@@ -483,8 +483,8 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
           <ul>
             <li><strong>1. Communication directe :</strong> Essayez d'abord de résoudre le problème via la messagerie de la commande.</li>
             <li><strong>2. Demande de révision :</strong> Si la livraison ne correspond pas, demandez une révision en expliquant les points à corriger.</li>
-            <li><strong>3. Ouverture d'un litige :</strong> Si aucun accord n'est trouvé sous 48h, cliquez sur "Ouvrir un litige" depuis la commande.</li>
-            <li><strong>4. Médiation Oriupe :</strong> Notre équipe de médiation intervient sous 24 heures et prend une décision sous 5 jours ouvrés.</li>
+            <li><strong>3. Ouverture d'un litige :</strong> Si aucun accord n'est trouvé sous 72h, cliquez sur "Ouvrir un litige" depuis la commande.</li>
+            <li><strong>4. Médiation Oriupe :</strong> Notre équipe de médiation intervient sous 48 heures ouvrées et rend sa décision sous 5 jours ouvrés.</li>
           </ul>
           <p>En cas de litige en faveur du client, le remboursement est traité dans les 48h. Notre taux de résolution amiable est de 87%.</p>
         </div>
@@ -535,7 +535,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
 </main>
 
 <!-- FOOTER -->
-<footer class="oriupe-footer">
+<footer class="oriupe-footer" data-nav-theme="dark">
   <div class="of-grid"></div>
   <div class="of-z1">
     <div class="of-brand">

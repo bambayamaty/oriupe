@@ -130,7 +130,7 @@ button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:p
 /* Top bar */
 .topbar{
   background:rgba(255,255,255,.95);backdrop-filter:blur(16px);
-  height:64px;display:flex;align-items:center;
+  height:var(--nav-h);display:flex;align-items:center;
   justify-content:space-between;
   padding:0 48px;border-bottom:1px solid var(--border);
   position:sticky;top:0;z-index:100;box-shadow:var(--shadow)
@@ -651,8 +651,12 @@ select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+x
   .level-grid{grid-template-columns:1fr 1fr 1fr}
   .progress-bar{width:120px}
 }
+@keyframes ob-shake{0%,100%{transform:none}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+@keyframes ob-fadein{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+@keyframes ob-fadeout{to{opacity:0;transform:translateX(-50%) translateY(8px)}}
 </style>
   <script type="module" src="/src/components/nav.js"></script>
+  <script src="/src/shared/oriupe-session.js"></script>
 </head>
 <body>
 
@@ -804,11 +808,11 @@ select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+x
         <div class="g2">
           <div class="fg">
             <div class="fl">Prénom <span class="req">*</span></div>
-            <input type="text" class="inp" placeholder="Kofi" value="Amadou"/>
+            <input type="text" class="inp" id="fn-inp" placeholder="Kofi" oninput="updateAvatarInitials()"/>
           </div>
           <div class="fg">
             <div class="fl">Nom <span class="req">*</span></div>
-            <input type="text" class="inp" placeholder="Asante" value="Bamba"/>
+            <input type="text" class="inp" id="ln-inp" placeholder="Asante" oninput="updateAvatarInitials()"/>
           </div>
         </div>
 
@@ -1350,7 +1354,7 @@ select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+x
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3L5 7L9 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
           Précédent
         </button>
-        <button class="btn-next blue" onclick="goTo(5)">
+        <button class="btn-next blue" id="btn-submit-kyc" onclick="submitOnboarding()">
           Terminer et publier mon profil
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3L9 7L5 11" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
@@ -1408,11 +1412,11 @@ select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+x
         </div>
 
         <div class="success-btns">
-          <button class="btn-finish" onclick="window.location.href='oriupe_dashboard_freelance.html'">
+          <button class="btn-finish" onclick="window.location.href='/src/pages/dashboard/freelance/index.html'">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="6" height="6" rx="1.5" stroke="#fff" stroke-width="1.3"/><rect x="9" y="1" width="6" height="6" rx="1.5" stroke="#fff" stroke-width="1.3"/><rect x="1" y="9" width="6" height="6" rx="1.5" stroke="#fff" stroke-width="1.3"/><rect x="9" y="9" width="6" height="6" rx="1.5" stroke="#fff" stroke-width="1.3"/></svg>
             Accéder à mon dashboard
           </button>
-          <button class="btn-secondary" onclick="window.location.href='oriupe_profil_freelance.html'">
+          <button class="btn-secondary" onclick="window.location.href='/src/pages/profile/index.html'">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="5.5" r="3" stroke="currentColor" stroke-width="1.3"/><path d="M2 13C2 10.2 4.2 8 7 8s5 2.2 5 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
             Voir mon profil public
           </button>
@@ -1429,6 +1433,7 @@ select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+x
 <!-- ████████ JAVASCRIPT ████████ -->
 <script>
 let current = 1;
+const _kycDone = new Set(); // IDs des kyc-cards uploadés
 
 const stepLabels = [
   'Étape 1 sur 5 — Identité & Profil',
@@ -1438,7 +1443,69 @@ const stepLabels = [
   '✅ Profil créé avec succès !'
 ];
 
+// ── Init depuis session ────────────────────────────────────────────────────────
+(function initFromSession() {
+  try {
+    const s = JSON.parse(localStorage.getItem('oriupe_session') || 'null');
+    if (!s) return;
+    const fn = document.getElementById('fn-inp');
+    const ln = document.getElementById('ln-inp');
+    if (fn && s.firstName) fn.value = s.firstName;
+    if (ln && s.lastName)  ln.value = s.lastName;
+    updateAvatarInitials();
+  } catch {}
+})();
+
+function updateAvatarInitials() {
+  const fn = (document.getElementById('fn-inp')?.value || '').trim();
+  const ln = (document.getElementById('ln-inp')?.value || '').trim();
+  const av = document.getElementById('avCircle');
+  if (!av || av.querySelector('img')) return;
+  const txt = av.querySelector('.av-hover-overlay');
+  av.childNodes.forEach(n => { if (n.nodeType === 3) n.remove(); });
+  const initials = ((fn[0] || '') + (ln[0] || '')).toUpperCase() || '?';
+  av.insertBefore(document.createTextNode(initials), txt || null);
+}
+
+// ── Validation par étape ───────────────────────────────────────────────────────
+function validateStep(from) {
+  if (from === 1) {
+    const fn = document.getElementById('fn-inp')?.value?.trim();
+    const ln = document.getElementById('ln-inp')?.value?.trim();
+    if (!fn || !ln) {
+      _shake(from);
+      _toast('Veuillez renseigner votre prénom et nom.');
+      return false;
+    }
+  }
+  if (from === 4) {
+    if (!_kycDone.has('kyc1') || !_kycDone.has('kyc2')) {
+      _shake(from);
+      _toast('Veuillez télécharger votre pièce d\'identité et votre selfie.');
+      return false;
+    }
+  }
+  return true;
+}
+
+function _shake(stepNum) {
+  const p = document.getElementById('p' + stepNum);
+  if (!p) return;
+  p.style.animation = 'none';
+  p.offsetHeight; // reflow
+  p.style.animation = 'ob-shake .4s ease';
+}
+
+function _toast(msg) {
+  const t = document.createElement('div');
+  t.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1B3A4A;color:#fff;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:600;z-index:9999;box-shadow:0 8px 32px rgba(15,37,53,.25);white-space:nowrap;font-family:\'Plus Jakarta Sans\',sans-serif;animation:ob-fadein .25s ease both';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => { t.style.animation = 'ob-fadeout .3s ease forwards'; setTimeout(() => t.remove(), 320); }, 3000);
+}
+
 function goTo(n) {
+  if (n > current && !validateStep(current)) return;
   current = n;
 
   // Show correct panel
@@ -1567,13 +1634,12 @@ function previewAvatar(inp) {
 
 /* KYC uploaded feedback */
 function kycUploaded(cardId) {
+  _kycDone.add(cardId);
   const card = document.getElementById(cardId);
   if (!card) return;
+  card.classList.add('done');
   const badge = card.querySelector('.kyc-badge');
-  if (badge) {
-    badge.textContent = '✓ Téléchargé';
-    badge.className = 'kyc-badge kb-done';
-  }
+  if (badge) { badge.textContent = '✓ Téléchargé'; badge.className = 'kyc-badge kb-done'; }
   const drop = card.querySelector('.kyc-drop');
   if (drop) {
     drop.style.borderColor = 'var(--green)';
@@ -1581,7 +1647,64 @@ function kycUploaded(cardId) {
     drop.querySelector('h4').textContent = '✓ Document téléchargé';
     drop.querySelector('p').textContent = 'Cliquer pour remplacer';
   }
+  // Si les 2 docs requis sont là, activer le bouton submit
+  const btn = document.getElementById('btn-submit-kyc');
+  if (btn && _kycDone.has('kyc1') && _kycDone.has('kyc2')) {
+    btn.style.background = 'var(--green)';
+  }
 }
+
+/* Soumission finale onboarding */
+async function submitOnboarding() {
+  if (!validateStep(4)) return;
+  const btn = document.getElementById('btn-submit-kyc');
+  if (btn) { btn.disabled = true; btn.textContent = 'Publication en cours…'; }
+
+  const fn   = document.getElementById('fn-inp')?.value?.trim() || '';
+  const ln   = document.getElementById('ln-inp')?.value?.trim() || '';
+  const title = document.getElementById('title-inp')?.value?.trim() || '';
+  const bio  = document.getElementById('bio-inp')?.value?.trim() || '';
+  const tags = [...document.querySelectorAll('#tags-area .tag-chip')]
+    .map(c => c.childNodes[0]?.textContent?.trim()).filter(Boolean);
+
+  // Met à jour la session locale
+  try {
+    const s = JSON.parse(localStorage.getItem('oriupe_session') || '{}');
+    s.firstName = fn;
+    s.lastName  = ln;
+    s.isKycVerified = true;
+    s.kycToken = 'kyc-' + Date.now();
+    s.badgeLabel = 'Identité vérifiée';
+    localStorage.setItem('oriupe_session', JSON.stringify(s));
+  } catch {}
+
+  // Persiste dans Supabase si JWT dispo
+  if (window._sb) {
+    try {
+      const { data: { user } } = await window._sb.auth.getUser();
+      if (user) {
+        await window._sb.from('profiles').upsert({
+          id: user.id,
+          email: user.email,
+          first_name: fn,
+          last_name:  ln,
+          bio,
+          skills: tags,
+          role: 'freelance',
+          is_verified: false,
+        });
+      }
+    } catch (e) {
+      console.warn('[Oriupe] Supabase profile upsert:', e.message);
+    }
+  }
+
+  goTo(5);
+}
+</script>
+<script type="module">
+  import { supabase } from '/src/shared/supabase.js'
+  window._sb = supabase
 </script>
 
   <script type="module" src="/src/scripts/main.js"></script>

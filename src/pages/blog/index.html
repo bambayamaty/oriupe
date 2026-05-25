@@ -29,7 +29,7 @@ button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:p
   border-radius:0 3px 3px 0;transition:width .08s linear}
 
 /* ── NAV ── */
-nav{background:rgba(255,255,255,.96);backdrop-filter:blur(18px);height:64px;
+nav{background:rgba(255,255,255,.96);backdrop-filter:blur(18px);height:var(--nav-h);
   display:flex;align-items:center;justify-content:space-between;
   padding:0 52px;border-bottom:1px solid var(--border);
   position:sticky;top:0;z-index:300;box-shadow:var(--shadow)}
@@ -76,7 +76,7 @@ nav{background:rgba(255,255,255,.96);backdrop-filter:blur(18px);height:64px;
 .ptag:hover{color:#fff;background:rgba(255,255,255,.16)}
 
 /* ── CATEGORIES BAR ── */
-.cats-bar{background:#fff;border-bottom:1px solid var(--border);padding:0 52px;position:sticky;top:64px;z-index:200;box-shadow:var(--shadow)}
+.cats-bar{background:#fff;border-bottom:1px solid var(--border);padding:0 52px;position:sticky;top:var(--nav-h);z-index:200;box-shadow:var(--shadow)}
 .cats-inner{max-width:1280px;margin:0 auto;display:flex;gap:0;overflow-x:auto;scrollbar-width:none}
 .cats-inner::-webkit-scrollbar{display:none}
 .cat-btn{flex-shrink:0;padding:16px 20px;font-size:13px;font-weight:600;color:var(--muted);border:none;background:transparent;border-bottom:2px solid transparent;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:7px;white-space:nowrap;font-family:'Plus Jakarta Sans',sans-serif}
@@ -410,7 +410,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
 
 
 <!-- ████ HERO ████ -->
-<div class="hero">
+<div class="hero" data-nav-theme="dark">
   <div class="hero-mesh"><div class="mesh-a"></div><div class="mesh-b"></div></div>
   <div class="hero-grid"></div>
   <div class="hero-inner">
@@ -463,7 +463,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
 </div>
 
 <!-- ████ CATÉGORIES BAR ████ -->
-<div class="cats-bar">
+<div class="cats-bar" data-nav-theme="light">
   <div class="cats-inner">
     <button class="cat-btn active" onclick="filterCat(this)">
       <div class="cat-dot" style="background:var(--green)"></div>Tous les articles
@@ -982,7 +982,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
 </div><!-- /main-wrap -->
 
 <!-- ████ CTA FINAL ████ -->
-<div class="cta-section">
+<div class="cta-section" data-nav-theme="dark">
   <div class="cta-inner">
     <div class="r"><div class="cta-title">Prêt à rejoindre<br><span>la communauté Oriupe ?</span></div></div>
     <div class="r"><p class="cta-sub">50 000 freelances africains utilisent déjà Oriupe. Rejoignez-les, vendez vos services et lisez chaque semaine des conseils qui changent une carrière.</p></div>
@@ -1002,7 +1002,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
 </div>
 
 <!-- ████ FOOTER ████ -->
-<footer class="oriupe-footer">
+<footer class="oriupe-footer" data-nav-theme="dark">
   <div class="of-grid"></div>
   <div class="of-z1">
     <div class="of-brand">

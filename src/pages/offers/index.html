@@ -28,7 +28,7 @@ button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:p
   border-radius:0 3px 3px 0}
 
 /* ── NAV ── */
-nav{background:rgba(255,255,255,.96);backdrop-filter:blur(18px);height:64px;
+nav{background:rgba(255,255,255,.96);backdrop-filter:blur(18px);height:var(--nav-h);
   display:flex;align-items:center;justify-content:space-between;
   padding:0 52px;border-bottom:1px solid var(--border);
   position:sticky;top:0;z-index:300;box-shadow:var(--shadow)}
@@ -551,7 +551,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
 
 
 <!-- ████ HERO BANNER ████ -->
-<div class="hero-ao">
+<div class="hero-ao" data-nav-theme="dark">
   <div class="hero-mesh"><div class="mesh-a"></div><div class="mesh-b"></div><div class="mesh-c"></div></div>
   <div class="hero-grid"></div>
   <div class="hero-inner">
@@ -584,7 +584,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
       </div>
     </div>
 
-    <div class="hero-cta-box r">
+    <div class="hero-cta-box r" data-role="client,visitor">
       <div class="hcb-title">Vous avez un projet ?<br>Publiez un Appel d'Offres.</div>
       <div class="hcb-sub">Décrivez votre besoin, notre équipe le vérifie et le diffuse aux meilleurs freelances africains.</div>
       <div class="hcb-rules">
@@ -599,11 +599,26 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
       </button>
     </div>
 
+    <div class="hero-cta-box r" data-role="freelance" style="display:none;background:linear-gradient(135deg,rgba(27,58,74,.92),rgba(15,37,50,.96));border:1.5px solid rgba(60,184,120,.28)">
+      <div class="hcb-title" style="color:#fff">47 projets ouverts.<br><span style="color:var(--green)">Postulez maintenant.</span></div>
+      <div class="hcb-sub">Des budgets confirmés, des clients vérifiés. Votre offre est protégée par Escrow Oriupe dès la sélection.</div>
+      <div class="hcb-rules">
+        <div class="hcb-rule"><div class="hcb-rule-dot" style="background:var(--green)"></div>Budgets confirmés avant publication</div>
+        <div class="hcb-rule"><div class="hcb-rule-dot" style="background:var(--blue)"></div>Paiement Escrow sécurisé garanti</div>
+        <div class="hcb-rule"><div class="hcb-rule-dot" style="background:var(--lime)"></div>Contrat numérique signé à la sélection</div>
+        <div class="hcb-rule"><div class="hcb-rule-dot" style="background:var(--gold)"></div>Candidature gratuite et illimitée</div>
+      </div>
+      <a href="/src/pages/dashboard/freelance/index.html" style="display:inline-flex;align-items:center;gap:8px;background:var(--green);color:#fff;text-decoration:none;border-radius:12px;padding:14px 22px;font-size:14px;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;box-shadow:0 4px 18px rgba(60,184,120,.35)" onmouseover="this.style.background='var(--green-d)'" onmouseout="this.style.background='var(--green)'">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M9 4L13 8L9 12" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Voir mes candidatures
+      </a>
+    </div>
+
   </div>
 </div>
 
 <!-- ████ MAIN LAYOUT ████ -->
-<div class="page-wrap">
+<div class="page-wrap" data-nav-theme="light">
 
   <!-- ═══ SIDEBAR FILTRES ═══ -->
   <aside class="filters r">
@@ -714,7 +729,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
     </div>
 
     <!-- AO Cards -->
-    <div class="ao-list sg">
+    <div class="ao-list sg" id="ao-list-main">
 
       <!-- AO 1 — Featured + Urgent -->
       <div class="ao-card featured r" data-cat="dev" data-country="ci" data-status="open" data-delay="3" data-budget="1500000" onclick="openModal('detail1')">
@@ -768,7 +783,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
             <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.3"/><path d="M4 6.5C4 6.5 5 4 6.5 4s2.5 2.5 2.5 2.5S7.5 9 6.5 9 4 6.5 4 6.5Z" stroke="currentColor" stroke-width="1.1"/><circle cx="6.5" cy="6.5" r="1" fill="currentColor"/></svg>
             Voir le détail
           </button>
-          <button class="btn-postuler" onclick="event.stopPropagation();openModal('submit')">
+          <button class="btn-postuler" data-role="freelance" onclick="event.stopPropagation();openModal('submit')">
             <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 11L11 2M11 2H6M11 2V7" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             Soumettre une offre
           </button>
@@ -808,7 +823,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
         </div>
         <div class="ao-card-cta">
           <button class="btn-voir" onclick="event.stopPropagation();openModal('detail1')">Voir le détail</button>
-          <button class="btn-postuler" onclick="event.stopPropagation();openModal('submit')">
+          <button class="btn-postuler" data-role="freelance" onclick="event.stopPropagation();openModal('submit')">
             <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 11L11 2M11 2H6M11 2V7" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             Soumettre une offre
           </button>
@@ -849,7 +864,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
         </div>
         <div class="ao-card-cta">
           <button class="btn-voir" onclick="event.stopPropagation();openModal('detail1')">Voir le détail</button>
-          <button class="btn-postuler" onclick="event.stopPropagation();openModal('submit')">
+          <button class="btn-postuler" data-role="freelance" onclick="event.stopPropagation();openModal('submit')">
             <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 11L11 2M11 2H6M11 2V7" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             Soumettre une offre
           </button>
@@ -888,7 +903,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
         </div>
         <div class="ao-card-cta">
           <button class="btn-voir" onclick="event.stopPropagation();openModal('detail1')">Voir le détail</button>
-          <button class="btn-postuler" onclick="event.stopPropagation();openModal('submit')">
+          <button class="btn-postuler" data-role="freelance" onclick="event.stopPropagation();openModal('submit')">
             <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 11L11 2M11 2H6M11 2V7" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             Soumettre une offre
           </button>
@@ -929,7 +944,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
         </div>
         <div class="ao-card-cta">
           <button class="btn-voir" onclick="event.stopPropagation();openModal('detail1')">Voir le détail</button>
-          <button class="btn-postuler" onclick="event.stopPropagation();openModal('submit')">
+          <button class="btn-postuler" data-role="freelance" onclick="event.stopPropagation();openModal('submit')">
             <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 11L11 2M11 2H6M11 2V7" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             Soumettre une offre
           </button>
@@ -953,7 +968,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
 </div><!-- /page-wrap -->
 
 <!-- ████ HOW IT WORKS ████ -->
-<div class="how-section">
+<div class="how-section" data-nav-theme="dark">
   <div class="how-inner">
     <div class="how-eyebrow">COMMENT ÇA MARCHE</div>
     <div class="how-title">Appels d'Offres Oriupe — le processus</div>
@@ -1000,7 +1015,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
 </div>
 
 <!-- FOOTER -->
-<footer class="oriupe-footer">
+<footer class="oriupe-footer" data-nav-theme="dark">
   <div class="of-grid"></div>
   <div class="of-z1">
     <div class="of-brand">
@@ -1178,10 +1193,14 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
     </div>
     <div class="modal-foot">
       <button class="btn-outline-m" onclick="closeModal('detail1')">Fermer</button>
-      <button class="btn-full-green" style="flex:2" onclick="closeModal('detail1');openModal('submit')">
+      <button class="btn-full-green" data-role="freelance" style="flex:2" onclick="closeModal('detail1');openModal('submit')">
         <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2.5 12.5L12 3M12 3H7M12 3V8" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
         Soumettre mon offre pour ce projet
       </button>
+      <a class="btn-full-green" data-role="visitor" style="flex:2;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(27,58,74,.8);border:1.5px solid rgba(255,255,255,.15)" href="/src/pages/auth/index.html">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="2" y="1.5" width="11" height="12" rx="2" stroke="#fff" stroke-width="1.4"/><path d="M5 7H10M7.5 4.5V9.5" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/></svg>
+        Créer un compte pour postuler
+      </a>
     </div>
   </div>
 </div>
@@ -1555,6 +1574,94 @@ document.querySelectorAll('.pg:not(:disabled)').forEach(btn=>{
   btn.addEventListener('click',sub);
   inp.addEventListener('keydown',function(e){if(e.key==='Enter')sub();});
 })();
+</script>
+<script type="module">
+/* ── Offres — chargement projets Supabase ── */
+import { supabase, isSupabaseConfigured } from '/src/shared/supabase.js'
+
+function _fmtBudget(min, max) {
+  if (!min && !max) return 'Budget à définir'
+  const f = n => Number(n).toLocaleString('fr-FR')
+  if (min && max) return f(min) + ' – ' + f(max) + ' FCFA'
+  if (max) return 'Jusqu\'à ' + f(max) + ' FCFA'
+  return 'À partir de ' + f(min) + ' FCFA'
+}
+function _timeAgo(iso) {
+  const diff = Date.now() - new Date(iso).getTime()
+  const h = Math.floor(diff / 3600000)
+  if (h < 1) return 'il y a quelques minutes'
+  if (h < 24) return 'il y a ' + h + 'h'
+  const d = Math.floor(h / 24)
+  return 'il y a ' + d + ' jour' + (d > 1 ? 's' : '')
+}
+
+async function _loadProjects() {
+  if (!isSupabaseConfigured || !supabase) return
+  try {
+    const { data, error } = await supabase
+      .from('projects')
+      .select('id,title,description,category,skills,budget_min,budget_max,duration,has_nda,applications,created_at,profiles!projects_client_id_fkey(first_name,last_name,country,is_verified)')
+      .eq('status', 'active')
+      .eq('visibility', 'public')
+      .order('created_at', { ascending: false })
+      .limit(20)
+    if (error || !data?.length) return
+    const list = document.getElementById('ao-list-main')
+    if (!list) return
+    const html = data.map(p => {
+      const profile = p.profiles || {}
+      const clientName = [profile.first_name, profile.last_name].filter(Boolean).join(' ') || 'Client'
+      const ini = ((profile.first_name?.[0]||'')+(profile.last_name?.[0]||'')).toUpperCase()||'U'
+      const cty = { GH:'🇬🇭 Ghana', CI:"🇨🇮 Côte d'Ivoire", SN:'🇸🇳 Sénégal', NG:'🇳🇬 Nigeria', ML:'🇲🇱 Mali' }
+      const flag = cty[profile.country] || (profile.country || 'Afrique')
+      const budget = _fmtBudget(p.budget_min, p.budget_max)
+      const skills = (p.skills || []).slice(0, 4)
+      const apps = p.applications || 0
+      const isNew = Date.now() - new Date(p.created_at).getTime() < 86400000
+      return `<div class="ao-card${isNew?' featured':''} r" data-cat="${(p.category||'').toLowerCase().replace(/\s+/g,'')}" data-status="open" data-budget="${p.budget_max||p.budget_min||0}" style="border-color:rgba(60,184,120,.35)">
+        <div class="ao-top">
+          <div class="ao-badges">
+            ${isNew?'<span class="ao-badge ab-urgent">🆕 Nouveau</span>':''}
+            <span class="ao-badge ab-cat">${p.category||'Divers'}</span>
+            ${p.has_nda?'<span class="ao-badge ab-featured">🔒 NDA requis</span>':''}
+          </div>
+          <button class="ao-save" onclick="event.stopPropagation();toggleSave(this)"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#1B3A4A" stroke-width="1.4"><path d="M7 12.5L1.5 7A3.3 3.3 0 116.5 2.5c.3.3.6.6 1 1 .4-.3.7-.7 1-1A3.3 3.3 0 1112.5 7L7 12.5Z"/></svg></button>
+        </div>
+        <div class="ao-title">${p.title}</div>
+        <div class="ao-company">
+          <div class="company-av" style="background:linear-gradient(135deg,var(--green),var(--lime))">${ini}</div>
+          <span>${clientName}</span>
+          <span style="color:var(--muted2)">·</span>
+          <span>${flag}</span>
+          ${profile.is_verified?'<span style="font-size:11px;font-weight:700;color:var(--green);background:var(--green-l);padding:2px 8px;border-radius:20px">Vérifié ✓</span>':''}
+        </div>
+        ${p.description?`<div class="ao-desc">${p.description.substring(0,180)}${p.description.length>180?'…':''}</div>`:''}
+        <div class="ao-meta">
+          <div class="ao-meta-item">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="var(--muted2)" stroke-width="1.2"/><path d="M6.5 3.5V6.5L8.5 8.5" stroke="var(--muted2)" stroke-width="1.3" stroke-linecap="round"/></svg>
+            Publié ${_timeAgo(p.created_at)}
+          </div>
+          <div class="ao-meta-sep"></div>
+          <div class="ao-meta-item" style="color:var(--navy2);font-weight:700">${budget}</div>
+          ${p.duration?`<div class="ao-meta-sep"></div><div class="ao-meta-item">Durée : ${p.duration}</div>`:''}
+        </div>
+        ${skills.length?`<div class="ao-skills">${skills.map(s=>`<span class="ao-skill">${s}</span>`).join('')}</div>`:''}
+        <div class="ao-card-cta">
+          <div class="ao-offers"><span class="ao-meta-item"><strong>${apps} candidature${apps!==1?'s':''}</strong></span></div>
+          <div style="display:flex;gap:8px">
+            <button class="btn-voir" onclick="event.stopPropagation()">Voir détails</button>
+            <button class="btn-postuler" onclick="event.stopPropagation()">Postuler →</button>
+          </div>
+        </div>
+      </div>`
+    }).join('')
+    list.insertAdjacentHTML('afterbegin', html)
+  } catch (e) {
+    console.warn('[Offres] Erreur Supabase:', e)
+  }
+}
+
+_loadProjects()
 </script>
 </body>
 </html>

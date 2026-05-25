@@ -31,7 +31,7 @@ img{display:block;max-width:100%}
 
 /* ── NAV ── */
 nav{background:rgba(255,255,255,.95);backdrop-filter:blur(18px);
-  height:64px;display:flex;align-items:center;justify-content:space-between;
+  height:var(--nav-h);display:flex;align-items:center;justify-content:space-between;
   padding:0 52px;border-bottom:1px solid var(--border);
   position:sticky;top:0;z-index:300;box-shadow:var(--shadow)}
 .logo{display:flex;align-items:center;gap:9px}
@@ -854,7 +854,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
 
 /* ── PREVIEW BAR ───────────────────────────────── */
 .preview-bar{
-  display:none;position:sticky;top:64px;z-index:299;
+  display:none;position:sticky;top:var(--nav-h);z-index:299;
   background:linear-gradient(90deg,#F59E0B,#FBBF24);
   color:#1C1917;padding:10px 52px;
   align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
