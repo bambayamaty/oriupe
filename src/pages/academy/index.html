@@ -1517,5 +1517,133 @@ updateCount();
   inp.addEventListener('keydown',function(e){if(e.key==='Enter')sub();});
 })();
 </script>
+
+<!-- ── COMPTAGE RÉEL DES COURS ─────────────────────────────────────── -->
+<script>
+(function(){
+  const cards = Array.from(document.querySelectorAll('.course-card'));
+  const total = cards.length;
+
+  /* ── Dériver les buckets de chaque cours ── */
+  const counts = {
+    lang:  { fr:0, en:0, ar:0 },
+    level: { debut:0, inter:0, avance:0 },
+    price: { free:0, low:0, mid:0, high:0 },
+    dur:   { short:0, mid:0, long:0 }
+  };
+
+  cards.forEach(card => {
+    /* Langue — lire le texte du .cc-meta-item qui contient l'emoji drapeau/globe */
+    const metaItems = Array.from(card.querySelectorAll('.cc-meta-item'));
+    const langItem  = metaItems.find(el => /🌍|🇫🇷|🇬🇧|🇦🇪|Français|Anglais|Arabe|FR|EN|AR/.test(el.textContent));
+    const langTxt   = langItem ? langItem.textContent : '';
+    const hasFr = /Français|FR/.test(langTxt);
+    const hasEn = /Anglais|EN/.test(langTxt);
+    const hasAr = /Arabe|AR/.test(langTxt);
+    if (hasFr) counts.lang.fr++;
+    if (hasEn) counts.lang.en++;
+    if (hasAr) counts.lang.ar++;
+
+    /* Niveau */
+    const lvl = card.dataset.level || '';
+    if (lvl === 'debut')  counts.level.debut++;
+    else if (lvl === 'inter') counts.level.inter++;
+    else if (lvl === 'avance') counts.level.avance++;
+
+    /* Prix */
+    const price = parseInt(card.dataset.price || '0', 10);
+    if (price === 0)        counts.price.free++;
+    else if (price < 20000) counts.price.low++;
+    else if (price <= 50000)counts.price.mid++;
+    else                    counts.price.high++;
+
+    /* Durée — parser "Xh de contenu" */
+    const durItem = metaItems.find(el => /de contenu/.test(el.textContent));
+    const durMatch = durItem ? durItem.textContent.match(/(\d+)h/) : null;
+    const hours = durMatch ? parseInt(durMatch[1], 10) : 0;
+    if (hours > 0 && hours < 3)      counts.dur.short++;
+    else if (hours >= 3 && hours <= 10) counts.dur.mid++;
+    else if (hours > 10)              counts.dur.long++;
+  });
+
+  /* ── Mettre à jour les .sb-count dans la sidebar ── */
+  function setSbCount(sectionTitle, labelText, value) {
+    const sections = document.querySelectorAll('.sb-section');
+    for (const sec of sections) {
+      const title = sec.querySelector('.sb-sec-title');
+      if (!title || !title.textContent.includes(sectionTitle)) continue;
+      const opts = sec.querySelectorAll('.sb-opt');
+      for (const opt of opts) {
+        const lbl = opt.querySelector('label');
+        if (lbl && lbl.textContent.trim() === labelText) {
+          let span = opt.querySelector('.sb-count');
+          if (!span) { span = document.createElement('span'); span.className = 'sb-count'; opt.appendChild(span); }
+          span.textContent = value;
+          /* Mettre en évidence les comptes à zéro */
+          span.style.color = value === 0 ? 'var(--muted2)' : '';
+          return;
+        }
+      }
+    }
+  }
+
+  /* Langue */
+  setSbCount('LANGUE', 'Français', counts.lang.fr);
+  setSbCount('LANGUE', 'Anglais',  counts.lang.en);
+  setSbCount('LANGUE', 'Arabe',    counts.lang.ar);
+
+  /* Niveau */
+  setSbCount('NIVEAU', 'Débutant',      counts.level.debut);
+  setSbCount('NIVEAU', 'Intermédiaire', counts.level.inter);
+  setSbCount('NIVEAU', 'Avancé',        counts.level.avance);
+
+  /* Prix */
+  setSbCount('PRIX', 'Gratuit',             counts.price.free);
+  setSbCount('PRIX', 'Moins de 20 000 FCFA',counts.price.low);
+  setSbCount('PRIX', '20K – 50K FCFA',      counts.price.mid);
+  setSbCount('PRIX', 'Plus de 50K FCFA',    counts.price.high);
+  /* "Inclus avec Pro" = ancien modèle abonnement — afficher le total des cours */
+  setSbCount('PRIX', 'Inclus avec Pro', total);
+
+  /* Durée */
+  setSbCount('DURÉE', 'Moins de 3h', counts.dur.short);
+  setSbCount('DURÉE', '3h – 10h',    counts.dur.mid);
+  setSbCount('DURÉE', 'Plus de 10h', counts.dur.long);
+
+  /* ── Header : "X cours disponibles" ── */
+  const chCount = document.querySelector('.ch-count');
+  if (chCount) chCount.innerHTML = `<strong>${total} cours</strong> disponibles`;
+
+  /* ── Bouton "Appliquer" ── */
+  const btnApply = document.querySelector('.btn-apply');
+  if (btnApply) btnApply.textContent = `Appliquer (${total} cours)`;
+
+  /* ── Hero stats : "84 cours disponibles" → vrai nombre ── */
+  const heroStats = document.querySelectorAll('.hs-val');
+  heroStats.forEach(el => {
+    if (el.textContent.trim() === '84') el.textContent = String(total);
+  });
+
+  /* ── Texte pricing "Accès aux 84 cours" ── */
+  document.querySelectorAll('.pf-row').forEach(el => {
+    if (/Accès aux \d+ cours/.test(el.textContent)) {
+      el.innerHTML = el.innerHTML.replace(/Accès aux \d+ cours/, `Accès aux ${total} cours`);
+    }
+  });
+
+  /* ── Recalcul après filtrage (hook sur le filtre existant) ── */
+  function recalcVisible() {
+    const visible = document.querySelectorAll('.course-card:not([style*="display:none"]):not([style*="display: none"])').length;
+    if (chCount) chCount.innerHTML = `<strong>${visible}</strong> cours affichés`;
+    if (btnApply) btnApply.textContent = `Appliquer (${visible} cours)`;
+  }
+
+  /* Observer les changements de visibilité des cards */
+  const observer = new MutationObserver(recalcVisible);
+  document.querySelectorAll('.course-card').forEach(c =>
+    observer.observe(c, { attributes: true, attributeFilter: ['style'] })
+  );
+})();
+</script>
 </body>
 </html>

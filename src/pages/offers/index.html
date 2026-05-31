@@ -1531,30 +1531,32 @@ document.querySelectorAll('.pg:not(:disabled)').forEach(btn=>{
   });
 });
 
-/* Init — real card count */
-(function(){
-  const n=document.querySelectorAll('.ao-card').length;
+/* Filter counts — runs at init and after Supabase load */
+function _recomputeOffersCounts(){
+  const cards=[...document.querySelectorAll('.ao-card')];
+  const n=cards.length;
   const rc=document.querySelector('.results-count strong');
   if(rc)rc.textContent=n;
-  buildChips();
-  /* Real filter counts from actual card data */
-  const _cards=[...document.querySelectorAll('.ao-card')];
-  const _counts={cat:{},country:{},status:{},delay:{}};
-  _cards.forEach(c=>{
+  const counts={cat:{},country:{},status:{},delay:{}};
+  cards.forEach(c=>{
     const cat=c.dataset.cat||'',country=c.dataset.country||'',
           status=c.dataset.status||'open',delay=+(c.dataset.delay||0);
-    _counts.cat[cat]=(_counts.cat[cat]||0)+1;
-    _counts.country[country]=(_counts.country[country]||0)+1;
-    _counts.status[status]=(_counts.status[status]||0)+1;
+    counts.cat[cat]=(counts.cat[cat]||0)+1;
+    counts.country[country]=(counts.country[country]||0)+1;
+    counts.status[status]=(counts.status[status]||0)+1;
     const dv=delay<=1?'1':delay<=3?'3':delay<=6?'6':'12';
-    _counts.delay[dv]=(_counts.delay[dv]||0)+1;
+    counts.delay[dv]=(counts.delay[dv]||0)+1;
   });
   document.querySelectorAll('.filters input[data-filter]').forEach(inp=>{
     const f=inp.dataset.filter,v=inp.dataset.value;
     const cnt=inp.closest('.fil-opt')?.querySelector('.fil-count');
-    if(cnt&&_counts[f])cnt.textContent=_counts[f][v]||0;
+    if(cnt&&counts[f])cnt.textContent=counts[f][v]||0;
   });
-})();
+}
+
+/* Init */
+(function(){buildChips();_recomputeOffersCounts();})();
+window.addEventListener('oriupe:offers-loaded',_recomputeOffersCounts);
 
 /* Auto-fix pagination */
 (function(){
@@ -1697,6 +1699,7 @@ async function _loadProjects() {
       </div>`
     }).join('')
     list.innerHTML = html
+    window.dispatchEvent(new CustomEvent('oriupe:offers-loaded'))
   } catch (e) {
     console.warn('[Offres] Erreur Supabase:', e)
   }

@@ -201,8 +201,13 @@ nav.scrolled .hamburger span{background:var(--navy)}
 .cat-card:hover .cat-ill{transform:scale(1.12) rotate(-4deg)}
 .cat-name{font-size:12px;font-weight:700;color:var(--navy);margin-bottom:3px;position:relative;z-index:1}
 .cat-sub{font-size:10px;color:var(--muted2);position:relative;z-index:1}
-.cat-count{font-size:10px;font-weight:700;color:var(--green);margin-top:6px;position:relative;z-index:1;opacity:0;transition:opacity .2s}
-.cat-card:hover .cat-count{opacity:1}
+.cat-count{font-size:10px;font-weight:700;color:var(--green);margin-top:7px;position:relative;z-index:1;opacity:0;transition:opacity .25s,transform .25s;transform:translateY(4px);display:flex;align-items:center;justify-content:center;gap:4px;white-space:nowrap}
+.cat-card:hover .cat-count{opacity:1;transform:translateY(0)}
+.cat-live-dot{width:5px;height:5px;border-radius:50%;background:var(--green);flex-shrink:0;animation:catDotPulse 1.6s ease-in-out infinite}
+.cat-count--empty{color:#29ABE2}
+.cat-count--empty .cat-live-dot{background:#29ABE2}
+.cat-count--loading .cat-live-dot{background:var(--muted2);animation:none}
+@keyframes catDotPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(1.8)}}
 
 /* ════════════════════════════════════════
    SERVICE CARDS
@@ -844,6 +849,10 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
       <div class="r">
         <div class="sec-eyebrow">SERVICES NUMÉRIQUES</div>
         <div class="sec-title">Explorez nos catégories</div>
+        <div id="cat-total-line" style="font-size:11px;font-weight:600;color:var(--muted2);margin-top:4px;display:flex;align-items:center;gap:6px;opacity:0;transition:opacity .4s">
+          <span style="width:6px;height:6px;border-radius:50%;background:#3CB878;display:inline-block;animation:catDotPulse 1.6s ease-in-out infinite"></span>
+          <span id="cat-total-text">chargement…</span>
+        </div>
       </div>
       <span class="see-all r" onclick="location.href='/src/pages/catalog/index.html'">
         Voir toutes
@@ -858,7 +867,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
         </div>
         <div class="cat-name">Développement</div>
         <div class="cat-sub">Web & Mobile</div>
-        <div class="cat-count">892 services</div>
+        <div class="cat-count cat-count--loading" data-cat-key="dev"><span class="cat-live-dot"></span><span class="cat-count-num">…</span></div>
       </div>
       <!-- Design -->
       <div class="cat-card r" data-cat="design">
@@ -867,7 +876,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
         </div>
         <div class="cat-name">Design</div>
         <div class="cat-sub">Logo & UI/UX</div>
-        <div class="cat-count">734 services</div>
+        <div class="cat-count cat-count--loading" data-cat-key="design"><span class="cat-live-dot"></span><span class="cat-count-num">…</span></div>
       </div>
       <!-- Marketing -->
       <div class="cat-card r" data-cat="marketing">
@@ -876,7 +885,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
         </div>
         <div class="cat-name">Marketing</div>
         <div class="cat-sub">SEO & Digital</div>
-        <div class="cat-count">561 services</div>
+        <div class="cat-count cat-count--loading" data-cat-key="marketing"><span class="cat-live-dot"></span><span class="cat-count-num">…</span></div>
       </div>
       <!-- Rédaction -->
       <div class="cat-card r" data-cat="writing">
@@ -885,7 +894,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
         </div>
         <div class="cat-name">Rédaction</div>
         <div class="cat-sub">& Traduction</div>
-        <div class="cat-count">423 services</div>
+        <div class="cat-count cat-count--loading" data-cat-key="writing"><span class="cat-live-dot"></span><span class="cat-count-num">…</span></div>
       </div>
       <!-- Finance -->
       <div class="cat-card r" data-cat="finance">
@@ -894,7 +903,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
         </div>
         <div class="cat-name">Finance</div>
         <div class="cat-sub">& Comptabilité</div>
-        <div class="cat-count">287 services</div>
+        <div class="cat-count cat-count--loading" data-cat-key="finance"><span class="cat-live-dot"></span><span class="cat-count-num">…</span></div>
       </div>
       <!-- Vidéo -->
       <div class="cat-card r" data-cat="video">
@@ -903,7 +912,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
         </div>
         <div class="cat-name">Vidéo</div>
         <div class="cat-sub">& Animation</div>
-        <div class="cat-count">318 services</div>
+        <div class="cat-count cat-count--loading" data-cat-key="video"><span class="cat-live-dot"></span><span class="cat-count-num">…</span></div>
       </div>
       <!-- Musique -->
       <div class="cat-card r" onclick="location.href='/src/pages/catalog/index.html'">
@@ -912,7 +921,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
         </div>
         <div class="cat-name">Musique</div>
         <div class="cat-sub">& Production</div>
-        <div class="cat-count">145 services</div>
+        <div class="cat-count cat-count--loading" data-cat-key="music"><span class="cat-live-dot"></span><span class="cat-count-num">…</span></div>
       </div>
       <!-- Formation -->
       <div class="cat-card r" data-cat="coaching">
@@ -921,7 +930,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
         </div>
         <div class="cat-name">Formation</div>
         <div class="cat-sub">& Coaching</div>
-        <div class="cat-count">203 services</div>
+        <div class="cat-count cat-count--loading" data-cat-key="coaching"><span class="cat-live-dot"></span><span class="cat-count-num">…</span></div>
       </div>
     </div>
   </div>
@@ -1734,6 +1743,127 @@ document.querySelectorAll('.footer-links a, .footer-legal a').forEach(a=>{
     }
   }
 })();
+</script>
+
+<!-- ── CATÉGORIES LIVE : comptage réel depuis Supabase ─────────────── -->
+<script type="module">
+import { supabase, isSupabaseConfigured } from '/src/shared/supabase.js';
+
+/* Correspondance data-cat-key → valeur colonne category en DB */
+const CAT_MAP = {
+  dev:      ['dev','development','developpement','développement','web','mobile'],
+  design:   ['design','ui','ux','logo','graphisme'],
+  marketing:['marketing','seo','digital','publicite','publicité'],
+  writing:  ['writing','redaction','rédaction','traduction','copywriting'],
+  finance:  ['finance','comptabilite','comptabilité','accounting'],
+  video:    ['video','vidéo','animation','montage'],
+  music:    ['music','musique','audio','production'],
+  coaching: ['coaching','formation','training','education','éducation'],
+};
+
+/* Count-up animation — de 0 vers target en ~700ms */
+function countUp(el, target) {
+  const dur = Math.min(700, 200 + target * 0.6);
+  const start = performance.now();
+  function tick(now) {
+    const p = Math.min(1, (now - start) / dur);
+    const ease = 1 - Math.pow(1 - p, 3); // ease-out cubic
+    el.textContent = Math.round(ease * target);
+    if (p < 1) requestAnimationFrame(tick);
+    else el.textContent = target;
+  }
+  requestAnimationFrame(tick);
+}
+
+/* Met à jour un .cat-count avec le vrai nombre */
+function applyCount(key, total) {
+  const countEl = document.querySelector(`.cat-count[data-cat-key="${key}"]`);
+  if (!countEl) return;
+  const numEl = countEl.querySelector('.cat-count-num');
+  if (!numEl) return;
+
+  countEl.classList.remove('cat-count--loading');
+
+  if (total > 0) {
+    countEl.classList.remove('cat-count--empty');
+    numEl.dataset.target = total;
+    numEl.textContent = total; // valeur statique initiale
+    /* Déclenche le count-up au premier survol de la carte */
+    const card = countEl.closest('.cat-card');
+    if (card) {
+      let played = false;
+      card.addEventListener('mouseenter', () => {
+        if (played) return;
+        played = true;
+        numEl.textContent = '0';
+        countUp(numEl, total);
+      }, { once: false });
+    }
+    /* Suffixe */
+    countEl.insertAdjacentHTML('beforeend',
+      `<span style="font-weight:500;opacity:.7">&nbsp;service${total > 1 ? 's' : ''}</span>`);
+  } else {
+    countEl.classList.add('cat-count--empty');
+    numEl.textContent = 'Soyez le 1er';
+    /* Petite flèche animée */
+    countEl.insertAdjacentHTML('beforeend',
+      `<svg style="flex-shrink:0" width="10" height="10" viewBox="0 0 10 10" fill="none">
+        <path d="M2 5H8M5.5 2.5L8 5L5.5 7.5" stroke="#29ABE2" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>`);
+  }
+}
+
+async function loadCategoryCounts() {
+  if (!isSupabaseConfigured || !supabase) return;
+
+  try {
+    const { data, error } = await supabase
+      .from('services')
+      .select('category')
+      .eq('status', 'active');
+
+    if (error) throw error;
+
+    /* Compter par catégorie en JS (évite un GROUP BY côté serveur) */
+    const counts = {};
+    (data || []).forEach(row => {
+      const raw = (row.category || '').toLowerCase().trim();
+      for (const [key, aliases] of Object.entries(CAT_MAP)) {
+        if (aliases.some(a => raw.includes(a))) {
+          counts[key] = (counts[key] || 0) + 1;
+          break;
+        }
+      }
+    });
+
+    /* Appliquer les comptes à chaque carte */
+    for (const key of Object.keys(CAT_MAP)) {
+      applyCount(key, counts[key] || 0);
+    }
+
+    /* Total dans le header */
+    const total = Object.values(counts).reduce((s, n) => s + n, 0);
+    const totalLine = document.getElementById('cat-total-line');
+    const totalText = document.getElementById('cat-total-text');
+    if (totalLine && totalText) {
+      totalText.textContent = total > 0
+        ? `${total.toLocaleString('fr-FR')} service${total > 1 ? 's' : ''} disponible${total > 1 ? 's' : ''} en ce moment`
+        : 'Plateforme en cours de lancement — rejoignez les premiers freelances';
+      totalLine.style.opacity = '1';
+    }
+
+  } catch(e) {
+    /* Silencieux — les `.cat-count` restent en état loading sans bloquer */
+    document.querySelectorAll('.cat-count--loading').forEach(el => {
+      el.classList.remove('cat-count--loading');
+      el.classList.add('cat-count--empty');
+      const num = el.querySelector('.cat-count-num');
+      if (num) num.textContent = '—';
+    });
+  }
+}
+
+loadCategoryCounts();
 </script>
 </body>
 </html>

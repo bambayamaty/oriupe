@@ -1173,6 +1173,8 @@ if(sbSvcs.length>0){
   SERVICES.unshift(...sbSvcs)
   if(typeof renderCards==='function')renderCards()
 }
+// Signale que le catalogue est prêt (statique + Supabase)
+window.dispatchEvent(new CustomEvent('oriupe:catalog-loaded'))
 </script>
 <script>
 (function(){
@@ -1205,6 +1207,61 @@ if(sbSvcs.length>0){
   btn.addEventListener('click',sub);
   inp.addEventListener('keydown',function(e){if(e.key==='Enter')sub();});
 })();
+</script>
+
+<!-- ── COMPTAGE RÉEL DES FILTRES — depuis SERVICES (statique + Supabase) ── -->
+<script>
+function _updateCatalogFilterCounts() {
+  const svcs = window.SERVICES || [];
+  if (!svcs.length) return;
+
+  /* Mettre à jour un span .count via son input parent */
+  function setCount(inp, value) {
+    const span = inp.closest('.filter-opt')?.querySelector('.count');
+    if (!span) return;
+    span.textContent = value;
+    span.style.opacity = value === 0 ? '0.4' : '1';
+    span.style.color   = value === 0 ? 'var(--muted2)' : '';
+  }
+
+  /* ── Catégorie ── */
+  const catCounts = {};
+  svcs.forEach(s => { catCounts[s.cat] = (catCounts[s.cat] || 0) + 1; });
+  document.querySelectorAll('[data-filter="cat"]').forEach(inp =>
+    setCount(inp, catCounts[inp.dataset.value] || 0)
+  );
+
+  /* ── Délai (cumulatif : "jusqu'à X jours" = delivery ≤ X) ── */
+  document.querySelectorAll('[data-filter="delay"]').forEach(inp => {
+    const max = parseInt(inp.dataset.value, 10);
+    const n = max >= 99
+      ? svcs.filter(s => (s.delivery || 99) > 7).length
+      : svcs.filter(s => (s.delivery || 99) <= max).length;
+    setCount(inp, n);
+  });
+
+  /* ── Niveau freelance ── */
+  document.querySelectorAll('[data-filter="level"]').forEach(inp =>
+    setCount(inp, svcs.filter(s => s.level === inp.dataset.value).length)
+  );
+
+  /* ── Langue ── */
+  document.querySelectorAll('[data-filter="lang"]').forEach(inp =>
+    setCount(inp, svcs.filter(s => Array.isArray(s.langs) && s.langs.includes(inp.dataset.value)).length)
+  );
+
+  /* ── Résultat global (barre du haut) ── */
+  const rc = document.getElementById('results-count');
+  if (rc && rc.querySelector('strong')?.textContent === '—') {
+    rc.innerHTML = `<strong>${svcs.length.toLocaleString('fr-FR')}</strong> service${svcs.length !== 1 ? 's' : ''} disponibles`;
+  }
+}
+
+/* Lancer après le rendu initial (scripts sync) */
+document.addEventListener('DOMContentLoaded', () => setTimeout(_updateCatalogFilterCounts, 80));
+
+/* Relancer après chargement Supabase */
+window.addEventListener('oriupe:catalog-loaded', _updateCatalogFilterCounts);
 </script>
 </body>
 </html>
