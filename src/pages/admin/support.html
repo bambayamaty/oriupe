@@ -185,7 +185,7 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.02)
             <div class="sc-icon" style="background:var(--blue-l)"><i class="fa-solid fa-ticket" style="color:var(--blue)"></i></div>
             <span class="sc-trend up"><i class="fa-solid fa-arrow-up"></i> +12%</span>
           </div>
-          <div class="sc-val" data-target="47" data-suffix="">0</div>
+          <div class="sc-val" id="sup-open-count" data-target="47" data-suffix="">0</div>
           <div class="sc-lbl">Tickets ouverts</div>
         </div>
         <div class="stat-card alert">
@@ -193,7 +193,7 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.02)
             <div class="sc-icon" style="background:var(--red-l)"><i class="fa-solid fa-triangle-exclamation" style="color:var(--red)"></i></div>
             <span class="sc-trend down"><i class="fa-solid fa-arrow-up"></i> +3</span>
           </div>
-          <div class="sc-val" data-target="8" data-suffix="">0</div>
+          <div class="sc-val" id="sup-urgent-count" data-target="8" data-suffix="">0</div>
           <div class="sc-lbl">Litiges urgents</div>
         </div>
         <div class="stat-card">
@@ -225,7 +225,7 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.02)
             <div class="sc-icon" style="background:var(--green-l)"><i class="fa-solid fa-check-double" style="color:var(--green)"></i></div>
             <span class="sc-trend up"><i class="fa-solid fa-arrow-up"></i> +23%</span>
           </div>
-          <div class="sc-val" data-target="312" data-suffix="">0</div>
+          <div class="sc-val" id="sup-resolved-count" data-target="312" data-suffix="">0</div>
           <div class="sc-lbl">Tickets résolus ce mois</div>
         </div>
       </div>
@@ -727,6 +727,174 @@ document.querySelectorAll(".sc-val[data-target]").forEach(function(el){
 document.querySelectorAll(".modal-bg").forEach(function(bg){
   bg.addEventListener("click",function(e){if(e.target===bg)bg.classList.remove("open");});
 });
+</script>
+<script type="module">
+import { supabase, isSupabaseConfigured } from '/src/shared/supabase.js'
+
+function _fmtAgo(iso){
+  try{
+    const diff=Date.now()-new Date(iso).getTime();
+    const h=Math.floor(diff/3600000);
+    if(h<1)return 'À l\'instant';
+    if(h<24)return h+'h';
+    return Math.floor(h/24)+'j';
+  }catch{return '—';}
+}
+function _fmtDate(iso){
+  try{return new Date(iso).toLocaleDateString('fr-FR',{day:'2-digit',month:'short'});}catch{return '—';}
+}
+
+async function loadSupportData(){
+  if(!isSupabaseConfigured||!supabase)return;
+
+  const now=new Date();
+  const monthStart=new Date(now.getFullYear(),now.getMonth(),1).toISOString();
+  const urgentThreshold=new Date(now.getTime()-48*3600000).toISOString();
+
+  const [openRes, urgentRes, resolvedRes] = await Promise.all([
+    supabase.from('disputes').select('id',{count:'exact',head:true}).in('status',['open','under_review']),
+    supabase.from('disputes').select('id',{count:'exact',head:true}).in('status',['open','under_review']).lte('created_at',urgentThreshold),
+    supabase.from('disputes').select('id',{count:'exact',head:true}).eq('status','resolved').gte('resolved_at',monthStart),
+  ]);
+
+  const openEl=document.getElementById('sup-open-count');
+  if(openEl)openEl.textContent=(openRes.count||0).toString();
+  const urgentEl=document.getElementById('sup-urgent-count');
+  if(urgentEl)urgentEl.textContent=(urgentRes.count||0).toString();
+  const resolvedEl=document.getElementById('sup-resolved-count');
+  if(resolvedEl)resolvedEl.textContent=(resolvedRes.count||0).toString();
+
+  await Promise.all([_loadDisputeQueue(), _loadUsersTable()]);
+}
+
+async function _loadDisputeQueue(){
+  const{data,error}=await supabase
+    .from('disputes')
+    .select(`
+      id,category,reason,description,status,created_at,
+      orders:order_id(ref,title,amount_total_cents,
+        client:profiles!client_id(first_name,last_name),
+        freelance_profiles:freelance_id(profiles:profile_id(first_name,last_name))
+      )
+    `)
+    .in('status',['open','under_review'])
+    .order('created_at',{ascending:true}).limit(20);
+  if(error||!data?.length)return;
+
+  const container=document.getElementById('disputes-list-support');
+  if(!container)return;
+
+  const CATEGORY_LABEL={
+    non_respect_brief:'Brief non respecté',
+    delai_depasse:'Délai dépassé',
+    paiement_non_recu:'Paiement non reçu',
+    livraison_non_conforme:'Livraison non conforme',
+    autre:'Autre',
+  };
+
+  const html=data.map(function(d){
+    const order=d.orders||{};
+    const client=order.client||{};
+    const fpProfiles=order.freelance_profiles?.profiles||{};
+    const clientName=[client.first_name,client.last_name].filter(Boolean).join(' ')||'—';
+    const freelanceName=[fpProfiles.first_name,fpProfiles.last_name].filter(Boolean).join(' ')||'—';
+    const amount=order.amount_total_cents?Math.floor(order.amount_total_cents/100).toLocaleString('fr-FR')+' FCFA':'—';
+    const ago=_fmtAgo(d.created_at);
+    const catLabel=CATEGORY_LABEL[d.category]||d.category;
+    const urgentH=parseInt(ago)>48||(ago.endsWith('j')&&parseInt(ago)>=2);
+    return`<div class="dispute-card" data-dispute-id="${d.id}" data-tags="${d.status==='under_review'?'cours':'cours'}">
+      <div class="dispute-head">
+        <div class="u-av" style="background:linear-gradient(135deg,#EF4444,#DC2626);width:40px;height:40px;border-radius:10px;font-size:18px;display:flex;align-items:center;justify-content:center">${urgentH?'🔥':'⚖️'}</div>
+        <div style="flex:1">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+            <span style="font-weight:700;color:#fff">${order.ref||d.id.substring(0,8)} — ${catLabel}</span>
+            ${urgentH?'<span class="badge b-red">Urgent</span>':'<span class="badge b-gold">En cours</span>'}
+          </div>
+          <div style="font-size:12px;color:var(--muted)">${clientName} vs ${freelanceName} · <strong style="color:var(--blue)">${amount}</strong></div>
+        </div>
+        <div style="text-align:right;flex-shrink:0">
+          <div style="font-size:11px;color:var(--muted)">Ouvert il y a</div>
+          <div style="font-size:13px;font-weight:700;color:${urgentH?'var(--red)':'var(--muted)'}">${ago}</div>
+        </div>
+      </div>
+      <div class="dispute-body">
+        <div style="font-size:12px;color:var(--muted);margin-bottom:12px">${d.description||d.reason||'—'}</div>
+        <div style="display:flex;gap:20px;font-size:12px;flex-wrap:wrap">
+          <div><span style="color:var(--muted2)">Client:</span> <span style="color:#fff;font-weight:600">${clientName}</span></div>
+          <div><span style="color:var(--muted2)">Freelance:</span> <span style="color:#fff;font-weight:600">${freelanceName}</span></div>
+          <div><span style="color:var(--muted2)">Mission:</span> <span style="color:#fff;font-weight:600">${order.title||'—'}</span></div>
+        </div>
+      </div>
+      <div class="dispute-actions">
+        <button class="btn btn-blue btn-sm" onclick="_resolveDispute('${d.id}','client_win')"><i class="fa-solid fa-user"></i> Trancher client</button>
+        <button class="btn btn-green btn-sm" onclick="_resolveDispute('${d.id}','freelance_win')"><i class="fa-solid fa-briefcase"></i> Trancher freelance</button>
+        <button class="btn btn-outline btn-sm" onclick="_resolveDispute('${d.id}','partial_refund')"><i class="fa-solid fa-scale-balanced"></i> Remb. partiel</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Prepend real disputes before hardcoded demo ones
+  container.insertAdjacentHTML('afterbegin', html);
+}
+
+async function _loadUsersTable(){
+  const{data,error}=await supabase
+    .from('profiles')
+    .select('id,first_name,last_name,email,country_code,role,kyc_status,created_at')
+    .order('created_at',{ascending:false}).limit(15);
+  if(error||!data?.length)return;
+  const tbody=document.getElementById('users-tbody-support');
+  if(!tbody)return;
+  const ROLE_BADGE={freelance:'<span class="badge b-blue">Freelance</span>',client:'<span class="badge b-green">Client</span>',admin:'<span class="badge b-purple">Admin</span>'};
+  const rows=data.map(function(u){
+    const name=[u.first_name,u.last_name].filter(Boolean).join(' ')||'—';
+    const ini=((u.first_name?.[0]||'')+(u.last_name?.[0]||'')).toUpperCase()||'U';
+    const country=u.country_code||'—';
+    const roleLabel=ROLE_BADGE[u.role]||'<span class="badge b-muted">—</span>';
+    const kycOk=u.kyc_status==='approved';
+    const statusBadge=kycOk?'<span class="badge b-green">Actif</span>':'<span class="badge b-muted">En cours</span>';
+    return`<tr data-tags="actif">
+      <td><div class="user-cell">
+        <div class="u-av" style="background:linear-gradient(135deg,var(--blue),var(--purple))">${ini}</div>
+        <div><div class="u-name">${name}</div><div class="u-email">${u.email||'—'}</div></div>
+      </div></td>
+      <td style="color:var(--muted);font-size:12px">${country}</td>
+      <td>${roleLabel}</td>
+      <td style="font-weight:700;color:var(--muted)">—</td>
+      <td>${statusBadge}</td>
+      <td style="display:flex;gap:6px;flex-wrap:wrap">
+        <button class="btn btn-outline btn-sm" onclick="openModal('modal-contact')"><i class="fa-solid fa-envelope"></i> Contacter</button>
+        <button class="btn btn-gold btn-sm" onclick="openModal('modal-warn')"><i class="fa-solid fa-triangle-exclamation"></i> Avertir</button>
+      </td>
+    </tr>`;
+  }).join('');
+  tbody.innerHTML=rows;
+}
+
+window._resolveDispute=async function(disputeId,resolution){
+  if(!isSupabaseConfigured||!supabase)return;
+  const{data:{user}}=await supabase.auth.getUser();
+  if(!user)return;
+  const DECISION_MAP={client_win:'refund_client',freelance_win:'release_freelance',partial_refund:'partial_refund'};
+  const REASON_MAP={client_win:'Décision admin : remboursement client',freelance_win:'Décision admin : libération paiement freelance',partial_refund:'Décision admin : remboursement partiel'};
+  const decision=DECISION_MAP[resolution]||'refund_client';
+  const reason=REASON_MAP[resolution]||'Décision admin';
+  // 1. Enregistrer la décision
+  const{error:dErr}=await supabase.from('dispute_decisions').insert({
+    dispute_id:disputeId,decided_by:user.id,decision,reason,
+  });
+  if(dErr){console.error('[support] dispute_decisions insert:',dErr);return;}
+  // 2. Mettre à jour le statut du litige (déclenche le trigger fn_dispute_resolved)
+  const{error}=await supabase
+    .from('disputes')
+    .update({status:'resolved',resolved_at:new Date().toISOString(),resolved_by:user.id})
+    .eq('id',disputeId);
+  if(error){console.error('[support] résolution litige:',error);return;}
+  const card=document.querySelector('.dispute-card[data-dispute-id="'+disputeId+'"]');
+  if(card){card.style.opacity='0';card.style.transition='opacity .4s';setTimeout(function(){card.remove();},450);}
+};
+
+window.addEventListener('oriupe:admin-ready',loadSupportData);
 </script>
 </body>
 </html>

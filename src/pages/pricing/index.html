@@ -4,15 +4,15 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Oriupe — Tarifs & Commissions</title>
-  <meta name="description" content="Tarifs et commissions Oriupe. Commissions transparentes : 15%, 10% ou 7% selon votre plan, zéro frais cachés."/>
+  <meta name="description" content="Tarifs et commissions Oriupe. Commissions transparentes dès 12% — elles diminuent automatiquement à mesure que vous progressez. Zéro abonnement, zéro frais cachés."/>
   <meta property="og:type" content="website"/>
   <meta property="og:site_name" content="Oriupe"/>
   <meta property="og:title" content="Oriupe — Tarifs & Commissions"/>
-  <meta property="og:description" content="Tarifs et commissions Oriupe. Commissions transparentes : 15%, 10% ou 7% selon votre plan, zéro frais cachés."/>
+  <meta property="og:description" content="Tarifs et commissions Oriupe. Commissions transparentes dès 12% — elles diminuent automatiquement à mesure que vous progressez. Zéro abonnement, zéro frais cachés."/>
   <meta property="og:image" content="https://oriupe.com/og-pricing.png"/>
   <meta name="twitter:card" content="summary_large_image"/>
   <meta name="twitter:title" content="Oriupe — Tarifs & Commissions"/>
-  <meta name="twitter:description" content="Tarifs et commissions Oriupe. Commissions transparentes : 15%, 10% ou 7% selon votre plan, zéro frais cachés."/>
+  <meta name="twitter:description" content="Tarifs et commissions Oriupe. Commissions transparentes dès 12% — elles diminuent automatiquement à mesure que vous progressez. Zéro abonnement, zéro frais cachés."/>
   <meta name="twitter:image" content="https://oriupe.com/og-pricing.png"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
@@ -58,6 +58,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,
 .toggle-knob{position:absolute;top:3px;left:3px;width:20px;height:20px;background:#fff;border-radius:50%;transition:transform .3s cubic-bezier(.34,1.56,.64,1);box-shadow:0 2px 6px rgba(0,0,0,.2)}
 .toggle-switch.yearly .toggle-knob{transform:translateX(24px)}
 .savings-badge{background:linear-gradient(135deg,#3CB878,#8DC63F);color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:100px;letter-spacing:.04em}
+.free-badge{display:inline-flex;align-items:center;gap:10px;background:rgba(60,184,120,.12);border:1px solid rgba(60,184,120,.25);border-radius:100px;padding:8px 20px;margin-top:8px}
+.free-badge span{font-size:13px;font-weight:700;color:#3CB878}
 
 /* PLANS SECTION */
 .plans-section{padding:0 32px 64px;margin-top:-48px;position:relative;z-index:10}
@@ -311,17 +313,12 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
       Transparence totale
     </div>
-    <h1>Des tarifs transparents,<br/>sans aucune surprise</h1>
-    <p>Commencez gratuitement, évoluez à votre rythme. Notre modèle de commission décroissante récompense votre croissance sur la plateforme.</p>
+    <h1>Des commissions qui baissent<br/>avec votre succès</h1>
+    <p>Oriupe est gratuit. Pas d'abonnement mensuel, pas de frais cachés. Plus vous complétez de missions avec succès, moins vous payez de commission.</p>
 
-    <!-- TOGGLE -->
-    <div class="toggle-wrap">
-      <span class="toggle-label active" id="lbl-monthly">Mensuel</span>
-      <div class="toggle-switch" id="billing-toggle" onclick="toggleBilling()">
-        <div class="toggle-knob"></div>
-      </div>
-      <span class="toggle-label" id="lbl-yearly">Annuel</span>
-      <span class="savings-badge">-20%</span>
+    <div class="free-badge">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+      <span>Inscription 100% gratuite — aucun abonnement requis</span>
     </div>
   </div>
 </section>
@@ -330,31 +327,31 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
 <section class="plans-section" data-nav-theme="light">
   <div class="plans-grid">
 
-    <!-- GRATUIT -->
+    <!-- NOUVEAU & CONFIRMÉ -->
     <div class="plan-card">
-      <div class="plan-name">Gratuit</div>
-      <div class="plan-desc">Pour démarrer votre activité freelance sur Oriupe sans engagement.</div>
+      <div class="plan-name">Nouveau &amp; Confirmé</div>
+      <div class="plan-desc">Pour démarrer votre activité freelance sur Oriupe. Toutes les fonctionnalités incluses dès l'inscription.</div>
       <div class="plan-price-wrap">
         <div class="plan-price free">0</div>
         <div class="plan-period">FCFA / mois</div>
       </div>
       <div class="plan-commission">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-        Commission : 15%
+        Commission : 12%
       </div>
       <div class="plan-divider"></div>
       <ul class="plan-features">
         <li>
           <span class="icon yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
-          Profil public basique
+          Profil public complet
         </li>
         <li>
           <span class="icon yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
-          Jusqu'à 3 services actifs
+          Services illimités
         </li>
         <li>
           <span class="icon yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
-          Accès au catalogue clients
+          Accès au catalogue clients &amp; appels d'offres
         </li>
         <li>
           <span class="icon yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
@@ -365,27 +362,23 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
           Paiements sécurisés (escrow)
         </li>
         <li>
-          <span class="icon no"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(27,58,74,.25)" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
-          <span>Badge profil vérifié</span>
+          <span class="icon yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
+          Badge Profil Vérifié (avec KYC)
         </li>
         <li>
-          <span class="icon no"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(27,58,74,.25)" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
-          <span>Analytics & statistiques</span>
-        </li>
-        <li>
-          <span class="icon no"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(27,58,74,.25)" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
-          <span>Retrait prioritaire 24h</span>
+          <span class="icon yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
+          Génération de contrat PDF
         </li>
       </ul>
       <button class="btn-plan btn-plan-free" onclick="location.href='/src/pages/auth/index.html'">Commencer gratuitement</button>
     </div>
 
-    <!-- PRO -->
-    <div class="plan-card featured">
-      <div class="plan-name">Pro</div>
-      <div class="plan-desc">Pour les freelances sérieux qui veulent maximiser leur visibilité et leurs revenus.</div>
+    <!-- EXPERT -->
+    <div class="plan-card">
+      <div class="plan-name">Expert</div>
+      <div class="plan-desc">Débloqué automatiquement après 20 commandes complétées avec une note ≥ 4,0/5.</div>
       <div class="plan-price-wrap">
-        <div class="plan-price" id="price-pro">9 900</div>
+        <div class="plan-price free">0</div>
         <div class="plan-period">FCFA / mois</div>
       </div>
       <div class="plan-commission">
@@ -396,88 +389,110 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
       <ul class="plan-features">
         <li>
           <span class="icon yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
-          <strong>Tout ce qui est inclus dans Gratuit</strong>
+          <strong>Tout ce qui est inclus dans Nouveau</strong>
         </li>
         <li>
           <span class="icon yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
-          Badge « Profil Vérifié »
+          Badge « Expert » sur le profil
         </li>
         <li>
           <span class="icon yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
-          Services illimités
+          Visibilité améliorée dans les résultats
         </li>
         <li>
           <span class="icon yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
-          Analytics & tableau de bord
+          Analytics & tableau de bord avancé
         </li>
         <li>
           <span class="icon yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
-          Priorité dans les résultats de recherche
-        </li>
-        <li>
-          <span class="icon yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
-          Retrait express sous 24h
-        </li>
-        <li>
-          <span class="icon yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
-          Support prioritaire (chat + email)
-        </li>
-        <li>
-          <span class="icon yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
-          Accès Oriupe Academy (premium)
+          Accès Oriupe Academy (formations premium)
         </li>
       </ul>
-      <button class="btn-plan btn-plan-pro" onclick="location.href='/src/pages/auth/index.html'">Passer en Pro</button>
+      <button class="btn-plan btn-plan-free" onclick="location.href='/src/pages/auth/index.html'">Progresser vers Expert</button>
     </div>
 
-    <!-- BUSINESS -->
-    <div class="plan-card">
-      <div class="plan-name">Business</div>
-      <div class="plan-desc">Pour les agences et équipes qui opèrent à grande échelle sur Oriupe.</div>
+    <!-- TOP ORIUPE -->
+    <div class="plan-card featured">
+      <div class="plan-name">Top Oriupe</div>
+      <div class="plan-desc">Débloqué après 50 commandes avec une note ≥ 4,5/5. Le cercle d'élite Oriupe.</div>
       <div class="plan-price-wrap">
-        <div class="plan-price" id="price-biz">24 900</div>
+        <div class="plan-price free">0</div>
         <div class="plan-period">FCFA / mois</div>
       </div>
       <div class="plan-commission">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-        Commission : 7%
+        Commission : 8%
       </div>
       <div class="plan-divider"></div>
       <ul class="plan-features">
         <li>
           <span class="icon yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
-          <strong>Tout ce qui est inclus dans Pro</strong>
+          <strong>Tout ce qui est inclus dans Expert</strong>
         </li>
         <li>
           <span class="icon yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
-          Multi-utilisateurs (jusqu'à 5 comptes)
+          Badge « Top Oriupe » — confiance maximale
         </li>
         <li>
           <span class="icon yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
-          Accès API Oriupe
+          Priorité maximale dans la recherche
         </li>
         <li>
           <span class="icon yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
-          Account manager dédié
+          Accès aux grandes missions clients
         </li>
         <li>
           <span class="icon yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
-          Facturation entreprise (reçus TVA)
-        </li>
-        <li>
-          <span class="icon yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
-          Retrait instantané (tous canaux)
-        </li>
-        <li>
-          <span class="icon yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
-          Tableau de bord agence avancé
-        </li>
-        <li>
-          <span class="icon yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
-          SLA garantie 99.9% uptime
+          Support prioritaire (réponse 4h)
         </li>
       </ul>
-      <button class="btn-plan btn-plan-biz" onclick="location.href='/src/pages/contact/index.html'">Contacter les ventes</button>
+      <button class="btn-plan btn-plan-pro" onclick="location.href='/src/pages/auth/index.html'">Viser Top Oriupe</button>
+    </div>
+
+    <!-- ELITE -->
+    <div class="plan-card">
+      <div class="plan-name">Elite</div>
+      <div class="plan-desc">Réservé aux meilleurs : 100 commandes, note ≥ 4,8/5. La commission la plus basse de la plateforme.</div>
+      <div class="plan-price-wrap">
+        <div class="plan-price free">0</div>
+        <div class="plan-period">FCFA / mois</div>
+      </div>
+      <div class="plan-commission">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        Commission : 5%
+      </div>
+      <div class="plan-divider"></div>
+      <ul class="plan-features">
+        <li>
+          <span class="icon yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
+          <strong>Tout ce qui est inclus dans Top Oriupe</strong>
+        </li>
+        <li>
+          <span class="icon yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
+          Badge « Elite » — distinction ultime
+        </li>
+        <li>
+          <span class="icon yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
+          Commission minimale (5%) — permanente
+        </li>
+        <li>
+          <span class="icon yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
+          Account manager dédié Oriupe
+        </li>
+        <li>
+          <span class="icon yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
+          Mise en avant sur la page d'accueil
+        </li>
+        <li>
+          <span class="icon yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
+          SLA garantie 99,9% uptime
+        </li>
+        <li>
+          <span class="icon yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3CB878" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
+          Support 1h garanti
+        </li>
+      </ul>
+      <button class="btn-plan btn-plan-free" onclick="location.href='/src/pages/auth/index.html'">Viser le niveau Elite</button>
     </div>
 
   </div>
@@ -487,112 +502,100 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
 <section class="section" style="background:#fff">
   <div class="section-header">
     <h2>Comparaison détaillée</h2>
-    <p>Voyez exactement ce que vous obtenez dans chaque plan pour faire le meilleur choix.</p>
+    <p>Tous les niveaux incluent les mêmes fonctionnalités — seules la commission et les avantages de visibilité varient.</p>
   </div>
   <div class="table-wrap">
     <table class="cmp-table">
       <thead>
         <tr>
-          <th style="width:40%">Fonctionnalité</th>
-          <th>Gratuit</th>
-          <th class="highlight">Pro</th>
-          <th>Business</th>
+          <th style="width:36%">Fonctionnalité</th>
+          <th>Nouveau &amp; Confirmé</th>
+          <th>Expert</th>
+          <th class="highlight">Top Oriupe</th>
+          <th>Elite</th>
         </tr>
       </thead>
       <tbody>
-        <tr class="cat-row"><td colspan="4">Profil & Visibilité</td></tr>
+        <tr class="cat-row"><td colspan="5">Profil &amp; Visibilité</td></tr>
         <tr>
           <td class="feature-name">Commission Oriupe</td>
-          <td>15%</td>
-          <td class="highlight">10%</td>
-          <td>7%</td>
+          <td>12%</td>
+          <td>10%</td>
+          <td class="highlight">8%</td>
+          <td>5%</td>
         </tr>
         <tr>
           <td class="feature-name">Services actifs</td>
-          <td>3 max</td>
+          <td>Illimités</td>
+          <td>Illimités</td>
           <td class="highlight">Illimités</td>
           <td>Illimités</td>
         </tr>
         <tr>
-          <td class="feature-name">Badge Profil Vérifié</td>
-          <td><span class="cross">—</span></td>
-          <td class="highlight"><span class="check">✓</span></td>
-          <td><span class="check">✓</span></td>
+          <td class="feature-name">Badge de niveau</td>
+          <td><span class="partial">Nouveau</span></td>
+          <td><span class="check">Expert ★</span></td>
+          <td class="highlight"><span class="check">Top Oriupe ★★</span></td>
+          <td><span class="check">Elite ★★★</span></td>
         </tr>
         <tr>
           <td class="feature-name">Priorité dans la recherche</td>
-          <td><span class="cross">—</span></td>
-          <td class="highlight"><span class="check">✓</span></td>
-          <td><span class="check">✓ Boost max</span></td>
+          <td>Standard</td>
+          <td><span class="check">Améliorée</span></td>
+          <td class="highlight"><span class="check">Maximale</span></td>
+          <td><span class="check">Maximale + accueil</span></td>
         </tr>
         <tr>
           <td class="feature-name">Portfolio média (vidéos, PDF)</td>
-          <td><span class="partial">5 fichiers</span></td>
+          <td><span class="check">Illimité</span></td>
+          <td><span class="check">Illimité</span></td>
           <td class="highlight"><span class="check">Illimité</span></td>
           <td><span class="check">Illimité</span></td>
         </tr>
 
-        <tr class="cat-row"><td colspan="4">Paiements & Retraits</td></tr>
+        <tr class="cat-row"><td colspan="5">Paiements &amp; Retraits</td></tr>
         <tr>
           <td class="feature-name">Paiements escrow sécurisés</td>
           <td><span class="check">✓</span></td>
+          <td><span class="check">✓</span></td>
           <td class="highlight"><span class="check">✓</span></td>
           <td><span class="check">✓</span></td>
-        </tr>
-        <tr>
-          <td class="feature-name">Délai de retrait</td>
-          <td>5-7 jours</td>
-          <td class="highlight">24h</td>
-          <td>Instantané</td>
         </tr>
         <tr>
           <td class="feature-name">Mobile Money (Wave, OM, Momo)</td>
           <td><span class="check">✓</span></td>
+          <td><span class="check">✓</span></td>
           <td class="highlight"><span class="check">✓</span></td>
           <td><span class="check">✓</span></td>
         </tr>
         <tr>
-          <td class="feature-name">Virement bancaire international</td>
+          <td class="feature-name">Accès aux grandes missions</td>
+          <td><span class="cross">—</span></td>
           <td><span class="cross">—</span></td>
           <td class="highlight"><span class="check">✓</span></td>
-          <td><span class="check">✓</span></td>
-        </tr>
-        <tr>
-          <td class="feature-name">Facturation entreprise (TVA)</td>
-          <td><span class="cross">—</span></td>
-          <td class="highlight"><span class="cross">—</span></td>
           <td><span class="check">✓</span></td>
         </tr>
 
-        <tr class="cat-row"><td colspan="4">Outils & Données</td></tr>
+        <tr class="cat-row"><td colspan="5">Outils &amp; Données</td></tr>
         <tr>
-          <td class="feature-name">Analytics & statistiques</td>
-          <td><span class="cross">—</span></td>
-          <td class="highlight"><span class="check">✓</span></td>
+          <td class="feature-name">Analytics &amp; statistiques</td>
+          <td>Basique</td>
+          <td><span class="check">✓ Avancé</span></td>
+          <td class="highlight"><span class="check">✓ Avancé</span></td>
           <td><span class="check">✓ Avancé</span></td>
         </tr>
         <tr>
-          <td class="feature-name">Accès API Oriupe</td>
-          <td><span class="cross">—</span></td>
-          <td class="highlight"><span class="cross">—</span></td>
-          <td><span class="check">✓</span></td>
-        </tr>
-        <tr>
-          <td class="feature-name">Multi-utilisateurs</td>
-          <td>1 compte</td>
-          <td class="highlight">1 compte</td>
-          <td>5 comptes</td>
-        </tr>
-        <tr>
           <td class="feature-name">Oriupe Academy (formations)</td>
-          <td><span class="partial">Gratuit uniquement</span></td>
+          <td><span class="partial">Cours gratuits</span></td>
+          <td><span class="check">✓ Premium</span></td>
           <td class="highlight"><span class="check">✓ Premium</span></td>
           <td><span class="check">✓ Premium</span></td>
         </tr>
 
-        <tr class="cat-row"><td colspan="4">Support</td></tr>
+        <tr class="cat-row"><td colspan="5">Support</td></tr>
         <tr>
           <td class="feature-name">Centre d'aide</td>
+          <td><span class="check">✓</span></td>
           <td><span class="check">✓</span></td>
           <td class="highlight"><span class="check">✓</span></td>
           <td><span class="check">✓</span></td>
@@ -600,17 +603,20 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
         <tr>
           <td class="feature-name">Support email</td>
           <td><span class="partial">48h</span></td>
+          <td><span class="check">Prioritaire (4h)</span></td>
           <td class="highlight"><span class="check">Prioritaire (4h)</span></td>
           <td><span class="check">1h garanti</span></td>
         </tr>
         <tr>
           <td class="feature-name">Chat en direct</td>
           <td><span class="cross">—</span></td>
+          <td><span class="cross">—</span></td>
           <td class="highlight"><span class="check">✓</span></td>
           <td><span class="check">✓</span></td>
         </tr>
         <tr>
           <td class="feature-name">Account manager dédié</td>
+          <td><span class="cross">—</span></td>
           <td><span class="cross">—</span></td>
           <td class="highlight"><span class="cross">—</span></td>
           <td><span class="check">✓</span></td>
@@ -623,8 +629,8 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
 <!-- FAQ -->
 <section class="faq-section">
   <div class="section-header">
-    <h2>Questions fréquentes sur les tarifs</h2>
-    <p>Tout ce que vous devez savoir avant de choisir votre plan.</p>
+    <h2>Questions fréquentes sur les commissions</h2>
+    <p>Tout ce que vous devez savoir sur le modèle de tarification d'Oriupe.</p>
   </div>
   <div class="accordion">
 
@@ -634,47 +640,47 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
         <div class="acc-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
       </div>
       <div class="acc-body">
-        <div class="acc-body-inner"><p>La commission est prélevée uniquement sur les transactions complétées avec succès. Elle est automatiquement déduite lors du versement de vos revenus. Avec le plan Gratuit, la commission est de 15% ; Pro : 10% ; Business : 7%. Par exemple, sur une commande de 100 000 FCFA en plan Pro, vous recevez 90 000 FCFA.</p></div>
+        <div class="acc-body-inner"><p>La commission est prélevée uniquement sur les transactions complétées avec succès. Elle est automatiquement déduite lors du versement de vos revenus. Le taux dépend de votre niveau : Nouveau &amp; Confirmé 12%, Expert 10%, Top Oriupe 8%, Elite 5%. Par exemple, sur une commande de 100 000 FCFA au niveau Expert, vous recevez 90 000 FCFA.</p></div>
       </div>
     </div>
 
     <div class="acc-item" onclick="toggleAcc(this)">
       <div class="acc-header">
-        <span class="acc-question">Puis-je changer de plan à tout moment ?</span>
+        <span class="acc-question">Comment passer au niveau suivant ?</span>
         <div class="acc-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
       </div>
       <div class="acc-body">
-        <div class="acc-body-inner"><p>Oui, absolument. Vous pouvez upgrader votre plan immédiatement depuis votre tableau de bord — les avantages Pro ou Business sont actifs dès la confirmation du paiement. Pour un downgrade, il prendra effet à la fin de votre période de facturation en cours. Il n'y a aucune pénalité pour changer de plan.</p></div>
+        <div class="acc-body-inner"><p>La progression est automatique et basée sur votre historique : Expert après 20 commandes complétées avec une note ≥ 4,0/5 ; Top Oriupe après 50 commandes avec ≥ 4,5/5 ; Elite après 100 commandes avec ≥ 4,8/5. Pas de démarche à faire — votre niveau se met à jour dans les 24h suivant chaque palier atteint.</p></div>
       </div>
     </div>
 
     <div class="acc-item" onclick="toggleAcc(this)">
       <div class="acc-header">
-        <span class="acc-question">Le plan annuel, comment ça marche ?</span>
+        <span class="acc-question">Mon niveau peut-il baisser ?</span>
         <div class="acc-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
       </div>
       <div class="acc-body">
-        <div class="acc-body-inner"><p>Avec la facturation annuelle, vous payez 12 mois d'un coup et économisez 20% par rapport au tarif mensuel. Le montant est prélevé en une seule fois et vous bénéficiez de tous les avantages du plan pendant 12 mois sans interruption. En cas d'annulation, le remboursement est calculé au prorata des mois non utilisés.</p></div>
+        <div class="acc-body-inner"><p>Un niveau atteint est stable. En revanche, si votre note globale descend durablement sous le seuil requis (par exemple, en dessous de 4,0/5 pour Expert), notre équipe modération peut vous contacter pour une période de réévaluation. Restez attentif à la qualité de vos livraisons pour conserver vos avantages.</p></div>
       </div>
     </div>
 
     <div class="acc-item" onclick="toggleAcc(this)">
       <div class="acc-header">
-        <span class="acc-question">Quels moyens de paiement acceptez-vous pour les abonnements ?</span>
+        <span class="acc-question">La plateforme est-elle vraiment gratuite ?</span>
         <div class="acc-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
       </div>
       <div class="acc-body">
-        <div class="acc-body-inner"><p>Nous acceptons Wave, Orange Money, MTN Mobile Money, Moov Money, ainsi que les cartes Visa/Mastercard. Pour le plan Business avec facturation entreprise, nous proposons également des paiements par virement bancaire et émission de factures officielles avec TVA.</p></div>
+        <div class="acc-body-inner"><p>Oui, totalement gratuite. Il n'y a aucun abonnement mensuel, aucun frais d'inscription, aucun frais cachés. Oriupe se rémunère uniquement via la commission sur les transactions réussies — si vous ne gagnez rien, vous ne payez rien. Tous les freelances accèdent aux mêmes fonctionnalités dès l'inscription.</p></div>
       </div>
     </div>
 
     <div class="acc-item" onclick="toggleAcc(this)">
       <div class="acc-header">
-        <span class="acc-question">Existe-t-il une période d'essai gratuite pour les plans payants ?</span>
+        <span class="acc-question">Quels moyens de paiement sont acceptés sur Oriupe ?</span>
         <div class="acc-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
       </div>
       <div class="acc-body">
-        <div class="acc-body-inner"><p>Oui ! Nous offrons 14 jours d'essai gratuit pour le plan Pro. Aucune carte de crédit requise pour démarrer l'essai. À l'issue des 14 jours, vous choisissez de continuer en payant ou de revenir au plan Gratuit sans aucune pénalité ni surprise.</p></div>
+        <div class="acc-body-inner"><p>Pour les clients : Wave, Orange Money, MTN Mobile Money, Moov Money et cartes Visa/Mastercard. Pour les freelances, les paiements sont versés directement sur votre Mobile Money (Wave, Orange Money, MTN Momo) après validation de chaque mission. Les fonds sont sécurisés par escrow pendant toute la durée de la mission.</p></div>
       </div>
     </div>
 
@@ -769,36 +775,6 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
 </footer>
 
 <script>
-let isYearly = false;
-
-const prices = {
-  pro:  { monthly: '9 900',  yearly: '7 900'  },
-  biz:  { monthly: '24 900', yearly: '19 900' }
-};
-
-function toggleBilling() {
-  isYearly = !isYearly;
-  const toggle = document.getElementById('billing-toggle');
-  const lblM   = document.getElementById('lbl-monthly');
-  const lblY   = document.getElementById('lbl-yearly');
-  const pPro   = document.getElementById('price-pro');
-  const pBiz   = document.getElementById('price-biz');
-
-  toggle.classList.toggle('yearly', isYearly);
-  lblM.classList.toggle('active', !isYearly);
-  lblY.classList.toggle('active', isYearly);
-
-  const key = isYearly ? 'yearly' : 'monthly';
-  pPro.style.opacity = '0';
-  pBiz.style.opacity = '0';
-  setTimeout(() => {
-    pPro.textContent = prices.pro[key];
-    pBiz.textContent = prices.biz[key];
-    pPro.style.opacity = '1';
-    pBiz.style.opacity = '1';
-  }, 160);
-}
-
 function toggleAcc(item) {
   const isOpen = item.classList.contains('open');
   document.querySelectorAll('.acc-item').forEach(el => {

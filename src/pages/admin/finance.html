@@ -178,7 +178,7 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.02)
             <div class="sc-icon" style="background:var(--gold-l)"><i class="fa-solid fa-vault" style="color:var(--gold)"></i></div>
             <span class="sc-trend up"><i class="fa-solid fa-arrow-up"></i> +18%</span>
           </div>
-          <div class="sc-val" data-target="142" data-suffix="M">0</div>
+          <div class="sc-val" id="fin-vol-escrow" data-target="142" data-suffix="M">0</div>
           <div class="sc-lbl">Volume Escrow (FCFA)</div>
         </div>
         <div class="stat-card">
@@ -186,7 +186,7 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.02)
             <div class="sc-icon" style="background:var(--green-l)"><i class="fa-solid fa-arrow-right-arrow-left" style="color:var(--green)"></i></div>
             <span class="sc-trend up"><i class="fa-solid fa-arrow-up"></i> +34%</span>
           </div>
-          <div class="sc-val" data-target="1284" data-suffix="">0</div>
+          <div class="sc-val" id="fin-tx-count" data-target="1284" data-suffix="">0</div>
           <div class="sc-lbl">Transactions ce mois</div>
         </div>
         <div class="stat-card">
@@ -194,7 +194,7 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.02)
             <div class="sc-icon" style="background:var(--blue-l)"><i class="fa-solid fa-lock" style="color:var(--blue)"></i></div>
             <span class="sc-trend up"><i class="fa-solid fa-arrow-up"></i> +7%</span>
           </div>
-          <div class="sc-val" data-target="47" data-suffix="">0</div>
+          <div class="sc-val" id="fin-escrow-active" data-target="47" data-suffix="">0</div>
           <div class="sc-lbl">Fonds en séquestre actifs</div>
         </div>
         <div class="stat-card alert">
@@ -202,7 +202,7 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.02)
             <div class="sc-icon" style="background:var(--red-l)"><i class="fa-solid fa-rotate-left" style="color:var(--red)"></i></div>
             <span class="sc-trend down"><i class="fa-solid fa-arrow-up"></i> +2</span>
           </div>
-          <div class="sc-val" data-target="8" data-suffix="">0</div>
+          <div class="sc-val" id="fin-refunds" data-target="8" data-suffix="">0</div>
           <div class="sc-lbl">Remboursements en attente</div>
         </div>
         <div class="stat-card">
@@ -218,7 +218,7 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.02)
             <div class="sc-icon" style="background:var(--purple-l)"><i class="fa-solid fa-scale-balanced" style="color:var(--purple)"></i></div>
             <span class="sc-trend down"><i class="fa-solid fa-arrow-up"></i> +1</span>
           </div>
-          <div class="sc-val" data-target="3" data-suffix="">0</div>
+          <div class="sc-val" id="fin-disputes" data-target="3" data-suffix="">0</div>
           <div class="sc-lbl">Litiges financiers ouverts</div>
         </div>
       </div>
@@ -287,7 +287,7 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.02)
         <div class="tbl-wrap">
           <table>
             <thead><tr><th>ID Transaction</th><th>Parties</th><th>Montant</th><th>Type</th><th>Statut</th><th>Date</th></tr></thead>
-            <tbody>
+            <tbody id="tx-tbody-finance">
               <tr>
                 <td><span style="font-family:'Bricolage Grotesque';font-weight:700;color:var(--gold)">#ESC-4821</span></td>
                 <td style="font-size:12px;color:var(--muted)">Kofi Asante → Ama Osei</td>
@@ -691,6 +691,150 @@ document.querySelectorAll(".sc-val[data-target]").forEach(function(el){
 document.querySelectorAll(".modal-bg").forEach(function(bg){
   bg.addEventListener("click",function(e){if(e.target===bg)bg.classList.remove("open");});
 });
+</script>
+<script type="module">
+import { supabase, isSupabaseConfigured } from '/src/shared/supabase.js'
+
+function _fmt(n){return Math.floor(n/100).toLocaleString('fr-FR');}
+function _fmtDate(iso){
+  try{return new Date(iso).toLocaleDateString('fr-FR',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});}catch{return '—';}
+}
+
+async function loadFinanceData(){
+  if(!isSupabaseConfigured||!supabase)return;
+
+  const now=new Date();
+  const monthStart=new Date(now.getFullYear(),now.getMonth(),1).toISOString();
+
+  const [escrowRes, txRes, disputeRes, refundRes] = await Promise.all([
+    supabase.from('escrow_transactions')
+      .select('status,amount_secured_cents,amount_released_cents')
+      .in('status',['funds_secured','in_progress','delivered','validated','transferring']),
+    supabase.from('payment_transactions')
+      .select('id,order_id,amount_cents,operator,provider,status,external_ref,created_at,orders:order_id(ref,client_id,freelance_id,profiles!client_id(first_name,last_name))')
+      .gte('created_at',monthStart)
+      .order('created_at',{ascending:false}).limit(20),
+    supabase.from('disputes').select('id',{count:'exact',head:true}).eq('status','open'),
+    supabase.from('orders').select('id',{count:'exact',head:true}).eq('status','refunded'),
+  ]);
+
+  // KPI — volume escrow actif
+  const activeEscrow=escrowRes.data||[];
+  const volEscrow=activeEscrow.reduce(function(s,e){return s+(e.amount_secured_cents||0);},0);
+  const volEl=document.getElementById('fin-vol-escrow');
+  if(volEl){const m=Math.floor(volEscrow/100/1000000);volEl.textContent=(m>0?m+'M':Math.floor(volEscrow/100).toLocaleString('fr-FR'));}
+
+  const txCountEl=document.getElementById('fin-tx-count');
+  if(txCountEl)txCountEl.textContent=(txRes.data?.length||0).toLocaleString('fr-FR');
+
+  const activeCountEl=document.getElementById('fin-escrow-active');
+  if(activeCountEl)activeCountEl.textContent=(activeEscrow.length||0).toLocaleString('fr-FR');
+
+  const refundEl=document.getElementById('fin-refunds');
+  if(refundEl)refundEl.textContent=(refundRes.count||0).toLocaleString('fr-FR');
+
+  const disputeEl=document.getElementById('fin-disputes');
+  if(disputeEl)disputeEl.textContent=(disputeRes.count||0).toLocaleString('fr-FR');
+
+  // Transactions table
+  const tbody=document.getElementById('tx-tbody-finance');
+  if(tbody&&txRes.data?.length){
+    const STATUS_BADGE={completed:'<span class="badge b-green">Complété</span>',processing:'<span class="badge b-muted">En cours</span>',failed:'<span class="badge b-red">Échoué</span>',pending:'<span class="badge b-muted">En attente</span>',succeeded:'<span class="badge b-green">Validé</span>'};
+    const rows=txRes.data.map(function(tx){
+      const order=tx.orders||{};
+      const client=order.profiles||{};
+      const clientName=[client.first_name,client.last_name].filter(Boolean).join(' ')||'—';
+      const amount=Math.floor(tx.amount_cents/100).toLocaleString('fr-FR');
+      const ref=(order.ref||tx.external_ref||tx.id.substring(0,8)).toUpperCase();
+      return`<tr>
+        <td><span style="font-family:'Bricolage Grotesque';font-weight:700;color:var(--gold)">#${ref}</span></td>
+        <td style="font-size:12px;color:var(--muted)">${clientName}</td>
+        <td class="amount-big" style="font-size:14px">${amount} FCFA</td>
+        <td><span class="badge b-blue">${tx.provider||'—'}</span></td>
+        <td>${STATUS_BADGE[tx.status]||'<span class="badge b-muted">'+tx.status+'</span>'}</td>
+        <td style="font-size:11px;color:var(--muted)">${_fmtDate(tx.created_at)}</td>
+      </tr>`;
+    }).join('');
+    tbody.innerHTML=rows;
+  }
+
+  // Escrow list
+  await _loadEscrowList();
+  // Disputes table
+  await _loadDisputesFinance();
+}
+
+async function _loadEscrowList(){
+  if(!isSupabaseConfigured||!supabase)return;
+  const{data,error}=await supabase
+    .from('escrow_transactions')
+    .select('id,status,amount_secured_cents,amount_released_cents,orders:order_id(ref,title,status,client_id,profiles!client_id(first_name,last_name))')
+    .in('status',['funds_secured','in_progress','delivered','validated','transferring','disputed'])
+    .order('updated_at',{ascending:false}).limit(15);
+  if(error||!data?.length)return;
+  const list=document.getElementById('escrow-list-finance');
+  if(!list)return;
+  const STATUS_LABEL={funds_secured:'Fonds sécurisés',in_progress:'En cours',delivered:'Livré',validated:'Validé',transferring:'Virement en cours',disputed:'Litige'};
+  const STATUS_BADGE_CLASS={funds_secured:'b-blue',in_progress:'b-muted',delivered:'b-gold',validated:'b-green',transferring:'b-purple',disputed:'b-red'};
+  const html=data.map(function(e){
+    const order=e.orders||{};
+    const client=order.profiles||{};
+    const clientName=[client.first_name,client.last_name].filter(Boolean).join(' ')||'—';
+    const secured=Math.floor((e.amount_secured_cents||0)/100).toLocaleString('fr-FR');
+    const released=Math.floor((e.amount_released_cents||0)/100).toLocaleString('fr-FR');
+    const sl=STATUS_LABEL[e.status]||e.status;
+    const sc=STATUS_BADGE_CLASS[e.status]||'b-muted';
+    return`<div class="card" style="margin-bottom:10px;padding:16px">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+        <div>
+          <div style="font-weight:700;font-size:13px;color:#fff">${order.ref||'—'} <span style="font-size:11px;color:var(--muted);font-weight:400">— ${order.title||''}</span></div>
+          <div style="font-size:11px;color:var(--muted);margin-top:3px">Client : ${clientName}</div>
+        </div>
+        <div style="display:flex;gap:16px;align-items:center">
+          <div style="text-align:right">
+            <div style="font-size:12px;color:var(--muted)">Sécurisé</div>
+            <div style="font-weight:700;color:var(--gold)">${secured} FCFA</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:12px;color:var(--muted)">Libéré</div>
+            <div style="font-weight:700;color:var(--green)">${released} FCFA</div>
+          </div>
+          <span class="badge ${sc}">${sl}</span>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  list.innerHTML=html;
+}
+
+async function _loadDisputesFinance(){
+  if(!isSupabaseConfigured||!supabase)return;
+  const{data,error}=await supabase
+    .from('disputes')
+    .select('id,category,reason,status,created_at,orders:order_id(ref,amount_total_cents,profiles!client_id(first_name,last_name))')
+    .in('status',['open','under_review'])
+    .order('created_at',{ascending:false}).limit(10);
+  if(error||!data?.length)return;
+  const tbody=document.getElementById('disputes-tbody-finance');
+  if(!tbody)return;
+  const DISPUTE_BADGE={open:'<span class="badge b-red">Ouvert</span>',under_review:'<span class="badge b-gold">En cours</span>'};
+  const rows=data.map(function(d){
+    const order=d.orders||{};
+    const client=order.profiles||{};
+    const clientName=[client.first_name,client.last_name].filter(Boolean).join(' ')||'—';
+    const amount=order.amount_total_cents?Math.floor(order.amount_total_cents/100).toLocaleString('fr-FR')+' FCFA':'—';
+    return`<tr data-tags="${d.status}">
+      <td><span style="font-weight:700;color:var(--red)">${order.ref||d.id.substring(0,8)}</span></td>
+      <td style="font-size:12px">${clientName}</td>
+      <td style="font-size:12px;max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${d.reason}">${d.reason||d.category}</td>
+      <td style="font-weight:700;color:var(--red)">${amount}</td>
+      <td>${DISPUTE_BADGE[d.status]||d.status}</td>
+    </tr>`;
+  }).join('');
+  tbody.innerHTML=rows;
+}
+
+window.addEventListener('oriupe:admin-ready',loadFinanceData);
 </script>
 </body>
 </html>

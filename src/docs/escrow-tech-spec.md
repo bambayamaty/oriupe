@@ -1,9 +1,9 @@
 # Spécification Technique — Système Escrow Oriupe
 
-**Version :** 1.0  
-**Date :** Janvier 2025  
+**Version :** 1.1  
+**Date :** Mai 2026  
 **Auteur :** Équipe Produit Oriupe  
-**Statut :** Prêt pour implémentation
+**Statut :** Implémenté
 
 ---
 
@@ -768,7 +768,7 @@ $$ LANGUAGE plpgsql;
 
 ```
 amount_total      = montant payé par le client (FCFA, entier)
-commission_rate   = snapshot du plan freelance (15%, 10% ou 7%)
+commission_rate   = snapshot du niveau freelance (12%, 10%, 8% ou 5%)
 commission_amount = ROUND(amount_total × commission_rate)
 amount_net        = amount_total − commission_amount
 ```
@@ -777,21 +777,22 @@ Ces valeurs sont calculées automatiquement par PostgreSQL via des colonnes `GEN
 
 ### Exemples
 
-| Montant total | Commission 15% | Net freelance |
-|---------------|----------------|---------------|
-| 10 000 FCFA   | 1 500 FCFA     | 8 500 FCFA    |
-| 25 000 FCFA   | 3 750 FCFA     | 21 250 FCFA   |
-| 65 000 FCFA   | 9 750 FCFA     | 55 250 FCFA   |
-| 150 000 FCFA  | 22 500 FCFA    | 127 500 FCFA  |
-| 500 000 FCFA  | 75 000 FCFA    | 425 000 FCFA  |
+| Montant total | Commission 12% (std) | Net freelance |
+|---------------|----------------------|---------------|
+| 10 000 FCFA   | 1 200 FCFA           | 8 800 FCFA    |
+| 25 000 FCFA   | 3 000 FCFA           | 22 000 FCFA   |
+| 65 000 FCFA   | 7 800 FCFA           | 57 200 FCFA   |
+| 150 000 FCFA  | 18 000 FCFA          | 132 000 FCFA  |
+| 500 000 FCFA  | 60 000 FCFA          | 440 000 FCFA  |
 
-### Taux variables selon plan freelance
+### Taux variables selon niveau freelance
 
 | Niveau         | Taux commission | Condition                              |
 |----------------|-----------------|----------------------------------------|
-| Gratuit        | 15%             | Plan par défaut                        |
-| Pro            | 10%             | Abonnement Pro actif                   |
-| Business       | 7%              | Abonnement Business actif              |
+| New / Confirmé | 12%             | Niveau par défaut                      |
+| Expert         | 10%             | 20 commandes + note ≥ 4.0              |
+| Top Oriupe     | 8%              | 50 commandes + note ≥ 4.5              |
+| Elite          | 5%              | 100 commandes + note ≥ 4.8             |
 
 Stocker `commission_rate` directement dans la commande (snapshot au moment de la création) pour qu'une évolution du taux n'affecte pas les commandes en cours.
 

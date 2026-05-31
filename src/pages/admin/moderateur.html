@@ -316,14 +316,17 @@ function openModal(id){var m=document.getElementById("modal-"+id);if(m)m.classLi
 function closeModal(id){var m=document.getElementById("modal-"+id);if(m)m.classList.remove("open");}
 
 window._kycTargetId=null;
+window._kycTargetCaseId=null;
 function _openKycApprove(btn){
   var card=btn.closest('.kyc-card');
   window._kycTargetId=card?card.dataset.profileId:null;
+  window._kycTargetCaseId=card?card.dataset.kycCaseId:null;
   openModal('kyc-approve');
 }
 function _openKycReject(btn){
   var card=btn.closest('.kyc-card');
   window._kycTargetId=card?card.dataset.profileId:null;
+  window._kycTargetCaseId=card?card.dataset.kycCaseId:null;
   openModal('kyc-reject');
 }
 // Default stubs — overridden by module script when Supabase available
@@ -405,7 +408,7 @@ PANELS_META={
 /* ── Admin KYC + Services — Supabase ── */
 import { supabase, isSupabaseConfigured } from '/src/shared/supabase.js'
 
-// Assign demo IDs to hardcoded KYC cards (no data-profile-id yet)
+// Assign demo IDs to hardcoded KYC cards (no real data-kyc-case-id yet)
 document.querySelectorAll('#kyc-list-modo .kyc-card:not([data-profile-id])').forEach(function(c,i){
   c.dataset.profileId='demo-kyc-'+(i+1);
 });
@@ -414,20 +417,24 @@ function _fmtDate(iso){
   try{return new Date(iso).toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'});}catch{return '—';}
 }
 
-/* ── KYC actions Supabase ── */
+/* ── KYC actions via Edge Function traitement-decision-kyc ── */
 async function _kycApproveSb(){
   closeModal('kyc-approve');
-  const id=window._kycTargetId;
+  const profileId=window._kycTargetId;
+  const caseId=window._kycTargetCaseId;
   const noteEl=document.querySelector('#modal-kyc-approve textarea');
-  if(!id||id.startsWith('demo-')||!isSupabaseConfigured||!supabase){
+  if(profileId?.startsWith('demo-')||!isSupabaseConfigured||!supabase){
     _adminModoToast('✓ KYC certifié (mode démo)','green');
-    if(id){const c=document.querySelector('.kyc-card[data-profile-id="'+id+'"]');if(c)c.remove();}
+    if(profileId){const c=document.querySelector('.kyc-card[data-profile-id="'+profileId+'"]');if(c)c.remove();}
     return;
   }
-  const{error}=await supabase.from('profiles').update({is_verified:true,updated_at:new Date().toISOString()}).eq('id',id);
+  if(!caseId){_adminModoToast('ID du dossier KYC manquant','red');return;}
+  const{error}=await supabase.functions.invoke('traitement-decision-kyc',{
+    body:{kyc_case_id:caseId,decision:'approved',verified_name:null},
+  });
   if(error){_adminModoToast('Erreur: '+error.message,'red');return;}
   _adminModoToast('✓ Profil certifié avec succès','green');
-  const card=document.querySelector('.kyc-card[data-profile-id="'+id+'"]');
+  const card=document.querySelector('.kyc-card[data-kyc-case-id="'+caseId+'"]');
   if(card){card.style.transition='opacity .4s,transform .4s';card.style.opacity='0';card.style.transform='translateX(20px)';setTimeout(function(){card.remove();},450);}
   if(noteEl)noteEl.value='';
 }
@@ -435,43 +442,60 @@ window._kycApprove=_kycApproveSb;
 
 async function _kycRejectSb(){
   closeModal('kyc-reject');
-  const id=window._kycTargetId;
-  if(!id||id.startsWith('demo-')||!isSupabaseConfigured||!supabase){
+  const profileId=window._kycTargetId;
+  const caseId=window._kycTargetCaseId;
+  const selectEl=document.querySelector('#modal-kyc-reject select');
+  const textEl=document.querySelector('#modal-kyc-reject textarea');
+  if(profileId?.startsWith('demo-')||!isSupabaseConfigured||!supabase){
     _adminModoToast('Dossier rejeté (mode démo)','orange');
-    if(id){const c=document.querySelector('.kyc-card[data-profile-id="'+id+'"]');if(c)c.remove();}
+    if(profileId){const c=document.querySelector('.kyc-card[data-profile-id="'+profileId+'"]');if(c)c.remove();}
     return;
   }
-  // profiles has no reject status yet — remove from view
+  if(!caseId){_adminModoToast('ID du dossier KYC manquant','red');return;}
+  const motif=selectEl?.value&&selectEl.value!=='Sélectionner...'?selectEl.value:null;
+  const message=textEl?.value?.trim()||null;
+  const reason=[motif,message].filter(Boolean).join(' — ')||'Documents non conformes';
+  const{error}=await supabase.functions.invoke('traitement-decision-kyc',{
+    body:{kyc_case_id:caseId,decision:'rejected',reason},
+  });
+  if(error){_adminModoToast('Erreur: '+error.message,'red');return;}
   _adminModoToast('Dossier KYC rejeté','orange');
-  const card=document.querySelector('.kyc-card[data-profile-id="'+id+'"]');
+  const card=document.querySelector('.kyc-card[data-kyc-case-id="'+caseId+'"]');
   if(card){card.style.transition='opacity .4s';card.style.opacity='0';setTimeout(function(){card.remove();},450);}
+  if(selectEl)selectEl.selectedIndex=0;
+  if(textEl)textEl.value='';
 }
 window._kycReject=_kycRejectSb;
 
-/* ── Load real KYC queue ── */
+/* ── Load real KYC queue from kyc_cases ── */
 async function _loadKycQueue(){
   if(!isSupabaseConfigured||!supabase)return;
   const{data:{user}}=await supabase.auth.getUser();
   if(!user)return;
-  const{data,error}=await supabase.from('profiles')
-    .select('id,first_name,last_name,email,country,created_at')
-    .eq('role','freelance').eq('is_verified',false)
-    .order('created_at',{ascending:true}).limit(20);
+  const{data,error}=await supabase
+    .from('kyc_cases')
+    .select('id,profile_id,status,submitted_at,document_type,profiles:profile_id(first_name,last_name,email,country)')
+    .in('status',['submitted','under_review'])
+    .order('submitted_at',{ascending:true}).limit(20);
   if(error||!data?.length)return;
   const list=document.getElementById('kyc-list-modo');
   if(!list)return;
-  const html=data.map(function(p){
+  const DOC_LABELS={cni:'CNI',passport:'Passeport',residence_permit:'Permis de résidence'};
+  const html=data.map(function(kc){
+    const p=kc.profiles||{};
     const name=[p.first_name,p.last_name].filter(Boolean).join(' ')||'Freelance';
     const ini=((p.first_name?.[0]||'')+(p.last_name?.[0]||'')).toUpperCase()||'U';
-    return`<div class="kyc-card" data-profile-id="${p.id}" style="border-color:rgba(60,184,120,.35)">
+    const docLabel=DOC_LABELS[kc.document_type]||'—';
+    const slaLabel=kc.status==='under_review'?'En révision':'Nouveau';
+    return`<div class="kyc-card" data-profile-id="${kc.profile_id}" data-kyc-case-id="${kc.id}" style="border-color:rgba(60,184,120,.35)">
       <div class="kyc-head">
         <div class="u-av" style="width:38px;height:38px;background:linear-gradient(135deg,var(--green),var(--lime))">${ini}</div>
         <div class="kyc-info">
-          <div class="kyc-name">${name} <span style="color:var(--green);font-weight:500">· Freelance</span></div>
-          <div class="kyc-meta">${p.email||'—'} · ${p.country||'—'}</div>
-          <div class="kyc-meta" style="margin-top:3px">Inscrit le ${_fmtDate(p.created_at)}</div>
+          <div class="kyc-name">${name}</div>
+          <div class="kyc-meta">${p.email||'—'} · ${p.country||'—'} · ${docLabel}</div>
+          <div class="kyc-meta" style="margin-top:3px">Soumis le ${_fmtDate(kc.submitted_at)}</div>
         </div>
-        <div class="kyc-sla sla-ok">Nouveau</div>
+        <div class="kyc-sla sla-ok">${slaLabel}</div>
       </div>
       <div class="kyc-actions">
         <button type="button" class="btn btn-green btn-sm" onclick="_openKycApprove(this)"><i class="fa-solid fa-circle-check"></i> Certifier</button>

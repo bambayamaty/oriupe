@@ -451,12 +451,12 @@ label.fl{font-size:12px;font-weight:700;color:var(--navy2);display:block;margin-
         <div style="background:#F8FAFC;border:1px solid rgba(27,58,74,.08);border-radius:12px;padding:12px 14px;margin-bottom:16px">
           <div style="font-size:10px;font-weight:700;color:rgba(27,58,74,.35);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">Comptes de démonstration</div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-            <div onclick="fillLogin('client@oriupe.com','Client2025!')" style="display:flex;align-items:center;gap:9px;padding:9px 11px;background:#fff;border:1px solid rgba(41,171,226,.2);border-radius:9px;cursor:pointer;transition:border-color .15s" onmouseover="this.style.borderColor='var(--blue)'" onmouseout="this.style.borderColor='rgba(41,171,226,.2)'">
+            <div onclick="fillLogin('client@oriupe.com')" style="display:flex;align-items:center;gap:9px;padding:9px 11px;background:#fff;border:1px solid rgba(41,171,226,.2);border-radius:9px;cursor:pointer;transition:border-color .15s" onmouseover="this.style.borderColor='var(--blue)'" onmouseout="this.style.borderColor='rgba(41,171,226,.2)'">
               <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#29ABE2,#7DD6F0);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0">AM</div>
               <div><div style="font-size:11px;font-weight:700;color:#1B3A4A">Client</div><div style="font-size:10px;color:rgba(27,58,74,.45)">Awa Mbaye</div></div>
               <svg style="margin-left:auto;color:rgba(27,58,74,.3)" width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M4.5 3L7.5 6L4.5 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
             </div>
-            <div onclick="fillLogin('freelance@oriupe.com','Freelance2025!')" style="display:flex;align-items:center;gap:9px;padding:9px 11px;background:#fff;border:1px solid rgba(60,184,120,.2);border-radius:9px;cursor:pointer;transition:border-color .15s" onmouseover="this.style.borderColor='var(--green)'" onmouseout="this.style.borderColor='rgba(60,184,120,.2)'">
+            <div onclick="fillLogin('freelance@oriupe.com')" style="display:flex;align-items:center;gap:9px;padding:9px 11px;background:#fff;border:1px solid rgba(60,184,120,.2);border-radius:9px;cursor:pointer;transition:border-color .15s" onmouseover="this.style.borderColor='var(--green)'" onmouseout="this.style.borderColor='rgba(60,184,120,.2)'">
               <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#3CB878,#8DC63F);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0">KA</div>
               <div><div style="font-size:11px;font-weight:700;color:#1B3A4A">Freelance</div><div style="font-size:10px;color:rgba(27,58,74,.45)">Kofi Asante</div></div>
               <svg style="margin-left:auto;color:rgba(27,58,74,.3)" width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M4.5 3L7.5 6L4.5 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
@@ -813,6 +813,8 @@ function submitForm(targetStep){
   (async()=>{
     let userId='usr_'+Date.now();
     let sbOk=false;
+    let sbHasSession=false; // true = Supabase a renvoyé une session active (email confirm désactivé)
+    let sbNeedsConfirm=false; // true = compte créé mais email non encore confirmé
 
     if(window._sb && em && pwd){
       try{
@@ -823,7 +825,12 @@ function submitForm(targetStep){
         });
         const timeout=new Promise(r=>setTimeout(()=>r({data:null,error:'timeout'}),8000));
         const{data:authData,error}=await Promise.race([signUpCall,timeout]);
-        if(!error && authData?.user){ userId=authData.user.id; sbOk=true; }
+        if(!error && authData?.user){
+          userId=authData.user.id;
+          sbOk=true;
+          if(authData.session){ sbHasSession=true; }
+          else{ sbNeedsConfirm=true; } // email de confirmation envoyé par Supabase
+        }
       }catch(e){}
     }
 
@@ -837,15 +844,18 @@ function submitForm(targetStep){
       const el=document.getElementById('ss-fn-c');
       if(el&&fn)el.textContent=fn+', ';
       const accessEl=document.getElementById('ss-access-msg-c');
-      if(accessEl)accessEl.textContent=sbOk
-        ?'Immédiat — un email de confirmation a été envoyé à '+em
+      if(accessEl)accessEl.textContent=sbNeedsConfirm
+        ?'Un email de confirmation a été envoyé à '+em+'. Cliquez sur le lien pour activer votre compte.'
         :'Votre compte est actif. Connectez-vous dès maintenant.';
       const resendWrap=document.getElementById('ss-resend-wrap-c');
-      if(resendWrap)resendWrap.style.display=sbOk?'block':'none';
-      _writeSession({firstName:fn,lastName:ln,email:em,role:'client',userId,
-        isKycVerified:true,kycToken:'kc-'+Date.now(),
-        badgeLabel:'Client vérifié',unreadMessages:0,activeOrders:0,
-        totalSpent:0,savedAmount:0,profileViews:0,avatarUrl:null});
+      if(resendWrap)resendWrap.style.display=sbNeedsConfirm?'block':'none';
+      // N'écrire la session locale que si Supabase n'attend pas de confirmation email
+      if(!sbOk || sbHasSession){
+        _writeSession({firstName:fn,lastName:ln,email:em,role:'client',userId,
+          isKycVerified:true,kycToken:'kc-'+Date.now(),
+          badgeLabel:'Client vérifié',unreadMessages:0,activeOrders:0,
+          totalSpent:0,savedAmount:0,profileViews:0,avatarUrl:null});
+      }
     }
     if(targetStep==='rsokf'){
       window._lastRegEmail=em;
@@ -854,10 +864,13 @@ function submitForm(targetStep){
       const ref='KYC-2026-'+['CI','SN','GH','NG','CM'][Math.floor(Math.random()*5)]+'-'+String(Math.floor(10000+Math.random()*90000));
       const refEl=document.getElementById('ss-kyc-ref');
       if(refEl)refEl.textContent=ref;
-      _writeSession({firstName:fn,lastName:ln,email:em,role:'freelance',userId,
-        isKycVerified:false,kycToken:null,
-        badgeLabel:'En attente de vérification',unreadMessages:0,activeOrders:0,
-        totalSpent:0,savedAmount:0,profileViews:0,avatarUrl:null});
+      // N'écrire la session locale que si Supabase n'attend pas de confirmation email
+      if(!sbOk || sbHasSession){
+        _writeSession({firstName:fn,lastName:ln,email:em,role:'freelance',userId,
+          isKycVerified:false,kycToken:null,
+          badgeLabel:'En attente de vérification',unreadMessages:0,activeOrders:0,
+          totalSpent:0,savedAmount:0,profileViews:0,avatarUrl:null});
+      }
     }
   })();
 }
@@ -902,26 +915,14 @@ function safeNext(defaultUrl){
   return defaultUrl;
 }
 
-const LOGIN_ROLES={
-  'client@oriupe.com':{
-    pwd:'Client2025!', url:'/src/pages/dashboard/client/index.html',
-    session:{firstName:'Awa',lastName:'Mbaye',email:'client@oriupe.com',role:'client',userId:'usr_awa_002',isKycVerified:true,kycToken:'kc-awa-2025-ci',badgeLabel:'Compte vérifié',unreadMessages:2,activeOrders:4,avatarUrl:null}
-  },
-  'freelance@oriupe.com':{
-    pwd:'Freelance2025!', url:'/src/pages/dashboard/freelance/index.html',
-    session:{firstName:'Kofi',lastName:'Asante',email:'freelance@oriupe.com',role:'freelance',userId:'usr_kofi_001',isKycVerified:true,kycToken:'kf-kofi-2025-ci',badgeLabel:'Identité vérifiée',unreadMessages:3,activeOrders:4,avatarUrl:null}
-  },
-};
-function fillLogin(email,pwd){
+function fillLogin(email){
   const eInp=document.getElementById('loginEmail');
-  const pInp=document.getElementById('loginPwd');
-  if(eInp){eInp.value=email; eInp.dispatchEvent(new Event('input',{bubbles:true}));}
-  if(pInp){pInp.value=pwd;   pInp.dispatchEvent(new Event('input',{bubbles:true}));}
+  if(eInp){eInp.value=email; eInp.dispatchEvent(new Event('input',{bubbles:true})); eInp.focus();}
   clearLoginError();
-  if(eInp) eInp.focus();
+  document.getElementById('loginPwd')?.focus();
 }
 function _writeSession(data){
-  try{localStorage.setItem('oriupe_session',JSON.stringify({...data,isLoggedIn:true,expiresAt:Date.now()+30*24*60*60*1000}));}catch(e){}
+  try{localStorage.setItem('oriupe_session',JSON.stringify({...data,isLoggedIn:true,expiresAt:Date.now()+24*60*60*1000}));}catch(e){}
 }
 function handleLogin(){
   const email=(document.getElementById('loginEmail').value||'').trim().toLowerCase();
@@ -940,31 +941,34 @@ function handleLogin(){
   }
   btn.disabled=true;
   btn.innerHTML='<svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="animation:spin 1s linear infinite"><path d="M8 2C4.7 2 2 4.7 2 8" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg> Connexion en cours...';
-  const role=LOGIN_ROLES[email];
-  // Lance le vrai auth Supabase en parallèle (optionnel — demo fonctionne sans)
-  const sbPromise=window._sb
-    ?window._sb.auth.signInWithPassword({email,password:pwd}).catch(()=>({}))
-    :Promise.resolve({});
-  const loginTimeout=new Promise(res=>setTimeout(res,700));
-  Promise.all([sbPromise,loginTimeout]).then(([sbRes])=>{
-    if(!role||pwd!==role.pwd){
-      if(sbRes?.data?.user&&!sbRes?.error){
-        const user=sbRes.data.user;
-        const meta=user.user_metadata||{};
-        const sessionRole=meta.role||'client';
-        const dashUrls={client:'/src/pages/dashboard/client/index.html',freelance:'/src/pages/dashboard/freelance/index.html'};
-        _writeSession({firstName:meta.first_name||'',lastName:meta.last_name||'',email:user.email,role:sessionRole,userId:user.id,isKycVerified:meta.is_kyc_verified||false,kycToken:meta.kyc_token||null,badgeLabel:meta.badge_label||'',unreadMessages:0,activeOrders:0,avatarUrl:meta.avatar_url||null});
-        window.location.href=safeNext(dashUrls[sessionRole]||dashUrls.client);
-        return;
+  const resetBtn=()=>{btn.disabled=false;btn.innerHTML='<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 3H3C2 3 1.5 3.5 1.5 4.5V12C1.5 13 2 13.5 3 13.5H6M10 11L14 8L10 5M5 8H14" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Se connecter';};
+  if(!window._sb){
+    resetBtn();
+    showLoginError('Connexion indisponible — Supabase non configuré.');
+    return;
+  }
+  window._sb.auth.signInWithPassword({email,password:pwd}).then(({data,error})=>{
+    if(error||!data?.user){
+      resetBtn();
+      const errMsg=error?.message||'';
+      if(errMsg.toLowerCase().includes('email not confirmed')||errMsg.includes('email_not_confirmed')){
+        showLoginError('Email non confirmé. Vérifiez votre boîte mail et cliquez sur le lien de confirmation envoyé lors de l\'inscription.');
+      } else if(errMsg.toLowerCase().includes('invalid login')||errMsg.toLowerCase().includes('invalid credentials')){
+        showLoginError('Email ou mot de passe incorrect.');
+      } else if(errMsg.toLowerCase().includes('user not found')||errMsg.toLowerCase().includes('no user found')){
+        showLoginError('Aucun compte trouvé avec cet email. Créez un compte d\'abord.');
+      } else {
+        showLoginError(errMsg||'Email ou mot de passe incorrect.');
       }
-      btn.disabled=false;
-      btn.innerHTML='<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 3H3C2 3 1.5 3.5 1.5 4.5V12C1.5 13 2 13.5 3 13.5H6M10 11L14 8L10 5M5 8H14" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Se connecter';
-      showLoginError('Email ou mot de passe incorrect.');
       return;
     }
-    _writeSession(role.session);
-    window.location.href=safeNext(role.url);
-  });
+    const user=data.user;
+    const meta=user.user_metadata||{};
+    const sessionRole=meta.role||'client';
+    const dashUrls={client:'/src/pages/dashboard/client/index.html',freelance:'/src/pages/dashboard/freelance/index.html'};
+    _writeSession({firstName:meta.first_name||'',lastName:meta.last_name||'',email:user.email,role:sessionRole,userId:user.id,isKycVerified:meta.is_kyc_verified||false,kycToken:meta.kyc_token||null,badgeLabel:meta.badge_label||'',unreadMessages:0,activeOrders:0,avatarUrl:meta.avatar_url||null});
+    window.location.href=safeNext(dashUrls[sessionRole]||dashUrls.client);
+  }).catch(()=>{resetBtn();showLoginError('Erreur réseau. Réessayez.');});
 }
 
 function handleForgot(){
