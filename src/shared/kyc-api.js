@@ -37,6 +37,9 @@ export async function getKycCase(userId) {
 export async function submitKycDocument(userId, { docType, file }) {
   if (!isSupabaseConfigured) throw new Error('Supabase non configuré.')
 
+  const { data: { user }, error: authErr } = await supabase.auth.getUser()
+  if (authErr || !user || user.id !== userId) throw new Error('Accès refusé.')
+
   const ext = file.name.split('.').pop()
   const path = `${userId}/${docType}_${Date.now()}.${ext}`
 
@@ -111,6 +114,19 @@ export async function getKycDocumentUrl(storagePath) {
 
 export async function adminReviewKyc(kycCaseId, { decision, rejectionReason = null, reviewedBy }) {
   if (!isSupabaseConfigured) throw new Error('Supabase non configuré.')
+
+  const { data: { user }, error: authErr } = await supabase.auth.getUser()
+  if (authErr || !user) throw new Error('Non authentifié.')
+
+  const { data: adminRow } = await supabase
+    .from('admin_roles')
+    .select('role')
+    .eq('profile_id', user.id)
+    .eq('is_active', true)
+    .in('role', ['super_admin', 'admin', 'moderator'])
+    .single()
+  if (!adminRow) throw new Error('Accès refusé : rôle admin requis.')
+
   const approved = decision === 'approved'
 
   // Append-only review record

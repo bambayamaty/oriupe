@@ -593,7 +593,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
         <div class="hcb-rule"><div class="hcb-rule-dot" style="background:var(--lime)"></div>Paiement Escrow sécurisé garanti</div>
         <div class="hcb-rule"><div class="hcb-rule-dot" style="background:var(--gold)"></div>Publication gratuite</div>
       </div>
-      <button class="btn-submit-ao" onclick="openModal('submit')">
+      <button class="btn-submit-ao" onclick="openSubmitModal(null)">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2V14M2 8H14" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
         Soumettre mon projet
       </button>
@@ -783,7 +783,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
             <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.3"/><path d="M4 6.5C4 6.5 5 4 6.5 4s2.5 2.5 2.5 2.5S7.5 9 6.5 9 4 6.5 4 6.5Z" stroke="currentColor" stroke-width="1.1"/><circle cx="6.5" cy="6.5" r="1" fill="currentColor"/></svg>
             Voir le détail
           </button>
-          <button class="btn-postuler" data-role="freelance" onclick="event.stopPropagation();openModal('submit')">
+          <button class="btn-postuler" data-role="freelance" onclick="event.stopPropagation();openSubmitModal(null)">
             <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 11L11 2M11 2H6M11 2V7" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             Soumettre une offre
           </button>
@@ -823,7 +823,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
         </div>
         <div class="ao-card-cta">
           <button class="btn-voir" onclick="event.stopPropagation();openModal('detail1')">Voir le détail</button>
-          <button class="btn-postuler" data-role="freelance" onclick="event.stopPropagation();openModal('submit')">
+          <button class="btn-postuler" data-role="freelance" onclick="event.stopPropagation();openSubmitModal(null)">
             <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 11L11 2M11 2H6M11 2V7" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             Soumettre une offre
           </button>
@@ -864,7 +864,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
         </div>
         <div class="ao-card-cta">
           <button class="btn-voir" onclick="event.stopPropagation();openModal('detail1')">Voir le détail</button>
-          <button class="btn-postuler" data-role="freelance" onclick="event.stopPropagation();openModal('submit')">
+          <button class="btn-postuler" data-role="freelance" onclick="event.stopPropagation();openSubmitModal(null)">
             <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 11L11 2M11 2H6M11 2V7" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             Soumettre une offre
           </button>
@@ -903,7 +903,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
         </div>
         <div class="ao-card-cta">
           <button class="btn-voir" onclick="event.stopPropagation();openModal('detail1')">Voir le détail</button>
-          <button class="btn-postuler" data-role="freelance" onclick="event.stopPropagation();openModal('submit')">
+          <button class="btn-postuler" data-role="freelance" onclick="event.stopPropagation();openSubmitModal(null)">
             <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 11L11 2M11 2H6M11 2V7" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             Soumettre une offre
           </button>
@@ -944,7 +944,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
         </div>
         <div class="ao-card-cta">
           <button class="btn-voir" onclick="event.stopPropagation();openModal('detail1')">Voir le détail</button>
-          <button class="btn-postuler" data-role="freelance" onclick="event.stopPropagation();openModal('submit')">
+          <button class="btn-postuler" data-role="freelance" onclick="event.stopPropagation();openSubmitModal(null)">
             <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 11L11 2M11 2H6M11 2V7" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             Soumettre une offre
           </button>
@@ -1193,7 +1193,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
     </div>
     <div class="modal-foot">
       <button class="btn-outline-m" onclick="closeModal('detail1')">Fermer</button>
-      <button class="btn-full-green" data-role="freelance" style="flex:2" onclick="closeModal('detail1');openModal('submit')">
+      <button class="btn-full-green" data-role="freelance" style="flex:2" onclick="closeModal('detail1');openSubmitModal(null)">
         <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2.5 12.5L12 3M12 3H7M12 3V8" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
         Soumettre mon offre pour ce projet
       </button>
@@ -1356,9 +1356,50 @@ function toggleSave(btn){
 function cnt(inp,id,max){const el=document.getElementById(id);if(el){el.textContent=inp.value.length;el.style.color=inp.value.length/max>.9?'var(--gold)':'var(--muted2)'}}
 
 /* Submit offer */
-function submitOffer(){
-  closeModal('submit');
-  setTimeout(()=>openModal('success'),200);
+let _currentProjectId = null
+
+function openSubmitModal(projectId) {
+  _currentProjectId = projectId || null
+  openModal('submit')
+}
+
+async function submitOffer() {
+  const coverLetter = (document.getElementById('cover-letter')?.value || '').trim()
+  if (!coverLetter) {
+    const ta = document.getElementById('cover-letter')
+    if (ta) { ta.style.borderColor = 'var(--red)'; ta.focus() }
+    return
+  }
+  const btn = document.querySelector('#modal-submit .btn-full-green')
+  if (btn) { btn.disabled = true; btn.textContent = 'Envoi en cours…' }
+
+  if (isSupabaseConfigured && supabase && _currentProjectId) {
+    try {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) throw new Error('auth')
+      const { data: fp } = await supabase
+        .from('freelance_profiles').select('id').eq('profile_id', user.id).single()
+      if (!fp) throw new Error('no_fp')
+      const { error } = await supabase.from('project_proposals').insert({
+        project_id:   _currentProjectId,
+        freelance_id: fp.id,
+        cover_letter: coverLetter,
+        status:       'submitted',
+      })
+      if (error) throw error
+      // Incrémenter le compteur de candidatures (best-effort)
+      supabase.rpc('fn_increment_project_applications', { p_project_id: _currentProjectId }).catch(() => {})
+    } catch (e) {
+      if (btn) { btn.disabled = false; btn.textContent = 'Envoyer mon offre' }
+      const errEl = document.getElementById('submit-error')
+      if (errEl) { errEl.textContent = 'Erreur lors de l\'envoi. Réessayez.'; errEl.style.display = 'block' }
+      return
+    }
+  }
+
+  _currentProjectId = null
+  closeModal('submit')
+  setTimeout(() => openModal('success'), 200)
 }
 
 /* Filter section toggle */
@@ -1650,12 +1691,12 @@ async function _loadProjects() {
           <div class="ao-offers"><span class="ao-meta-item"><strong>${apps} candidature${apps!==1?'s':''}</strong></span></div>
           <div style="display:flex;gap:8px">
             <button class="btn-voir" onclick="event.stopPropagation()">Voir détails</button>
-            <button class="btn-postuler" onclick="event.stopPropagation()">Postuler →</button>
+            <button class="btn-postuler" onclick="event.stopPropagation();openSubmitModal('${p.id}')">Postuler →</button>
           </div>
         </div>
       </div>`
     }).join('')
-    list.insertAdjacentHTML('afterbegin', html)
+    list.innerHTML = html
   } catch (e) {
     console.warn('[Offres] Erreur Supabase:', e)
   }

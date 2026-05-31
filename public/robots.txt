@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /src/pages/admin/
+Disallow: /src/pages/dashboard/
+Disallow: /src/pages/onboarding/
+Disallow: /src/pages/auth/

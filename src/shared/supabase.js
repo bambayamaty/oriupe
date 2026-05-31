@@ -214,31 +214,17 @@ export async function sendDirectMessage(conversationId, body, { type = 'text', a
     .select()
     .single()
   if (error) throw error
-  await client
-    .from('conversations')
-    .update({
-      last_message_preview: body?.slice(0, 80) || (type !== 'text' ? `[${type}]` : ''),
-      last_message_at: data.created_at,
-      last_sender_id: user.id,
-      updated_at: new Date().toISOString()
-    })
-    .eq('id', conversationId)
+  // La mise à jour de last_message_preview / last_message_at / last_sender_id
+  // est gérée automatiquement par le trigger fn_update_conversation_on_message (SECURITY DEFINER).
   return data
 }
 
-export async function markConversationRead(conversationId, userId) {
+export async function markConversationRead(conversationId) {
   const client = requireSupabaseClient()
-  const { data: conv } = await client
-    .from('conversations')
-    .select('unread_counts')
-    .eq('id', conversationId)
-    .single()
-  if (!conv) return
-  const counts = { ...conv.unread_counts, [userId]: 0 }
-  await client
-    .from('conversations')
-    .update({ unread_counts: counts })
-    .eq('id', conversationId)
+  // fn_mark_conversation_read (SECURITY DEFINER) vérifie la participation
+  // et écrit sur conversation_participants.unread_count — pas de RLS UPDATE requis.
+  const { error } = await client.rpc('fn_mark_conversation_read', { p_conv_id: conversationId })
+  if (error && error.message !== 'NOT_PARTICIPANT') throw error
 }
 
 export async function addReaction(messageId, emoji, userId) {
@@ -270,11 +256,14 @@ export async function uploadAttachment(file, conversationId) {
   const ext = file.name.split('.').pop()
   const path = `conversations/${conversationId}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
   const { error } = await client.storage
-    .from('attachments')
+    .from('message-attachments')
     .upload(path, file, { contentType: file.type })
   if (error) throw error
-  const { data } = client.storage.from('attachments').getPublicUrl(path)
-  return { url: data.publicUrl, name: file.name, size: file.size, mime: file.type }
+  const { data, error: signErr } = await client.storage
+    .from('message-attachments')
+    .createSignedUrl(path, 86400) // 24h — URL courte durée, bucket privé
+  if (signErr) throw signErr
+  return { path, url: data.signedUrl, name: file.name, size: file.size, mime: file.type }
 }
 
 export function subscribeToConversation(conversationId, callback) {

@@ -525,6 +525,100 @@ button,input,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer}
 .eab-btn-dispute:hover{background:rgba(232,67,147,.16)}
 .eab-done-badge{font-size:11px;font-weight:700;color:rgba(255,255,255,.35);display:flex;align-items:center;gap:6px;padding:4px 0}
 
+/* ── RICH ESCROW BLOCK (pinned under header) ── */
+.eb{background:#fff;border-bottom:1px solid #E8EDF2;flex-shrink:0;transition:all .2s}
+.eb-inner{padding:10px 18px 12px}
+.eb-hdr-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;cursor:pointer;-webkit-user-select:none;user-select:none}
+.eb-hdr-left{display:flex;align-items:center;gap:7px}
+.eb-icon{width:22px;height:22px;border-radius:6px;background:linear-gradient(135deg,#3CB878,#29ABE2);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.eb-label{font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:#4A7A5A}
+.eb-ref{font-size:9px;font-weight:600;color:#8A9AAA;margin-left:4px}
+.eb-toggle{font-size:9px;font-weight:700;color:#8A9AAA;display:flex;align-items:center;gap:3px;background:none;border:none;cursor:pointer;padding:0}
+.eb-toggle svg{transition:transform .2s}
+.eb.collapsed .eb-toggle svg{transform:rotate(180deg)}
+.eb.collapsed .eb-body{display:none}
+.eb-body{display:flex;flex-direction:column;gap:7px}
+.eb-progress-row{display:flex;align-items:center;gap:10px}
+.eb-prog-track{flex:1;height:5px;background:#E8EDF2;border-radius:3px;overflow:hidden}
+.eb-prog-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,#3CB878,#29ABE2);transition:width .4s ease}
+.eb-prog-pct{font-size:11px;font-weight:800;color:#3CB878;flex-shrink:0;min-width:32px;text-align:right}
+.eb-info-line{font-size:11px;color:#5A7A8A;display:flex;align-items:center;gap:5px}
+.eb-info-line b{color:#0F2535;font-weight:700}
+.eb-info-sep{color:#C0CDD6}
+.eb-steps{display:flex;align-items:flex-start;gap:0}
+.eb-step{flex:1;display:flex;flex-direction:column;align-items:center;position:relative}
+.eb-step::after{content:'';position:absolute;top:10px;left:50%;width:100%;height:2px;background:#E8EDF2;z-index:0}
+.eb-step:last-child::after{display:none}
+.eb-step.done::after{background:#3CB878}
+.eb-sdot{width:20px;height:20px;border-radius:50%;border:2px solid #E8EDF2;background:#fff;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;z-index:1;position:relative;color:#8A9AAA;flex-shrink:0;transition:all .2s}
+.eb-step.done .eb-sdot{background:#3CB878;border-color:#3CB878;color:#fff}
+.eb-step.active .eb-sdot{background:#29ABE2;border-color:#29ABE2;color:#fff;box-shadow:0 0 0 3px rgba(41,171,226,.18)}
+.eb-step.payout .eb-sdot{background:#F5A623;border-color:#F5A623;color:#fff}
+.eb-slabel{font-size:8px;color:#9AABB5;margin-top:3px;text-align:center;line-height:1.2;max-width:56px}
+.eb-step.done .eb-slabel,.eb-step.active .eb-slabel{color:#5A7A8A}
+.eb-actions{display:flex;gap:7px;margin-top:2px}
+.eb-btn{flex:1;padding:8px 12px;border-radius:8px;border:none;font-size:11.5px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:5px}
+.eb-btn-primary{background:#3CB878;color:#fff}
+.eb-btn-primary:hover{background:#2EA866}
+.eb-btn-outline{background:#fff;color:#5A7A8A;border:1.5px solid #DDE3EB;flex:0;padding:8px 14px}
+.eb-btn-outline:hover{border-color:#29ABE2;color:#29ABE2}
+.eb-btn-pay{background:#F5A623;color:#fff}
+.eb-btn-pay:hover{background:#E8961A}
+.eb-btn-start{background:#29ABE2;color:#fff}
+.eb-btn-start:hover{background:#1A95C8}
+.eb-badge-done{font-size:11px;font-weight:700;color:#3CB878;display:flex;align-items:center;gap:5px;padding:6px 10px;background:rgba(60,184,120,.07);border-radius:7px}
+.eb-badge-warn{color:#F5A623;background:rgba(245,166,35,.08)}
+.eb-badge-payout{color:#29ABE2;background:rgba(41,171,226,.08)}
+/* State: completed */
+.eb.eb-completed{background:linear-gradient(135deg,rgba(60,184,120,.04),rgba(41,171,226,.04));border-bottom-color:rgba(60,184,120,.2)}
+.eb.eb-completed .eb-label{color:#27965D}
+.eb.eb-completed .eb-icon{background:linear-gradient(135deg,#3CB878,#27965D)}
+
+/* ── CONV LIST — ORDER PROGRESS BAR ── */
+.conv-order-row{margin-top:4px;display:flex;flex-direction:column;gap:2px}
+.conv-order-track{height:3px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden}
+.conv-order-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,#3CB878,#29ABE2);transition:width .3s}
+.conv-order-meta{display:flex;justify-content:space-between;align-items:center}
+.conv-order-label{font-size:10px;color:rgba(255,255,255,.35)}
+.conv-order-amount{font-size:10px;font-weight:700;color:#3CB878}
+
+/* ── MILESTONE CARD ── */
+.milestone-card{background:#fff;border-radius:14px;border-bottom-left-radius:4px;padding:14px 16px;max-width:420px;box-shadow:0 3px 16px rgba(15,37,53,.1);border:1px solid #E8EDF2;min-width:300px}
+.mc-hdr{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px}
+.mc-icon{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#29ABE2,#1B3A4A);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.mc-title{font-size:13px;font-weight:800;color:#0F2535}
+.mc-sub{font-size:11px;color:#8A9AAA;margin-top:2px}
+.mc-step{padding:10px 12px;border-radius:8px;margin-bottom:6px;border:1px solid #E8EDF2}
+.mc-step-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+.mc-step-name{font-size:11.5px;font-weight:700;color:#0F2535}
+.mc-step-badge{font-size:9px;font-weight:700;padding:2px 8px;border-radius:4px}
+.mc-badge-paid{background:rgba(60,184,120,.12);color:#27965D}
+.mc-badge-active{background:rgba(41,171,226,.12);color:#1A95C8}
+.mc-badge-locked{background:#F5F7F9;color:#8A9AAA;border:1px solid #E8EDF2}
+.mc-step-meta{font-size:10.5px;color:#8A9AAA;display:flex;gap:10px}
+.mc-step-progress{margin-top:6px}
+.mc-prog-track{height:4px;background:#F0F4F8;border-radius:2px;overflow:hidden}
+.mc-prog-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,#3CB878,#29ABE2)}
+.mc-step-action{display:flex;align-items:center;justify-content:flex-end;margin-top:6px}
+.mc-pay-btn{padding:5px 14px;border-radius:6px;background:#29ABE2;color:#fff;border:none;font-size:11px;font-weight:700;cursor:pointer}
+.mc-footer{display:flex;justify-content:space-between;align-items:center;padding-top:10px;border-top:1px solid #F0F4F8;margin-top:4px}
+.mc-total-label{font-size:10px;color:#8A9AAA}
+.mc-total-val{font-size:13px;font-weight:800;color:#0F2535}
+
+/* ── FIRST CONTACT EMPTY STATE ── */
+.first-contact{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;padding:32px 24px;text-align:center;gap:8px}
+.fc-av{width:68px;height:68px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;color:#fff;margin-bottom:4px}
+.fc-name{font-size:16px;font-weight:800;color:#0F2535}
+.fc-role{font-size:12px;color:#8A9AAA;margin-bottom:4px}
+.fc-text{font-size:13px;color:#5A7A8A;line-height:1.6;max-width:300px}
+.fc-actions{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;justify-content:center}
+.fc-btn{padding:9px 18px;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;border:none}
+.fc-btn-primary{background:#3CB878;color:#fff}
+.fc-btn-primary:hover{background:#2EA866}
+.fc-btn-secondary{background:#fff;color:#29ABE2;border:1.5px solid #DDE3EB}
+.fc-btn-secondary:hover{border-color:#29ABE2}
+.fc-tip{font-size:11px;color:#8A9AAA;background:#F5F7F9;padding:8px 14px;border-radius:8px;max-width:320px;margin-top:4px}
+
 /* ── INLINE ESCROW CARD ── */
 .escrow-inline-card{background:linear-gradient(135deg,#0F2535,#1B3A4A);border-radius:14px;border-bottom-left-radius:4px;padding:14px 16px;min-width:270px;max-width:360px;box-shadow:0 4px 20px rgba(15,37,53,.4);border:1px solid rgba(255,255,255,.07)}
 .eic-hdr{display:flex;align-items:center;gap:10px;margin-bottom:10px}
@@ -560,6 +654,126 @@ button,input,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer}
 .eic-btn-dis:hover{background:rgba(232,67,147,.16)}
 .eic-footer{margin-top:9px;padding-top:8px;border-top:1px solid rgba(255,255,255,.06);font-size:10px;color:rgba(255,255,255,.25);text-align:center}
 .msg-row.escrow-row{align-self:center;max-width:88%;width:100%;justify-content:center}
+
+/* ── TOOLBAR RÔLE-DÉPENDANTE ── */
+.role-toolbar{display:flex;gap:6px;padding:6px 14px 8px;flex-wrap:wrap}
+.rtb-btn{display:flex;align-items:center;gap:5px;padding:5px 11px;border-radius:20px;border:1.5px solid #DDE3EB;background:#fff;font-size:11px;font-weight:700;color:#4A6572;cursor:pointer;transition:all .2s;white-space:nowrap}
+.rtb-btn:hover{border-color:#3CB878;color:#3CB878;background:rgba(60,184,120,.05)}
+.rtb-btn.primary{border-color:#3CB878;background:rgba(60,184,120,.1);color:#1B6B40}
+.rtb-btn.primary:hover{background:rgba(60,184,120,.18)}
+
+/* ── PANNEAU PROPOSITION ── */
+.prop-overlay{position:fixed;inset:0;background:rgba(15,37,53,.55);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);z-index:900;opacity:0;pointer-events:none;transition:opacity .25s}
+.prop-overlay.open{opacity:1;pointer-events:auto}
+.prop-panel{position:fixed;bottom:0;left:0;right:0;max-height:90vh;background:#fff;border-radius:22px 22px 0 0;box-shadow:0 -8px 40px rgba(15,37,53,.2);z-index:901;transform:translateY(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);overflow:hidden;display:flex;flex-direction:column}
+.prop-panel.open{transform:translateY(0)}
+@media(min-width:768px){
+  .prop-panel{left:auto;right:28px;bottom:80px;width:440px;max-height:80vh;border-radius:18px;box-shadow:0 8px 40px rgba(15,37,53,.22)}
+}
+.pp-head{display:flex;align-items:center;justify-content:space-between;padding:16px 18px 12px;border-bottom:1px solid #E8EDF2;flex-shrink:0}
+.pp-title{font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;color:#0F2535}
+.pp-close{width:28px;height:28px;border-radius:50%;border:none;background:#F0F4F8;color:#8A9AAA;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;transition:all .2s}
+.pp-close:hover{background:#E0E8EF;color:#1B3A4A}
+.pp-body{flex:1;overflow-y:auto;padding:16px 18px}
+.pp-body::-webkit-scrollbar{width:3px}
+.pp-body::-webkit-scrollbar-thumb{background:rgba(0,0,0,.1);border-radius:3px}
+.pp-field{margin-bottom:14px}
+.pp-label{font-size:11px;font-weight:700;color:#1B3A4A;letter-spacing:.4px;margin-bottom:5px;display:flex;align-items:center;justify-content:space-between}
+.pp-label span{font-size:10px;font-weight:600;color:#9AABB5;letter-spacing:0}
+.pp-input,.pp-select,.pp-textarea{width:100%;padding:9px 12px;border:1.5px solid #E0E8EF;border-radius:10px;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;color:#1B3A4A;outline:none;transition:border-color .2s;background:#FAFBFC}
+.pp-input:focus,.pp-select:focus,.pp-textarea:focus{border-color:#3CB878;background:#fff}
+.pp-textarea{resize:vertical;min-height:70px;line-height:1.5}
+.pp-row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pp-price-box{background:#F0FBF5;border:1.5px solid rgba(60,184,120,.2);border-radius:10px;padding:10px 12px;margin-top:8px}
+.pp-price-row{display:flex;justify-content:space-between;align-items:center;font-size:12px;margin-bottom:3px}
+.pp-price-row.net{font-weight:800;color:#1B6B40;font-size:13px;margin-bottom:0}
+.pp-price-row .label{color:rgba(27,58,74,.55)}
+.pp-price-row .val{font-weight:700;color:#1B3A4A}
+.pp-livrables{display:flex;flex-direction:column;gap:5px;margin-bottom:6px}
+.pp-livrable-row{display:flex;align-items:center;gap:6px}
+.pp-livrable-inp{flex:1;padding:7px 10px;border:1.5px solid #E0E8EF;border-radius:8px;font-size:12px;font-family:'Plus Jakarta Sans',sans-serif;outline:none;transition:border-color .2s}
+.pp-livrable-inp:focus{border-color:#3CB878}
+.pp-livrable-rm{width:22px;height:22px;border-radius:50%;border:none;background:#F0F4F8;color:#9AABB5;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;transition:all .2s}
+.pp-livrable-rm:hover{background:#FFE4E4;color:#E84393}
+.pp-add-btn{display:flex;align-items:center;gap:5px;background:none;border:1.5px dashed #DDE3EB;border-radius:8px;padding:6px 10px;font-size:11px;font-weight:700;color:#9AABB5;cursor:pointer;width:100%;justify-content:center;transition:all .2s}
+.pp-add-btn:hover{border-color:#3CB878;color:#3CB878}
+.pp-extras{display:flex;flex-direction:column;gap:6px;margin-bottom:6px}
+.pp-extra-row{display:flex;align-items:center;gap:6px}
+.pp-extra-name{flex:1;padding:6px 9px;border:1.5px solid #E0E8EF;border-radius:7px;font-size:12px;font-family:'Plus Jakarta Sans',sans-serif;outline:none;transition:border-color .2s}
+.pp-extra-name:focus{border-color:#3CB878}
+.pp-extra-price-inp{width:80px;padding:6px 9px;border:1.5px solid #E0E8EF;border-radius:7px;font-size:12px;font-family:'Plus Jakarta Sans',sans-serif;outline:none;transition:border-color .2s}
+.pp-extra-price-inp:focus{border-color:#3CB878}
+.pp-footer{display:flex;gap:8px;padding:12px 18px;border-top:1px solid #E8EDF2;flex-shrink:0;background:#fff}
+.pp-btn-preview{flex:1;padding:10px;border-radius:10px;border:1.5px solid #DDE3EB;background:#fff;font-size:13px;font-weight:700;color:#4A6572;cursor:pointer;transition:all .2s}
+.pp-btn-preview:hover{border-color:#29ABE2;color:#29ABE2}
+.pp-btn-send{flex:2;padding:10px;border-radius:10px;border:none;background:linear-gradient(135deg,#3CB878,#4FD090);color:#fff;font-size:13px;font-weight:800;cursor:pointer;transition:all .2s;box-shadow:0 3px 12px rgba(60,184,120,.3)}
+.pp-btn-send:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(60,184,120,.4)}
+.pp-textarea-tall{min-height:60px}
+.pp-breakdown-hidden{display:none}
+.pp-deadline-label{font-size:10px;color:#9AABB5;margin-top:4px}
+.pp-expiry-col{display:flex;flex-direction:column;justify-content:flex-end}
+.pp-expiry-label{font-size:10px;color:#9AABB5;padding-bottom:4px}
+.pp-textarea-compact{min-height:50px}
+
+/* ── CARTE PROPOSITION ── */
+.proposal-card{background:#fff;border:2px solid #3CB878;border-radius:16px;padding:16px;min-width:280px;max-width:380px;box-shadow:0 4px 20px rgba(60,184,120,.12);position:relative}
+.proposal-card.sent-view{border-color:#E0E8EF;background:#FAFBFC}
+.proposal-card.declined{border-color:#E0E8EF;background:#F9F9FB;opacity:.75}
+.proposal-card.accepted{border-color:#3CB878;background:linear-gradient(135deg,rgba(60,184,120,.04),rgba(79,208,144,.03))}
+.proposal-card.expired{border-color:#E0E8EF;opacity:.65}
+.proposal-card.counter{border-color:#F5A623;background:rgba(245,166,35,.03)}
+.pc-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;gap:8px}
+.pc-badge{font-size:9px;font-weight:800;letter-spacing:.7px;text-transform:uppercase;padding:3px 8px;border-radius:20px;white-space:nowrap;flex-shrink:0}
+.pc-badge-pending{background:rgba(245,166,35,.15);color:#B37A00}
+.pc-badge-accepted{background:rgba(60,184,120,.15);color:#1B6B40}
+.pc-badge-declined{background:rgba(0,0,0,.07);color:#8A9AAA}
+.pc-badge-expired{background:rgba(0,0,0,.07);color:#8A9AAA}
+.pc-badge-counter{background:rgba(245,166,35,.15);color:#B37A00}
+.pc-title{font-family:'Bricolage Grotesque',sans-serif;font-size:14px;font-weight:800;color:#0F2535;line-height:1.3;margin-bottom:4px}
+.pc-meta{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:10px}
+.pc-meta-item{font-size:11.5px;color:#4A6572;display:flex;align-items:center;gap:4px}
+.pc-meta-item strong{color:#0F2535;font-weight:700}
+.pc-price-row{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:#F0FBF5;border-radius:8px;margin-bottom:8px}
+.pc-price-main{font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;color:#1B6B40}
+.pc-price-label{font-size:10px;color:rgba(27,58,74,.45);font-weight:600}
+.pc-divider{height:1px;background:#E8EDF2;margin:8px 0}
+.pc-livrables{display:flex;flex-direction:column;gap:3px;margin-bottom:10px}
+.pc-livrable{display:flex;align-items:flex-start;gap:6px;font-size:12px;color:#1B3A4A;line-height:1.4}
+.pc-livrable-check{width:14px;height:14px;border-radius:50%;background:rgba(60,184,120,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.pc-extras-list{margin-bottom:10px}
+.pc-extras-title{font-size:10px;font-weight:800;color:#9AABB5;letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px}
+.pc-extra-item{display:flex;align-items:center;gap:6px;margin-bottom:4px;font-size:11.5px}
+.pc-extra-check{width:14px;height:14px;border:1.5px solid #DDE3EB;border-radius:3px;flex-shrink:0;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center}
+.pc-extra-check.on{background:#3CB878;border-color:#3CB878;color:#fff}
+.pc-expiry{font-size:10px;color:#9AABB5;display:flex;align-items:center;gap:4px;margin-bottom:10px}
+.pc-expiry.urgent{color:#E84393}
+.pc-actions{display:flex;gap:6px;flex-wrap:wrap}
+.pc-btn{flex:1;padding:8px 10px;border-radius:8px;border:none;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;text-align:center}
+.pc-btn-accept{background:#3CB878;color:#fff;min-width:120px}
+.pc-btn-accept:hover{background:#2EA866}
+.pc-btn-counter{background:rgba(245,166,35,.12);color:#B37A00;border:1px solid rgba(245,166,35,.3)}
+.pc-btn-counter:hover{background:rgba(245,166,35,.2)}
+.pc-btn-decline{background:#F4F6F9;color:#8A9AAA;border:1px solid #E0E8EF}
+.pc-btn-decline:hover{background:#FFE4E4;color:#E84393;border-color:rgba(232,67,147,.3)}
+.pc-btn-cancel{background:#F4F6F9;color:#8A9AAA;border:1px solid #E0E8EF;font-size:11px}
+.pc-btn-cancel:hover{background:#FFE4E4;color:#E84393}
+.pc-status-line{font-size:11px;font-weight:600;padding:6px 10px;border-radius:6px;text-align:center;margin-top:4px}
+.pc-status-ok{background:rgba(60,184,120,.1);color:#1B6B40}
+.pc-status-no{background:rgba(0,0,0,.05);color:#9AABB5}
+.msg-row.proposal-row{align-self:center;max-width:88%;width:100%;justify-content:center}
+
+/* ── BANDEAU RÉCURRENT ── */
+.recur-banner{background:linear-gradient(135deg,rgba(41,171,226,.07),rgba(60,184,120,.07));border-bottom:1px solid rgba(41,171,226,.15);padding:10px 18px;display:flex;align-items:center;gap:10px;flex-shrink:0}
+.rb-icon{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#29ABE2,#3CB878);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px}
+.rb-text{flex:1;min-width:0}
+.rb-title{font-size:12px;font-weight:700;color:#0F2535}
+.rb-sub{font-size:10px;color:#8A9AAA;margin-top:1px}
+.rb-btns{display:flex;gap:5px;flex-shrink:0}
+.rb-btn{padding:5px 10px;border-radius:6px;border:none;font-size:10px;font-weight:700;cursor:pointer;transition:all .2s}
+.rb-btn-primary{background:#3CB878;color:#fff}
+.rb-btn-primary:hover{background:#2EA866}
+.rb-btn-sec{background:rgba(41,171,226,.1);color:#1A7AAB;border:1px solid rgba(41,171,226,.2)}
+.rb-btn-sec:hover{background:rgba(41,171,226,.18)}
 </style>
 </head>
 <body>
@@ -619,18 +833,6 @@ requireAuth(['client','freelance','admin']);
     </div>
 
     <div id="chatContent" class="chat-content hidden">
-      <!-- Escrow banner (for order convs) -->
-      <div class="escrow-banner hidden" id="escrowBanner">
-        <div class="escrow-icon">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
-        </div>
-        <div class="escrow-text">
-          <div class="escrow-label">🔒 FONDS SÉCURISÉS · ORIUPE ESCROW</div>
-          <div class="escrow-status" id="escrowStatusText">Paiement verrouillé — en attente de livraison</div>
-        </div>
-        <div class="escrow-amount" id="escrowAmountText">75 000 FCFA</div>
-        <div class="escrow-actions" id="escrowBannerActions"></div>
-      </div>
 
       <!-- Header -->
       <div class="chat-header" id="chatHeader">
@@ -653,6 +855,26 @@ requireAuth(['client','freelance','admin']);
         </div>
       </div>
 
+      <!-- Rich Escrow Block (order convs only, pinned under header) -->
+      <div class="eb hidden" id="ebBlock">
+        <div class="eb-inner">
+          <div class="eb-hdr-row" onclick="toggleEscrowBlock()">
+            <div class="eb-hdr-left">
+              <div class="eb-icon">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+              </div>
+              <span class="eb-label" id="ebLabel">ESCROW ORIUPE</span>
+              <span class="eb-ref" id="ebRef"></span>
+            </div>
+            <button type="button" class="eb-toggle" aria-label="Réduire ou afficher le bloc escrow">
+              <span id="ebToggleText">Réduire</span>
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+            </button>
+          </div>
+          <div class="eb-body" id="ebBody"></div>
+        </div>
+      </div>
+
       <!-- Messages -->
       <div class="messages" id="messages"></div>
 
@@ -668,9 +890,14 @@ requireAuth(['client','freelance','admin']);
       <!-- Escrow Action Bar (order convs only, pinned above composer) -->
       <div id="escrowActionBar" class="escrow-action-bar hidden"></div>
 
-      <!-- Templates bar (freelance only, per conv) -->
+      <!-- Bandeau conversation récurrente -->
+      <div class="recur-banner hidden" id="recurBanner"></div>
+
+      <!-- Templates bar -->
       <div class="input-wrap">
         <div class="templates-bar hidden" id="templatesBar"></div>
+        <!-- Toolbar rôle-dépendante -->
+        <div class="role-toolbar hidden" id="roleToolbar"></div>
         <div class="composer-row">
           <div class="composer">
             <div class="composer-actions">
@@ -709,6 +936,90 @@ requireAuth(['client','freelance','admin']);
 
 <!-- Toast -->
 <div class="toast" id="toast"></div>
+
+<!-- Overlay + Panneau de proposition -->
+<div class="prop-overlay" id="propOverlay" onclick="closePropPanel()"></div>
+<div class="prop-panel" id="propPanel">
+  <div class="pp-head">
+    <div class="pp-title" id="ppPanelTitle">📋 Nouvelle proposition</div>
+    <button type="button" class="pp-close" onclick="closePropPanel()">✕</button>
+  </div>
+  <div class="pp-body" id="ppBody">
+    <div class="pp-field">
+      <div class="pp-label">Titre de la mission <span id="ppTitleCount">0/100</span></div>
+      <input class="pp-input" id="ppTitle" type="text" maxlength="100" placeholder="ex: Création site e-commerce pagnes africains" oninput="ppUpdateTitle(this)"/>
+    </div>
+    <div class="pp-field">
+      <div class="pp-label">Description des livrables</div>
+      <textarea class="pp-textarea pp-textarea-tall" id="ppDesc" rows="3" placeholder="Décrivez précisément ce que vous allez livrer…"></textarea>
+    </div>
+    <div class="pp-field">
+      <div class="pp-label">Prix proposé (FCFA)</div>
+      <input class="pp-input" id="ppPrice" type="number" min="0" placeholder="ex: 65000" oninput="ppUpdateBreakdown()"/>
+      <div class="pp-price-box pp-breakdown-hidden" id="ppBreakdown">
+        <div class="pp-price-row"><span class="label">Client paie</span><span class="val" id="ppClientPays">—</span></div>
+        <div class="pp-price-row"><span class="label">Commission Oriupe (<span id="ppRateLabel">12</span>%)</span><span class="val" id="ppCommission">—</span></div>
+        <div class="pp-price-row net"><span class="label">Vous recevez</span><span id="ppNet">—</span></div>
+      </div>
+    </div>
+    <div class="pp-row2">
+      <div class="pp-field">
+        <div class="pp-label">Délai (jours ouvrés)</div>
+        <input class="pp-input" id="ppDays" type="number" min="1" max="90" placeholder="7" oninput="ppUpdateDeadline()"/>
+        <div class="pp-deadline-label" id="ppDeadlineLabel"></div>
+      </div>
+      <div class="pp-field">
+        <div class="pp-label">Révisions incluses</div>
+        <select class="pp-select" id="ppRevisions" title="Révisions incluses">
+          <option value="1">1 révision</option>
+          <option value="2">2 révisions</option>
+          <option value="3" selected>3 révisions</option>
+          <option value="5">5 révisions</option>
+          <option value="10">10 révisions</option>
+          <option value="illimitées">Illimitées</option>
+        </select>
+      </div>
+    </div>
+    <div class="pp-row2">
+      <div class="pp-field">
+        <div class="pp-label">Validité</div>
+        <select class="pp-select" id="ppValidity" title="Validité de la proposition" onchange="ppUpdateExpiryLabel()">
+          <option value="24">24 heures</option>
+          <option value="48" selected>48 heures</option>
+          <option value="72">72 heures</option>
+          <option value="168">7 jours</option>
+        </select>
+      </div>
+      <div class="pp-field pp-expiry-col">
+        <div class="pp-expiry-label" id="ppExpiryLabel"></div>
+      </div>
+    </div>
+    <div class="pp-field">
+      <div class="pp-label">Livrables détaillés</div>
+      <div class="pp-livrables" id="ppLivrables"></div>
+      <button type="button" class="pp-add-btn" onclick="ppAddLivrable()">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Ajouter un livrable
+      </button>
+    </div>
+    <div class="pp-field">
+      <div class="pp-label">Extras optionnels</div>
+      <div class="pp-extras" id="ppExtras"></div>
+      <button type="button" class="pp-add-btn" onclick="ppAddExtra()">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Ajouter un extra payant
+      </button>
+    </div>
+    <div class="pp-field">
+      <div class="pp-label">Message d'accompagnement <span>Optionnel</span></div>
+      <textarea class="pp-textarea pp-textarea-compact" id="ppMessage" rows="2" placeholder="Bonjour, suite à notre discussion je vous propose…"></textarea>
+    </div>
+  </div>
+  <div class="pp-footer">
+    <button type="button" class="pp-btn-preview" onclick="ppPreview()">👁 Prévisualiser</button>
+    <button type="button" class="pp-btn-send" onclick="ppSend()">📋 Envoyer la proposition</button>
+  </div>
+</div>
 
 <script type="module" src="/src/components/nav.js"></script>
 <script type="module">
@@ -770,9 +1081,9 @@ const DEMO_CONVS = [
     type: 'direct',
     with: 'ada',
     title: 'Ada Ngozi',
-    preview: 'Can you do a full brand kit?',
+    preview: '📋 Proposition : Brand Kit complet — 5 pays',
     time: 'Hier',
-    unread: 0,
+    unread: 1,
     online: false
   },
   {
@@ -850,11 +1161,59 @@ const DEMO_MSGS = {
     { id: 'm_a3', sender: 'ada', body: 'Can you do a full brand kit for my agency? We are expanding to 5 African countries.', time: 'Hier 15:40', reactions: {} },
     { id: 'm_a4', sender: 'kofi', body: 'Absolutely, that\'s a great project. Let me put together a detailed proposal for you.', time: 'Hier 16:00', reactions: {} },
     { id: 'm_a5', sender: 'ada', body: 'Can you do a full brand kit?', time: 'Hier 16:02', reactions: {} },
+    {
+      id: 'm_a_prop1',
+      type: 'proposal_card',
+      sender: 'kofi',
+      proposal: {
+        id: 'prop_demo_001',
+        title: 'Brand Kit complet — 5 pays africains',
+        desc: 'Identité visuelle complète pour votre expansion panafricaine : logo, charte, templates.',
+        price: 285000,
+        days: 14,
+        revisions: '3',
+        validity: 72,
+        commissionRate: 12,
+        commission: 34200,
+        net: 250800,
+        status: 'pending',
+        expiresAt: new Date(Date.now() + 48 * 60 * 60 * 1000).toISOString(),
+        sentBy: 'freelance',
+        livrables: [
+          'Logo principal + 5 déclinaisons pays',
+          'Charte graphique complète (PDF 30 pages)',
+          'Kit réseaux sociaux (12 templates Figma)',
+          'Favicon + assets web exportés'
+        ],
+        extras: [
+          { name: 'Guide d\'utilisation vidéo (5 min)', price: 25000 },
+          { name: 'Support prioritaire 30 jours', price: 15000 }
+        ],
+        message: 'Bonjour Ada, voici ma proposition pour votre expansion dans 5 pays. J\'ai inclus tous les formats pour une cohérence parfaite.'
+      },
+      time: 'Hier 16:30'
+    },
   ],
   conv_sam: [
     { id: 'm_sam1', sender: 'sam', body: 'Kofi, je voulais juste vous remercier pour l\'excellent travail sur notre identité visuelle 🙏', time: 'Lun 14:10', reactions: {} },
     { id: 'm_sam2', sender: 'kofi', body: 'Merci Sam ! C\'était un plaisir de travailler avec vous. N\'hésitez pas si vous avez de nouveaux besoins.', time: 'Lun 14:25', reactions: { '❤️': ['usr_sam_004'] } },
     { id: 'm_sam3', sender: 'sam', body: 'Super travail, je recommande !', time: 'Lun 14:30', reactions: {} },
+    {
+      id: 'm_sam_milestone1',
+      type: 'milestone_card',
+      sender: 'kofi',
+      milestones: {
+        title: 'Application mobile e-commerce complète',
+        senderName: 'Kofi Asante',
+        total: 230000,
+        steps: [
+          { name: 'Maquettes et architecture', amount: 50000, days: 5, deliverable: 'Maquettes Figma', status: 'paid', progress: 80 },
+          { name: 'Développement frontend', amount: 100000, days: 10, deliverable: 'App React Native', status: 'active', progress: 0 },
+          { name: 'Intégrations et déploiement', amount: 80000, days: 7, deliverable: null, status: 'locked', progress: 0 }
+        ]
+      },
+      time: 'Lun 11:00'
+    }
   ]
 }
 
@@ -892,6 +1251,7 @@ let currentConv = null
 let allConvs = [...DEMO_CONVS]
 let _pendingPayOp = 'ORANGE_MONEY'
 let _pendingPayPhone = ''
+let _pendingProposalPayment = null
 
 // Merge conversations created via catalog → detail → order flow
 ;(function(){
@@ -981,13 +1341,29 @@ function renderConvList() {
     return true
   })
 
+  const STATUS_PCT = { AWAITING_PAYMENT: 15, FUNDS_SECURED: 30, IN_PROGRESS: 55, DELIVERED: 75, VALIDATED: 90, COMPLETED: 100, DISPUTED: 50 }
+  const STATUS_SHORT = { AWAITING_PAYMENT: 'En attente', FUNDS_SECURED: 'Sécurisé', IN_PROGRESS: 'En cours', DELIVERED: 'À valider', VALIDATED: 'Validé', COMPLETED: 'Terminé', DISPUTED: 'Litige' }
+
   list.innerHTML = convs.map(c => {
     const user = DEMO_USERS[c.with] || {}
     const isActive = c.id === currentConvId
     const hasUnread = c.unread > 0
     let tags = ''
-    if (c.type === 'order') tags += `<span class="conv-tag tag-order">📦 Commande</span>`
     if (c.type === 'system') tags += `<span class="conv-tag tag-system">🔔 Officiel</span>`
+
+    let orderRowHtml = ''
+    if (c.type === 'order' && c.order) {
+      const pct = STATUS_PCT[c.order.status] || 15
+      const lbl = STATUS_SHORT[c.order.status] || c.order.status
+      orderRowHtml = `
+        <div class="conv-order-row">
+          <div class="conv-order-track"><div class="conv-order-fill" style="width:${pct}%"></div></div>
+          <div class="conv-order-meta">
+            <span class="conv-order-label">${_esc(c.order.service || 'Commande')} · ${lbl}</span>
+            <span class="conv-order-amount">${fmt(c.order.net || c.order.amount || 0)} FCFA</span>
+          </div>
+        </div>`
+    }
 
     return `
       <div class="conv-item ${isActive ? 'active' : ''} ${hasUnread ? 'unread' : ''}"
@@ -999,10 +1375,11 @@ function renderConvList() {
         </div>
         <div class="conv-info">
           <div class="conv-meta">
-            <span class="conv-name">${c.title}${tags}</span>
-            <span class="conv-time">${c.time}</span>
+            <span class="conv-name">${_esc(c.title)}${tags}</span>
+            <span class="conv-time">${_esc(c.time)}</span>
           </div>
-          <div class="conv-preview">${c.preview || ''}</div>
+          <div class="conv-preview">${_esc(c.preview || '')}</div>
+          ${orderRowHtml}
         </div>
       </div>`
   }).join('')
@@ -1066,28 +1443,21 @@ window.openConv = function(id, silent = false) {
     sub.textContent = user.job || ''
   }
 
-  // Escrow banner
-  const banner = document.getElementById('escrowBanner')
-  if (currentConv.type === 'order' && currentConv.order) {
-    banner.classList.remove('hidden')
-    document.getElementById('escrowStatusText').textContent = getOrderStatusText(currentConv.order.status)
-    document.getElementById('escrowAmountText').textContent = fmt(currentConv.order.amount)
-    renderEscrowBannerActions()
-  } else {
-    banner.classList.add('hidden')
-  }
+  // Rich escrow block
+  renderEscrowBlock()
 
   // Templates
   renderTemplates()
+
+  // Role toolbar + recurring banner
+  renderRoleToolbar()
+  renderRecurBanner()
 
   // Render messages
   renderMessages(id)
 
   // Right panel
   renderRightPanel()
-
-  // Escrow action bar
-  renderEscrowActionBar()
 
   // Unsubscribe old channel
   if (supaChannel && supabase) supabase.removeChannel(supaChannel)
@@ -1110,111 +1480,102 @@ function getOrderStatusText(status) {
   }[status] || status
 }
 
-function renderEscrowBannerActions() {
-  const el = document.getElementById('escrowBannerActions')
-  if (!currentConv?.order) return el.innerHTML = ''
-  const { status } = currentConv.order
-  const isClient = currentRole === 'client'
-  const isFreelance = currentRole === 'freelance'
-  if (status === 'IN_PROGRESS' && isFreelance) {
-    el.innerHTML = `<button class="escrow-btn escrow-btn-primary" onclick="sendDelivery()">📦 Livrer</button>`
-  } else if (status === 'DELIVERED' && isClient) {
-    el.innerHTML = `
-      <button class="escrow-btn escrow-btn-primary" onclick="validateDelivery()">✅ Valider</button>
-      <button class="escrow-btn escrow-btn-secondary" onclick="requestRevision()">🔄 Révision</button>`
-  } else {
-    el.innerHTML = ''
-  }
+// ── RICH ESCROW BLOCK (pinned under header) ───────────────────────────────────
+let ebCollapsed = false
+
+function _ebProgress(o) {
+  const STATUS_PCT = { AWAITING_PAYMENT: 15, FUNDS_SECURED: 30, IN_PROGRESS: 55, DELIVERED: 75, VALIDATED: 90, COMPLETED: 100, DISPUTED: 50 }
+  return STATUS_PCT[o.status] || 15
 }
 
-// ── ESCROW ACTION BAR ─────────────────────────────────────────────────────────
-let eabExpanded = true
+function renderEscrowBlock() {
+  const block = document.getElementById('ebBlock')
+  if (!block) return
+  if (!currentConv?.order) { block.classList.add('hidden'); return }
 
-function renderEscrowActionBar() {
-  const bar = document.getElementById('escrowActionBar')
-  if (!bar) return
-  if (!currentConv?.order) { bar.classList.add('hidden'); return }
-  bar.classList.remove('hidden')
+  const o         = currentConv.order
+  const isClient  = currentRole === 'client'
+  const isFreelance = currentRole === 'freelance'
+  const pct       = _ebProgress(o)
+  const stepIdx   = ESC_ORDER.indexOf(o.status)
+  const isCompleted = o.status === 'COMPLETED'
 
-  const o = currentConv.order
-  const stepIdx = ESC_ORDER.indexOf(o.status)
+  block.classList.remove('hidden', 'eb-completed')
+  if (isCompleted) block.classList.add('eb-completed')
+  if (ebCollapsed) block.classList.add('collapsed'); else block.classList.remove('collapsed')
 
-  const LABEL_MAP = {
-    AWAITING_PAYMENT: 'Paiement requis',
-    FUNDS_SECURED:    'Fonds sécurisés',
-    IN_PROGRESS:      'En cours',
-    DELIVERED:        'Livraison reçue',
-    VALIDATED:        'Validé',
-    COMPLETED:        'Clôturé',
-    DISPUTED:         'Litige ouvert'
-  }
+  const refDisplay = o.ref ? `ORU-ESC-${o.ref}` : ''
+  document.getElementById('ebLabel').textContent = isCompleted ? '✅ MISSION TERMINÉE' : '🔐 ESCROW ORIUPE'
+  document.getElementById('ebRef').textContent   = refDisplay
+  document.getElementById('ebToggleText').textContent = ebCollapsed ? 'Afficher' : 'Réduire'
 
-  const pipelineHtml = ESC_STEPS.map((s, i) => {
-    const sIdx = ESC_ORDER.indexOf(s.key)
-    const isDone   = sIdx < stepIdx
-    const isActive = sIdx === stepIdx || (o.status === 'COMPLETED' && i === ESC_STEPS.length - 1)
-    return `
-      <div class="eab-step ${isDone ? 'done' : ''} ${isActive ? 'active' : ''}">
-        <div class="eab-step-dot">${isDone ? '✓' : s.num}</div>
-        <div class="eab-step-label">${s.label}</div>
-      </div>`
+  // Steps
+  const STEP_LABELS = ['Paiement', 'Fonds OK', 'Livraison', 'Validé']
+  const STEP_KEYS   = ['FUNDS_SECURED', 'IN_PROGRESS', 'DELIVERED', 'VALIDATED']
+  const stepsHtml = STEP_KEYS.map((key, i) => {
+    const sIdx   = ESC_ORDER.indexOf(key)
+    const isDone = sIdx <= stepIdx || isCompleted
+    const isAct  = sIdx === stepIdx && !isCompleted
+    const isPay  = isCompleted && i === STEP_KEYS.length - 1
+    const cls    = isDone ? 'done' : (isAct ? 'active' : (isPay ? 'payout' : ''))
+    return `<div class="eb-step ${cls}"><div class="eb-sdot">${isDone ? '✓' : (i+1)}</div><div class="eb-slabel">${STEP_LABELS[i]}</div></div>`
   }).join('')
 
-  const amountsHtml = `
-    <div class="eab-amt"><div class="eab-amt-val">${fmt(o.amount)}</div><div class="eab-amt-lab">Montant client (FCFA)</div></div>
-    <div class="eab-amt"><div class="eab-amt-val comm">−${fmt(o.commission)}</div><div class="eab-amt-lab">Commission 12%</div></div>
-    <div class="eab-amt"><div class="eab-amt-val net">${fmt(o.net)}</div><div class="eab-amt-lab">Reversement net</div></div>`
-
-  let actionsHtml = ''
-  const isClient    = currentRole === 'client'
-  const isFreelance = currentRole === 'freelance'
-
-  if (o.status === 'AWAITING_PAYMENT' && isClient)
-    actionsHtml = `<button type="button" class="eab-btn eab-btn-pay" onclick="initiatePayment()">💳 Payer ${fmt(o.amount)} FCFA</button>`
-  else if (o.status === 'FUNDS_SECURED' && isFreelance)
-    actionsHtml = `<button type="button" class="eab-btn eab-btn-start" onclick="startWork()">🚀 Démarrer les travaux</button>`
-  else if (o.status === 'IN_PROGRESS' && isFreelance)
-    actionsHtml = `<button type="button" class="eab-btn eab-btn-deliver" onclick="sendDelivery()">📦 Livrer la commande</button>
-                   <button type="button" class="eab-btn eab-btn-dispute" onclick="openDisputeFlow()" title="Ouvrir un litige">⚠️</button>`
-  else if (o.status === 'DELIVERED' && isClient)
-    actionsHtml = `<button type="button" class="eab-btn eab-btn-validate" onclick="validateDelivery()">✅ Valider & Libérer les fonds</button>
-                   <button type="button" class="eab-btn eab-btn-ghost" onclick="requestRevision()" title="Demander une révision">🔄</button>
-                   <button type="button" class="eab-btn eab-btn-dispute" onclick="openDisputeFlow()" title="Ouvrir un litige">⚠️</button>`
-  else if (o.status === 'DELIVERED' && isFreelance)
-    actionsHtml = `<div class="eab-done-badge">⏳ En attente de validation client</div>`
-  else if (['COMPLETED','VALIDATED'].includes(o.status))
-    actionsHtml = `<div class="eab-done-badge">✅ Commande clôturée · ${fmt(o.net)} FCFA reversés</div>`
+  // Info line
+  let infoHtml = ''
+  if (o.status === 'AWAITING_PAYMENT')
+    infoHtml = `💳 <b>${fmt(o.amount)} FCFA</b> <span class="eb-info-sep">·</span> En attente de paiement`
+  else if (o.status === 'FUNDS_SECURED' || o.status === 'IN_PROGRESS')
+    infoHtml = `💰 <b>${fmt(o.amount)} FCFA</b> sécurisés <span class="eb-info-sep">·</span> Livraison : ${o.deadline || '—'}`
+  else if (o.status === 'DELIVERED')
+    infoHtml = `📦 Livraison déposée <span class="eb-info-sep">·</span> Vous avez <b>5 jours</b> pour valider`
+  else if (o.status === 'VALIDATED')
+    infoHtml = `🔄 Virement de <b>${fmt(o.net)} FCFA</b> en cours <span class="eb-info-sep">·</span> 2–24h`
+  else if (isCompleted)
+    infoHtml = `💚 <b>${fmt(o.net)} FCFA</b> virés avec succès`
   else if (o.status === 'DISPUTED')
-    actionsHtml = `<div class="eab-done-badge" style="color:#E84393">⚠️ Litige en cours · admin notifié</div>`
-  else if (o.status === 'AWAITING_PAYMENT' && isFreelance)
-    actionsHtml = `<div class="eab-done-badge">⏳ En attente du paiement client</div>`
-  else
-    actionsHtml = `<div class="eab-done-badge">${LABEL_MAP[o.status] || o.status}</div>`
+    infoHtml = `⚠️ Litige ouvert · <b>Admin notifié</b>`
 
-  const bodyStyle = eabExpanded ? '' : 'display:none'
-  bar.innerHTML = `
-    <div class="eab-inner">
-      <div class="eab-toggle-row" onclick="toggleEscrowBar()">
-        <span class="eab-toggle-label">
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
-          Oriupe Escrow · <span style="color:rgba(255,255,255,.65)">${LABEL_MAP[o.status] || o.status}</span>
-        </span>
-        <svg class="eab-chevron ${eabExpanded ? '' : 'collapsed'}" id="eabChevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
-      </div>
-      <div id="eabBody" style="${bodyStyle}">
-        <div class="eab-pipeline">${pipelineHtml}</div>
-        <div class="eab-amounts">${amountsHtml}</div>
-        <div class="eab-actions">${actionsHtml}</div>
-      </div>
-    </div>`
+  // Action buttons
+  let actionsHtml = ''
+  if (o.status === 'AWAITING_PAYMENT' && isClient)
+    actionsHtml = `<button type="button" class="eb-btn eb-btn-pay" onclick="initiatePayment()">💳 Payer ${fmt(o.amount)} FCFA</button>`
+  else if (o.status === 'FUNDS_SECURED' && isFreelance)
+    actionsHtml = `<button type="button" class="eb-btn eb-btn-start" onclick="startWork()">🚀 Démarrer les travaux</button>`
+  else if (o.status === 'IN_PROGRESS' && isFreelance)
+    actionsHtml = `<button type="button" class="eb-btn eb-btn-primary" onclick="sendDelivery()">📦 Livrer la commande</button>
+                   <button type="button" class="eb-btn eb-btn-outline" onclick="openDisputeFlow()" title="Litige">⚠️</button>`
+  else if (o.status === 'DELIVERED' && isClient)
+    actionsHtml = `<button type="button" class="eb-btn eb-btn-primary" onclick="validateDelivery()">✅ Valider &amp; Libérer les fonds</button>
+                   <button type="button" class="eb-btn eb-btn-outline" onclick="requestRevision()">🔄 Révision</button>
+                   <button type="button" class="eb-btn eb-btn-outline" onclick="openDisputeFlow()">⚠️</button>`
+  else if (o.status === 'DELIVERED' && isFreelance)
+    actionsHtml = `<div class="eb-badge-done eb-badge-warn">⏳ En attente de validation client</div>`
+  else if (o.status === 'VALIDATED')
+    actionsHtml = `<div class="eb-badge-done eb-badge-payout">🔄 Virement en cours — 2 à 24 heures</div>`
+  else if (isCompleted)
+    actionsHtml = `<button type="button" class="eb-btn eb-btn-outline" onclick="showToast('Reçu PDF — bientôt disponible')">📄 Reçu PDF</button>
+                   <button type="button" class="eb-btn eb-btn-primary" onclick="showToast('Laisser un avis — bientôt disponible')">⭐ Avis</button>`
+  else if (o.status === 'AWAITING_PAYMENT' && isFreelance)
+    actionsHtml = `<div class="eb-badge-done eb-badge-warn">⏳ En attente du paiement client</div>`
+
+  document.getElementById('ebBody').innerHTML = `
+    <div class="eb-progress-row">
+      <div class="eb-prog-track"><div class="eb-prog-fill" style="width:${pct}%"></div></div>
+      <span class="eb-prog-pct">${pct}%</span>
+    </div>
+    <div class="eb-info-line">${infoHtml}</div>
+    <div class="eb-steps">${stepsHtml}</div>
+    ${actionsHtml ? `<div class="eb-actions">${actionsHtml}</div>` : ''}
+  `
 }
 
-window.toggleEscrowBar = function() {
-  eabExpanded = !eabExpanded
-  const body = document.getElementById('eabBody')
-  const chevron = document.querySelector('.eab-chevron')
-  if (body) body.style.display = eabExpanded ? '' : 'none'
-  if (chevron) chevron.classList.toggle('collapsed', !eabExpanded)
+window.toggleEscrowBlock = function() {
+  ebCollapsed = !ebCollapsed
+  const block = document.getElementById('ebBlock')
+  if (!block) return
+  block.classList.toggle('collapsed', ebCollapsed)
+  document.getElementById('ebToggleText').textContent = ebCollapsed ? 'Afficher' : 'Réduire'
 }
 
 // ── RENDER MESSAGES ────────────────────────────────────────────────────────────
@@ -1222,6 +1583,12 @@ function renderMessages(convId) {
   const container = document.getElementById('messages')
   const msgs = DEMO_MSGS[convId] || []
   container.innerHTML = ''
+
+  // First-contact empty state for direct conversations with no messages
+  if (msgs.length === 0 && currentConv?.type === 'direct') {
+    container.appendChild(_createFirstContactEl())
+    return
+  }
 
   let lastDate = null
   msgs.forEach(m => {
@@ -1239,11 +1606,34 @@ function renderMessages(convId) {
   scrollToBottom()
 }
 
+function _createFirstContactEl() {
+  const user = DEMO_USERS[currentConv?.with] || {}
+  const div = document.createElement('div')
+  div.className = 'first-contact'
+  const isClient = currentRole === 'client'
+  div.innerHTML = `
+    <div class="fc-av av ${user.avClass || 'av-blue'}">${user.av || '?'}</div>
+    <div class="fc-name">${_esc(currentConv?.title || '')}</div>
+    <div class="fc-role">${_esc(user.job || '')}${user.rating ? ' · ⭐ ' + user.rating : ''}</div>
+    <div class="fc-text">Commencez la conversation pour discuter de votre projet avant de passer commande.</div>
+    <div class="fc-actions">
+      ${isClient
+        ? `<button class="fc-btn fc-btn-secondary" onclick="openPropPanel&&openPropPanel('request')">📋 Demander un devis</button>`
+        : `<button class="fc-btn fc-btn-primary" onclick="openPropPanel&&openPropPanel('send')">📋 Envoyer une proposition</button>`
+      }
+    </div>
+    <div class="fc-tip">💡 Les clients qui discutent avant de commander ont 3× moins de litiges.</div>
+  `
+  return div
+}
+
 function createMsgEl(m) {
   const me = ME()
   const isSent = m.sender === me.id || m.sender === (currentRole === 'freelance' ? 'kofi' : 'awa')
   const isSys = m.sender === 'sys' || m.type === 'escrow'
 
+  if (m.type === 'proposal_card') return createProposalCard(m)
+  if (m.type === 'milestone_card') return createMilestoneCard(m)
   if (m.type === 'escrow_card') return createEscrowCard(m)
   if (isSys) return createSysMsg(m)
   if (m.type === 'delivery') return createDeliveryCard(m, isSent)
@@ -1261,10 +1651,10 @@ function createMsgEl(m) {
   if (m.type === 'file' && m.attachment) {
     bodyHtml = `
       <div class="file-bubble">
-        <div class="file-bubble-icon ${isSent ? 'file-bubble-icon--sent' : ''}">${m.attachment.icon}</div>
+        <div class="file-bubble-icon ${isSent ? 'file-bubble-icon--sent' : ''}">${_esc(m.attachment.icon)}</div>
         <div class="file-bubble-info">
-          <div class="file-bubble-name">${m.attachment.name}</div>
-          <div class="file-bubble-size">${m.attachment.size}</div>
+          <div class="file-bubble-name">${_esc(m.attachment.name)}</div>
+          <div class="file-bubble-size">${_esc(m.attachment.size)}</div>
         </div>
         <div class="file-bubble-dl">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
@@ -1302,8 +1692,8 @@ function createSysMsg(m) {
       <div class="msg-av av-system">🔔</div>
       <div>
         <div class="official-bubble">
-          <div class="official-type ${m.official.type}">${m.official.icon} ${m.official.type.toUpperCase()}</div>
-          <div class="official-body">${m.official.text}</div>
+          <div class="official-type ${_esc(m.official.type)}">${_esc(m.official.icon)} ${_esc(m.official.type.toUpperCase())}</div>
+          <div class="official-body">${_esc(m.official.text || '')}</div>
         </div>
         <div class="msg-meta"><span class="msg-time">${m.time}</span></div>
       </div>`
@@ -1321,9 +1711,9 @@ function createDeliveryCard(m, isSent) {
   const isClient = currentRole === 'client'
   const filesHtml = (d.files || []).map(f => `
     <div class="dc-file">
-      <span>${f.icon}</span>
-      <span class="dc-filename">${f.name}</span>
-      <span class="dc-filesize">${f.size}</span>
+      <span>${_esc(f.icon)}</span>
+      <span class="dc-filename">${_esc(f.name)}</span>
+      <span class="dc-filesize">${_esc(f.size)}</span>
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8A9AAA" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
     </div>`).join('')
 
@@ -1335,8 +1725,8 @@ function createDeliveryCard(m, isSent) {
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
           </div>
           <div>
-            <div class="dc-title">${d.title}</div>
-            <div class="dc-sub">${d.desc}</div>
+            <div class="dc-title">${_esc(d.title)}</div>
+            <div class="dc-sub">${_esc(d.desc)}</div>
           </div>
         </div>
         <div class="dc-files">${filesHtml}</div>
@@ -1347,6 +1737,63 @@ function createDeliveryCard(m, isSent) {
         </div>` : ''}
       </div>
       <div class="msg-meta msg-meta--top"><span class="msg-time">${m.time}</span></div>
+    </div>`
+  return div
+}
+
+// ── MILESTONE CARD ────────────────────────────────────────────────────────────
+function createMilestoneCard(m) {
+  const d   = m.milestones || {}
+  const steps = d.steps || []
+  const isSent = currentRole === 'freelance'
+
+  const stepsHtml = steps.map((s, i) => {
+    const badgeCls = s.status === 'paid' ? 'mc-badge-paid' : s.status === 'active' ? 'mc-badge-active' : 'mc-badge-locked'
+    const badgeLabel = s.status === 'paid' ? '✅ Payé' : s.status === 'active' ? '🔓 Actif' : '🔒 Bloqué'
+    const progressHtml = s.progress != null && s.status === 'active'
+      ? `<div class="mc-step-progress"><div class="mc-prog-track"><div class="mc-prog-fill" style="width:${s.progress}%"></div></div></div>`
+      : ''
+    const actionHtml = s.status === 'active' && !isSent
+      ? `<div class="mc-step-action"><button class="mc-pay-btn" onclick="showToast('Paiement jalon ${i+1} — bientôt disponible')">Payer ce jalon →</button></div>`
+      : ''
+    return `
+      <div class="mc-step">
+        <div class="mc-step-hdr">
+          <span class="mc-step-name">JALON ${i+1} — ${_esc(s.name)}</span>
+          <span class="mc-step-badge ${badgeCls}">${badgeLabel}</span>
+        </div>
+        <div class="mc-step-meta">
+          <span>${fmt(s.amount)} FCFA</span>
+          <span>${s.days} jours</span>
+          ${s.deliverable ? `<span>${_esc(s.deliverable)}</span>` : ''}
+        </div>
+        ${progressHtml}
+        ${actionHtml}
+      </div>`
+  }).join('')
+
+  const paid      = steps.filter(s => s.status === 'paid').reduce((a, s) => a + s.amount, 0)
+  const remaining = steps.filter(s => s.status !== 'paid').reduce((a, s) => a + s.amount, 0)
+
+  const div = document.createElement('div')
+  div.className = 'msg-row proposal-row'
+  div.dataset.msgId = m.id
+  div.innerHTML = `
+    <div class="milestone-card">
+      <div class="mc-hdr">
+        <div class="mc-icon">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <div>
+          <div class="mc-title">🏗️ PROPOSITION EN JALONS · ${_esc(d.senderName || '')}</div>
+          <div class="mc-sub">${_esc(d.title || '')}</div>
+        </div>
+      </div>
+      ${stepsHtml}
+      <div class="mc-footer">
+        <span class="mc-total-label">Total · Payé ${fmt(paid)} · Restant ${fmt(remaining)}</span>
+        <span class="mc-total-val">${fmt(d.total || 0)} FCFA</span>
+      </div>
     </div>`
   return div
 }
@@ -1576,7 +2023,15 @@ function renderTemplates() {
   if (currentConv?.type === 'system') { bar.classList.add('hidden'); return }
   const templates = currentRole === 'freelance' ? FREELANCE_TEMPLATES : CLIENT_TEMPLATES
   bar.classList.remove('hidden')
-  bar.innerHTML = templates.map(t => `<button type="button" class="tmpl-chip" onclick="useTemplate('${t.replace(/'/g,"\\'")}')"> ${t}</button>`).join('')
+  bar.innerHTML = ''
+  for (const t of templates) {
+    const btn = document.createElement('button')
+    btn.type = 'button'
+    btn.className = 'tmpl-chip'
+    btn.textContent = t
+    btn.addEventListener('click', () => useTemplate(t))
+    bar.appendChild(btn)
+  }
 }
 
 window.useTemplate = function(text) {
@@ -1593,14 +2048,8 @@ function _timeNow() {
 }
 
 function _refreshAll() {
-  renderEscrowActionBar()
-  renderEscrowBannerActions()
+  renderEscrowBlock()
   renderRightPanel()
-  const o = currentConv?.order
-  if (o) {
-    document.getElementById('escrowStatusText').textContent = getOrderStatusText(o.status)
-    document.getElementById('escrowAmountText').textContent = fmt(o.amount)
-  }
 }
 
 function _addMsg(msg) {
@@ -1755,6 +2204,11 @@ function _pmConfirm() {
 }
 
 function _pmFinalize() {
+  if (_pendingProposalPayment) {
+    _finalizeProposalPayment(_pendingProposalPayment)
+    _pendingProposalPayment = null
+    return
+  }
   if (!currentConv?.order) return
   currentConv.order.status = 'FUNDS_SECURED'
   const t = _timeNow()
@@ -2297,6 +2751,453 @@ window.showToast = showToast
 
 // expose for nav
 window.filterConvs = window.filterConvs
+
+// ── ROLE TOOLBAR ───────────────────────────────────────────────────────────────
+function renderRoleToolbar() {
+  const tb = document.getElementById('roleToolbar')
+  if (!tb) return
+  const conv = currentConv
+  if (!conv || conv.type === 'system' || conv.type === 'order') {
+    tb.classList.add('hidden')
+    return
+  }
+  tb.classList.remove('hidden')
+  if (currentRole === 'freelance') {
+    tb.innerHTML = `
+      <button type="button" class="rtb-btn primary" onclick="openPropPanel('new')">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        Envoyer une proposition
+      </button>
+      <button type="button" class="rtb-btn" onclick="showToast('Demande acompte — bientôt disponible')">💰 Demander un acompte</button>`
+  } else {
+    tb.innerHTML = `
+      <button type="button" class="rtb-btn primary" onclick="openPropPanel('request')">📋 Demander un devis</button>
+      <button type="button" class="rtb-btn" onclick="showToast('Consultez son catalogue')">🔍 Voir ses services</button>`
+  }
+}
+
+// ── RECURRING BANNER ──────────────────────────────────────────────────────────
+function renderRecurBanner() {
+  const banner = document.getElementById('recurBanner')
+  if (!banner || !currentConv) { banner?.classList.add('hidden'); return }
+  if (currentConv.type !== 'direct') { banner.classList.add('hidden'); return }
+  const completed = allConvs.find(c =>
+    c.type === 'order' && c.with === currentConv.with &&
+    ['COMPLETED', 'VALIDATED'].includes(c.order?.status)
+  )
+  if (!completed) { banner.classList.add('hidden'); return }
+  banner.classList.remove('hidden')
+  banner.innerHTML = `
+    <div class="rb-icon">⭐</div>
+    <div class="rb-text">
+      <div class="rb-title">Collaboration récurrente</div>
+      <div class="rb-sub">Vous avez déjà travaillé ensemble · ${_esc(completed.order?.service || 'Commande précédente')}</div>
+    </div>
+    <div class="rb-btns">
+      <button type="button" class="rb-btn rb-btn-primary" onclick="openPropPanel('new')">Refaire une commande</button>
+      <button type="button" class="rb-btn rb-btn-sec" onclick="openConv('${completed.id}')">Voir commande</button>
+    </div>`
+}
+
+// ── PROPOSAL PANEL ─────────────────────────────────────────────────────────────
+window.openPropPanel = function(mode) {
+  const overlay = document.getElementById('propOverlay')
+  const panel   = document.getElementById('propPanel')
+  const titleEl = document.getElementById('ppPanelTitle')
+  const lbl = { new: '📋 Nouvelle proposition', request: '📋 Demande de devis', counter: '🔄 Contre-proposition' }
+  if (titleEl) titleEl.textContent = lbl[mode] || lbl.new
+  const livs = document.getElementById('ppLivrables')
+  if (livs && !livs.children.length) ppAddLivrable()
+  ppUpdateExpiryLabel()
+  overlay?.classList.add('open')
+  panel?.classList.add('open')
+  setTimeout(() => document.getElementById('ppTitle')?.focus(), 200)
+}
+
+window.closePropPanel = function() {
+  document.getElementById('propOverlay')?.classList.remove('open')
+  document.getElementById('propPanel')?.classList.remove('open')
+}
+
+// ── PROPOSAL FORM HELPERS ─────────────────────────────────────────────────────
+window.ppUpdateTitle = function(inp) {
+  const c = document.getElementById('ppTitleCount')
+  if (c) c.textContent = inp.value.length + '/100'
+}
+
+window.ppUpdateBreakdown = function() {
+  const price = parseInt(document.getElementById('ppPrice')?.value || '0', 10)
+  const box = document.getElementById('ppBreakdown')
+  if (!box) return
+  if (!price || price < 100) { box.classList.add('pp-breakdown-hidden'); return }
+  box.classList.remove('pp-breakdown-hidden')
+  let rate = 0.12
+  try {
+    const s = JSON.parse(localStorage.getItem('oriupe_session') || 'null')
+    if (s?.badgeLevel === 'top_oriupe') rate = 0.08
+    else if (s?.badgeLevel === 'elite') rate = 0.05
+  } catch {}
+  const commission = Math.round(price * rate)
+  const net = price - commission
+  const rl = document.getElementById('ppRateLabel')
+  const cp = document.getElementById('ppClientPays')
+  const co = document.getElementById('ppCommission')
+  const ne = document.getElementById('ppNet')
+  if (rl) rl.textContent = Math.round(rate * 100)
+  if (cp) cp.textContent = fmt(price) + ' FCFA'
+  if (co) co.textContent = '−' + fmt(commission) + ' FCFA'
+  if (ne) ne.textContent = fmt(net) + ' FCFA'
+}
+
+window.ppUpdateDeadline = function() {
+  const days = parseInt(document.getElementById('ppDays')?.value || '0', 10)
+  const lbl = document.getElementById('ppDeadlineLabel')
+  if (!lbl) return
+  if (!days || days < 1) { lbl.textContent = ''; return }
+  const d = new Date()
+  let added = 0
+  while (added < days) {
+    d.setDate(d.getDate() + 1)
+    const dow = d.getDay()
+    if (dow !== 0 && dow !== 6) added++
+  }
+  lbl.textContent = 'Livraison le ' + d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })
+}
+
+window.ppUpdateExpiryLabel = function() {
+  const val = parseInt(document.getElementById('ppValidity')?.value || '48', 10)
+  const lbl = document.getElementById('ppExpiryLabel')
+  if (!lbl) return
+  const exp = new Date(Date.now() + val * 3600000)
+  lbl.textContent = 'Expire ' + exp.toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })
+}
+
+window.ppAddLivrable = function() {
+  const c = document.getElementById('ppLivrables')
+  if (!c) return
+  const row = document.createElement('div')
+  row.className = 'pp-livrable-row'
+  row.innerHTML = `
+    <input class="pp-livrable-inp" type="text" placeholder="ex: Fichiers sources Figma" maxlength="120"/>
+    <button type="button" class="pp-livrable-rm" onclick="ppRemoveLivrable(this)" title="Retirer">
+      <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>`
+  c.appendChild(row)
+}
+window.ppRemoveLivrable = function(btn) { btn.closest('.pp-livrable-row')?.remove() }
+
+window.ppAddExtra = function() {
+  const c = document.getElementById('ppExtras')
+  if (!c) return
+  const row = document.createElement('div')
+  row.className = 'pp-extra-row'
+  row.innerHTML = `
+    <input class="pp-extra-name" type="text" placeholder="ex: Révision supplémentaire" maxlength="80"/>
+    <input class="pp-extra-price-inp" type="number" min="0" placeholder="Prix FCFA"/>
+    <button type="button" class="pp-livrable-rm" onclick="ppRemoveExtra(this)" title="Retirer">
+      <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>`
+  c.appendChild(row)
+}
+window.ppRemoveExtra = function(btn) { btn.closest('.pp-extra-row')?.remove() }
+
+// ── COLLECT + SEND PROPOSAL ───────────────────────────────────────────────────
+function _collectPropData() {
+  const title     = document.getElementById('ppTitle')?.value?.trim() || ''
+  const desc      = document.getElementById('ppDesc')?.value?.trim() || ''
+  const price     = parseInt(document.getElementById('ppPrice')?.value || '0', 10)
+  const days      = parseInt(document.getElementById('ppDays')?.value || '0', 10)
+  const revisions = document.getElementById('ppRevisions')?.value || '3'
+  const validity  = parseInt(document.getElementById('ppValidity')?.value || '48', 10)
+  const message   = document.getElementById('ppMessage')?.value?.trim() || ''
+  const livrables = []
+  document.querySelectorAll('#ppLivrables .pp-livrable-inp').forEach(inp => {
+    const v = inp.value.trim(); if (v) livrables.push(v)
+  })
+  const extras = []
+  document.querySelectorAll('#ppExtras .pp-extra-row').forEach(row => {
+    const name = row.querySelector('.pp-extra-name')?.value?.trim()
+    const ep = parseInt(row.querySelector('.pp-extra-price-inp')?.value || '0', 10)
+    if (name) extras.push({ name, price: ep })
+  })
+  return { title, desc, price, days, revisions, validity, message, livrables, extras }
+}
+
+window.ppPreview = function() {
+  const data = _collectPropData()
+  if (!data.title) { showToast('⚠️ Renseignez au moins le titre'); return }
+  let rate = 0.12
+  try {
+    const s = JSON.parse(localStorage.getItem('oriupe_session') || 'null')
+    if (s?.badgeLevel === 'top_oriupe') rate = 0.08
+    else if (s?.badgeLevel === 'elite') rate = 0.05
+  } catch {}
+  const commission = Math.round(data.price * rate)
+  const net = data.price ? data.price - commission : 0
+  const tempMsg = {
+    id: 'preview_' + Date.now(), type: 'proposal_card',
+    sender: currentRole === 'freelance' ? 'kofi' : 'awa',
+    proposal: { ...data, commission, net, commissionRate: Math.round(rate * 100), status: 'pending', previewMode: true },
+    time: _timeNow()
+  }
+  const existing = document.getElementById('pp-preview-overlay')
+  if (existing) existing.remove()
+  const ov = document.createElement('div')
+  ov.id = 'pp-preview-overlay'
+  ov.style.cssText = 'position:fixed;inset:0;z-index:1100;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(15,37,53,.8);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)'
+  const cardEl = createProposalCard(tempMsg)
+  const box = document.createElement('div')
+  box.style.cssText = 'background:#fff;border-radius:18px;padding:20px;max-width:420px;width:100%;box-shadow:0 20px 60px rgba(15,37,53,.3);max-height:90vh;overflow-y:auto'
+  box.innerHTML = '<div style="font-family:\'Bricolage Grotesque\',sans-serif;font-size:15px;font-weight:800;color:#0F2535;margin-bottom:12px">Aperçu de la proposition</div>'
+  box.appendChild(cardEl.firstElementChild || cardEl)
+  const closeBtn = document.createElement('button')
+  closeBtn.textContent = 'Fermer'
+  closeBtn.style.cssText = 'width:100%;margin-top:12px;padding:10px;border-radius:10px;border:1.5px solid #E0E8EF;background:#fff;font-size:13px;font-weight:700;color:#4A6572;cursor:pointer'
+  closeBtn.onclick = () => ov.remove()
+  box.appendChild(closeBtn)
+  ov.appendChild(box)
+  document.body.appendChild(ov)
+  ov.addEventListener('click', e => { if (e.target === ov) ov.remove() })
+}
+
+window.ppSend = function() {
+  const data = _collectPropData()
+  if (!data.title) { document.getElementById('ppTitle')?.focus(); showToast('⚠️ Titre requis'); return }
+  if (!data.price || data.price < 100) { document.getElementById('ppPrice')?.focus(); showToast('⚠️ Montant invalide (min 100 FCFA)'); return }
+  if (!data.days || data.days < 1) { document.getElementById('ppDays')?.focus(); showToast('⚠️ Délai requis'); return }
+  let rate = 0.12
+  try {
+    const s = JSON.parse(localStorage.getItem('oriupe_session') || 'null')
+    if (s?.badgeLevel === 'top_oriupe') rate = 0.08
+    else if (s?.badgeLevel === 'elite') rate = 0.05
+  } catch {}
+  const commission = Math.round(data.price * rate)
+  const net = data.price - commission
+  const expiresAt = new Date(Date.now() + data.validity * 3600000).toISOString()
+  const msg = {
+    id: 'msg_prop_' + Date.now(),
+    type: 'proposal_card',
+    sender: currentRole === 'freelance' ? 'kofi' : 'awa',
+    proposal: { ...data, commission, net, commissionRate: Math.round(rate * 100), status: 'pending', expiresAt, sentBy: currentRole },
+    time: _timeNow()
+  }
+  if (!DEMO_MSGS[currentConvId]) DEMO_MSGS[currentConvId] = []
+  DEMO_MSGS[currentConvId].push(msg)
+  document.getElementById('messages').appendChild(createMsgEl(msg))
+  scrollToBottom()
+  const conv = allConvs.find(c => c.id === currentConvId)
+  if (conv) { conv.preview = '📋 ' + data.title.substring(0, 35); conv.time = _timeNow(); renderConvList() }
+  closePropPanel()
+  showToast('📋 Proposition envoyée !')
+  if (currentRole === 'freelance') {
+    setTimeout(() => {
+      const ack = { id: 'ack_'+Date.now(), sender: currentConv?.with || 'awa',
+        body: '✅ Proposition reçue ! Je regarde ça et je reviens vers vous rapidement.', time: _timeNow(), reactions: {} }
+      DEMO_MSGS[currentConvId].push(ack)
+      document.getElementById('messages').appendChild(createMsgEl(ack))
+      scrollToBottom()
+    }, 1800)
+  }
+}
+
+// ── RENDER PROPOSAL CARD ───────────────────────────────────────────────────────
+function createProposalCard(m) {
+  const div = document.createElement('div')
+  div.className = 'msg-row proposal-row'
+  div.dataset.msgId = m.id
+  const p = m.proposal
+  const isFromMe = m.sender === (currentRole === 'freelance' ? 'kofi' : 'awa')
+  const isClient = currentRole === 'client'
+  const STATUS_META = {
+    pending:  { badgeClass: 'pc-badge-pending',  badge: '⏳ En attente',  card: '' },
+    accepted: { badgeClass: 'pc-badge-accepted', badge: '✅ Acceptée',     card: 'accepted' },
+    declined: { badgeClass: 'pc-badge-declined', badge: '❌ Refusée',      card: 'declined' },
+    expired:  { badgeClass: 'pc-badge-expired',  badge: '⏰ Expirée',      card: 'expired' },
+    counter:  { badgeClass: 'pc-badge-counter',  badge: '🔄 Contre-prop.', card: 'counter' },
+  }
+  const sm = STATUS_META[p.status] || STATUS_META.pending
+
+  const livHtml = p.livrables?.length
+    ? `<div class="pc-livrables">${p.livrables.map(l =>
+        `<div class="pc-livrable"><div class="pc-livrable-check"><svg width="8" height="8" viewBox="0 0 12 12" fill="none"><polyline points="2 6 5 9 10 3" stroke="#3CB878" stroke-width="1.8" stroke-linecap="round"/></svg></div><span>${_esc(l)}</span></div>`
+      ).join('')}</div>` : ''
+
+  const extHtml = p.extras?.length
+    ? `<div class="pc-extras-list"><div class="pc-extras-title">Extras optionnels</div>${
+        p.extras.map((ex, i) =>
+          `<div class="pc-extra-item">
+            <div class="pc-extra-check" id="exc_${m.id}_${i}" onclick="toggleExtra('${m.id}',${i})">
+              <svg width="8" height="8" viewBox="0 0 12 12" fill="none" class="exc-svg" style="display:none"><polyline points="2 6 5 9 10 3" stroke="#fff" stroke-width="1.8"/></svg>
+            </div>
+            <span style="flex:1">${_esc(ex.name)}</span>
+            <span style="font-size:11px;font-weight:700;color:#3CB878">+${fmt(ex.price)} FCFA</span>
+          </div>`
+        ).join('')
+      }</div>` : ''
+
+  let expiryHtml = ''
+  if (p.expiresAt && p.status === 'pending') {
+    const exp = new Date(p.expiresAt)
+    const h = Math.round((exp - Date.now()) / 3600000)
+    const urgent = h < 24
+    const txt = h > 0
+      ? (h < 24 ? `⏰ Expire dans ${h}h` : `⏰ Expire le ${exp.toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' })}`)
+      : '⏰ Expirée'
+    expiryHtml = `<div class="pc-expiry${urgent ? ' urgent' : ''}">${txt}</div>`
+  }
+
+  let actionsHtml = ''
+  if (!p.previewMode) {
+    if (p.status === 'pending') {
+      if (isClient && !isFromMe) {
+        actionsHtml = `<div class="pc-actions">
+          <button type="button" class="pc-btn pc-btn-accept" onclick="acceptProposal('${m.id}')">✅ Accepter &amp; Payer</button>
+          <button type="button" class="pc-btn pc-btn-counter" onclick="counterProposal('${m.id}')">🔄 Contre-proposer</button>
+          <button type="button" class="pc-btn pc-btn-decline" onclick="declineProposal('${m.id}')">✕</button>
+        </div>`
+      } else if (isFromMe) {
+        actionsHtml = `<div class="pc-actions">
+          <button type="button" class="pc-btn pc-btn-cancel" onclick="cancelProposal('${m.id}')">Annuler la proposition</button>
+        </div>`
+      }
+    } else if (p.status === 'accepted') {
+      actionsHtml = `<div class="pc-status-line pc-status-ok">✅ Proposition acceptée — commande créée</div>`
+    } else if (p.status === 'declined') {
+      actionsHtml = `<div class="pc-status-line pc-status-no">❌ Proposition refusée</div>`
+    } else if (p.status === 'expired') {
+      actionsHtml = `<div class="pc-status-line pc-status-no">⏰ Proposition expirée</div>`
+    }
+  }
+
+  const priceHtml = p.price ? `
+    <div class="pc-price-row">
+      <div><div class="pc-price-main">${fmt(p.price)} FCFA</div><div class="pc-price-label">Prix total client</div></div>
+      <div style="text-align:right">
+        <div style="font-size:10px;color:#9AABB5">Net freelance</div>
+        <div style="font-size:13px;font-weight:800;color:#3CB878">${fmt(p.net || p.price)} FCFA</div>
+      </div>
+    </div>` : ''
+
+  const msgHtml = p.message ? `<div style="font-size:11.5px;color:#4A6572;font-style:italic;padding:8px 10px;background:#F8FAFB;border-radius:8px;margin-bottom:8px">"${_esc(p.message)}"</div>` : ''
+
+  div.innerHTML = `
+    <div class="proposal-card ${isFromMe ? 'sent-view' : ''} ${sm.card}">
+      <div class="pc-header">
+        <div style="flex:1;min-width:0">
+          <div class="pc-title">${_esc(p.title)}</div>
+          ${p.desc ? `<div style="font-size:11.5px;color:#4A6572;margin-top:2px;line-height:1.4">${_esc(p.desc).replace(/\n/g,'<br>')}</div>` : ''}
+        </div>
+        <span class="pc-badge ${sm.badgeClass}">${sm.badge}</span>
+      </div>
+      <div class="pc-meta">
+        ${p.price ? `<div class="pc-meta-item">💰 <strong>${fmt(p.price)} FCFA</strong></div>` : ''}
+        ${p.days  ? `<div class="pc-meta-item">📅 <strong>${p.days}j</strong> ouvrés</div>` : ''}
+        ${p.revisions ? `<div class="pc-meta-item">🔄 <strong>${p.revisions}</strong> révision${p.revisions==='1'?'':'s'}</div>` : ''}
+      </div>
+      ${priceHtml}
+      ${livHtml}
+      ${p.livrables?.length && p.extras?.length ? '<div class="pc-divider"></div>' : ''}
+      ${extHtml}
+      ${msgHtml}
+      ${expiryHtml}
+      ${actionsHtml}
+    </div>
+    <div class="msg-meta" style="justify-content:center;margin-top:5px"><span class="msg-time">${m.time}</span></div>`
+  return div
+}
+
+// ── PROPOSAL RESPONSE HANDLERS ────────────────────────────────────────────────
+window.acceptProposal = function(msgId) {
+  const msg = (DEMO_MSGS[currentConvId] || []).find(m => m.id === msgId)
+  if (!msg?.proposal) return
+  msg.proposal.status = 'accepted'
+  const el = document.querySelector(`[data-msg-id="${msgId}"]`)
+  if (el) el.replaceWith(createMsgEl(msg))
+  _pendingProposalPayment = msg.proposal
+  _showPaymentModal(msg.proposal.price)
+}
+
+window.declineProposal = function(msgId) {
+  const msg = (DEMO_MSGS[currentConvId] || []).find(m => m.id === msgId)
+  if (!msg?.proposal) return
+  msg.proposal.status = 'declined'
+  const el = document.querySelector(`[data-msg-id="${msgId}"]`)
+  if (el) el.replaceWith(createMsgEl(msg))
+  _addMsg({ id: 'sys_dec_'+Date.now(), type: 'escrow', sender: 'sys', body: '❌ Proposition refusée par le client.', time: _timeNow() })
+  scrollToBottom()
+  showToast('Proposition refusée')
+}
+
+window.counterProposal = function(msgId) {
+  const msg = (DEMO_MSGS[currentConvId] || []).find(m => m.id === msgId)
+  if (!msg?.proposal) return
+  msg.proposal.status = 'counter'
+  const el = document.querySelector(`[data-msg-id="${msgId}"]`)
+  if (el) el.replaceWith(createMsgEl(msg))
+  openPropPanel('counter')
+  const p = msg.proposal
+  const pp = document.getElementById('ppPrice')
+  const pd = document.getElementById('ppDays')
+  const pt = document.getElementById('ppTitle')
+  if (pt) { pt.value = p.title; ppUpdateTitle(pt) }
+  if (pp) pp.value = p.price || ''
+  if (pd) pd.value = p.days || ''
+  ppUpdateBreakdown()
+  ppUpdateDeadline()
+  showToast('Modifiez les conditions et envoyez')
+}
+
+window.cancelProposal = function(msgId) {
+  const msg = (DEMO_MSGS[currentConvId] || []).find(m => m.id === msgId)
+  if (!msg?.proposal) return
+  msg.proposal.status = 'declined'
+  const el = document.querySelector(`[data-msg-id="${msgId}"]`)
+  if (el) el.replaceWith(createMsgEl(msg))
+  showToast('Proposition annulée')
+}
+
+window.toggleExtra = function(msgId, extraIdx) {
+  const checkEl = document.getElementById(`exc_${msgId}_${extraIdx}`)
+  if (!checkEl) return
+  const on = checkEl.classList.toggle('on')
+  const svg = checkEl.querySelector('.exc-svg')
+  if (svg) svg.style.display = on ? 'block' : 'none'
+}
+
+// ── FINALIZE PROPOSAL PAYMENT ─────────────────────────────────────────────────
+function _finalizeProposalPayment(proposal) {
+  const t = _timeNow()
+  const amount = proposal.price
+  const rate = (proposal.commissionRate || 12) / 100
+  const commission = Math.round(amount * rate)
+  const net = amount - commission
+  const orderId = 'ORD-' + (1090 + Math.floor(Math.random() * 900))
+  const deadlineDate = new Date()
+  deadlineDate.setDate(deadlineDate.getDate() + (proposal.days || 7) + 2)
+  const deadlineStr = deadlineDate.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })
+  const orderConv = {
+    id: 'conv_order_prop_' + Date.now(),
+    type: 'order',
+    with: currentConv?.with || 'awa',
+    title: 'Commande ' + orderId,
+    preview: '🔐 Fonds sécurisés',
+    time: t, unread: 0, online: true, orderId,
+    order: { ref: orderId, service: proposal.title, amount, commission, net, status: 'FUNDS_SECURED', deadline: deadlineStr }
+  }
+  allConvs.unshift(orderConv)
+  DEMO_MSGS[orderConv.id] = [
+    { id: 'esc_ps_'+Date.now(), type: 'escrow_card', sender: 'sys', time: t,
+      escrow: { ...orderConv.order, status: 'FUNDS_SECURED', isActive: true } },
+    { id: 'sys_ps_'+Date.now(), type: 'escrow', sender: 'sys',
+      body: `🔐 Paiement de ${fmt(amount)} FCFA sécurisé. Mission démarrée.`, time: t }
+  ]
+  renderConvList()
+  _addMsg({ id: 'sys_pacc_'+Date.now(), type: 'system', sender: 'sys',
+    official: { type: 'annonce', icon: '✅', text: `Proposition acceptée ! Commande ${orderId} créée. ${fmt(amount)} FCFA sécurisés par Oriupe Escrow.` }, time: t })
+  scrollToBottom()
+  showToast('✅ Paiement sécurisé — commande créée !')
+  setTimeout(() => openConv(orderConv.id), 1500)
+}
 </script>
 <script type="module">
   import { toast } from '/src/shared/toast.js'

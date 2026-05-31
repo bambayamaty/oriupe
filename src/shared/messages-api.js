@@ -98,10 +98,14 @@ async function _uploadAttachments(messageId, conversationId, files) {
       .from('message-attachments')
       .upload(path, file)
     if (upErr) continue
-    const { data: url } = supabase.storage.from('message-attachments').getPublicUrl(path)
+    const { data: signedData, error: signErr } = await supabase.storage
+      .from('message-attachments')
+      .createSignedUrl(path, 86400) // 24h, bucket privé
+    if (signErr) continue
     await supabase.from('message_attachments').insert({
-      message_id: messageId,
-      url:        url.publicUrl,
+      message_id:   messageId,
+      storage_path: path,
+      url:          signedData.signedUrl,
       name:       file.name,
       size_bytes: file.size,
       mime_type:  file.type

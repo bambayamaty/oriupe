@@ -464,7 +464,7 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
         <div class="form-row">
           <div class="form-group">
             <label class="form-label">Votre rôle *</label>
-            <select class="form-control">
+            <select class="form-control" id="dispute-role">
               <option value="">Sélectionner...</option>
               <option>Client (client)</option>
               <option>Freelance (freelance)</option>
@@ -472,13 +472,13 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
           </div>
           <div class="form-group">
             <label class="form-label">Numéro de commande *</label>
-            <input type="text" class="form-control" placeholder="ex: ORD-2025-00842">
+            <input type="text" class="form-control" id="dispute-order" placeholder="ex: ORD-2025-00842">
           </div>
         </div>
 
         <div class="form-group">
           <label class="form-label">Type de litige *</label>
-          <select class="form-control">
+          <select class="form-control" id="dispute-type">
             <option value="">Sélectionner le type de litige...</option>
             <option>Livraison non conforme au cahier des charges</option>
             <option>Non-livraison dans les délais convenus</option>
@@ -492,12 +492,12 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
 
         <div class="form-group">
           <label class="form-label">Description détaillée du problème *</label>
-          <textarea class="form-control" placeholder="Décrivez le problème avec précision : ce qui était attendu, ce qui a été livré, dates importantes, échanges pertinents..."></textarea>
+          <textarea class="form-control" id="dispute-desc" placeholder="Décrivez le problème avec précision : ce qui était attendu, ce qui a été livré, dates importantes, échanges pertinents..."></textarea>
         </div>
 
         <div class="form-group">
           <label class="form-label">Montant contesté (FCFA)</label>
-          <input type="number" class="form-control" placeholder="ex: 75000">
+          <input type="number" class="form-control" id="dispute-amount" placeholder="ex: 75000">
         </div>
 
         <div class="form-group">
@@ -621,26 +621,113 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
   </div>
 </footer>
 
-<script>
-function submitDispute(){
-  var consent=document.getElementById('consent');
-  if(!consent.checked){
-    const msg='Veuillez cocher la case de consentement pour continuer.';
-    let b=document.getElementById('dispute-err');
-    if(!b){b=document.createElement('div');b.id='dispute-err';b.style.cssText='background:#FEE2E2;border:1px solid rgba(239,68,68,.25);border-radius:10px;padding:10px 14px;font-size:13px;font-weight:600;color:#B91C1C;margin-bottom:14px';consent.closest('form,div')?.prepend(b);}
-    b.textContent=msg;setTimeout(()=>{if(b)b.style.display='none';},4000);
-    return;
-  }
-  document.getElementById('formContent').style.display='none';
-  document.getElementById('successState').style.display='block';
+<script type="module">
+import { supabase, isSupabaseConfigured } from '/src/shared/supabase.js'
+
+const TYPE_MAP = {
+  'Livraison non conforme au cahier des charges': 'non_respect_brief',
+  'Non-livraison dans les délais convenus':       'delai_depasse',
+  'Problème de qualité majeur':                   'qualite_insuffisante',
+  'Comportement inapproprié / communication':     'autre',
+  'Problème de paiement / remboursement':         'fraude',
+  'Violation de la propriété intellectuelle':     'fraude',
+  'Autre (préciser dans la description)':         'autre',
 }
-// File upload label update
-document.getElementById('fileInput').addEventListener('change',function(){
-  var area=this.closest('.upload-area');
-  if(this.files.length>0){
-    area.querySelector('strong').textContent=this.files.length+' fichier(s) sélectionné(s)';
+
+function showErr(msg) {
+  let b = document.getElementById('dispute-err')
+  if (!b) {
+    b = document.createElement('div')
+    b.id = 'dispute-err'
+    b.style.cssText = 'background:#FEE2E2;border:1px solid rgba(239,68,68,.25);border-radius:10px;padding:10px 14px;font-size:13px;font-weight:600;color:#B91C1C;margin-bottom:14px'
+    document.getElementById('formContent').prepend(b)
   }
-});
+  b.style.display = ''
+  b.textContent = msg
+  setTimeout(() => { if (b) b.style.display = 'none' }, 5000)
+}
+
+window.submitDispute = async function() {
+  if (!document.getElementById('consent').checked) {
+    showErr('Veuillez cocher la case de consentement pour continuer.')
+    return
+  }
+
+  const orderRef = (document.getElementById('dispute-order')?.value || '').trim().toUpperCase()
+  const typeLabel = document.getElementById('dispute-type')?.value || ''
+  const desc = (document.getElementById('dispute-desc')?.value || '').trim()
+
+  if (!orderRef) { showErr('Veuillez indiquer le numéro de commande.'); return }
+  if (!typeLabel) { showErr('Veuillez sélectionner le type de litige.'); return }
+  if (!desc) { showErr('Veuillez décrire le problème.'); return }
+
+  const btn = document.querySelector('.btn-submit')
+  if (btn) { btn.disabled = true; btn.textContent = 'Envoi en cours...' }
+
+  if (!isSupabaseConfigured || !supabase) {
+    // Fallback: no Supabase configured — show success with placeholder ticket
+    if (btn) { btn.disabled = false; btn.textContent = '🚩 Soumettre le litige' }
+    document.getElementById('formContent').style.display = 'none'
+    document.getElementById('successState').style.display = 'block'
+    return
+  }
+
+  try {
+    // Resolve order ref → UUID
+    const { data: order, error: ordErr } = await supabase
+      .from('orders')
+      .select('id')
+      .eq('ref', orderRef)
+      .single()
+
+    if (ordErr || !order) {
+      if (btn) { btn.disabled = false; btn.textContent = '🚩 Soumettre le litige' }
+      showErr('Commande introuvable. Vérifiez le numéro et réessayez.')
+      return
+    }
+
+    const category = TYPE_MAP[typeLabel] || 'autre'
+    const { data: result, error: rpcErr } = await supabase.rpc('fn_open_dispute', {
+      p_order_id:    order.id,
+      p_category:    category,
+      p_reason:      typeLabel,
+      p_description: desc || null,
+    })
+
+    if (rpcErr) {
+      if (btn) { btn.disabled = false; btn.textContent = '🚩 Soumettre le litige' }
+      if (rpcErr.message?.includes('DISPUTE_ALREADY_OPEN')) {
+        showErr('Un litige est déjà ouvert pour cette commande.')
+      } else if (rpcErr.message?.includes('NOT_AUTHORIZED')) {
+        showErr('Vous n\'êtes pas partie prenante de cette commande.')
+      } else if (rpcErr.message?.includes('INVALID_STATUS')) {
+        showErr('Le statut de la commande ne permet pas d\'ouvrir un litige.')
+      } else {
+        showErr('Erreur lors de l\'envoi. Vérifiez vos informations et réessayez.')
+      }
+      return
+    }
+
+    // Show success — use dispute ID as ticket reference
+    const ticketId = result?.dispute_id
+      ? 'LIT-' + result.dispute_id.substring(0, 8).toUpperCase()
+      : 'LIT-' + Date.now().toString(36).toUpperCase()
+    const ticketEl = document.querySelector('#successState .ticket-id')
+    if (ticketEl) ticketEl.textContent = '🎫 Ticket #' + ticketId
+
+    document.getElementById('formContent').style.display = 'none'
+    document.getElementById('successState').style.display = 'block'
+
+  } catch (e) {
+    if (btn) { btn.disabled = false; btn.textContent = '🚩 Soumettre le litige' }
+    showErr('Erreur réseau. Vérifiez votre connexion et réessayez.')
+  }
+}
+
+document.getElementById('fileInput').addEventListener('change', function() {
+  const area = this.closest('.upload-area')
+  if (this.files.length > 0) area.querySelector('strong').textContent = this.files.length + ' fichier(s) sélectionné(s)'
+})
 </script>
 <script>
 (function(){

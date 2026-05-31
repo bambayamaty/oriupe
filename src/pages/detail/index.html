@@ -160,9 +160,11 @@ nav{background:rgba(255,255,255,.95);backdrop-filter:blur(16px);height:var(--nav
 .oi-row.checked{color:var(--navy2);font-weight:500}
 .oi-check{width:16px;height:16px;border-radius:50%;background:var(--green-l);display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .oi-x{width:16px;height:16px;border-radius:50%;background:var(--bg2);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.btn-order{width:100%;background:linear-gradient(135deg,var(--green),#4FD090);color:#fff;border:none;border-radius:12px;padding:16px;font-size:15px;font-weight:800;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:all .2s var(--spring);box-shadow:0 4px 20px rgba(60,184,120,.35);margin-bottom:10px;letter-spacing:-.2px;display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none}
-.btn-order:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(60,184,120,.45)}
-.btn-order:active{transform:none}
+.btn-discuss{width:100%;background:linear-gradient(135deg,var(--green),#4FD090);color:#fff;border:none;border-radius:12px;padding:16px;font-size:15px;font-weight:800;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:all .2s var(--spring);box-shadow:0 4px 20px rgba(60,184,120,.35);margin-bottom:10px;letter-spacing:-.2px;display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none}
+.btn-discuss:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(60,184,120,.45)}
+.btn-discuss:active{transform:none}
+.btn-order{width:100%;background:#fff;color:var(--navy2);border:1.5px solid var(--border);border-radius:12px;padding:13px;font-size:14px;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;margin-bottom:10px}
+.btn-order:hover{border-color:var(--navy2);background:var(--bg)}
 .btn-contact{width:100%;background:#fff;color:var(--navy2);border:1.5px solid var(--border);border-radius:12px;padding:13px;font-size:14px;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
 .btn-contact:hover{border-color:var(--green);color:var(--green)}
 .escrow-notice{margin-top:12px;display:flex;align-items:center;gap:8px;background:var(--green-xl);border:1px solid rgba(60,184,120,.2);border-radius:9px;padding:10px 13px}
@@ -776,18 +778,26 @@ nav.scrolled .btn-ghost{color:#1B3A4A}
           <div class="oi-row"><div class="oi-x"><svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1.5 1.5L6.5 6.5M6.5 1.5L1.5 6.5" stroke="var(--muted2)" stroke-width="1.2" stroke-linecap="round"/></svg></div>Dashboard admin</div>
         </div>
 
-        <button class="btn-order" id="btn-order-main" data-role="client">Commander maintenant</button>
+        <!-- CTA principal : Discuter du projet -->
+        <button class="btn-discuss" id="btn-discuss-main" data-role="client">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2 3H13V10H8L5 13V10H2V3Z" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></svg>
+          Discuter du projet
+        </button>
+        <a class="btn-discuss" data-role="visitor" href="/src/pages/auth/index.html?next=%2Fsrc%2Fpages%2Fdetail%2Findex.html" style="display:none">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 3H12V9H7.5L5 12V9H2V3Z" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></svg>
+          Se connecter pour discuter
+        </a>
+        <!-- CTA secondaire : Commander -->
+        <button class="btn-order" id="btn-order-main" data-role="client">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M10 2L12.5 4V9C12.5 12 10 13.5 10 13.5S7.5 12 7.5 9V4L10 2Z" stroke="currentColor" stroke-width="1.3" fill="rgba(27,58,74,.07)"/><path d="M8.5 8L9.5 9.5L11.5 7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Commander directement
+        </button>
         <a class="btn-order" data-role="visitor" href="/src/pages/auth/index.html" style="display:none">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1.5" y="1" width="11" height="12" rx="2" stroke="#fff" stroke-width="1.4"/><path d="M4.5 7H9.5M7 4.5V9.5" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/></svg>
           Se connecter pour commander
         </a>
         <div data-role="freelance" style="display:none;padding:12px 14px;background:rgba(60,184,120,.08);border:1.5px solid rgba(60,184,120,.2);border-radius:10px;font-size:13px;color:var(--navy);line-height:1.55">
           <strong>Vous êtes freelance</strong> — Vous ne pouvez pas commander ce service directement. Pour passer une commande en tant que client, <a href="/src/pages/dashboard/freelance/index.html" style="color:var(--green);font-weight:600;text-decoration:none">basculez en mode client</a> depuis votre espace.
         </div>
-        <button class="btn-contact" id="btn-contact-main">
-          <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2 3H13V10H8L5 13V10H2V3Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
-          Contacter le freelance
-        </button>
 
         <div class="escrow-notice">
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="flex-shrink:0"><path d="M10 2L14 4V9C14 13 10 17 10 17C10 17 6 13 6 9V4L10 2Z" stroke="#3CB878" stroke-width="1.5" stroke-linejoin="round" fill="rgba(60,184,120,.1)"/><path d="M8 9.5L9.5 11L12.5 8" stroke="#3CB878" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -1108,9 +1118,9 @@ function confirmOrder(){
   const total       = calcTotal();
   const plan        = document.querySelector('.offer-tab.active')?.textContent||'Basique';
   const svcTitle    = document.querySelector('.svc-h1')?.textContent||'Service Oriupe';
-  const _plan = (window.getSession && window.getSession()?.plan) || 'free';
-  const _rates = {free:0.15, pro:0.10, business:0.07};
-  const _rate = _rates[_plan] || 0.15;
+  const _plan = (window.getSession && window.getSession()?.plan) || 'standard';
+  const _rates = { standard:0.12, top:0.08, elite:0.05, free:0.12, pro:0.08, business:0.05 };
+  const _rate = _rates[_plan] ?? 0.12;
   const commission  = Math.round(total*_rate);
   const net         = total-commission;
   const orderId     = 'ORD-'+(1090+Math.floor(Math.random()*9000));
@@ -1225,7 +1235,73 @@ function sendMessage(){
   </div>`;
 }
 
+/* ── "Discuter du projet" — ouvre ou crée une conversation directe ── */
+function openDiscussModal() {
+  // Vérif session
+  try {
+    const s = JSON.parse(localStorage.getItem('oriupe_session') || 'null');
+    if (!s || !s.isLoggedIn) {
+      window.location.href = '/src/pages/auth/index.html?next=' + encodeURIComponent(window.location.pathname + window.location.search);
+      return;
+    }
+  } catch {}
+
+  const svcTitle = document.querySelector('.svc-h1')?.textContent || 'ce service';
+  const freelanceName = document.querySelector('.seller-name')?.textContent || 'ce freelance';
+
+  // Vérifie si une conv directe existe déjà (localStorage)
+  try {
+    const pending = JSON.parse(localStorage.getItem('oriupe_pending_convs') || '[]');
+    const existing = pending.find(c => c.type === 'direct' && c.serviceContext);
+    if (existing) {
+      window.location.href = '/src/pages/messagerie/index.html?conv=' + existing.id;
+      return;
+    }
+  } catch {}
+
+  // Crée une nouvelle conversation directe avec message système contextuel
+  const convId = 'conv_disc_' + Date.now();
+  const timeStr = new Date().toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
+
+  const newConv = {
+    id: convId,
+    type: 'direct',
+    with: 'kofi',
+    title: freelanceName,
+    preview: '💡 Service : ' + svcTitle.substring(0, 35),
+    time: timeStr,
+    unread: 0,
+    online: true,
+    serviceContext: svcTitle
+  };
+
+  const newMsgs = [{
+    id: 'disc_intro_' + Date.now(),
+    type: 'system',
+    sender: 'sys',
+    body: null,
+    official: {
+      type: 'annonce',
+      icon: '💡',
+      text: 'Conversation démarrée depuis le service\n"' + svcTitle.substring(0, 60) + '"\nde ' + freelanceName + '.\n\nDiscutez librement de votre projet, négociez le prix et le délai, puis ' + freelanceName.split(' ')[0] + ' pourra vous envoyer une proposition formelle.'
+    },
+    time: timeStr
+  }];
+
+  try {
+    const convs = JSON.parse(localStorage.getItem('oriupe_pending_convs') || '[]');
+    convs.unshift(newConv);
+    localStorage.setItem('oriupe_pending_convs', JSON.stringify(convs));
+    const msgs = JSON.parse(localStorage.getItem('oriupe_pending_msgs') || '{}');
+    msgs[convId] = newMsgs;
+    localStorage.setItem('oriupe_pending_msgs', JSON.stringify(msgs));
+  } catch {}
+
+  window.location.href = '/src/pages/messagerie/index.html?conv=' + convId;
+}
+
 /* Hook buttons */
+document.getElementById('btn-discuss-main')?.addEventListener('click', openDiscussModal);
 document.getElementById('btn-order-main')?.addEventListener('click',openOrderModal);
 document.getElementById('btn-contact-main')?.addEventListener('click',openContactModal);
 </script>

@@ -15,7 +15,7 @@
 ═══════════════════════════════════════════════════════════════════ */
 
 const SESSION_KEY = 'oriupe_session';
-const SESSION_TTL = 30 * 24 * 60 * 60 * 1000; // 30 jours
+const SESSION_TTL = 24 * 60 * 60 * 1000; // 24 heures
 
 /* ─────────────────────────────────────────
    STRUCTURE DE SESSION COMPLÈTE
@@ -121,6 +121,24 @@ function requireAuth(allowedRoles) {
   // Rôle non autorisé
   if (allowedRoles && allowedRoles.length && !allowedRoles.includes(s.role)) {
     window.location.href = '/src/pages/home/index.html';
+    return;
+  }
+  // Async Supabase verification — corrects stale localStorage tokens
+  _verifySbSession();
+}
+
+async function _verifySbSession() {
+  try {
+    const mod = await import('/src/shared/supabase.js');
+    if (!mod.isSupabaseConfigured || !mod.supabase) return;
+    const { data, error } = await mod.supabase.auth.getSession();
+    if (error || !data?.session) {
+      localStorage.removeItem(SESSION_KEY);
+      const next = encodeURIComponent(window.location.href);
+      window.location.href = '/src/pages/auth/index.html?next=' + next;
+    }
+  } catch (e) {
+    // Supabase indisponible ou non configuré — ne pas bloquer
   }
 }
 

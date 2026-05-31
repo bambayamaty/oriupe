@@ -348,7 +348,7 @@ button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:p
               <div style="font-size:11px;color:rgba(255,255,255,.35);margin-top:3px;font-weight:600">FCFA</div>
             </div>
             <div class="amount-cell">
-              <div class="amount-lbl">Commission Oriupe 15%</div>
+              <div class="amount-lbl">Commission Oriupe —%</div>
               <div class="amount-val blue-val">9 750</div>
               <div style="font-size:11px;color:rgba(125,211,252,.3);margin-top:3px;font-weight:600">FCFA</div>
             </div>
@@ -958,7 +958,18 @@ document.getElementById('msgInput').addEventListener('input', function() {
     }
   } catch {}
 
-  if (!order) return; // garde les données demo si pas de param
+  if (!order) {
+    if (!orderId && !convId) {
+      // Accès direct sans paramètre → retour dashboard
+      const _role = s?.role || 'client';
+      window.location.replace(_role === 'freelance'
+        ? '/src/pages/dashboard/freelance/index.html'
+        : '/src/pages/dashboard/client/index.html');
+    }
+    // Params présents mais ordre non trouvé en localStorage → tenter Supabase
+    _loadOrderSupabase(orderId, convId);
+    return;
+  }
 
   // 6. Mettre à jour la topbar
   const tbTitle = document.querySelector('.tb-order-title');
@@ -1022,6 +1033,75 @@ document.getElementById('msgInput').addEventListener('input', function() {
     }
   });
 })();
+
+async function _loadOrderSupabase(orderId, convId) {
+  try {
+    const mod = await import('/src/shared/supabase.js');
+    if (!mod.isSupabaseConfigured || !mod.supabase) return;
+
+    let data = null;
+    if (orderId) {
+      // orderId peut être un UUID ou une réf style ORD-2026-00123
+      const isUUID = /^[0-9a-f-]{36}$/i.test(orderId);
+      if (isUUID) {
+        ({ data } = await mod.supabase.from('orders').select(
+          'id, ref, amount_total, commission_rate, commission_amount, amount_net, status, services(title)'
+        ).eq('id', orderId).single());
+      } else {
+        ({ data } = await mod.supabase.from('orders').select(
+          'id, ref, amount_total, commission_rate, commission_amount, amount_net, status, services(title)'
+        ).eq('ref', orderId.toUpperCase()).single());
+      }
+    } else if (convId) {
+      ({ data } = await mod.supabase.from('orders').select(
+        'id, ref, amount_total, commission_rate, commission_amount, amount_net, status, services(title)'
+      ).eq('conversation_id', convId).single());
+    }
+
+    if (!data) {
+      const _s = window.getSession?.();
+      const _role = _s?.role || 'client';
+      window.location.replace(_role === 'freelance'
+        ? '/src/pages/dashboard/freelance/index.html'
+        : '/src/pages/dashboard/client/index.html');
+      return;
+    }
+
+    const fmt = n => Number(n).toLocaleString('fr-FR').replace(/ |\xa0/g, ' ');
+    const amountCells = document.querySelectorAll('.amount-val');
+    if (amountCells[0]) amountCells[0].textContent = fmt(data.amount_total || 0);
+    if (amountCells[1]) amountCells[1].textContent = fmt(data.commission_amount || 0);
+    if (amountCells[2]) amountCells[2].textContent = fmt(data.amount_net || 0);
+
+    const commChip = document.querySelector('.amount-cell:nth-child(2) .amount-lbl');
+    if (commChip && data.commission_rate) {
+      commChip.textContent = 'Commission Oriupe ' + Math.round(data.commission_rate * 100) + '%';
+    }
+
+    const tbTitle = document.querySelector('.tb-order-title');
+    const tbSub   = document.querySelector('.tb-order-sub');
+    if (tbTitle) tbTitle.textContent = data.services?.title || 'Commande';
+    if (tbSub)   tbSub.textContent   = (data.ref || '') + ' · Escrow actif';
+
+    const codeEl = document.getElementById('escrowCode');
+    if (codeEl) codeEl.textContent = 'ORU-ESC-' + (data.ref || '').replace('ORD-', '');
+
+    const STATUS_MAP = {
+      awaiting_payment: { label: 'En attente de paiement', progress: '0%',   step: 0 },
+      funds_secured:    { label: 'Fonds sécurisés',         progress: '25%',  step: 1 },
+      in_progress:      { label: 'Travaux en cours',        progress: '60%',  step: 2 },
+      delivered:        { label: 'Livraison disponible',    progress: '80%',  step: 3 },
+      validated:        { label: 'Validé par le client',    progress: '95%',  step: 4 },
+      completed:        { label: 'Clôturé',                 progress: '100%', step: 5 },
+    };
+    const st = STATUS_MAP[data.status] || STATUS_MAP.in_progress;
+    const badge = document.querySelector('.escrow-status-badge');
+    if (badge) badge.innerHTML = `<span class="escrow-status-dot"></span>${st.label} · ${st.progress}`;
+
+  } catch (e) {
+    // Erreur silencieuse — les données demo restent affichées
+  }
+}
 </script>
   <script type="module" src="/src/scripts/main.js"></script>
   <script type="module" src="/src/shared/realtime.js"></script>

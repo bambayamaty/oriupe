@@ -218,7 +218,7 @@ a{text-decoration:none;color:inherit}
     <div class="header-sub">Plateforme freelance africaine · Vite Multi-Page App · Vanilla HTML/CSS/JS</div>
   </div>
   <div class="header-meta">
-    <div class="meta-chip">Pages : <span>34</span></div>
+    <div class="meta-chip">Pages : <span>36</span></div>
     <div class="meta-chip">Version : <span>1.0.0</span></div>
     <div class="meta-chip">Build : <span>Vite 5.4</span></div>
   </div>
@@ -385,7 +385,7 @@ a{text-decoration:none;color:inherit}
         <div class="stat-lbl">PAGES HTML</div>
       </div>
       <div class="stat-box">
-        <div class="stat-val" style="color:var(--green)">3</div>
+        <div class="stat-val" style="color:var(--green)">8</div>
         <div class="stat-lbl">FICHIERS JS</div>
       </div>
       <div class="stat-box">
@@ -547,6 +547,32 @@ a{text-decoration:none;color:inherit}
     </div>
 
     <div class="sec-head">
+      <div class="sec-dot" style="background:var(--lime)"></div>
+      <div class="sec-title">Création de contenu</div>
+      <div class="sec-count">2 pages</div>
+    </div>
+    <div class="page-grid">
+      <div class="page-card" onclick="window.location.href='/src/pages/create-service/index.html'">
+        <div class="page-card-bg" style="background:var(--green)"></div>
+        <div class="page-card-ico">🎨</div>
+        <div class="page-card-name">create-service/index.html</div>
+        <div class="page-card-title">Créer un service</div>
+        <div class="page-card-desc">Tunnel freelance 5 étapes : titre, description, tarifs 3 niveaux, galerie, publication Supabase.</div>
+        <div class="page-card-tags"><span class="pc-tag pct-new">Nouveau</span><span class="pc-tag pct-auth">Auth</span><span class="pc-tag pct-js">JS</span></div>
+        <div class="page-card-link">&#9654; Ouvrir</div>
+      </div>
+      <div class="page-card" onclick="window.location.href='/src/pages/publish-project/index.html'">
+        <div class="page-card-bg" style="background:var(--blue)"></div>
+        <div class="page-card-ico">📋</div>
+        <div class="page-card-name">publish-project/index.html</div>
+        <div class="page-card-title">Publier un projet</div>
+        <div class="page-card-desc">Formulaire client multi-étapes : titre, budget, délai, compétences, appel d'offres ou commande directe.</div>
+        <div class="page-card-tags"><span class="pc-tag pct-new">Nouveau</span><span class="pc-tag pct-auth">Auth</span><span class="pc-tag pct-js">JS</span></div>
+        <div class="page-card-link">&#9654; Ouvrir</div>
+      </div>
+    </div>
+
+    <div class="sec-head">
       <div class="sec-dot" style="background:var(--green)"></div>
       <div class="sec-title">Espaces utilisateurs</div>
       <div class="sec-count">5 pages</div>
@@ -660,8 +686,26 @@ a{text-decoration:none;color:inherit}
     <div class="file-row" onclick="void(0)">
       <div class="file-ico" style="background:rgba(245,158,11,.12)">⚡</div>
       <div class="file-path">src/shared/<span>oriupe-session.js</span></div>
-      <div class="file-desc">Session persistante · localStorage · Nav dynamique · Protection routes</div>
-      <div class="file-size">~6 KB</div>
+      <div class="file-desc">Session persistante · localStorage + Supabase async verify · Protection routes</div>
+      <div class="file-size">~7 KB</div>
+    </div>
+    <div class="file-row" onclick="void(0)">
+      <div class="file-ico" style="background:rgba(41,171,226,.1)">🗄️</div>
+      <div class="file-path">src/shared/<span>supabase.js</span></div>
+      <div class="file-desc">Client Supabase · Escrow, messages, DMs, présence, subscriptions temps réel</div>
+      <div class="file-size">~10 KB</div>
+    </div>
+    <div class="file-row" onclick="void(0)">
+      <div class="file-ico" style="background:rgba(60,184,120,.1)">⚡</div>
+      <div class="file-path">src/shared/<span>realtime.js</span></div>
+      <div class="file-desc">Abonnements Supabase Realtime · badges non-lus · toasts commandes/escrow</div>
+      <div class="file-size">~8 KB</div>
+    </div>
+    <div class="file-row" onclick="void(0)">
+      <div class="file-ico" style="background:rgba(239,68,68,.1)">🛡️</div>
+      <div class="file-path">src/shared/<span>admin-auth.js</span></div>
+      <div class="file-desc">Auth admin · protectAdminPage · rôles super_admin/admin/moderator/support/finance</div>
+      <div class="file-size">~4 KB</div>
     </div>
     <div class="file-row" onclick="void(0)">
       <div class="file-ico" style="background:rgba(41,171,226,.1)">🧩</div>

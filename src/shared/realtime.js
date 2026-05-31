@@ -117,7 +117,7 @@ function updateChatEscrow(order) {
 
   if (code)    code.textContent = order.escrow_code
   if (total)   total.textContent = fmtFCFA(order.amount_total)
-  if (secured) secured.textContent = fmtFCFA(order.amount_total)
+  if (secured) secured.textContent = fmtFCFA((order.amount_total || 0) - (order.commission_amount || 0))
   if (free)    free.textContent = fmtFCFA(order.amount_net || 0)
 
   if (status) {
@@ -279,15 +279,16 @@ async function initRealtime() {
       subscribeMessages(user.id, role),
       subscribeOrders(user.id, role),
     ])
-    console.log('[Oriupe Realtime] Connecté pour', role, user.email)
   } else {
     // Mode démo → simulation
     startDemoRealtime(role)
-    console.log('[Oriupe Realtime] Mode démo pour', role)
   }
 
-  // Nettoyage à la fermeture de page
-  window.addEventListener('beforeunload', destroyChannels)
+  // Nettoyage à la fermeture de page (guard: une seule fois par instance)
+  if (!window._rtCleanupRegistered) {
+    window._rtCleanupRegistered = true
+    window.addEventListener('beforeunload', destroyChannels)
+  }
 }
 
 // Auto-init au chargement du DOM

@@ -1280,38 +1280,63 @@ function loadDraft(){
 }
 
 /* ── Submit ── */
-function submitService(){
+async function submitService(){
   saveDraft(false);
-  const svcData = {
-    id:'svc_'+Date.now(),
-    title: document.getElementById('f-title').value.trim(),
-    category: document.getElementById('f-category').value,
-    price: +document.getElementById('tier-price-0').value||0,
-    status:'pending_moderation',
-    submittedAt: Date.now(),
-    freelanceId: _s?.userId||'unknown',
-  };
-  const services = JSON.parse(localStorage.getItem(SERVICES_KEY)||'[]');
-  services.push(svcData);
-  localStorage.setItem(SERVICES_KEY, JSON.stringify(services));
+  const title    = document.getElementById('f-title')?.value.trim() || '';
+  const category = document.getElementById('f-category')?.value || '';
+  const price    = +document.getElementById('tier-price-0')?.value || 0;
+  const delivery = +document.getElementById('f-delivery')?.value || 7;
+  const desc     = document.getElementById('f-desc')?.value?.trim() || null;
+
+  // Validation
+  if (title.length < 5)  { alert('Le titre doit contenir au moins 5 caractères.'); return; }
+  if (!category)         { alert('Veuillez sélectionner une catégorie.'); return; }
+  if (price <= 0)        { alert('Le prix du plan Basique doit être supérieur à 0 FCFA.'); return; }
+  const p1 = +document.getElementById('tier-price-1')?.value || 0;
+  const p2 = +document.getElementById('tier-price-2')?.value || 0;
+  if (p1 > 0 && p1 <= price) { alert('Le prix Standard doit être supérieur au prix Basique.'); return; }
+  if (p2 > 0 && p2 <= p1)   { alert('Le prix Premium doit être supérieur au prix Standard.'); return; }
+
+  const submitBtn = document.querySelector('.btn-submit, button[onclick*="submitService"]');
+  if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Publication en cours…'; }
+
+  let saved = false;
+  if (window._sb) {
+    try {
+      const { data: { user } } = await window._sb.auth.getUser();
+      if (!user) throw new Error('auth');
+      const { data: fp } = await window._sb.from('freelance_profiles')
+        .select('id').eq('profile_id', user.id).single();
+      if (!fp) throw new Error('no_fp');
+      const { error } = await window._sb.from('services').insert({
+        freelance_id:  fp.id,
+        title,
+        category,
+        price_basic:   price,
+        delivery_days: delivery,
+        description:   desc,
+        status:        'pending',
+      });
+      if (error) throw error;
+      saved = true;
+    } catch (e) {
+      console.error('[Oriupe] Supabase insert service:', e.message);
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Publier le service'; }
+      alert('Erreur lors de la publication. Vérifiez votre connexion et réessayez.');
+      return;
+    }
+  }
+
+  // Fallback localStorage si Supabase non configuré
+  if (!saved) {
+    const svcData = { id:'svc_'+Date.now(), title, category, price, status:'pending_moderation', submittedAt: Date.now(), freelanceId: _s?.userId||'unknown' };
+    const services = JSON.parse(localStorage.getItem(SERVICES_KEY)||'[]');
+    services.push(svcData);
+    localStorage.setItem(SERVICES_KEY, JSON.stringify(services));
+  }
+
   localStorage.removeItem(DRAFT_KEY);
   isDirty = false;
-  // Persist en Supabase si JWT disponible
-  if(window._sb){
-    window._sb.auth.getUser().then(({data})=>{
-      const uid = data?.user?.id;
-      if(!uid) return;
-      window._sb.from('services').insert({
-        freelance_id: uid,
-        title: svcData.title,
-        category: svcData.category,
-        price_basic: svcData.price,
-        delivery_days: +document.getElementById('f-delivery')?.value||7,
-        description: document.getElementById('f-desc')?.value?.trim()||null,
-        status: 'pending',
-      }).then(({error})=>{ if(error) console.warn('[Oriupe] Supabase insert service:', error.message) });
-    }).catch(()=>{});
-  }
   document.getElementById('successOverlay').classList.add('show');
 }
 function goDashboard(){

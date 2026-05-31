@@ -1,5 +1,12 @@
 node_modules/
 dist/
 .env
+.env.local
+.env.*.local
 .DS_Store
 *.local
+*.key
+*.pem
+secrets.json
+config.local.js
+.vercel

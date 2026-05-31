@@ -54,6 +54,19 @@ export async function markPaid(orderId, { operator, transactionRef }) {
 
 export async function adminReleaseEscrow(escrowId, adminNote = '') {
   if (!isSupabaseConfigured) throw new Error('Supabase non configuré.')
+
+  const { data: { user }, error: authErr } = await supabase.auth.getUser()
+  if (authErr || !user) throw new Error('Non authentifié.')
+
+  const { data: adminRow } = await supabase
+    .from('admin_roles')
+    .select('role')
+    .eq('profile_id', user.id)
+    .eq('is_active', true)
+    .in('role', ['super_admin', 'admin', 'finance'])
+    .single()
+  if (!adminRow) throw new Error('Accès refusé : rôle finance requis.')
+
   const { data, error } = await supabase
     .from('escrow_transactions')
     .update({
