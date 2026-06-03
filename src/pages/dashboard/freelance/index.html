@@ -837,17 +837,17 @@ button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:p
         <div class="profile-card">
           <div class="sec-title" style="margin-bottom:20px">Informations professionnelles</div>
           <div class="form-row">
-            <div class="form-group"><label class="form-lbl">Prénom</label><input class="form-inp" value="Kofi"/></div>
-            <div class="form-group"><label class="form-lbl">Nom</label><input class="form-inp" value="Asante"/></div>
+            <div class="form-group"><label class="form-lbl">Prénom</label><input class="form-inp" id="flprf-firstname" value=""/></div>
+            <div class="form-group"><label class="form-lbl">Nom</label><input class="form-inp" id="flprf-lastname" value=""/></div>
           </div>
-          <div class="form-group"><label class="form-lbl">Email professionnel</label><input class="form-inp" value="freelance@oriupe.com" type="email"/></div>
+          <div class="form-group"><label class="form-lbl">Email professionnel</label><input class="form-inp" id="flprf-email" value="" type="email" readonly style="opacity:.7;cursor:default"/></div>
           <div class="form-row">
-            <div class="form-group"><label class="form-lbl">Téléphone</label><input class="form-inp" value="+233 54 123 4567"/></div>
-            <div class="form-group"><label class="form-lbl">Ville</label><input class="form-inp" value="Accra, Ghana"/></div>
+            <div class="form-group"><label class="form-lbl">Téléphone</label><input class="form-inp" id="flprf-phone" value=""/></div>
+            <div class="form-group"><label class="form-lbl">Ville</label><input class="form-inp" id="flprf-city" value=""/></div>
           </div>
-          <div class="form-group"><label class="form-lbl">Titre professionnel</label><input class="form-inp" value="Designer Graphique & Brand Designer"/></div>
-          <div class="form-group"><label class="form-lbl">Bio</label><textarea class="form-inp" rows="3" style="resize:none">Designer passionné avec 6 ans d'expérience en branding et identité visuelle. Spécialisé dans les marques africaines qui veulent conquérir le marché digital.</textarea></div>
-          <div class="form-group"><label class="form-lbl">Compétences</label><input class="form-inp" value="Logo, Branding, UI/UX, Illustrator, Figma, Photoshop"/></div>
+          <div class="form-group"><label class="form-lbl">Titre professionnel</label><input class="form-inp" id="flprf-title" value=""/></div>
+          <div class="form-group"><label class="form-lbl">Bio</label><textarea class="form-inp" id="flprf-bio" rows="3" style="resize:none"></textarea></div>
+          <div class="form-group"><label class="form-lbl">Compétences</label><input class="form-inp" id="flprf-skills" value=""/></div>
           <button class="btn-save">Enregistrer les modifications</button>
         </div>
       </div>

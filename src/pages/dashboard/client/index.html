@@ -1026,16 +1026,16 @@ button,input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif;cursor:p
         <div class="profile-card">
           <div class="sec-title" style="margin-bottom:20px">Informations personnelles</div>
           <div class="form-row">
-            <div class="form-group"><label class="form-lbl">Prénom</label><input class="form-inp" value="Awa"/></div>
-            <div class="form-group"><label class="form-lbl">Nom</label><input class="form-inp" value="Mbaye"/></div>
+            <div class="form-group"><label class="form-lbl">Prénom</label><input class="form-inp" id="prf-firstname" value=""/></div>
+            <div class="form-group"><label class="form-lbl">Nom</label><input class="form-inp" id="prf-lastname" value=""/></div>
           </div>
-          <div class="form-group"><label class="form-lbl">Email</label><input class="form-inp" value="client@oriupe.com" type="email"/></div>
+          <div class="form-group"><label class="form-lbl">Email</label><input class="form-inp" id="prf-email" value="" type="email" readonly style="opacity:.7;cursor:default"/></div>
           <div class="form-row">
-            <div class="form-group"><label class="form-lbl">Téléphone</label><input class="form-inp" value="+221 77 123 45 67"/></div>
-            <div class="form-group"><label class="form-lbl">Ville</label><input class="form-inp" value="Dakar"/></div>
+            <div class="form-group"><label class="form-lbl">Téléphone</label><input class="form-inp" id="prf-phone" value=""/></div>
+            <div class="form-group"><label class="form-lbl">Ville</label><input class="form-inp" id="prf-city" value=""/></div>
           </div>
-          <div class="form-group"><label class="form-lbl">Entreprise (optionnel)</label><input class="form-inp" placeholder="Nom de votre entreprise"/></div>
-          <div class="form-group"><label class="form-lbl">À propos</label><textarea class="form-inp" rows="3" style="resize:none">Entrepreneur dans le secteur du commerce à Dakar. Je recherche des talents créatifs pour développer ma présence digitale.</textarea></div>
+          <div class="form-group"><label class="form-lbl">Entreprise (optionnel)</label><input class="form-inp" id="prf-company" placeholder="Nom de votre entreprise"/></div>
+          <div class="form-group"><label class="form-lbl">À propos</label><textarea class="form-inp" id="prf-bio" rows="3" style="resize:none"></textarea></div>
           <button class="btn-save">Enregistrer les modifications</button>
         </div>
       </div>
@@ -1280,6 +1280,22 @@ function showPanel(id) {
         el.dataset.target = kpiMap[i];
       }
     });
+  } catch {}
+})();
+
+/* ── PROFIL DEPUIS SESSION ── */
+;(function(){
+  try {
+    const s = JSON.parse(localStorage.getItem('oriupe_session') || 'null');
+    if (!s) return;
+    const set = (id, val) => { const el = document.getElementById(id); if (el && val) el.value = val; };
+    set('prf-firstname', s.firstName);
+    set('prf-lastname',  s.lastName);
+    set('prf-email',     s.email);
+    set('prf-phone',     s.phone);
+    set('prf-city',      s.city);
+    set('prf-company',   s.company);
+    set('prf-bio',       s.bio);
   } catch {}
 })();
 
