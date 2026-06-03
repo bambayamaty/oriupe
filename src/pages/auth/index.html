@@ -447,23 +447,6 @@ label.fl{font-size:12px;font-weight:700;color:var(--navy2);display:block;margin-
         </div>
         <div class="social-divider">ou par email</div>
 
-        <!-- Test credentials -->
-        <div style="background:#F8FAFC;border:1px solid rgba(27,58,74,.08);border-radius:12px;padding:12px 14px;margin-bottom:16px">
-          <div style="font-size:10px;font-weight:700;color:rgba(27,58,74,.35);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">Comptes de démonstration</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-            <div onclick="fillLogin('client@oriupe.com')" style="display:flex;align-items:center;gap:9px;padding:9px 11px;background:#fff;border:1px solid rgba(41,171,226,.2);border-radius:9px;cursor:pointer;transition:border-color .15s" onmouseover="this.style.borderColor='var(--blue)'" onmouseout="this.style.borderColor='rgba(41,171,226,.2)'">
-              <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#29ABE2,#7DD6F0);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0">AM</div>
-              <div><div style="font-size:11px;font-weight:700;color:#1B3A4A">Client</div><div style="font-size:10px;color:rgba(27,58,74,.45)">Awa Mbaye</div></div>
-              <svg style="margin-left:auto;color:rgba(27,58,74,.3)" width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M4.5 3L7.5 6L4.5 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-            </div>
-            <div onclick="fillLogin('freelance@oriupe.com')" style="display:flex;align-items:center;gap:9px;padding:9px 11px;background:#fff;border:1px solid rgba(60,184,120,.2);border-radius:9px;cursor:pointer;transition:border-color .15s" onmouseover="this.style.borderColor='var(--green)'" onmouseout="this.style.borderColor='rgba(60,184,120,.2)'">
-              <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#3CB878,#8DC63F);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0">KA</div>
-              <div><div style="font-size:11px;font-weight:700;color:#1B3A4A">Freelance</div><div style="font-size:10px;color:rgba(27,58,74,.45)">Kofi Asante</div></div>
-              <svg style="margin-left:auto;color:rgba(27,58,74,.3)" width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M4.5 3L7.5 6L4.5 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-            </div>
-          </div>
-        </div>
-
         <div class="form-group">
           <label class="fl">Email <span class="fl-required">*</span></label>
           <div class="inp-icon">
@@ -724,6 +707,7 @@ function togPwd(id,btn){
   inp.type=inp.type==='password'?'text':'password';
   btn.style.color=inp.type==='text'?'var(--green)':'var(--muted2)';
 }
+const togglePwd=togPwd;
 
 function chkStr(inp){
   const val=inp.value;
